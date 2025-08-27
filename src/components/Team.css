@@ -1,0 +1,123 @@
+/* File: src/components/Team.css */
+
+.team-section {
+  background-color: #121212;
+  color: #f0f0f0;
+  padding: 80px 20px;
+  min-height: 100vh;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.team-section h2 {
+  font-size: 3rem;
+  margin-bottom: 48px;
+  letter-spacing: 4px;
+  color: #1da1f2;
+  text-transform: uppercase;
+  animation: fadeInDown 0.8s ease forwards;
+}
+
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.team-member {
+  background: #222;
+  border-radius: 16px;
+  padding: 24px;
+  width: 220px;
+  box-shadow: 0 10px 30px rgba(29, 161, 242, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: calc(0.2s * var(--delay));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-member:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(29, 161, 242, 0.5);
+}
+
+.team-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 16px;
+  border: 3px solid #1da1f2;
+  box-shadow: 0 0 12px rgba(29, 161, 242, 0.6);
+}
+
+.team-member h3 {
+  margin: 0 0 8px;
+  font-size: 1.3rem;
+  color: #fff;
+}
+
+.team-member p {
+  margin: 0 0 16px;
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.linkedin-link img {
+  width: 28px;
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+
+.linkedin-link:hover img {
+  filter: brightness(0) invert(0.6);
+}
+
+/* Animation keyframes */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .team-grid {
+    gap: 24px;
+  }
+  .team-member {
+    width: 160px;
+    padding: 16px;
+  }
+  .team-photo {
+    width: 110px;
+    height: 110px;
+  }
+  .team-section h2 {
+    font-size: 2rem;
+  }
+}
