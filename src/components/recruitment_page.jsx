@@ -1,5 +1,5 @@
 import React from 'react';
-import './recruitment_page.css'; // Corrected import to match file name
+import './recruitment_page.css'; 
 
 const Recruitment = () => {
   return (

@@ -1,7 +1,6 @@
-// File: src/components/Team.jsx
 
 import React from 'react';
-import linkedInLogo from '../images/linkedIn_logo.png'; // LinkedIn icon image
+import linkedInLogo from '../images/linkedIn_logo.png';
 import './Team.css';
 
 const teamHeads = [
@@ -23,7 +22,6 @@ const teamHeads = [
     image: ' ',
     linkedIn: ' ',
   },
-  // Add more heads as needed
 ];
 
 const Team = () => {

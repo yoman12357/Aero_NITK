@@ -74,7 +74,6 @@
   margin-left: -80px;
 }
 
-/* Arrow Buttons */
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -103,17 +102,14 @@
 
 
 
-/* Add this new rule to remove the outline on click/focus */
 .carousel-arrow:focus {
   outline: none;
 }
 
-/* Remove bottom navigation dots (if any) */
 .carousel-dots {
   display: none;
 }
 
-/* Mobile Responsive Styles */
 @media (max-width: 900px) {
   .carousel-section {
     max-width: 100%;
@@ -128,7 +124,6 @@
   }
 
   .carousel-strip {
-    /* Allow more overflow for side slides */
     overflow: visible;
   }
 

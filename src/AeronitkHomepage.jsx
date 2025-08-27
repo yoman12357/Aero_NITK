@@ -1,4 +1,3 @@
-// File: src/AeroNITKHomepage.jsx
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -39,7 +38,6 @@ const AeroNITKHomepage = () => {
     return (
         <div className="page-wrapper">
 
-            {/* Navbar */}
             <nav className="navbar">
                 <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
                 <div className="navbar-links">
@@ -53,7 +51,6 @@ const AeroNITKHomepage = () => {
                 </div>
             </nav>
 
-            {/* Hero Section */}
             <section className="hero-section" id="home">
                 <div className="hero-spline-bg">
                     <spline-viewer url="https://prod.spline.design/qA6AUeCXSRGiNBpP/scene.splinecode" />
@@ -72,7 +69,6 @@ const AeroNITKHomepage = () => {
                 )}
             </section>
 
-            {/* About Section */}
             <section className="about-section" id="about">
                 <div className="about-content">
                     <div className="about-text">
@@ -90,7 +86,6 @@ const AeroNITKHomepage = () => {
                 </div>
             </section>
 
-            {/* Projects Section */}
             <section className="projects-section" id="projects">
                 <h2>PROJECTS</h2>
                 <div className="projects-grid">
@@ -107,7 +102,6 @@ const AeroNITKHomepage = () => {
             </section>
 
 
-            {/* Contact Section */}
             <section className="contact-section" id="contact">
                 <img src={plane1} className="contact-img plane-top-left" alt="Plane Top Left" />
                 <img src={dronePic} className="contact-img drone-bottom-left" alt="Drone Bottom Left" />
@@ -129,7 +123,6 @@ const AeroNITKHomepage = () => {
                 </div>
             </section>
 
-            {/* Footer Section */}
             <footer className="footer">
                 <div className="footer-row">
                     <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
