@@ -1,43 +1,162 @@
-import React from 'react';
-import './recruitment_page.css'; 
+import React, { useState } from 'react';
+import './recruitment_page.css';
 
-const Recruitment = () => {
+const teams = [
+  "Web Team",
+  "Avionics",
+  "Structures",
+  "Aerodynamics",
+  "Marketing",
+  "Media",
+  "Flight Simulator",
+];
+
+const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
+
+const branches = [
+  "Computer Science and Engineering",
+  "Artificial Intelligence",
+  "Information Technology",
+  "Electronics and Communication Engineering",
+  "Electrical and Electronics Engineering",
+  "Computational and Data Science",
+  "Mechanical Engineering",
+  "Mathematical and Computational Sciences",
+  "Civil Engineering",
+  "Chemical Engineering",
+  "Metallurgical and Materials Engineering",
+  "Mining Engineering"
+];
+
+const RecruitmentForm = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    rollNo: "",
+    phone: "",
+    branch: branches[0],
+    semester: semesters[0],
+    selectedTeams: [],
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleTeamSelect = (team) => {
+    setFormData((prev) => {
+      let newSelected = [...prev.selectedTeams];
+      if (newSelected.includes(team)) {
+        newSelected = newSelected.filter((t) => t !== team);
+      } else if (newSelected.length < 2) {
+        newSelected.push(team);
+      }
+      return { ...prev, selectedTeams: newSelected };
+    });
+  };
+
   return (
     <section className="recruitment-section">
-      <div className="recruitment-card">
+      <form
+        className="recruitment-card"
+        action="https://formspree.io/f/xzzazdpe"
+        method="POST"
+        onSubmit={(e) => {
+          if (formData.selectedTeams.length !== 2) {
+            e.preventDefault();
+            alert("Please select exactly two teams.");
+          }
+        }}
+      >
         <h2>JOIN OUR TEAM</h2>
-        <p className="recruitment-intro">
-          Are you passionate about aviation, drones, and aeromodelling? Aero NITK is looking for enthusiastic and dedicated students to join our team!
-        </p>
-        
-        <div className="recruitment-content">
-          <div className="recruitment-col">
-            <h3>WHAT WE DO</h3>
-            <ul>
-              <li>Design, build, and fly RC planes and UAVs.</li>
-              <li>Compete in national and international aeromodelling competitions.</li>
-              <li>Conduct research and development in aeronautical engineering.</li>
-              <li>Organize workshops and events to share our knowledge.</li>
-            </ul>
+
+        <label>
+          Name:
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+            placeholder="Your full name"
+          />
+        </label>
+
+        <label>
+          Roll Number:
+          <input
+            type="text"
+            name="rollNo"
+            value={formData.rollNo}
+            onChange={handleInputChange}
+            required
+            placeholder="Your roll number"
+          />
+        </label>
+
+        <label>
+          Phone Number:
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleInputChange}
+            required
+            placeholder="Your phone number"
+            pattern="[0-9]{10}"
+          />
+        </label>
+
+        <label>
+          Branch:
+          <select name="branch" value={formData.branch} onChange={handleInputChange} required>
+            {branches.map((br, idx) => (
+              <option key={idx} value={br}>{br}</option>
+            ))}
+          </select>
+        </label>
+
+        <label>
+          Semester:
+          <select name="semester" value={formData.semester} onChange={handleInputChange} required>
+            {semesters.map((sem, idx) => (
+              <option key={idx} value={sem}>{sem}</option>
+            ))}
+          </select>
+        </label>
+
+        <fieldset>
+          <legend>Choose exactly two teams:</legend>
+          <div className="teams-checkboxes">
+            {teams.map((team) => (
+              <label key={team} className="team-checkbox">
+                <input
+                  type="checkbox"
+                  name="selectedTeams"
+                  value={team}
+                  checked={formData.selectedTeams.includes(team)}
+                  onChange={() => handleTeamSelect(team)}
+                  disabled={
+                    !formData.selectedTeams.includes(team) &&
+                    formData.selectedTeams.length >= 2
+                  }
+                />
+                {team}
+              </label>
+            ))}
           </div>
-          
-          <div className="recruitment-col">
-            <h3>WHAT WE'RE LOOKING FOR</h3>
-            <ul>
-              <li>Passion for aviation and engineering.</li>
-              <li>A curious and creative mindset.</li>
-              <li>Willingness to learn and work in a team.</li>
-              <li>Problem-solving skills and a strong work ethic.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <a href="......................." target="_blank" rel="noopener noreferrer" className="apply-btn">
+        </fieldset>
+
+        {formData.selectedTeams.map((team, idx) => (
+          <input key={idx} type="hidden" name="selectedTeams[]" value={team} />
+        ))}
+
+        <button className="apply-btn" type="submit">
           APPLY NOW
-        </a>
-      </div>
+        </button>
+      </form>
     </section>
   );
 };
 
-export default Recruitment;
+export default RecruitmentForm;
