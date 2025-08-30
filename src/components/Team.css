@@ -25,12 +25,11 @@
   margin: 0 auto;
 }
 
-/* Team Heads Cards - bigger */
 .team-heads .team-member {
   background: #222;
   border-radius: 16px;
-  padding: 24px; /* bigger padding */
-  width: 220px; /* bigger width */
+  padding: 24px; 
+  width: 220px; 
   box-shadow: 0 10px 30px rgba(29, 161, 242, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   opacity: 0;
@@ -47,7 +46,7 @@
 }
 
 .team-heads .team-photo {
-  width: 140px; /* bigger photo */
+  width: 140px; 
   height: 140px;
   border-radius: 50%;
   object-fit: cover;
@@ -56,12 +55,11 @@
   box-shadow: 0 0 12px rgba(29, 161, 242, 0.6);
 }
 
-/* Team Members Cards (subsystem members) - smaller */
 .subsystem-members .team-member {
   background: #222;
   border-radius: 16px;
-  padding: 16px; /* smaller padding */
-  width: 160px; /* smaller width */
+  padding: 16px; 
+  width: 160px; 
   box-shadow: 0 10px 30px rgba(29, 161, 242, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   opacity: 0;
@@ -78,7 +76,7 @@
 }
 
 .subsystem-members .team-photo {
-  width: 100px; /* smaller photo */
+  width: 100px; 
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
@@ -131,7 +129,6 @@
   }
 }
 
-/* Responsive tweaks */
 @media (max-width: 700px) {
   .team-grid {
     gap: 24px;
@@ -162,7 +159,6 @@
   }
 }
 
-/* Subsystem container spacing */
 .subsystem-container {
   margin-top: 60px;
   max-width: 1000px;
@@ -171,7 +167,6 @@
   text-align: left;
 }
 
-/* Subsystem toggle button */
 .subsystem-toggle {
   background-color: #1da1f2;
   color: #fff;
@@ -204,7 +199,6 @@
   transform: rotate(180deg);
 }
 
-/* Dropdown content animation */
 .subsystem-members {
   margin-top: 20px;
   background: #222;

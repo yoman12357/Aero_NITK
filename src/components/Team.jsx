@@ -6,7 +6,7 @@ const teamHeads = [
   {
     name: 'Bhimu D',
     role: 'Convenor',
-    image: '', // Add image URL here
+    image: '', 
     linkedIn: '',
   },
   {
@@ -113,7 +113,6 @@ const Team = () => {
         </div>
       </div>
 
-      {/* Subsystems */}
       {subsystems.map(({ name, members }, idx) => (
         <div
           key={`subsystem-${idx}`}
