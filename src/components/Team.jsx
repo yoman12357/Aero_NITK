@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import linkedInLogo from '../images/linkedIn_logo.png';
+import aryan_bokolia from '../images/team-members/aryan_bokolia.jpg';
 import './Team.css';
 
 const teamHeads = [
@@ -33,7 +34,7 @@ const subsystems = [
   {
     name: 'Web Team',
     members: [
-      { name: 'Web Member 1', role: 'Web Role', image: '', linkedIn: '' },
+      { name: 'Aryan Bokolia', role: 'Front End Developer', image: 'aryan_bokolia', linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326/' },
     ],
   },
   {
