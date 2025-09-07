@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AeronitkHomepage.css';
@@ -6,6 +5,7 @@ import logoImage from './images/Aero_NITK_logo.png';
 import planeImage from './images/planes.png';
 import aboutDrone from './images/drone.png';
 import dronesImage from './images/drones.png';
+import Aeronitk from './images/Aeronitk.png';
 
 import instagramLogo from './images/instagram_logo.png';
 import youtubeLogo from './images/youtube_logo.png';
@@ -15,19 +15,12 @@ import plane1 from './images/plane1.png';
 import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
 import dronePic from './images/drone-pic.png';
-import ImageCarousel from './components/ImageCarousel';
+import UltimateCarousel from './components/UltimateCarousel.jsx';
 
 const AeroNITKHomepage = () => {
     const [showScrollDown, setShowScrollDown] = useState(true);
 
     useEffect(() => {
-        if (!document.querySelector('script[src="https://unpkg.com/@splinetool/viewer@1.10.14/build/spline-viewer.js"]')) {
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.src = 'https://unpkg.com/@splinetool/viewer@1.10.14/build/spline-viewer.js';
-            document.body.appendChild(script);
-        }
-
         const handleScroll = () => {
             setShowScrollDown(window.scrollY <= 60);
         };
@@ -41,19 +34,20 @@ const AeroNITKHomepage = () => {
             <nav className="navbar">
                 <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
                 <div className="navbar-links">
-                    <Link to="/">HOME</Link>
-                    <Link to="/about">ABOUT</Link>
+                    <a href='#home'>HOME</a>
+                    <a href='#about'>ABOUT</a>
                     <Link to="/gallery">GALLERY</Link>
                     <Link to="/team">TEAM</Link>
                     <Link to="/recruitment">RECRUITMENT</Link>
                     <Link to="/sponsors">SPONSORS</Link>
-                    <Link to="/contact">CONTACT</Link>
+                    <a href='#contact'>CONTACT</a>
                 </div>
             </nav>
 
             <section className="hero-section" id="home">
                 <div className="hero-spline-bg">
-                    <spline-viewer url="https://prod.spline.design/qA6AUeCXSRGiNBpP/scene.splinecode" />
+                    <img src={Aeronitk} alt="Aero NITK Hero" />
+                    {/* Removed spline-viewer component */}
                 </div>
                 {showScrollDown && (
                     <div className="scroll-down bounce-indicator">
@@ -97,10 +91,10 @@ const AeroNITKHomepage = () => {
                     </div>
                 </div>
             </section>
-            <section className="page-wrapper">
-<ImageCarousel></ImageCarousel>
-            </section>
 
+            <section className="page-wrapper">
+                <UltimateCarousel></UltimateCarousel>
+            </section>
 
             <section className="contact-section" id="contact">
                 <img src={plane1} className="contact-img plane-top-left" alt="Plane Top Left" />
