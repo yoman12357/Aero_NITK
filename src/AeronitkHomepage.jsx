@@ -19,6 +19,7 @@ import UltimateCarousel from './components/UltimateCarousel.jsx';
 
 const AeroNITKHomepage = () => {
     const [showScrollDown, setShowScrollDown] = useState(true);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -28,26 +29,53 @@ const AeroNITKHomepage = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const toggleMobileMenu = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+    };
+
+    const closeMobileMenu = () => {
+        setMobileMenuOpen(false);
+    };
+
     return (
         <div className="page-wrapper">
-
             <nav className="navbar">
                 <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
-                <div className="navbar-links">
-                    <a href='#home'>HOME</a>
-                    <a href='#about'>ABOUT</a>
-                    <Link to="/gallery">GALLERY</Link>
-                    <Link to="/team">TEAM</Link>
-                    <Link to="/recruitment">RECRUITMENT</Link>
-                    <Link to="/sponsors">SPONSORS</Link>
-                    <a href='#contact'>CONTACT</a>
+                
+                {/* Desktop Navigation */}
+                <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
+                    <a href='#home' onClick={closeMobileMenu}>HOME</a>
+                    <a href='#about' onClick={closeMobileMenu}>ABOUT</a>
+                    <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
+                    <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
+                    <Link to="/recruitment" onClick={closeMobileMenu}>RECRUITMENT</Link>
+                    <a href='#contact' onClick={closeMobileMenu}>CONTACT</a>
                 </div>
+
+                {/* Mobile Hamburger Menu */}
+                <button 
+                    className="hamburger-menu" 
+                    onClick={toggleMobileMenu}
+                    aria-label="Toggle mobile menu"
+                >
+                    {mobileMenuOpen ? (
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    ) : (
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    )}
+                </button>
             </nav>
 
             <section className="hero-section" id="home">
                 <div className="hero-spline-bg">
                     <img src={Aeronitk} alt="Aero NITK Hero" />
-                    {/* Removed spline-viewer component */}
                 </div>
                 {showScrollDown && (
                     <div className="scroll-down bounce-indicator">
@@ -92,7 +120,7 @@ const AeroNITKHomepage = () => {
                 </div>
             </section>
 
-            <section className="page-wrapper">
+            <section className="carousel-section">
                 <UltimateCarousel></UltimateCarousel>
             </section>
 
