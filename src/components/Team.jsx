@@ -4,7 +4,6 @@ import linkedInLogo from '../images/linkedIn_logo.png';
 
 import './Team.css';
 
-
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abel_thomas_mathew from '../images/team-members/Abel_Thomas_Mathew.jpg';
@@ -42,7 +41,14 @@ import tejaswini_magani from '../images/team-members/Tejaswini_Magani.jpg';
 import thokare_prithviraj_dilip from '../images/team-members/Thokare_Prithviraj_Dilip.jpg';
 import tirth_vishalkumar_patel from '../images/team-members/Tirth_Vishalkumar_Patel.jpg';
 import varshith_j from '../images/team-members/Varshith_J.jpg';
-
+import akhilesh from '../images/team-members/Akhilesh.jpg';
+import anindith from '../images/team-members/Anindith.jpg';
+import gouthamSunilKumar from '../images/team-members/Goutham_Sunil_Kumar.jpg';
+import gowthambm from '../images/team-members/GowthamBM.JPG';
+import LavnnyaPatil from '../images/team-members/LavnnyaPatil.jpg';
+import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Trivedi.jpg';
+import R_Adithya from '../images/team-members/R_Adithya.jpg';
+import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
 const teamHeads = [
   {
     name: 'Bhimu Daddimani',
@@ -52,10 +58,10 @@ const teamHeads = [
       'https://www.linkedin.com/in/bhimu-d?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
   },
   {
-    name: 'Lavanya',
+    name: 'Lavnnya',
     role: 'Captain',
-    image: '',
-    linkedIn: '',
+    image: LavnnyaPatil,
+    linkedIn: 'https://www.linkedin.com/in/lavnnya-patil',
   },
   {
     name: 'Rahul',
@@ -70,6 +76,7 @@ const teamHeads = [
     linkedIn: 'https://www.linkedin.com/in/tanay-shekokar-04730829b',
   },
 ];
+
 const rawMembersData = [
   { name: 'Bharat Patel', role: 'Operation Lead', subsystem: 'Leads', image: bharat_patel, linkedIn: 'https://www.linkedin.com/in/bharatnitk/' },
   { name: 'Rathod Smit Amitkumar', role: 'Web Dev Lead', subsystem: 'Leads', image: rathod_smit_amitkumar, linkedIn: 'https://www.linkedin.com/in/smit-rathod-a2900b312/' },
@@ -106,6 +113,14 @@ const rawMembersData = [
   { name: 'Magani Tejaswini', role: 'Avionics', subsystem: 'Avionics', image: tejaswini_magani, linkedIn: 'https://www.linkedin.com/in/magani-tejaswini-a70a68346?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
   { name: 'Aman Nagpal', role: 'Avionics', subsystem: 'Avionics', image: aman_nagpal, linkedIn: 'www.linkedin.com/in/aman-nagpal-781721345' },
   { name: 'Aadhithya RK', role: 'Aerodynamics', subsystem: 'Aerodynamics', image: aadhithya_r_k, linkedIn: 'www.linkedin.com/in/aadhithya-karthik-558b57382' },
+ { name: 'Nandeesh Urmesh Trivedi', role: 'Aerodynamics Lead', subsystem: 'Leads', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308?utm_source=share&&utm_campaign=share_via&&utm_content=profile&&utm_medium=android_app' },
+  { name: 'Goutham Sunil Kumar', role: 'Outreach Lead', subsystem: 'Leads', image: gouthamSunilKumar, linkedIn: 'https://www.linkedin.com/in/goutham-sunil-kumar-a95777253' },
+  { name: 'Anindith B L', role: 'Manufacturing Lead', subsystem: 'Leads', image: anindith, linkedIn: 'https://www.linkedin.com/in/anindithbl' },
+  { name: 'Vedant Sabnis', role: 'Aerodynamic / CFD Lead', subsystem: 'Leads', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
+  // Newly added names without changing any roles (placeholders)
+  { name: 'Gowtham B M', role: 'Media Head', subsystem: 'Media', image: gowthambm, linkedIn: 'http://www.linkedin.com/in/gowthambm' },
+  { name: 'Akhilesh', role: 'Avionics', subsystem: 'Avionics', image: akhilesh, linkedIn: 'https://www.linkedin.com/in/akhilesh-vadde-b0a6b2364?utm_source=share&&utm_campaign=share_via&&utm_content=profile&&utm_medium=android_app' },
+  { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Leads', image:R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
 ];
 
 const orderedSubsystemNames = [
