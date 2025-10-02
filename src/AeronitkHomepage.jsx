@@ -48,7 +48,8 @@ const AeroNITKHomepage = () => {
                     <a href='#about' onClick={closeMobileMenu}>ABOUT</a>
                     <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
                     <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
-                    <Link to="/recruitment" onClick={closeMobileMenu}>RECRUITMENT</Link>
+                    {/* <Link to="/recruitment" onClick={closeMobileMenu}>RECRUITMENT</Link> */}
+                    <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
                     <a href='#contact' onClick={closeMobileMenu}>CONTACT</a>
                 </div>
 

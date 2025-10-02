@@ -1,0 +1,404 @@
+/* Scope everything to this page to avoid leaking styles */
+.sponsors-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  color: white;
+  /* Fixed navbar offset (set to actual navbar height) */
+  --nav-h: 80px;
+  padding-top: var(--nav-h);
+}
+
+/* Navbar */
+.sponsors-page .navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.sponsors-page .navbar-logo { height: 50px; cursor: pointer; }
+
+.sponsors-page .navbar-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.sponsors-page .navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.sponsors-page .navbar-links a:hover,
+.sponsors-page .navbar-links a.active { color: #3490eb; }
+
+.sponsors-page .navbar-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 0;
+  width: 0; height: 2px;
+  background: #3490eb;
+  transition: width 0.3s ease;
+}
+
+.sponsors-page .navbar-links a:hover::after,
+.sponsors-page .navbar-links a.active::after { width: 100%; }
+
+.sponsors-page .hamburger-menu {
+  display: none;
+  background: none; border: none;
+  cursor: pointer; padding: 0.5rem;
+}
+
+/* Hero - account for fixed navbar with calc; use dynamic viewport units with fallbacks */
+.sponsors-page .sponsors-hero {
+  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100svh - var(--nav-h));
+  min-height: calc(100dvh - var(--nav-h));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+              url('./images/planes.png') center/cover;
+  position: relative;
+}
+
+.sponsors-page .sponsors-hero-content h1 {
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #3490eb, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sponsors-page .sponsors-hero-content p {
+  font-size: 1.2rem;
+  color: #e0e0e0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Container */
+.sponsors-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Brochure Section */
+.sponsors-page .brochure-section {
+  padding: 5rem 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.sponsors-page .brochure-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #3490eb;
+}
+
+.sponsors-page .brochure-section > .container > p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #b0b0b0;
+  margin-bottom: 3rem;
+}
+
+.sponsors-page .brochure-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+.sponsors-page .brochure-placeholder {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2rem;
+  border: 2px dashed rgba(52, 144, 235, 0.3);
+  transition: all 0.3s ease;
+}
+
+.sponsors-page .brochure-placeholder:hover {
+  border-color: rgba(52, 144, 235, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.sponsors-page .brochure-content { text-align: center; }
+
+.sponsors-page .brochure-content h3 {
+  color: #3490eb;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.sponsors-page .brochure-upload-area {
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sponsors-page .brochure-upload-area:hover { transform: translateY(-2px); }
+
+.sponsors-page .brochure-upload-area p {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.sponsors-page .brochure-upload-area small {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.sponsors-page .brochure-scroll-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.sponsors-page .scroll-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #3490eb;
+  transition: all 0.3s ease;
+}
+
+.sponsors-page .scroll-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(5px);
+}
+
+.sponsors-page .scroll-item h4 {
+  color: #3490eb;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.sponsors-page .scroll-item p {
+  color: #c0c0c0;
+  line-height: 1.6;
+}
+
+/* Bank Details */
+.sponsors-page .bank-details-section {
+  padding: 5rem 0;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.sponsors-page .bank-details-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #3490eb;
+}
+
+.sponsors-page .bank-details-section > .container > p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #b0b0b0;
+  margin-bottom: 3rem;
+}
+
+.sponsors-page .bank-details-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(45deg, #3490eb, #00d4ff);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 auto 2rem auto;
+  transition: all 0.3s ease;
+}
+
+.sponsors-page .bank-details-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(52, 144, 235, 0.3);
+}
+
+.sponsors-page .bank-details-toggle .arrow { transition: transform 0.3s ease; }
+.sponsors-page .bank-details-toggle .arrow.rotated { transform: rotate(180deg); }
+
+.sponsors-page .bank-details-card {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.sponsors-page .bank-details-card.visible {
+  max-height: 500px;
+  padding: 2rem;
+  border: 1px solid rgba(52, 144, 235, 0.2);
+}
+
+.sponsors-page .bank-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sponsors-page .bank-info-item { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.sponsors-page .bank-info-item label {
+  font-size: 0.9rem;
+  color: #3490eb;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sponsors-page .bank-info-item span {
+  font-size: 1.1rem;
+  color: #e0e0e0;
+  font-weight: 500;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(52, 144, 235, 0.2);
+}
+
+.sponsors-page .bank-details-note {
+  background: rgba(255, 193, 7, 0.1);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.sponsors-page .bank-details-note p {
+  color: #ffc107;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Sponsors Contact */
+.sponsors-page .sponsors-contact { padding: 5rem 0; text-align: center; }
+
+.sponsors-page .sponsors-contact h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #3490eb;
+}
+
+.sponsors-page .sponsors-contact p {
+  font-size: 1.1rem;
+  color: #b0b0b0;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto; margin-right: auto;
+}
+
+.sponsors-page .contact-buttons {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+}
+
+.sponsors-page .contact-btn {
+  padding: 1rem 2rem; border-radius: 50px; text-decoration: none;
+  font-weight: 600; font-size: 1rem; transition: all 0.3s ease;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+}
+
+.sponsors-page .contact-btn.primary {
+  background: linear-gradient(45deg, #3490eb, #00d4ff);
+  color: white;
+}
+
+.sponsors-page .contact-btn.secondary {
+  background: transparent; color: #3490eb; border: 2px solid #3490eb;
+}
+
+.sponsors-page .contact-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(52, 144, 235, 0.3);
+}
+
+.sponsors-page .contact-btn.secondary:hover { background: #3490eb; color: white; }
+
+/* Footer */
+.sponsors-page .footer {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2rem 0;
+  border-top: 1px solid rgba(52, 144, 235, 0.2);
+}
+
+.sponsors-page .footer-content { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.sponsors-page .footer-row { display: flex; justify-content: space-between; align-items: center; }
+
+.sponsors-page .footer-logo { height: 40px; }
+.sponsors-page .footer-text p { color: #888; margin: 0; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sponsors-page .hamburger-menu { display: block; }
+
+  .sponsors-page .navbar-links {
+    position: fixed; top: var(--nav-h); right: -100%;
+    background: rgba(0, 0, 0, 0.95);
+    width: 100%; height: calc(100vh - var(--nav-h));
+    display: flex; flex-direction: column;
+    justify-content: flex-start; padding-top: 2rem;
+    transition: right 0.3s ease;
+  }
+
+  .sponsors-page .navbar-links.open { right: 0; }
+
+  .sponsors-page .sponsors-hero-content h1 { font-size: 2.5rem; }
+
+  .sponsors-page .brochure-container { grid-template-columns: 1fr; gap: 2rem; }
+
+  .sponsors-page .bank-info-grid { grid-template-columns: 1fr; }
+
+  .sponsors-page .contact-buttons { flex-direction: column; align-items: center; }
+
+  .sponsors-page .footer-row { flex-direction: column; gap: 1rem; text-align: center; }
+
+  .sponsors-page .container { padding: 0 1rem; }
+}
+
+@media (max-width: 480px) {
+  .sponsors-page .sponsors-hero-content h1 { font-size: 2rem; }
+
+  .sponsors-page .brochure-section,
+  .sponsors-page .bank-details-section,
+  .sponsors-page .sponsors-contact { padding: 3rem 0; }
+
+  .sponsors-page .brochure-section h2,
+  .sponsors-page .bank-details-section h2,
+  .sponsors-page .sponsors-contact h2 { font-size: 2rem; }
+}
+
+/* Scrollbar */
+.sponsors-page .brochure-scroll-content::-webkit-scrollbar { width: 6px; }
+.sponsors-page .brochure-scroll-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05); border-radius: 3px;
+}
+.sponsors-page .brochure-scroll-content::-webkit-scrollbar-thumb {
+  background: #3490eb; border-radius: 3px;
+}
+.sponsors-page .brochure-scroll-content::-webkit-scrollbar-thumb:hover { background: #2980d9; }
