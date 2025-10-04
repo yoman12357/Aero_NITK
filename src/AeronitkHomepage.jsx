@@ -15,7 +15,7 @@ import plane1 from './images/plane1.png';
 import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
 import dronePic from './images/drone-pic.png';
-import UltimateCarousel from './components/UltimateCarousel.jsx';
+// import UltimateCarousel from './components/UltimateCarousel.jsx';
 
 const AeroNITKHomepage = () => {
     const [showScrollDown, setShowScrollDown] = useState(true);
@@ -41,7 +41,7 @@ const AeroNITKHomepage = () => {
         <div className="page-wrapper">
             <nav className="navbar">
                 <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
-                
+
                 {/* Desktop Navigation */}
                 <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
                     <a href='#home' onClick={closeMobileMenu}>HOME</a>
@@ -54,8 +54,8 @@ const AeroNITKHomepage = () => {
                 </div>
 
                 {/* Mobile Hamburger Menu */}
-                <button 
-                    className="hamburger-menu" 
+                <button
+                    className="hamburger-menu"
                     onClick={toggleMobileMenu}
                     aria-label="Toggle mobile menu"
                 >
@@ -97,9 +97,18 @@ const AeroNITKHomepage = () => {
                     <div className="about-text">
                         <h2>ABOUT</h2>
                         <p>
-                            Aero NITK is the official aeromodelling and aviation-focused student team of NITK Surathkal.
-                            <br />
-                            We design, analyze, and build RC planes, UAVs, and autonomous drones, combining creativity with engineering precision.
+                            ABOUT   
+
+                            AeroNITK is the official aeromodelling and aviation-focused student team of NITK Surathkal. As a student initiative supported by the institute, we design, analyse, and build RC planes, UAVs, and autonomous drones, combining creativity with engineering precision.
+
+                            Our vision is to inspire a culture of innovation, design, and exploration in aviation among students.
+                            We strive to empower every student passionate about flight to turn ideas into impactful creations.
+
+                            Our aim is to design and build efficient, reliable, and high-performance flying systems through a strong blend of theory and practical implementation.
+
+                            We aim to create an environment where learning by doing shapes future innovators and engineers.
+
+                            We actively apply our knowledge to real-world challenges, refining our designs through rigorous testing and continuous improvement. As we step into the domain of autonomous drones, we are opening new avenues of discovery and technological advancement. Driven by curiosity and teamwork, and supported by NITK, we continue to learn, innovate, and build projects that reflect our vision. AeroNITK remains committed to creating a platform where students transform their passion for aviation into designs that truly take flight.
                         </p>
                         <button className="learn-more-btn">Learn More</button>
                     </div>
@@ -122,7 +131,7 @@ const AeroNITKHomepage = () => {
             </section>
 
             <section className="carousel-section">
-                <UltimateCarousel></UltimateCarousel>
+                {/* <UltimateCarousel></UltimateCarousel> */}
             </section>
 
             <section className="contact-section" id="contact">
