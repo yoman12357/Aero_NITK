@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TargetCursor from './components/Effects/TargetCursor.jsx';
 import './components/Effects/TargetCursor.jsx';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import AeroNITKHomepage from './AeronitkHomepage.jsx';
 import Gallery from './components/Gallery.jsx';
 import Team from './components/Team.jsx';
@@ -18,6 +19,7 @@ const images = [
 const App = () => {
 return (
 <>
+<SpeedInsights></SpeedInsights>
 <TargetCursor spinDuration={2} hideDefaultCursor={true} />
 
 <Router>
