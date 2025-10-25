@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import linkedInLogo from '../images/linkedIn_logo.png';
 import './Team.css';
 
+
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abel_thomas_mathew from '../images/team-members/Abel_Thomas_Mathew.jpg';
