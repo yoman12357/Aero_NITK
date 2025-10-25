@@ -21,6 +21,7 @@ html,
 .page-wrapper {
     width: 100vw;
     overflow-x: hidden;
+    position: relative;
 }
 
 .navbar {
@@ -28,10 +29,12 @@ html,
     align-items: center;
     justify-content: space-between;
     padding: 20px 32px;
-    background: transparent;
+    background: #000;
     width: 100vw;
     z-index: 100;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .navbar-logo {
@@ -50,15 +53,13 @@ html,
     font-size: 15px;
     letter-spacing: 1px;
     font-weight: 500;
+    transition: color 200ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
 }
 
 .navbar-links a:hover {
     color: #2983e6;
-    transition: cubic-bezier(0.895, 0.03, 0.685, 0.22);
-    transition-duration: 200ms;
 }
 
-/* Hamburger menu button */
 .hamburger-menu {
     display: none;
     background: none;
@@ -73,68 +74,39 @@ html,
 }
 
 .hero-section {
-    background: #1c1c1c;
+    background: #000000;
     width: 100%;
-    height: 88vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     position: relative;
     box-sizing: border-box;
-}
-
-.super-bold {
-    font-size: 6vw;
-    font-weight: 800;
-    letter-spacing: 8px;
-    color: #fff;
-}
-
-.hero-subtitle {
-    font-size: 4vw;
-    font-weight: 600;
-    letter-spacing: 24px;
-    display: block;
-    color: #fff;
-}
-
-.hero-spline-wrapper spline-viewer {
-    width: 100%;
-    height: 320px;
-    display: block;
-    border-radius: 18px;
     overflow: hidden;
-    background: transparent;
+    margin-top: 0;
+    padding-top: 125px;
 }
 
 .hero-spline-bg {
-    width: 100vw;
-    height: 88vh;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    background-color: #000000;
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+    padding: 20px;
 }
 
 .hero-spline-bg img {
-    width: 150vw;
-    height: 55vh;
-    object-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-.hero-tagline {
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    font-weight: 400;
-    color: #fff;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 400px;
 }
 
 .bounce-indicator {
@@ -151,6 +123,7 @@ html,
     align-items: center;
     gap: 8px;
     animation: bounceSequence 3s cubic-bezier(.27, .86, .51, 1.18) infinite;
+    z-index: 1;
 }
 
 .scroll-arrow {
@@ -160,47 +133,32 @@ html,
 }
 
 @keyframes bounceSequence {
-    0% {
+    0%, 32% {
         transform: translate(-50%, 0);
         opacity: 1;
     }
-
     5% {
         transform: translate(-50%, -30px);
     }
-
     10% {
         transform: translate(-50%, 0);
     }
-
     14% {
         transform: translate(-50%, -22px);
     }
-
     18% {
         transform: translate(-50%, 0);
     }
-
     21% {
         transform: translate(-50%, -13px);
     }
-
     24% {
         transform: translate(-50%, 0);
     }
-
     28% {
         transform: translate(-50%, -6px);
     }
-
-    32% {
-        transform: translate(-50%, 0);
-        opacity: 1;
-    }
-
-    33%,
-    60%,
-    100% {
+    33%, 60%, 100% {
         opacity: 1;
     }
 }
@@ -212,6 +170,8 @@ html,
     max-width: 1400px;
     margin: 0 auto;
     padding: 64px 48px;
+    position: relative;
+    z-index: 2;
 }
 
 .about-content {
@@ -282,6 +242,8 @@ html,
     padding: 70px 48px;
     width: 100%;
     box-sizing: border-box;
+    position: relative;
+    z-index: 2;
 }
 
 .projects-section h2 {
@@ -317,6 +279,7 @@ html,
     align-items: center;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
     cursor: pointer;
+    transform: translateZ(0);
 }
 
 .project-card img {
@@ -330,58 +293,12 @@ html,
 .project-card:hover {
     box-shadow: 0 0 15px 3px #3a6f9e;
     transform: translateY(-6px);
-    transition-duration: 500ms;
 }
 
 .carousel-section {
     width: 100%;
-}
-
-.footer {
-    width: 100%;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    color: #ffffff;
-    background-color: #1c1c1c;
-    padding: 50px 48px 30px;
-}
-
-.footer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1100px;
-    margin: 0 auto 30px auto;
-}
-
-.footer-logo {
-    width: 125px;
-    height: 125px;
-}
-
-.footer-icons {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
-.social-icon {
-    height: 40px;
-    width: 40px;
-    object-fit: contain;
-    transition: transform 0.2s;
-}
-
-.footer-icons a:hover .social-icon {
-    transform: scale(1.14);
-}
-
-.footer-credit {
-    text-align: center;
-    font-size: 16px;
-    letter-spacing: 1px;
-    max-width: 1100px;
-    margin: 0 auto;
+    position: relative;
+    z-index: 2;
 }
 
 .contact-section {
@@ -393,6 +310,7 @@ html,
     justify-content: center;
     padding: 96px 48px;
     overflow: hidden;
+    z-index: 2;
 }
 
 .contact-img {
@@ -461,7 +379,6 @@ html,
     color: #111;
     margin-bottom: 24px;
     letter-spacing: 2px;
-    text-decoration: underline;
 }
 
 .contact-form {
@@ -503,7 +420,6 @@ html,
     min-height: 85px;
     max-height: 220px;
     font-family: inherit;
-    color: #000;
 }
 
 .submit-btn {
@@ -524,6 +440,55 @@ html,
     background: #3a6f9e;
 }
 
+.footer {
+    width: 100%;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    color: #ffffff;
+    background-color: #1c1c1c;
+    padding: 50px 48px 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto 30px auto;
+}
+
+.footer-logo {
+    width: 125px;
+    height: 125px;
+}
+
+.footer-icons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.social-icon {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+    transition: transform 0.2s;
+}
+
+.footer-icons a:hover .social-icon {
+    transform: scale(1.14);
+}
+
+.footer-credit {
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 1px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
 .navbar-links a:focus,
 .learn-more-btn:focus,
 .submit-btn:focus {
@@ -535,12 +500,6 @@ html {
     scroll-behavior: smooth;
 }
 
-.gallery-item,
-.project-card {
-    transform: translateZ(0);
-}
-
-/* Mobile and Tablet Responsive Styles */
 @media (max-width: 900px) {
     .navbar {
         padding: 15px 24px;
@@ -572,22 +531,26 @@ html {
 
     .navbar-links.open a {
         font-size: 20px;
-        color: #fff;
         padding: 10px;
     }
 
     @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .hero-section {
+        height: 80vh;
+        padding-top: 110px;
+    }
+
+    .hero-spline-bg {
+        max-width: 500px;
+        padding: 15px;
     }
 
     .hero-spline-bg img {
-        width: 120vw;
-        height: 35vh;
+        max-height: 300px;
     }
 
     .about-section {
@@ -678,9 +641,18 @@ html {
         height: 60px;
     }
 
+    .hero-section {
+        height: 70vh;
+        padding-top: 95px;
+    }
+
+    .hero-spline-bg {
+        max-width: 350px;
+        padding: 10px;
+    }
+
     .hero-spline-bg img {
-        width: 130vw;
-        height: 30vh;
+        max-height: 220px;
     }
 
     .about-section {
@@ -738,4 +710,46 @@ html {
         font-size: 14px;
         padding: 0 10px;
     }
+}
+
+@media (max-width: 400px) {
+    .hero-section {
+        height: 65vh;
+        padding-top: 85px;
+    }
+
+    .hero-spline-bg {
+        max-width: 280px;
+        padding: 8px;
+    }
+
+    .hero-spline-bg img {
+        max-height: 180px;
+    }
+
+    .bounce-indicator {
+        bottom: 15px;
+        font-size: 0.75rem;
+    }
+}
+body:not(.homepage) canvas,
+body:not(.homepage) .hero-section {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Ensure all sections have proper z-index */
+.navbar {
+  z-index: 100 !important;
+}
+
+.about-section,
+.projects-section,
+.carousel-section,
+.contact-section,
+.footer {
+  position: relative;
+  z-index: 2;
 }

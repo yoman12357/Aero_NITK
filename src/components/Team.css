@@ -31,8 +31,8 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto 60px;
 }
 
 .team-heads .team-member {
@@ -63,6 +63,36 @@
   margin-bottom: 16px;
   border: 3px solid #1da1f2;
   box-shadow: 0 0 12px rgba(29, 161, 242, 0.6);
+}
+
+.team-leads .team-member {
+  background: #222;
+  border-radius: 14px;
+  padding: 18px;
+  width: 180px;
+  box-shadow: 0 8px 24px rgba(29, 161, 242, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  animation: fadeInUp 1s ease forwards;
+  animation-delay: calc(0.15s * var(--delay));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.team-leads .team-member:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 35px rgba(29, 161, 242, 0.4);
+}
+
+.team-leads .team-photo {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 14px;
+  border: 3px solid #1da1f2;
+  box-shadow: 0 0 10px rgba(29, 161, 242, 0.5);
 }
 
 .subsystem-members .team-member {
@@ -162,7 +192,7 @@
 @media (max-width: 700px) {
   .team-grid {
     gap: 24px;
-    margin-bottom: 10px;
+    margin-bottom: 40px;
   }
 
   .team-heads .team-member {
@@ -173,6 +203,16 @@
   .team-heads .team-photo {
     width: 120px;
     height: 120px;
+  }
+
+  .team-leads .team-member {
+    width: 150px;
+    padding: 16px;
+  }
+
+  .team-leads .team-photo {
+    width: 95px;
+    height: 95px;
   }
 
   .subsystem-members .team-member {
@@ -187,6 +227,7 @@
 
   .team-section h2 {
     font-size: 2rem;
+    margin-bottom: 32px;
   }
 
   .subsystem-button-grid {
@@ -198,5 +239,73 @@
   .subsystem-grid-btn {
     font-size: 1rem;
     padding: 14px 0;
+  }
+
+  .team-member h3 {
+    font-size: 1.1rem;
+  }
+
+  .team-member p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .team-section {
+    padding: 60px 10px;
+  }
+
+  .team-grid {
+    gap: 20px;
+  }
+
+  .team-heads .team-member {
+    width: 160px;
+    padding: 16px;
+  }
+
+  .team-heads .team-photo {
+    width: 110px;
+    height: 110px;
+  }
+
+  .team-leads .team-member {
+    width: 135px;
+    padding: 14px;
+  }
+
+  .team-leads .team-photo {
+    width: 85px;
+    height: 85px;
+  }
+
+  .subsystem-members .team-member {
+    width: 130px;
+    padding: 10px;
+  }
+
+  .subsystem-members .team-photo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .team-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+  }
+
+  .subsystem-button-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+
+  .subsystem-grid-btn {
+    font-size: 0.9rem;
+    padding: 12px 0;
+  }
+
+  .linkedin-link img {
+    width: 24px;
   }
 }

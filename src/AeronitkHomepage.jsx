@@ -1,181 +1,204 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import LiquidEther from './components/Effects/LiquidEther.jsx';
+
 import './AeronitkHomepage.css';
 import logoImage from './images/Aero_NITK_logo.png';
 import planeImage from './images/planes.png';
 import aboutDrone from './images/drone.png';
 import dronesImage from './images/drones.png';
 import Aeronitk from './images/Aeronitk.png';
-
 import instagramLogo from './images/instagram_logo.png';
 import youtubeLogo from './images/youtube_logo.png';
 import linkedInLogo from './images/linkedIn_logo.png';
-
 import plane1 from './images/plane1.png';
 import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
 import dronePic from './images/drone-pic.png';
-// import UltimateCarousel from './components/UltimateCarousel.jsx';
+import UltimateCarousel from './components/UltimateCarousel.jsx';
 
 const AeroNITKHomepage = () => {
-    const [showScrollDown, setShowScrollDown] = useState(true);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showScrollDown, setShowScrollDown] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setShowScrollDown(window.scrollY <= 60);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen(!mobileMenuOpen);
+  useEffect(() => {
+    if (isHomePage) {
+      document.body.classList.add('homepage');
+    } else {
+      document.body.classList.remove('homepage');
+    }
+    return () => {
+      document.body.classList.remove('homepage');
     };
+  }, [isHomePage]);
 
-    const closeMobileMenu = () => {
-        setMobileMenuOpen(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollDown(window.scrollY <= 60);
     };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    return (
-        <div className="page-wrapper">
-            <nav className="navbar">
-                <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
-                {/* Desktop Navigation */}
-                <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
-                    <a href='#home' onClick={closeMobileMenu}>HOME</a>
-                    <a href='#about' onClick={closeMobileMenu}>ABOUT</a>
-                    <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
-                    <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
-                    {/* <Link to="/recruitment" onClick={closeMobileMenu}>RECRUITMENT</Link> */}
-                    <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
-                    <a href='#contact' onClick={closeMobileMenu}>CONTACT</a>
-                </div>
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
 
-                {/* Mobile Hamburger Menu */}
-                <button
-                    className="hamburger-menu"
-                    onClick={toggleMobileMenu}
-                    aria-label="Toggle mobile menu"
-                >
-                    {mobileMenuOpen ? (
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    ) : (
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>
-                    )}
-                </button>
-            </nav>
-
-            <section className="hero-section" id="home">
-                <div className="hero-spline-bg">
-                    <img src={Aeronitk} alt="Aero NITK Hero" />
-                </div>
-                {showScrollDown && (
-                    <div className="scroll-down bounce-indicator">
-                        SCROLL DOWN
-                        <svg className="scroll-arrow" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="white" strokeWidth="2"
-                            strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <polyline points="19 12 12 19 5 12" />
-                        </svg>
-                    </div>
-                )}
-            </section>
-
-            <section className="about-section" id="about">
-                <div className="about-content">
-                    <div className="about-text">
-                        <h2>ABOUT</h2>
-                        <p>
-                            ABOUT   
-
-                            AeroNITK is the official aeromodelling and aviation-focused student team of NITK Surathkal. As a student initiative supported by the institute, we design, analyse, and build RC planes, UAVs, and autonomous drones, combining creativity with engineering precision.
-
-                            Our vision is to inspire a culture of innovation, design, and exploration in aviation among students.
-                            We strive to empower every student passionate about flight to turn ideas into impactful creations.
-
-                            Our aim is to design and build efficient, reliable, and high-performance flying systems through a strong blend of theory and practical implementation.
-
-                            We aim to create an environment where learning by doing shapes future innovators and engineers.
-
-                            We actively apply our knowledge to real-world challenges, refining our designs through rigorous testing and continuous improvement. As we step into the domain of autonomous drones, we are opening new avenues of discovery and technological advancement. Driven by curiosity and teamwork, and supported by NITK, we continue to learn, innovate, and build projects that reflect our vision. AeroNITK remains committed to creating a platform where students transform their passion for aviation into designs that truly take flight.
-                        </p>
-                        <button className="learn-more-btn">Learn More</button>
-                    </div>
-                    <div className="about-image">
-                        <img src={aboutDrone} alt="Aero NITK Drone" />
-                    </div>
-                </div>
-            </section>
-
-            <section className="projects-section" id="projects">
-                <h2>PROJECTS</h2>
-                <div className="projects-grid">
-                    <div className="project-card">
-                        <img src={planeImage} alt="Planes" />
-                    </div>
-                    <div className="project-card">
-                        <img src={dronesImage} alt="Drones" />
-                    </div>
-                </div>
-            </section>
-
-            <section className="carousel-section">
-                {/* <UltimateCarousel></UltimateCarousel> */}
-            </section>
-
-            <section className="contact-section" id="contact">
-                <img src={plane1} className="contact-img plane-top-left" alt="Plane Top Left" />
-                <img src={dronePic} className="contact-img drone-bottom-left" alt="Drone Bottom Left" />
-                <img src={plane2} className="contact-img plane-top-right" alt="Plane Top Right" />
-                <img src={plane3} className="contact-img plane-bottom-right" alt="Plane Bottom Right" />
-
-                <div className="contact-card">
-                    <h4>Contact us</h4>
-                    <h2>Get in touch</h2>
-                    <form className="contact-form" onSubmit={e => { e.preventDefault(); alert("Submitted!"); }}>
-                        <div className="form-row">
-                            <input type="text" placeholder="First name" required />
-                            <input type="text" placeholder="Last name" required />
-                        </div>
-                        <input type="email" placeholder="email" required />
-                        <textarea placeholder="Message" rows={4} required />
-                        <button type="submit" className="submit-btn">SUBMIT</button>
-                    </form>
-                </div>
-            </section>
-
-            <footer className="footer">
-                <div className="footer-row">
-                    <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
-                    <div className="footer-icons">
-                        <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                            <img src={instagramLogo} alt="Instagram" className="social-icon" />
-                        </a>
-                        <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                            <img src={youtubeLogo} alt="YouTube" className="social-icon" />
-                        </a>
-                        <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                            <img src={linkedInLogo} alt="LinkedIn" className="social-icon" />
-                        </a>
-                    </div>
-                </div>
-                <div className="footer-credit">
-                    © 2025 Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
-                </div>
-            </footer>
+  return (
+    <div className="page-wrapper">
+      <nav className="navbar">
+        <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
+        <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
+          <a href='#home' onClick={closeMobileMenu}>HOME</a>
+          <a href='#about' onClick={closeMobileMenu}>ABOUT</a>
+          <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
+          <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
+          <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
+          <a href='#contact' onClick={closeMobileMenu}>CONTACT</a>
         </div>
-    );
+        <button
+          className="hamburger-menu"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          {mobileMenuOpen ? (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          ) : (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          )}
+        </button>
+      </nav>
+      {isHomePage ? (
+        <>
+          <section className="hero-section" id="home">
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 0,
+            }}>
+              <LiquidEther
+                colors={['#5227FF', '#FF9FFC', '#B19EEF']}
+                mouseForce={20}
+                cursorSize={100}
+                isViscous={false}
+                viscous={30}
+                iterationsViscous={32}
+                iterationsPoisson={32}
+                resolution={0.5}
+                isBounce={false}
+                autoDemo={true}
+                autoSpeed={0.5}
+                autoIntensity={2.2}
+                takeoverDuration={0.25}
+                autoResumeDelay={3000}
+                autoRampDuration={0.6}
+              />
+            </div>
+            <div className="hero-spline-bg">
+              <img src={Aeronitk} alt="Aero NITK Hero" />
+            </div>
+            {showScrollDown && (
+              <div className="scroll-down bounce-indicator">
+                SCROLL DOWN
+                <svg className="scroll-arrow" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" viewBox="0 0 24 24"
+                  fill="none" stroke="white" strokeWidth="2"
+                  strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <polyline points="19 12 12 19 5 12" />
+                </svg>
+              </div>
+            )}
+          </section>
+          <section className="about-section" id="about">
+            <div className="about-content">
+              <div className="about-text">
+                <h2>ABOUT</h2>
+                <p>
+                  The official NITK Surathkal student consortium, masterfully transmutes aviatic passion into tangible, high-performance aeromodelling and unmanned aerial vehicle designs, fostering a culture of trenchant innovation and empirical engineering excellence.
+                </p>
+                <button className="learn-more-btn">Learn More</button>
+              </div>
+              <div className="about-image">
+                <img src={aboutDrone} alt="Aero NITK Drone" />
+              </div>
+            </div>
+          </section>
+          <section className="projects-section" id="projects">
+            <h2>PROJECTS</h2>
+            <div className="projects-grid">
+              <div className="project-card">
+                <img src={planeImage} alt="Planes" />
+              </div>
+              <div className="project-card">
+                <img src={dronesImage} alt="Drones" />
+              </div>
+            </div>
+          </section>
+          <section className="carousel-section">
+            <UltimateCarousel />
+          </section>
+          <section className="contact-section" id="contact">
+            <img src={plane1} className="contact-img plane-top-left" alt="Plane Top Left" />
+            <img src={dronePic} className="contact-img drone-bottom-left" alt="Drone Bottom Left" />
+            <img src={plane2} className="contact-img plane-top-right" alt="Plane Top Right" />
+            <img src={plane3} className="contact-img plane-bottom-right" alt="Plane Bottom Right" />
+            <div className="contact-card">
+              <h4>Contact us</h4>
+              <h2>Get in touch</h2>
+              <form className="contact-form" onSubmit={e => { e.preventDefault(); alert("Submitted!"); }}>
+                <div className="form-row">
+                  <input type="text" placeholder="First name" required />
+                  <input type="text" placeholder="Last name" required />
+                </div>
+                <input type="email" placeholder="email" required />
+                <textarea placeholder="Message" rows={4} required />
+                <button type="submit" className="submit-btn">SUBMIT</button>
+              </form>
+            </div>
+          </section>
+        </>
+      ) : (
+        <div style={{ minHeight: '100vh', paddingTop: '125px', background: '#fff' }}>
+        </div>
+      )}
+      <footer className="footer">
+        <div className="footer-row">
+          <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
+          <div className="footer-icons">
+            <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <img src={instagramLogo} alt="Instagram" className="social-icon" />
+            </a>
+            <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <img src={youtubeLogo} alt="YouTube" className="social-icon" />
+            </a>
+            <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <img src={linkedInLogo} alt="LinkedIn" className="social-icon" />
+            </a>
+          </div>
+        </div>
+        <div className="footer-credit">
+          © 2025 Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
+        </div>
+      </footer>
+    </div>
+  );
 };
 
 export default AeroNITKHomepage;

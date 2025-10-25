@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-
 import linkedInLogo from '../images/linkedIn_logo.png';
-
 import './Team.css';
 
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
@@ -49,13 +47,13 @@ import LavnnyaPatil from '../images/team-members/LavnnyaPatil.jpg';
 import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Trivedi.jpg';
 import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
+
 const teamHeads = [
   {
     name: 'Bhimu Daddimani',
     role: 'Convenor',
     image: bhimu_daddimani,
-    linkedIn:
-      'https://www.linkedin.com/in/bhimu-d?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
+    linkedIn: 'https://www.linkedin.com/in/bhimu-d?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app',
   },
   {
     name: 'Lavnnya',
@@ -113,18 +111,19 @@ const rawMembersData = [
   { name: 'Magani Tejaswini', role: 'Avionics', subsystem: 'Avionics', image: tejaswini_magani, linkedIn: 'https://www.linkedin.com/in/magani-tejaswini-a70a68346?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
   { name: 'Aman Nagpal', role: 'Avionics', subsystem: 'Avionics', image: aman_nagpal, linkedIn: 'www.linkedin.com/in/aman-nagpal-781721345' },
   { name: 'Aadhithya RK', role: 'Aerodynamics', subsystem: 'Aerodynamics', image: aadhithya_r_k, linkedIn: 'www.linkedin.com/in/aadhithya-karthik-558b57382' },
- { name: 'Nandeesh Urmesh Trivedi', role: 'Aerodynamics Lead', subsystem: 'Leads', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308?utm_source=share&&utm_campaign=share_via&&utm_content=profile&&utm_medium=android_app' },
+  { name: 'Nandeesh Urmesh Trivedi', role: 'Aerodynamics Lead', subsystem: 'Leads', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308?utm_source=share&&utm_campaign=share_via&&utm_content=profile&&utm_medium=android_app' },
   { name: 'Goutham Sunil Kumar', role: 'Outreach Lead', subsystem: 'Leads', image: gouthamSunilKumar, linkedIn: 'https://www.linkedin.com/in/goutham-sunil-kumar-a95777253' },
   { name: 'Anindith B L', role: 'Manufacturing Lead', subsystem: 'Leads', image: anindith, linkedIn: 'https://www.linkedin.com/in/anindithbl' },
   { name: 'Vedant Sabnis', role: 'Aerodynamic / CFD Lead', subsystem: 'Leads', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
-  // Newly added names without changing any roles (placeholders)
   { name: 'Gowtham B M', role: 'Media Head', subsystem: 'Media', image: gowthambm, linkedIn: 'http://www.linkedin.com/in/gowthambm' },
   { name: 'Akhilesh', role: 'Avionics', subsystem: 'Avionics', image: akhilesh, linkedIn: 'https://www.linkedin.com/in/akhilesh-vadde-b0a6b2364?utm_source=share&&utm_campaign=share_via&&utm_content=profile&&utm_medium=android_app' },
-  { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Leads', image:R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
+  { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Leads', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
 ];
 
+const teamLeads = rawMembersData.filter(member => member.subsystem === 'Leads');
+const otherMembers = rawMembersData.filter(member => member.subsystem !== 'Leads');
+
 const orderedSubsystemNames = [
-  'Leads',
   'Web Team',
   'Avionics',
   'Structures',
@@ -145,7 +144,7 @@ const groupMembersBySubsystem = (members) => {
   return map;
 };
 
-const groupedMembers = groupMembersBySubsystem(rawMembersData);
+const groupedMembers = groupMembersBySubsystem(otherMembers);
 
 const finalSubsystems = [
   ...orderedSubsystemNames.filter((name) => groupedMembers.has(name)).map((name) => ({
@@ -171,6 +170,22 @@ const Team = () => {
       <h2>TEAM HEADS</h2>
       <div className="team-grid team-heads">
         {teamHeads.map(({ name, role, image, linkedIn }, idx) => (
+          <div key={idx} className="team-member" style={{ '--delay': idx }}>
+            {image && <img src={image} alt={name} className="team-photo" />}
+            <h3>{name}</h3>
+            <p>{role}</p>
+            {linkedIn && (
+              <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer">
+                <img src={linkedInLogo} alt="LinkedIn" />
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <h2>SUBSYSTEM LEADS</h2>
+      <div className="team-grid team-leads">
+        {teamLeads.map(({ name, role, image, linkedIn }, idx) => (
           <div key={idx} className="team-member" style={{ '--delay': idx }}>
             {image && <img src={image} alt={name} className="team-photo" />}
             <h3>{name}</h3>

@@ -81,7 +81,7 @@ const Sponsors = () => {
                 data="/brochure.pdf"
                 type="application/pdf"
                 width="100%"
-                height="600"
+                height="600px"
               >
                 <p>
                   Your browser does not support PDFs. Download the brochure
@@ -105,7 +105,6 @@ const Sponsors = () => {
           <p>Ready to sponsor us? Have questions about partnership opportunities?</p>
         </div>
       </section>
-      {/* Bank Details
       <section id="bank" className="bank-details-section">
         <div className="container">
           <h2>For sponsorship payments and donations</h2>
@@ -148,7 +147,7 @@ const Sponsors = () => {
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
 
       {/* Footer */}

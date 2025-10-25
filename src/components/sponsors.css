@@ -11,7 +11,7 @@
 
 /* Navbar */
 .sponsors-page .navbar {
-  position: fixed;
+  position: absolute;
   top: 0; left: 0; right: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.9);
@@ -22,7 +22,7 @@
   align-items: center;
   transition: all 0.3s ease;
 }
-.sponsors-page .navbar-logo { height: 50px; cursor: pointer; }
+.sponsors-page .navbar-logo { height: auto; cursor: pointer; }
 .sponsors-page .navbar-links { display: flex; gap: 2rem; align-items: center; }
 .sponsors-page .navbar-links a {
   color: white;
@@ -290,7 +290,7 @@
 }
 .sponsors-page .footer-content { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 .sponsors-page .footer-row { display: flex; justify-content: space-between; align-items: center; }
-.sponsors-page .footer-logo { height: 40px; }
+.sponsors-page .footer-logo { height: auto; }
 .sponsors-page .footer-text p { color: #888; margin: 0; }
 
 /* Responsive */
