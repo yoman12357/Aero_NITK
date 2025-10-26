@@ -128,7 +128,6 @@ html,
 .hero-section {
     background: #000000;
     width: 100%;
-    /* Keep 100vh for desktop screens */
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -569,6 +568,7 @@ html {
     .navbar-links.open {
         display: flex;
         flex-direction: column;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -592,8 +592,7 @@ html {
     }
 
     .hero-section {
-        /* CORRECTION: Ensure content below is visible on tablets/large phones */
-        height: 75vh;
+        height: 80vh;
         padding-top: 110px;
     }
 
@@ -695,8 +694,7 @@ html {
     }
 
     .hero-section {
-        /* CORRECTION: Ensure content below is visible on standard phones */
-        height: 65vh; 
+        height: 70vh;
         padding-top: 95px;
     }
 
@@ -730,7 +728,6 @@ html {
     }
 
     .project-card {
-        max-width: 100%;
         height: 250px;
     }
 
@@ -769,8 +766,7 @@ html {
 
 @media (max-width: 400px) {
     .hero-section {
-        /* CORRECTION: Ensure content below is visible on small phones */
-        height: 55vh; 
+        height: 65vh;
         padding-top: 85px;
     }
 
@@ -786,22 +782,19 @@ html {
     .bounce-indicator {
         bottom: 15px;
         font-size: 0.75rem;
-        opacity: 0.75;
-        gap: 5px;
     }
 }
-
-/* Ensure body class is respected */
 body:not(.homepage) canvas,
 body:not(.homepage) .hero-section {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 /* Ensure all sections have proper z-index */
 .navbar {
-    z-index: 100 !important;
+  z-index: 100 !important;
 }
 
 .about-section,
@@ -809,6 +802,6 @@ body:not(.homepage) .hero-section {
 .carousel-section,
 .contact-section,
 .footer {
-    position: relative;
-    z-index: 2;
+  position: relative;
+  z-index: 2;
 }

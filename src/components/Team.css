@@ -24,6 +24,7 @@ h1 {
 h2 {
   font-size: 2rem;
   line-height: 1.3;
+  /* ADDED: Ensure general H2 is centered, but the team-section h2 below is primary */
   text-align: center;
 }
 
@@ -66,14 +67,12 @@ a:hover {
 .navbar {
     display: flex;
     align-items: center;
-    /* FIX: Use space-between to correctly separate logo, links, and hamburger */
-    justify-content: space-between; 
+    justify-content: right;
     padding: 20px 32px;
     background: #000;
     width: 100vw;
     z-index: 100;
-    /* Changed position to fixed for sticky navigation across all pages */
-    position: fixed; 
+    position: absolute;
     top: 0;
     left: 0;
 }
@@ -81,15 +80,17 @@ a:hover {
 .navbar-logo {
     width: 85px;
     height: 85px;
+    /* ADDED: Ensure logo stays on the left */
     flex-shrink: 0;
 }
 
 .navbar-links {
     display: flex;
     gap: 30px;
-    /* This centers the links between the logo and the hamburger menu */
+    /* FIX: Use auto margins to push the links to the center */
     margin-left: auto;
     margin-right: auto;
+    /* ADDED: Prevents links from being squished if space runs out */
     flex-shrink: 0; 
 }
 
@@ -113,6 +114,7 @@ a:hover {
     cursor: pointer;
     padding: 10px;
     z-index: 101;
+    /* ADDED: Ensure hamburger stays on the right */
     flex-shrink: 0; 
 }
 
