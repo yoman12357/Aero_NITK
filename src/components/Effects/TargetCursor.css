@@ -4,7 +4,6 @@
   left: 0;
   width: 0;
   height: 0;
-  pointer-events: none;
   z-index: 9999;
   mix-blend-mode: difference;
   transform: translate(-50%, -50%);
