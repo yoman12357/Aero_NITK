@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link
 import './recruitment_page.css';
+import instagramLogo from '../images/instagram_logo.png';
+import youtubeLogo from '../images/youtube_logo.png';
+import linkedInLogo from '../images/linkedIn_logo.png';
+import logoImage from '../images/Aero_NITK_logo.png';
 
 const teams = [
   "Web Team",
@@ -29,6 +34,8 @@ const branches = [
 ];
 
 const RecruitmentForm = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: "",
     rollNo: "",
@@ -37,6 +44,14 @@ const RecruitmentForm = () => {
     semester: semesters[0],
     selectedTeams: [],
   });
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,106 +71,166 @@ const RecruitmentForm = () => {
   };
 
   return (
-    <section className="recruitment-section">
-      <form
-        className="recruitment-card"
-        action="https://formspree.io/f/xzzazdpe"
-        method="POST"
-        onSubmit={(e) => {
-          if (formData.selectedTeams.length !== 2) {
-            e.preventDefault();
-            alert("Please select exactly two teams.");
-          }
-        }}
-      >
-        <h2>JOIN OUR TEAM</h2>
-
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-            placeholder="Your full name"
-          />
-        </label>
-
-        <label>
-          Roll Number:
-          <input
-            type="text"
-            name="rollNo"
-            value={formData.rollNo}
-            onChange={handleInputChange}
-            required
-            placeholder="Your roll number"
-          />
-        </label>
-
-        <label>
-          Phone Number:
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleInputChange}
-            required
-            placeholder="Your phone number"
-            pattern="[0-9]{10}"
-          />
-        </label>
-
-        <label>
-          Branch:
-          <select name="branch" value={formData.branch} onChange={handleInputChange} required>
-            {branches.map((br, idx) => (
-              <option key={idx} value={br}>{br}</option>
-            ))}
-          </select>
-        </label>
-
-        <label>
-          Semester:
-          <select name="semester" value={formData.semester} onChange={handleInputChange} required>
-            {semesters.map((sem, idx) => (
-              <option key={idx} value={sem}>{sem}</option>
-            ))}
-          </select>
-        </label>
-
-        <fieldset>
-          <legend>Choose exactly two teams:</legend>
-          <div className="teams-checkboxes">
-            {teams.map((team) => (
-              <label key={team} className="team-checkbox">
-                <input
-                  type="checkbox"
-                  name="selectedTeams"
-                  value={team}
-                  checked={formData.selectedTeams.includes(team)}
-                  onChange={() => handleTeamSelect(team)}
-                  disabled={
-                    !formData.selectedTeams.includes(team) &&
-                    formData.selectedTeams.length >= 2
-                  }
-                />
-                {team}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        {formData.selectedTeams.map((team, idx) => (
-          <input key={idx} type="hidden" name="selectedTeams[]" value={team} />
-        ))}
-
-        <button className="apply-btn" type="submit">
-          APPLY NOW
+    <>
+      {/* Navbar - Positioned fixed to the top */}
+      <nav className="navbar">
+        <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
+        <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
+          {/* CORRECTED: Link to the root path for Home Page */}
+          <Link to="/" onClick={closeMobileMenu}>HOME</Link>
+          {/* CORRECTED: Link to the separate /about page */}
+          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
+          <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
+          <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
+          <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
+          {/* CORRECTION: Link to the homepage contact section */}
+          <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a>
+        </div>
+        <button
+          className="hamburger-menu"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          {mobileMenuOpen ? (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          ) : (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          )}
         </button>
-      </form>
-    </section>
+      </nav>
+
+      {/* Main Content Section */}
+      <section className="recruitment-section">
+        <form
+          className="recruitment-card"
+          action="https://formspree.io/f/xzzazdpe"
+          method="POST"
+          onSubmit={(e) => {
+            if (formData.selectedTeams.length !== 2) {
+              e.preventDefault();
+              alert("Please select exactly two teams.");
+            }
+          }}
+        >
+          <h2>JOIN OUR TEAM</h2>
+
+          <label>
+            Name:
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+              placeholder="Your full name"
+            />
+          </label>
+
+          <label>
+            Roll Number:
+            <input
+              type="text"
+              name="rollNo"
+              value={formData.rollNo}
+              onChange={handleInputChange}
+              required
+              placeholder="Your roll number"
+            />
+          </label>
+
+          <label>
+            Phone Number:
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleInputChange}
+              required
+              placeholder="Your phone number"
+              pattern="[0-9]{10}"
+            />
+          </label>
+
+          <label>
+            Branch:
+            <select name="branch" value={formData.branch} onChange={handleInputChange} required>
+              {branches.map((br, idx) => (
+                <option key={idx} value={br}>{br}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Semester:
+            <select name="semester" value={formData.semester} onChange={handleInputChange} required>
+              {semesters.map((sem, idx) => (
+                <option key={idx} value={sem}>{sem}</option>
+              ))}
+            </select>
+          </label>
+
+          <fieldset>
+            <legend>Choose exactly two teams:</legend>
+            <div className="teams-checkboxes">
+              {teams.map((team) => (
+                <label key={team} className="team-checkbox">
+                  <input
+                    type="checkbox"
+                    name="selectedTeams"
+                    value={team}
+                    checked={formData.selectedTeams.includes(team)}
+                    onChange={() => handleTeamSelect(team)}
+                    disabled={
+                      !formData.selectedTeams.includes(team) &&
+                      formData.selectedTeams.length >= 2
+                    }
+                  />
+                  {team}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          {formData.selectedTeams.map((team, idx) => (
+            <input key={idx} type="hidden" name="selectedTeams[]" value={team} />
+          ))}
+
+          <button className="apply-btn" type="submit">
+            APPLY NOW
+          </button>
+        </form>
+      </section>
+      
+      {/* Footer (Consistent Structure) */}
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-row">
+            <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
+            <div className="footer-icons">
+              <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <img src={instagramLogo} alt="Instagram" className="social-icon" />
+              </a>
+              <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                <img src={youtubeLogo} alt="YouTube" className="social-icon" />
+              </a>
+              <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <img src={linkedInLogo} alt="LinkedIn" className="social-icon" />
+              </a>
+            </div>
+          </div>
+          <div className="footer-credit">
+            © 2025 Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
+          </div>
+        </div>
+      </footer>
+    </>
   );
 };
 

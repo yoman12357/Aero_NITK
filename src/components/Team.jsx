@@ -1,8 +1,3 @@
-import React, { useState } from 'react';
-import linkedInLogo from '../images/linkedIn_logo.png';
-import './Team.css';
-
-
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abel_thomas_mathew from '../images/team-members/Abel_Thomas_Mathew.jpg';
@@ -49,8 +44,18 @@ import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Triv
 import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
 
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import linkedInLogo from '../images/linkedIn_logo.png';
+import instagramLogo from '../images/instagram_logo.png';
+import youtubeLogo from '../images/youtube_logo.png';
+import logoImage from '../images/Aero_NITK_logo.png';
+
+import './Team.css';
+
 const teamHeads = [
-  {
+   {
     name: 'Bhimu Daddimani',
     role: 'Convenor',
     image: bhimu_daddimani,
@@ -77,7 +82,7 @@ const teamHeads = [
 ];
 
 const rawMembersData = [
-  { name: 'Bharat Patel', role: 'Operation Lead', subsystem: 'Leads', image: bharat_patel, linkedIn: 'https://www.linkedin.com/in/bharatnitk/' },
+{ name: 'Bharat Patel', role: 'Operation Lead', subsystem: 'Leads', image: bharat_patel, linkedIn: 'https://www.linkedin.com/in/bharatnitk/' },
   { name: 'Rathod Smit Amitkumar', role: 'Web Dev Lead', subsystem: 'Leads', image: rathod_smit_amitkumar, linkedIn: 'https://www.linkedin.com/in/smit-rathod-a2900b312/' },
   { name: 'Tirth Vishalkumar Patel', role: 'Fuselage Lead', subsystem: 'Leads', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
   { name: 'Prithviraj Thokare', role: 'Structures', subsystem: 'Structures', image: thokare_prithviraj_dilip, linkedIn: 'https://www.linkedin.com/in/prithviraj-thokare-0232a5380/' },
@@ -118,13 +123,10 @@ const rawMembersData = [
   { name: 'Vedant Sabnis', role: 'Aerodynamic / CFD Lead', subsystem: 'Leads', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
   { name: 'Gowtham B M', role: 'Media Head', subsystem: 'Media', image: gowthambm, linkedIn: 'http://www.linkedin.com/in/gowthambm' },
   { name: 'Akhilesh', role: 'Avionics', subsystem: 'Avionics', image: akhilesh, linkedIn: 'https://www.linkedin.com/in/akhilesh-vadde-b0a6b2364?utm_source=share&&utm_campaign=share_via&&utm_content=profile&&utm_medium=android_app' },
-  { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Leads', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
-];
-
-const teamLeads = rawMembersData.filter(member => member.subsystem === 'Leads');
-const otherMembers = rawMembersData.filter(member => member.subsystem !== 'Leads');
+  { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Leads', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },];
 
 const orderedSubsystemNames = [
+  'Leads',
   'Web Team',
   'Avionics',
   'Structures',
@@ -145,10 +147,10 @@ const groupMembersBySubsystem = (members) => {
   return map;
 };
 
-const groupedMembers = groupMembersBySubsystem(otherMembers);
+const groupedMembers = groupMembersBySubsystem(rawMembersData);
 
 const finalSubsystems = [
-  ...orderedSubsystemNames.filter((name) => groupedMembers.has(name)).map((name) => ({
+  ...orderedSubsystemNames.filter(name => groupedMembers.has(name)).map(name => ({
     name,
     members: groupedMembers.get(name),
   })),
@@ -158,80 +160,126 @@ const finalSubsystems = [
 ];
 
 const Team = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openSubsystems, setOpenSubsystems] = useState({});
 
-  const toggleSubsystem = (index) => {
-    setOpenSubsystems((prev) => ({
-      [index]: !prev[index],
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
+  const toggleSubsystem = (idx) => {
+    setOpenSubsystems(prev => ({
+      ...prev,
+      [idx]: !prev[idx],
     }));
   };
 
   return (
-    <section className="team-section">
-      <h2>TEAM HEADS</h2>
-      <div className="team-grid team-heads">
-        {teamHeads.map(({ name, role, image, linkedIn }, idx) => (
-          <div key={idx} className="team-member" style={{ '--delay': idx }}>
-            {image && <img src={image} alt={name} className="team-photo" />}
-            <h3>{name}</h3>
-            <p>{role}</p>
-            {linkedIn && (
-              <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer">
-                <img src={linkedInLogo} alt="LinkedIn" />
+    <>
+      {/* Navbar - Kept outside team-section to ensure it remains fixed at the top */}
+      <nav className="navbar">
+        <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
+        <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
+          {/* CORRECTED: Link to the root path for Home Page */}
+          <Link to="/" onClick={closeMobileMenu}>HOME</Link>
+          {/* CORRECTED: Link to the separate /about page */}
+          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
+          <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
+          <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
+          <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
+          {/* CORRECTION: Link to the homepage contact section */}
+          <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a>
+        </div>
+        <button
+          className="hamburger-menu"
+          onClick={toggleMobileMenu}
+          aria-label="Toggle mobile menu"
+        >
+          {mobileMenuOpen ? (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          ) : (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          )}
+        </button>
+      </nav>
+
+      {/* FIX: Wrapped content in team-section to apply centering CSS */}
+      <div className="team-section">
+        <h2>TEAM HEADS</h2>
+        <div className="team-grid team-heads">
+          {teamHeads.map(({ name, role, image, linkedIn }, idx) => (
+            <div key={idx} className="team-member" style={{ '--delay': idx }}>
+              {image && <img src={image} alt={name} className="team-photo" />}
+              <h3>{name}</h3>
+              <p>{role}</p>
+              {linkedIn && <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer"><img src={linkedInLogo} alt="LinkedIn" /></a>}
+            </div>
+          ))}
+        </div>
+
+        <h2>SUBSYSTEMS</h2>
+        <div className="subsystem-button-grid">
+          {finalSubsystems.map(({ name }, idx) => (
+            <button
+              key={idx}
+              className={`subsystem-grid-btn ${openSubsystems[idx] ? 'active' : ''}`}
+              onClick={() => toggleSubsystem(idx)}
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+
+        <div className="team-grid subsystem-members">
+          {finalSubsystems.map(({ members }, idx) =>
+            openSubsystems[idx]
+              ? members.map(({ name, role, image, linkedIn }, mIdx) => (
+                  <div key={mIdx} className="team-member" style={{ '--delay': mIdx }}>
+                    {image && <img src={image} alt={name} className="team-photo" />}
+                    <h3>{name}</h3>
+                    <p>{role}</p>
+                    {linkedIn && <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer"><img src={linkedInLogo} alt="LinkedIn" /></a>}
+                  </div>
+                ))
+              : null
+          )}
+        </div>
+      </div>
+
+      {/* Footer (Consistent Structure) */}
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-row">
+            <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
+            <div className="footer-icons">
+              <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <img src={instagramLogo} alt="Instagram" className="social-icon" />
               </a>
-            )}
-          </div>
-        ))}
-      </div>
-
-      <h2>SUBSYSTEM LEADS</h2>
-      <div className="team-grid team-leads">
-        {teamLeads.map(({ name, role, image, linkedIn }, idx) => (
-          <div key={idx} className="team-member" style={{ '--delay': idx }}>
-            {image && <img src={image} alt={name} className="team-photo" />}
-            <h3>{name}</h3>
-            <p>{role}</p>
-            {linkedIn && (
-              <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer">
-                <img src={linkedInLogo} alt="LinkedIn" />
+              <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                <img src={youtubeLogo} alt="YouTube" className="social-icon" />
               </a>
-            )}
+              <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <img src={linkedInLogo} alt="LinkedIn" className="social-icon" />
+              </a>
+            </div>
           </div>
-        ))}
-      </div>
-
-      <h2>SUBSYSTEMS</h2>
-      <div className="subsystem-button-grid">
-        {finalSubsystems.map(({ name }, idx) => (
-          <button
-            key={idx}
-            className={`subsystem-grid-btn ${openSubsystems[idx] ? 'active' : ''}`}
-            onClick={() => toggleSubsystem(idx)}
-          >
-            {name}
-          </button>
-        ))}
-      </div>
-
-      <div className="team-grid subsystem-members">
-        {finalSubsystems.map(({ members }, idx) =>
-          openSubsystems[idx]
-            ? members.map(({ name, role, image, linkedIn }, subIdx) => (
-                <div key={subIdx} className="team-member" style={{ '--delay': subIdx }}>
-                  {image && <img src={image} alt={name} className="team-photo" />}
-                  <h3>{name}</h3>
-                  <p>{role}</p>
-                  {linkedIn && (
-                    <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer">
-                      <img src={linkedInLogo} alt="LinkedIn" />
-                    </a>
-                  )}
-                </div>
-              ))
-            : null
-        )}
-      </div>
-    </section>
+          <div className="footer-credit">
+            © 2025 Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team, AeroNITK
+          </div>
+        </div>
+      </footer>
+    </>
   );
 };
 

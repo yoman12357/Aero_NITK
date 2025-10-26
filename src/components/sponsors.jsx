@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './sponsors.css';
 import logoImage from '../images/Aero_NITK_logo.png';
+// CORRECTION: Import the background image directly
+import heroBackgroundImage from '../images/sponsersbg.jpg'; 
+import instagramLogo from '../images/instagram_logo.png';
+import youtubeLogo from '../images/youtube_logo.png';
+import linkedInLogo from '../images/linkedIn_logo.png';
 
 const Sponsors = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -22,6 +27,12 @@ const Sponsors = () => {
     upiId: 'aeronitk@sbi',
   };
 
+  // Define the inline style object for the hero section
+  const heroStyle = {
+    // This is applied via inline style because of previous path issues
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${heroBackgroundImage})`,
+  };
+
   return (
     <div className="sponsors-page">
       {/* Navbar */}
@@ -31,19 +42,19 @@ const Sponsors = () => {
         </Link>
         <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
           <Link to="/" onClick={closeMobileMenu}>HOME</Link>
-          <a href="#about" onClick={closeMobileMenu}>ABOUT</a>
+          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
           <a href="#why-sponsor" onClick={closeMobileMenu}>WHY SPONSOR</a>
           <a href="#brochure" onClick={closeMobileMenu}>BROCHURE</a>
-          {/* <a href="#bank" onClick={closeMobileMenu}>BANK</a> */}
-          <a href="#contact" onClick={closeMobileMenu}>CONTACT</a>
+          {/* CORRECTION: Changed to anchor tag linking to the home page's contact section */}
+          <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a> 
         </div>
         <button className="hamburger-menu" onClick={toggleMobileMenu} aria-label="Menu">
           <span>☰</span>
         </button>
       </nav>
 
-      {/* Hero */}
-      <header className="sponsors-hero">
+      {/* Hero: Apply the corrected inline style */}
+      <header className="sponsors-hero" style={heroStyle}>
         <div className="sponsors-hero-content">
           <h1>Partner with Aero NITK and be part of our journey in aerospace innovation</h1>
           <p>Learn more about our team, projects, and sponsorship opportunities</p>
@@ -57,19 +68,19 @@ const Sponsors = () => {
             <div className="brochure-scroll-content">
               <div className="scroll-item">
                 <h4>About Aero NITK</h4>
-                <p>We are the official aeromodelling team of NITK Surathkal, passionate about aerospace engineering and innovation.</p>
+                <p>We proudly constitute the official aeromodelling contingent of NITK Surathkal, ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.</p>
               </div>
               <div id="why-sponsor" className="scroll-item">
                 <h4>Why Sponsor Us?</h4>
-                <p>Multiple competition wins, innovative projects, and a strong alumni network in the aerospace industry.</p>
+                <p>Our repertoire boasts multiple triumphs in competitive arenas, groundbreaking ventures that continually push the envelope of innovation, and a robust and discerning alumni network deeply entrenched in the aerospace industry’s vanguard.</p>
               </div>
               <div className="scroll-item">
                 <h4>Benefits for Sponsors</h4>
-                <p>Get brand visibility, support emerging talent, and be part of cutting-edge aerospace research and development.</p>
+                <p>Seize unparalleled brand prominence, champion nascent talent, and immerse yourself in the vanguard of avant-garde aerospace research and development.</p>
               </div>
               <div className="scroll-item">
                 <h4>Sponsorship Levels</h4>
-                <p>Multiple sponsorship levels available to suit different budget ranges and partnership goals.</p>
+                <p>A diverse array of sponsorship tiers is meticulously curated to accommodate varying fiscal allotments and align harmoniously with distinct partnership aspirations.</p>
               </div>
             </div>
 
@@ -150,15 +161,24 @@ const Sponsors = () => {
       </section>
 
 
-      {/* Footer */}
+      {/* Footer (Consistent Structure) */}
       <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-row">
-            <img src={logoImage} alt="Aero NITK" className="footer-logo" />
-            <div className="footer-text">
-              <p>© {new Date().getFullYear()} Aero NITK. All rights reserved.</p>
-            </div>
+        <div className="footer-row">
+          <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
+          <div className="footer-icons">
+            <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <img src={instagramLogo} alt="Instagram" className="social-icon" />
+            </a>
+            <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <img src={youtubeLogo} alt="YouTube" className="social-icon" />
+            </a>
+            <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <img src={linkedInLogo} alt="LinkedIn" className="social-icon" />
+            </a>
           </div>
+        </div>
+        <div className="footer-credit"> 
+          © {new Date().getFullYear()} Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
         </div>
       </footer>
     </div>

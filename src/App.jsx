@@ -2,10 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TargetCursor from './components/Effects/TargetCursor.jsx';
 import './components/Effects/TargetCursor.jsx';
+
+// Import all necessary components
 import AeroNITKHomepage from './AeronitkHomepage.jsx';
 import Gallery from './components/Gallery.jsx';
 import Team from './components/Team.jsx';
-// import Recruitment from './components/recruitment_page.jsx';
+// Import the new AboutPage component
+import AboutPage from './components/AboutPage.jsx'; 
+// Uncommented Recruitment (assuming it's ready to be used)
+import Recruitment from './components/recruitment_page.jsx'; 
 import Sponsors from './components/sponsors.jsx';
 
 const images = [
@@ -23,9 +28,12 @@ return (
 <Router>
 <Routes>
 <Route path="/" element={<AeroNITKHomepage />} />
+{/* ADDED: Route for the new AboutPage */}
+<Route path="/about" element={<AboutPage />} /> 
 <Route path="/gallery" element={<Gallery />} />
 <Route path="/team" element={<Team />} />
-{/* <Route path="/recruitment" element={<Recruitment />} /> */}
+{/* Uncommented Recruitment Route */}
+<Route path="/recruitment" element={<Recruitment />} /> 
 <Route path="/sponsors" element={<Sponsors />} />
 </Routes>
 </Router>

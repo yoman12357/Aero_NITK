@@ -56,7 +56,8 @@ const AeroNITKHomepage = () => {
         <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
         <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
           <a href='#home' onClick={closeMobileMenu}>HOME</a>
-          <a href='#about' onClick={closeMobileMenu}>ABOUT</a>
+          {/* CORRECTION: Changed anchor tag to Link component to route to /about page */}
+          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
           <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
           <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
           <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
@@ -126,6 +127,8 @@ const AeroNITKHomepage = () => {
               </div>
             )}
           </section>
+          {/* NOTE: Since ABOUT is now a separate page, this section is redundant. 
+                     You can remove or repurpose the content here. Keeping it for now. */}
           <section className="about-section" id="about">
             <div className="about-content">
               <div className="about-text">
@@ -133,7 +136,7 @@ const AeroNITKHomepage = () => {
                 <p>
                   The official NITK Surathkal student consortium, masterfully transmutes aviatic passion into tangible, high-performance aeromodelling and unmanned aerial vehicle designs, fostering a culture of trenchant innovation and empirical engineering excellence.
                 </p>
-                <button className="learn-more-btn">Learn More</button>
+                <Link to="/about" className="learn-more-btn">Learn More</Link>
               </div>
               <div className="about-image">
                 <img src={aboutDrone} alt="Aero NITK Drone" />
