@@ -1,6 +1,6 @@
 /* --- BASE STYLES --- */
 body, html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Unified professional font */
   font-size: 16px; 
   color: #f0f0f0;
   margin: 0;
@@ -42,7 +42,8 @@ a:hover {
 .navbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* FIX: Use space-between for consistent separation */
+    justify-content: space-between; 
     padding: 20px 32px;
     background: #000;
     width: 100%;
@@ -62,8 +63,9 @@ a:hover {
 .navbar-links {
     display: flex;
     gap: 30px;
-    margin-left: auto; /* Push links/hamburger to right */
-    margin-right: 30px; 
+    /* FIX: Use auto margins for centering between logo and hamburger */
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
 .navbar-links a {

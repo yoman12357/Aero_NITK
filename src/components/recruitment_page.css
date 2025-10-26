@@ -60,17 +60,17 @@ a:hover {
   text-decoration: underline; 
 }
 
-/* NAVBAR FIXES: Logo left, Links and Hamburger right, fixed position */
+/* NAVBAR FIXES: Matched to Team.css style (Logo Left, Links Centered) */
 .navbar {
     display: flex;
     align-items: center;
-    /* FIX: Force all flex items to the right */
-    justify-content: flex-end;
+    /* FIX: Use space-between to separate items */
+    justify-content: space-between;
     padding: 20px 32px;
     background: #000;
-    width: 100%; /* Changed from 100vw */
+    width: 100%; 
     z-index: 100;
-    /* FIX: Set to fixed so content scrolls beneath it */
+    /* FIX: Set to fixed for consistent sticky behavior */
     position: fixed;
     top: 0;
     left: 0;
@@ -80,16 +80,18 @@ a:hover {
 .navbar-logo {
     width: 85px;
     height: 85px;
-    /* FIX: Use absolute position to place the logo on the far left */
-    position: absolute;
-    left: 32px; 
+    /* REMOVED: Removed absolute positioning for stable flex layout */
+    /* position: absolute; left: 32px; */
+    flex-shrink: 0;
 }
 
 .navbar-links {
     display: flex;
     gap: 30px;
-    /* Margin to separate links from hamburger */
-    margin-right: 30px; 
+    /* FIX: Use auto margins to center links between the logo and hamburger */
+    margin-left: auto;
+    margin-right: auto; 
+    flex-shrink: 0;
 }
 
 .navbar-links a {
@@ -112,6 +114,7 @@ a:hover {
     cursor: pointer;
     padding: 10px;
     z-index: 101;
+    flex-shrink: 0;
 }
 
 .hamburger-menu svg {

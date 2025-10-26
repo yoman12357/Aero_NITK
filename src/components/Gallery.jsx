@@ -35,12 +35,12 @@ const Gallery = () => {
         <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
         <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
           <Link to="/" onClick={closeMobileMenu}>HOME</Link>
-          {/* CORRECTION: Link to the separate /about page */}
           <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
           <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
           <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
           <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
-          <a href="#contact" onClick={closeMobileMenu}>CONTACT</a>
+          {/* CORRECTION: Link to the homepage contact section */}
+          <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a>
         </div>
         <button
           className="hamburger-menu"

@@ -1,7 +1,8 @@
 /* Find the .sponsors-page .navbar and .sponsors-page .navbar-links selectors */
 
 .sponsors-page .navbar {
-  /* FIX: Ensure Logo is on the left edge */
+  /* FIX: Changed to fixed to ensure it stays at the top when scrolling */
+  position: fixed; 
   top: 0; left: 0; right: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.9);
@@ -66,7 +67,6 @@ h3 {
 p, span, li, a, button, div {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1rem;
-  line-height: 1.5;
   color: #ffffff; 
 }
 
@@ -106,6 +106,7 @@ a:hover {
 /* Navbar */
 .sponsors-page .navbar {
   /* FIX: Changed to fixed to ensure it stays at the top when scrolling */
+  position: fixed; 
   top: 0; left: 0; right: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.9);
@@ -407,6 +408,7 @@ a:hover {
 @media (max-width: 768px) {
   .sponsors-page .hamburger-menu { display: block; }
   .sponsors-page .navbar-links {
+    position: fixed; top: var(--nav-h); right: -100%;
     background: rgba(0, 0, 0, 0.95);
     width: 100%; height: calc(100vh - var(--nav-h));
     display: flex; flex-direction: column;
