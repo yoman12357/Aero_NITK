@@ -8,7 +8,7 @@ import AeroNITKHomepage from './AeronitkHomepage.jsx';
 import Gallery from './components/Gallery.jsx';
 import Team from './components/Team.jsx';
 // Import the new AboutPage component
-import AboutPage from './components/AboutPage.jsx'; 
+import AboutPage from './components/aboutpage.jsx'; 
 // Uncommented Recruitment (assuming it's ready to be used)
 import Recruitment from './components/recruitment_page.jsx'; 
 import Sponsors from './components/sponsors.jsx';

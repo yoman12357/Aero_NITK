@@ -1,24 +1,36 @@
-/* Find the .sponsors-hero selector in your sponsors.css file and update it */
+/* Find the .sponsors-page .navbar and .sponsors-page .navbar-links selectors */
 
-.sponsors-page .sponsors-hero {
-  min-height: calc(100vh - var(--nav-h));
-  min-height: calc(100svh - var(--nav-h));
-  min-height: calc(100dvh - var(--nav-h));
+.sponsors-page .navbar {
+  /* FIX: Ensure Logo is on the left edge */
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
   display: flex;
+  /* CHANGE: Use space-between to separate the logo and the links/hamburger group */
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  /* CORRECTION: REMOVED URL REFERENCE FROM CSS. 
-     The image will now be applied via inline style in sponsors.jsx. */
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)); 
-  background-size: cover; /* KEEP THIS */
-  background-position: center; /* KEEP THIS */
-  position: relative;
+  transition: all 0.3s ease;
+}
+.sponsors-page .navbar-logo { 
+    height: auto; 
+    cursor: pointer; 
+    flex-shrink: 0; /* Ensures it stays to the left */
+}
+.sponsors-page .navbar-links { 
+    display: flex; 
+    gap: 2rem; 
+    align-items: center; 
+    /* CHANGE: Use auto margins to center the links between the logo and hamburger */
+    margin-left: auto;
+    margin-right: auto;
+    flex-shrink: 0;
 }
 
 /* ... rest of the CSS file remains the same ... */
-/* Your existing CSS file with the above modification: */
 
+/* Full sponsors.css provided for completeness */
 /* Scope everything to this page to avoid leaking styles */
 body, html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Unified professional font */
@@ -94,19 +106,32 @@ a:hover {
 /* Navbar */
 .sponsors-page .navbar {
   /* FIX: Changed to fixed to ensure it stays at the top when scrolling */
-  position: fixed; 
   top: 0; left: 0; right: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.9);
   backdrop-filter: blur(10px);
   padding: 1rem 2rem;
   display: flex;
+  /* CHANGE: Use space-between to separate the logo and the links/hamburger group */
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
 }
-.sponsors-page .navbar-logo { height: auto; cursor: pointer; }
-.sponsors-page .navbar-links { display: flex; gap: 2rem; align-items: center; }
+.sponsors-page .navbar-logo { 
+    height: auto; 
+    cursor: pointer; 
+    flex-shrink: 0; /* Ensures it stays to the left */
+}
+.sponsors-page .navbar-links { 
+    display: flex; 
+    gap: 2rem; 
+    align-items: center; 
+    /* CHANGE: Use auto margins to center the links between the logo and hamburger */
+    margin-left: auto;
+    margin-right: auto;
+    flex-shrink: 0;
+}
+
 .sponsors-page .navbar-links a {
   color: white;
   text-decoration: none;
@@ -382,7 +407,6 @@ a:hover {
 @media (max-width: 768px) {
   .sponsors-page .hamburger-menu { display: block; }
   .sponsors-page .navbar-links {
-    position: fixed; top: var(--nav-h); right: -100%;
     background: rgba(0, 0, 0, 0.95);
     width: 100%; height: calc(100vh - var(--nav-h));
     display: flex; flex-direction: column;

@@ -35,7 +35,7 @@ const Sponsors = () => {
 
   return (
     <div className="sponsors-page">
-      {/* Navbar */}
+      {/* Navbar (MATCHED TO TEAM.JSX STYLE) */}
       <nav className="navbar">
         <Link to="/" onClick={closeMobileMenu} aria-label="Home">
           <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
@@ -45,7 +45,7 @@ const Sponsors = () => {
           <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
           <a href="#why-sponsor" onClick={closeMobileMenu}>WHY SPONSOR</a>
           <a href="#brochure" onClick={closeMobileMenu}>BROCHURE</a>
-          {/* CORRECTION: Changed to anchor tag linking to the home page's contact section */}
+          {/* CORRECTED: Link to the homepage contact section */}
           <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a> 
         </div>
         <button className="hamburger-menu" onClick={toggleMobileMenu} aria-label="Menu">
