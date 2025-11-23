@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
+// --- Image Imports ---
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abel_thomas_mathew from '../images/team-members/Abel_Thomas_Mathew.jpg';
@@ -44,9 +48,6 @@ import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Triv
 import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
 
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
 import linkedInLogo from '../images/linkedIn_logo.png';
 import instagramLogo from '../images/instagram_logo.png';
 import youtubeLogo from '../images/youtube_logo.png';
@@ -82,7 +83,7 @@ const teamHeads = [
 ];
 
 const rawMembersData = [
-{ name: 'Bharat Patel', role: 'Operation Lead', subsystem: 'Leads', image: bharat_patel, linkedIn: 'https://www.linkedin.com/in/bharatnitk/' },
+  { name: 'Bharat Patel', role: 'Operation Lead', subsystem: 'Leads', image: bharat_patel, linkedIn: 'https://www.linkedin.com/in/bharatnitk/' },
   { name: 'Rathod Smit Amitkumar', role: 'Web Dev Lead', subsystem: 'Leads', image: rathod_smit_amitkumar, linkedIn: 'https://www.linkedin.com/in/smit-rathod-a2900b312/' },
   { name: 'Tirth Vishalkumar Patel', role: 'Fuselage Lead', subsystem: 'Leads', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
   { name: 'Prithviraj Thokare', role: 'Structures', subsystem: 'Structures', image: thokare_prithviraj_dilip, linkedIn: 'https://www.linkedin.com/in/prithviraj-thokare-0232a5380/' },
@@ -123,7 +124,8 @@ const rawMembersData = [
   { name: 'Vedant Sabnis', role: 'Aerodynamic / CFD Lead', subsystem: 'Leads', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
   { name: 'Gowtham B M', role: 'Media Head', subsystem: 'Media', image: gowthambm, linkedIn: 'http://www.linkedin.com/in/gowthambm' },
   { name: 'Akhilesh', role: 'Avionics', subsystem: 'Avionics', image: akhilesh, linkedIn: 'https://www.linkedin.com/in/akhilesh-vadde-b0a6b2364?utm_source=share&&utm_campaign=share_via&&utm_content=profile&&utm_medium=android_app' },
-  { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Leads', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },];
+  { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Leads', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
+];
 
 const orderedSubsystemNames = [
   'Leads',
@@ -161,7 +163,9 @@ const finalSubsystems = [
 
 const Team = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openSubsystems, setOpenSubsystems] = useState({});
+  
+  // CHANGED: Replaced object state ({0: true}) with single index state (0 or null)
+  const [activeSubsystem, setActiveSubsystem] = useState(null);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -171,27 +175,22 @@ const Team = () => {
     setMobileMenuOpen(false);
   };
 
+  // CHANGED: Logic to toggle unique active state
   const toggleSubsystem = (idx) => {
-    setOpenSubsystems(prev => ({
-      ...prev,
-      [idx]: !prev[idx],
-    }));
+    // If the clicked index is already active, close it (null). Otherwise, open it (idx).
+    setActiveSubsystem(prev => (prev === idx ? null : idx));
   };
 
   return (
     <>
-      {/* Navbar - Kept outside team-section to ensure it remains fixed at the top */}
       <nav className="navbar">
         <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
         <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
-          {/* CORRECTED: Link to the root path for Home Page */}
           <Link to="/" onClick={closeMobileMenu}>HOME</Link>
-          {/* CORRECTED: Link to the separate /about page */}
           <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
           <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
           <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
           <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
-          {/* CORRECTION: Link to the homepage contact section */}
           <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a>
         </div>
         <button
@@ -214,7 +213,6 @@ const Team = () => {
         </button>
       </nav>
 
-      {/* FIX: Wrapped content in team-section to apply centering CSS */}
       <div className="team-section">
         <h2>TEAM HEADS</h2>
         <div className="team-grid team-heads">
@@ -233,7 +231,8 @@ const Team = () => {
           {finalSubsystems.map(({ name }, idx) => (
             <button
               key={idx}
-              className={`subsystem-grid-btn ${openSubsystems[idx] ? 'active' : ''}`}
+              // CHANGED: Check if activeSubsystem matches current index
+              className={`subsystem-grid-btn ${activeSubsystem === idx ? 'active' : ''}`}
               onClick={() => toggleSubsystem(idx)}
             >
               {name}
@@ -243,7 +242,8 @@ const Team = () => {
 
         <div className="team-grid subsystem-members">
           {finalSubsystems.map(({ members }, idx) =>
-            openSubsystems[idx]
+            // CHANGED: Only render members if this specific index is the active one
+            activeSubsystem === idx
               ? members.map(({ name, role, image, linkedIn }, mIdx) => (
                   <div key={mIdx} className="team-member" style={{ '--delay': mIdx }}>
                     {image && <img src={image} alt={name} className="team-photo" />}
@@ -257,7 +257,6 @@ const Team = () => {
         </div>
       </div>
 
-      {/* Footer (Consistent Structure) */}
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-row">

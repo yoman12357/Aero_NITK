@@ -6,6 +6,7 @@ body, html {
   margin: 0;
   padding: 0;
   background-color: #121212; /* Dark background */
+  scroll-behavior: smooth;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -35,7 +36,6 @@ a {
 
 a:hover {
   color: #005a99;
-  text-decoration: underline; 
 }
 
 /* --- NAVBAR STYLES (Consistent) --- */
@@ -80,7 +80,7 @@ a:hover {
 }
 
 .hamburger-menu {
-    display: none;
+    display: none; /* Hidden on desktop */
     background: none;
     border: none;
     cursor: pointer;
@@ -105,13 +105,13 @@ a:hover {
 .about-hero {
     text-align: center;
     padding: 60px 20px;
-    background: linear-gradient(135deg, #121212, #001f3f);
+    background: linear-gradient(135deg, #0a0a0a, #0d2843);
     margin-bottom: 50px;
 }
 
 .about-hero h1 {
     font-size: 3.5rem;
-    color: #1da1f2;
+    color: #3490eb;
     text-transform: uppercase;
     letter-spacing: 5px;
     margin-bottom: 15px;
@@ -229,30 +229,43 @@ a:hover {
     margin: 0 auto;
 }
 
-/* Media Queries (Adjusted for consistency) */
+/* Media Queries (Mobile View Fix) */
 @media (max-width: 768px) {
+  .hamburger-menu {
+    display: block; /* Show the hamburger button */
+  }
+
   .navbar-links {
-    /* Simple example for hamburger menu toggle */
-    /* You need JS to handle the mobile menu being 'open' */
+    /* Corrected: Use fixed position and adjusted top offset */
     flex-direction: column;
-    position: absolute;
-    top: 125px; /* Height of navbar */
+    position: fixed; 
+    top: 105px; /* Adjust this value if the menu doesn't align perfectly below the navbar */
     right: 0;
     background: #000;
     width: 100%;
     padding: 20px 0;
-    /* initial state to hide */
-    transform: translateX(100%); 
+    margin-right: 0; /* Remove right margin from desktop view */
+    text-align: center;
+    
+    transform: translateX(100%); /* initial state to hide it off-screen to the right */
     transition: transform 0.3s ease-out;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); 
+    z-index: 999; /* Below the navbar (1000) but above content */
   }
+  
+  .navbar-links a {
+      padding: 10px 0;
+      width: 100%;
+      display: block;
+  }
+  
+  /* State when menu is open */
   .navbar-links.open {
-    transform: translateX(0);
+    transform: translateX(0); /* Slide into view */
   }
-  .hamburger-menu {
-    display: block;
-  }
+
   .footer-row {
     flex-direction: column;
     gap: 20px;
   }
-}
+}   

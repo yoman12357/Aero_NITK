@@ -1,0 +1,139 @@
+
+.navbar {
+    border-radius: 5%   ;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Reduced vertical padding slightly so the bar fits the logo tighter */
+    padding: 10px 32px; 
+    background: #000;
+    width: 100%; /* Changed from 100vw to prevent horizontal scrollbars */
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100 !important;
+}
+
+.navbar-logo {
+    width: 85px;
+    height: 85px;
+    /* This makes the logo circular */
+    border-radius: 50%; 
+    /* This ensures the image doesn't distort if the source isn't a perfect square */
+    object-fit: cover; 
+    /* Optional: Adds a thin white border to make it pop against the black */
+    border: 2px solid transparent; 
+}
+
+.navbar-links {
+    display: flex;
+    gap: 30px;
+}
+
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    transition: color 200ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+}
+
+.navbar-links a:hover {
+    color: #2983e6;
+}
+
+.navbar-links a:focus {
+    outline: 2px solid #2983e6;
+    outline-offset: 2px;
+}
+
+.hamburger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 101;
+}
+
+.hamburger-menu svg {
+    display: block;
+}
+
+/* --- Header Responsiveness --- */
+
+@media (max-width: 900px) {
+    .navbar {
+        padding: 10px 24px;
+    }
+
+    .navbar-links {
+        display: none;
+    }
+
+    .hamburger-menu {
+        display: block;
+    }
+
+    .navbar-links.open {
+        display: flex;
+        flex-direction: column;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.95);
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        z-index: 99;
+        animation: fadeIn 0.3s ease-in-out;
+        position: fixed;
+    }
+
+    .navbar-links.open a {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        padding: 8px 16px;
+    }
+
+    .navbar-logo {
+        /* Adjust size for mobile if needed */
+        width: 60px;
+        height: 60px;
+    }
+}
+.sponsors-page .navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.sponsors-page .navbar-links a:hover,
+.sponsors-page .navbar-links a.active { color: #3490eb; }
+.sponsors-page .navbar-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; left: 0;
+  width: 0; height: 2px;
+  background: #3490eb;
+  transition: width 0.3s ease;
+}
+.sponsors-page .navbar-links a:hover::after,
+.sponsors-page .navbar-links a.active::after { width: 100%; }
+

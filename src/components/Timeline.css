@@ -1,0 +1,249 @@
+/* ============================================================ */
+/* BACKGROUND IMAGE CONFIGURATION */
+/* Replace the URL below with your own background image */
+/* ============================================================ */
+.timeline-container {
+  min-height: 100vh;
+  background-image: url('https://images.unsplash.com/photo-1557683316-973673baf926?w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  padding: 60px 20px;
+  overflow-x: hidden;
+}
+
+/* Color overlay for scroll transition effect */
+.color-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  transition: background 0.1s ease-out;
+  opacity: 0.85;
+}
+
+.timeline-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header styling */
+.timeline-header {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 80px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  animation: fadeInDown 1s ease-out;
+}
+
+/* Timeline wrapper */
+.timeline {
+  position: relative;
+  padding: 40px 0;
+}
+
+/* Central vertical line */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to bottom, #4A90E2, #357ABD);
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+}
+
+/* Timeline event container */
+.timeline-event {
+  position: relative;
+  margin: 60px 0;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Fade-in animation */
+.timeline-event.fade-in {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Event content box */
+.event-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  position: relative;
+  max-width: 450px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.event-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 1);
+}
+
+/* Left-aligned events */
+.timeline-event.left .event-content {
+  margin-right: auto;
+  margin-left: 0;
+  text-align: right;
+}
+
+/* Right-aligned events */
+.timeline-event.right .event-content {
+  margin-left: auto;
+  margin-right: 0;
+  text-align: left;
+}
+
+/* Event dot on the timeline */
+.event-dot {
+  position: absolute;
+  top: 20px;
+  width: 20px;
+  height: 20px;
+  background: #4A90E2;
+  border: 4px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.3);
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.timeline-event:hover .event-dot {
+  transform: scale(1.3);
+  box-shadow: 0 0 0 8px rgba(74, 144, 226, 0.4);
+}
+
+/* Position dot for left events */
+.timeline-event.left .event-dot {
+  right: -10px;
+}
+
+/* Position dot for right events */
+.timeline-event.right .event-dot {
+  left: -10px;
+}
+
+/* Event year badge */
+.event-year {
+  display: inline-block;
+  background: linear-gradient(135deg, #4A90E2, #357ABD);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+/* Event title */
+.event-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2C3E50;
+  margin: 10px 0;
+}
+
+/* Event description */
+.event-description {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin: 10px 0 0;
+}
+
+/* Responsive design for tablets */
+@media (max-width: 768px) {
+  .timeline-line {
+    left: 30px;
+  }
+
+  .timeline-event.left .event-content,
+  .timeline-event.right .event-content {
+    margin-left: 80px;
+    margin-right: 0;
+    text-align: left;
+    max-width: calc(100% - 80px);
+  }
+
+  .timeline-event.left .event-dot,
+  .timeline-event.right .event-dot {
+    left: 21px;
+    right: auto;
+  }
+
+  .timeline-header {
+    font-size: 2rem;
+  }
+}
+
+/* Responsive design for mobile */
+@media (max-width: 480px) {
+  .timeline-container {
+    padding: 40px 15px;
+  }
+
+  .timeline-header {
+    font-size: 1.75rem;
+    margin-bottom: 50px;
+  }
+
+  .event-content {
+    padding: 20px;
+  }
+
+  .event-title {
+    font-size: 1.25rem;
+  }
+
+  .event-description {
+    font-size: 0.9rem;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reset default margins */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

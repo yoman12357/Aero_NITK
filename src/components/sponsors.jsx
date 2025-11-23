@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './sponsors.css';
 import logoImage from '../images/Aero_NITK_logo.png';
-// CORRECTION: Import the background image directly
 import heroBackgroundImage from '../images/sponsersbg.jpg'; 
 import instagramLogo from '../images/instagram_logo.png';
 import youtubeLogo from '../images/youtube_logo.png';
 import linkedInLogo from '../images/linkedIn_logo.png';
+import Header from './header';
+import Footer from './footer';
 
 const Sponsors = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -35,23 +36,7 @@ const Sponsors = () => {
 
   return (
     <div className="sponsors-page">
-      {/* Navbar (MATCHED TO TEAM.JSX STYLE) */}
-      <nav className="navbar">
-        <Link to="/" onClick={closeMobileMenu} aria-label="Home">
-          <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
-        </Link>
-        <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
-          <Link to="/" onClick={closeMobileMenu}>HOME</Link>
-          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
-          <a href="#why-sponsor" onClick={closeMobileMenu}>WHY SPONSOR</a>
-          <a href="#brochure" onClick={closeMobileMenu}>BROCHURE</a>
-          {/* CORRECTED: Link to the homepage contact section */}
-          <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a> 
-        </div>
-        <button className="hamburger-menu" onClick={toggleMobileMenu} aria-label="Menu">
-          <span>☰</span>
-        </button>
-      </nav>
+      <Header></Header>
 
       {/* Hero: Apply the corrected inline style */}
       <header className="sponsors-hero" style={heroStyle}>
@@ -160,27 +145,7 @@ const Sponsors = () => {
         </div>
       </section>
 
-
-      {/* Footer (Consistent Structure) */}
-      <footer className="footer">
-        <div className="footer-row">
-          <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
-          <div className="footer-icons">
-            <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <img src={instagramLogo} alt="Instagram" className="social-icon" />
-            </a>
-            <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-              <img src={youtubeLogo} alt="YouTube" className="social-icon" />
-            </a>
-            <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <img src={linkedInLogo} alt="LinkedIn" className="social-icon" />
-            </a>
-          </div>
-        </div>
-        <div className="footer-credit"> 
-          © {new Date().getFullYear()} Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
-        </div>
-      </footer>
+<Footer></Footer>
     </div>
   );
 };

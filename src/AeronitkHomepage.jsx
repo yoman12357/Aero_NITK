@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import LiquidEther from './components/Effects/LiquidEther.jsx';
 
 import './AeronitkHomepage.css';
-import logoImage from './images/Aero_NITK_logo.png';
-import planeImage from './images/planes.png';
+// import logoImage from './images/Aero_NITK_logo.png';
 import aboutDrone from './images/drone.png';
-import dronesImage from './images/drones.png';
-import Aeronitk from './images/Aeronitk.png';
-import instagramLogo from './images/instagram_logo.png';
-import youtubeLogo from './images/youtube_logo.png';
-import linkedInLogo from './images/linkedIn_logo.png';
+
 import plane1 from './images/plane1.png';
 import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
 import dronePic from './images/drone-pic.png';
 import UltimateCarousel from './components/UltimateCarousel.jsx';
+import Header from './components/header.jsx';
+import Footer from './components/footer.jsx';
+import BlurText from "./components/effects/BlurText.jsx";
 
 const AeroNITKHomepage = () => {
   const [showScrollDown, setShowScrollDown] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -42,47 +38,14 @@ const AeroNITKHomepage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
+const handleAnimationComplete = () => {
+  console.log('Animation completed!');
+};
 
   return (
     <div className="page-wrapper">
-      <nav className="navbar">
-        <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
-        <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
-          <a href='#home' onClick={closeMobileMenu}>HOME</a>
-          {/* CORRECTION: Changed anchor tag to Link component to route to /about page */}
-          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
-          <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
-          <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
-          <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
-          <a href='#contact' onClick={closeMobileMenu}>CONTACT</a>
-        </div>
-        <button
-          className="hamburger-menu"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle mobile menu"
-        >
-          {mobileMenuOpen ? (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          ) : (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          )}
-        </button>
-      </nav>
-      {isHomePage ? (
+      <Header></Header>
+      {1 ? (
         <>
           <section className="hero-section" id="home">
             <div style={{
@@ -93,27 +56,19 @@ const AeroNITKHomepage = () => {
               height: '100%',
               zIndex: 0,
             }}>
-              <LiquidEther
-                colors={['#5227FF', '#FF9FFC', '#B19EEF']}
-                mouseForce={20}
-                cursorSize={100}
-                isViscous={false}
-                viscous={30}
-                iterationsViscous={32}
-                iterationsPoisson={32}
-                resolution={0.5}
-                isBounce={false}
-                autoDemo={true}
-                autoSpeed={0.5}
-                autoIntensity={2.2}
-                takeoverDuration={0.25}
-                autoResumeDelay={3000}
-                autoRampDuration={0.6}
-              />
             </div>
-            <div className="hero-spline-bg">
-              <img src={Aeronitk} alt="Aero NITK Hero" />
-            </div>
+            
+{/* Wrapper div controls the size and spacing */}
+<div className="text-8xl mb-8" style={{ paddingLeft:'55px', fontSize: '6rem', fontWeight: 'bold' }}>
+ <BlurText
+  text="AERO NITK   "
+  className="hero-title"  // <--- This matches the new CSS class
+  delay={150}
+  animateBy="words"
+  direction="top"
+  onAnimationComplete={handleAnimationComplete}
+/>
+</div>
             {showScrollDown && (
               <div className="scroll-down bounce-indicator">
                 SCROLL DOWN
@@ -143,17 +98,7 @@ const AeroNITKHomepage = () => {
               </div>
             </div>
           </section>
-          <section className="projects-section" id="projects">
-            <h2>PROJECTS</h2>
-            <div className="projects-grid">
-              <div className="project-card">
-                <img src={planeImage} alt="Planes" />
-              </div>
-              <div className="project-card">
-                <img src={dronesImage} alt="Drones" />
-              </div>
-            </div>
-          </section>
+
           <section className="carousel-section">
             <UltimateCarousel />
           </section>
@@ -181,25 +126,7 @@ const AeroNITKHomepage = () => {
         <div style={{ minHeight: '100vh', paddingTop: '125px', background: '#fff' }}>
         </div>
       )}
-      <footer className="footer">
-        <div className="footer-row">
-          <img src={logoImage} alt="Aero NITK Logo" className="footer-logo" />
-          <div className="footer-icons">
-            <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <img src={instagramLogo} alt="Instagram" className="social-icon" />
-            </a>
-            <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-              <img src={youtubeLogo} alt="YouTube" className="social-icon" />
-            </a>
-            <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <img src={linkedInLogo} alt="LinkedIn" className="social-icon" />
-            </a>
-          </div>
-        </div>
-        <div className="footer-credit">
-          © 2025 Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
-        </div>
-      </footer>
+      <Footer></Footer>
     </div>
   );
 };
