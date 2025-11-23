@@ -12,7 +12,7 @@ import dronePic from './images/drone-pic.png';
 import UltimateCarousel from './components/UltimateCarousel.jsx';
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
-import BlurText from "./components/effects/BlurText.jsx";
+import BlurText from "./components/effects/bt.jsx";
 
 const AeroNITKHomepage = () => {
   const [showScrollDown, setShowScrollDown] = useState(true);
