@@ -1,44 +1,64 @@
-/* --- BASE STYLES --- */
-body, html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 16px; 
-  color: #f0f0f0;
-  margin: 0;
-  padding: 0;
-  background-color: #121212; /* Dark background */
-  scroll-behavior: smooth;
+body,
+html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    scroll-behavior: smooth;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 0 0 0.5em 0;
-  color: #ffffff; 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0 0 0.5em 0;
+    color: #ffffff;
 }
 
-h1 { font-size: 2.5rem; line-height: 1.2; }
-h2 { font-size: 2rem; line-height: 1.3; }
-h3 { font-size: 1.5rem; line-height: 1.4; }
+h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+}
 
-p, span, li, a, button, div {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #ffffff; 
+h2 {
+    font-size: 2rem;
+    line-height: 1.3;
+}
+
+h3 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+
+p,
+span,
+li,
+a,
+button,
+div {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #ffffff;
 }
 
 a {
-  text-decoration: none;
-  color: #007acc; 
-  transition: color 0.2s ease-in-out;
+    text-decoration: none;
+    color: #007acc;
+    transition: color 0.2s ease-in-out;
 }
 
 a:hover {
-  color: #005a99;
+    color: #005a99;
 }
 
-/* --- NAVBAR STYLES (Consistent) --- */
 .navbar {
     display: flex;
     align-items: center;
@@ -47,7 +67,7 @@ a:hover {
     background: #000;
     width: 100%;
     z-index: 1000;
-    position: fixed; /* Fixed position */
+    position: fixed;
     top: 0;
     left: 0;
     box-sizing: border-box;
@@ -62,8 +82,8 @@ a:hover {
 .navbar-links {
     display: flex;
     gap: 30px;
-    margin-left: auto; /* Push links/hamburger to right */
-    margin-right: 30px; 
+    margin-left: auto;
+    margin-right: 30px;
 }
 
 .navbar-links a {
@@ -80,7 +100,7 @@ a:hover {
 }
 
 .hamburger-menu {
-    display: none; /* Hidden on desktop */
+    display: none;
     background: none;
     border: none;
     cursor: pointer;
@@ -93,11 +113,10 @@ a:hover {
     display: block;
 }
 
-/* --- ABOUT SECTION STYLES --- */
 .about-page-container {
     background-color: #121212;
     min-height: 100vh;
-    padding-top: 130px; /* Offset for fixed navbar */
+    padding-top: 130px;
     padding-bottom: 80px;
     color: #f0f0f0;
 }
@@ -137,12 +156,11 @@ a:hover {
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     border-left: 5px solid #007acc;
-    opacity: 0; /* Initial state for animation */
-    transform: translateY(20px); /* Initial state for animation */
+    opacity: 0;
+    transform: translateY(20px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
-/* ANIMATION CLASS: Add this class via JS when the element is in view */
 .section-block.animate {
     opacity: 1;
     transform: translateY(0);
@@ -156,7 +174,8 @@ a:hover {
     padding-bottom: 10px;
 }
 
-.section-block p, .section-block li {
+.section-block p,
+.section-block li {
     color: #e0e0e0;
     line-height: 1.7;
     margin-bottom: 15px;
@@ -173,99 +192,46 @@ a:hover {
 }
 
 .section-block ul li::before {
-    content: '🚀'; /* Custom bullet point */
+    content: '🚀';
     position: absolute;
     left: 0;
     color: #1da1f2;
 }
 
-/* --- FOOTER STYLES (Consistent) --- */
-.footer {
-    width: 100%;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    color: #ffffff;
-    background-color: #1c1c1c;
-    padding: 50px 48px 30px;
-    position: relative;
-    z-index: 2;
-}
-
-.footer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1100px;
-    margin: 0 auto 30px auto;
-}
-
-.footer-logo {
-    width: 125px;
-    height: 125px;
-}
-
-.footer-icons {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-}
-
-.social-icon {
-    height: 40px;
-    width: 40px;
-    object-fit: contain;
-    transition: transform 0.2s;
-}
-
-.footer-icons a:hover .social-icon {
-    transform: scale(1.14);
-}
-
-.footer-credit {
-    text-align: center;
-    font-size: 16px;
-    letter-spacing: 1px;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-/* Media Queries (Mobile View Fix) */
 @media (max-width: 768px) {
-  .hamburger-menu {
-    display: block; /* Show the hamburger button */
-  }
+    .hamburger-menu {
+        display: block;
+    }
 
-  .navbar-links {
-    /* Corrected: Use fixed position and adjusted top offset */
-    flex-direction: column;
-    position: fixed; 
-    top: 105px; /* Adjust this value if the menu doesn't align perfectly below the navbar */
-    right: 0;
-    background: #000;
-    width: 100%;
-    padding: 20px 0;
-    margin-right: 0; /* Remove right margin from desktop view */
-    text-align: center;
-    
-    transform: translateX(100%); /* initial state to hide it off-screen to the right */
-    transition: transform 0.3s ease-out;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); 
-    z-index: 999; /* Below the navbar (1000) but above content */
-  }
-  
-  .navbar-links a {
-      padding: 10px 0;
-      width: 100%;
-      display: block;
-  }
-  
-  /* State when menu is open */
-  .navbar-links.open {
-    transform: translateX(0); /* Slide into view */
-  }
+    .navbar-links {
+        flex-direction: column;
+        position: fixed;
+        top: 105px;
+        right: 0;
+        background: #000;
+        width: 100%;
+        padding: 20px 0;
+        margin-right: 0;
+        text-align: center;
 
-  .footer-row {
-    flex-direction: column;
-    gap: 20px;
-  }
-}   
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+
+    .navbar-links a {
+        padding: 10px 0;
+        width: 100%;
+        display: block;
+    }
+
+    .navbar-links.open {
+        transform: translateX(0);
+    }
+
+    .footer-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+}

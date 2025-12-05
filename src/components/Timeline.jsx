@@ -1,109 +1,70 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './Timeline.css';
 
 const Timeline = () => {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  // Handle scroll progress for color transition
   useEffect(() => {
-    const handleScroll = () => {
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight - windowHeight;
-      const scrolled = window.scrollY;
-      const progress = (scrolled / documentHeight) * 100;
-      setScrollProgress(progress);
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const items = document.querySelectorAll('.timeline-item');
+    items.forEach((item) => observer.observe(item));
+
+    return () => items.forEach((item) => observer.unobserve(item));
   }, []);
 
-  // ============================================================
-  // ADD YOUR TIMELINE DATA HERE
-  // Each event should have: id, year, title, description, position
-  // position: 'left' or 'right'
-  // ============================================================
+  // ==========================================
+  // EDIT YOUR TIMELINE DATA HERE
+  // ==========================================
   const timelineData = [
     {
-      id: 1,
       year: '2020',
-      title: 'Company Founded',
-      description: 'Our journey began with a vision to transform the industry.',
-      position: 'left'
+      title: 'Inception',
+      description: 'Aero NITK was founded with a vision to innovate in unmanned aerial systems.',
     },
     {
-      id: 2,
       year: '2021',
-      title: 'First Product Launch',
-      description: 'Successfully launched our flagship product to the market.',
-      position: 'right'
+      title: 'First Flight',
+      description: 'Successfully designed and tested our first fixed-wing prototype, the "Falcon-X".',
     },
     {
-      id: 3,
       year: '2022',
-      title: 'Series A Funding',
-      description: 'Raised $10M to expand our team and operations.',
-      position: 'left'
+      title: 'National Recognition',
+      description: 'Secured 3rd place at the SAE Aero Design Challenge amongst 50+ teams.',
     },
     {
-      id: 4,
       year: '2023',
-      title: 'International Expansion',
-      description: 'Opened offices in 5 new countries across Europe and Asia.',
-      position: 'right'
+      title: 'Tech Expansion',
+      description: 'Expanded into avionics research, developing custom flight controllers.',
     },
     {
-      id: 5,
       year: '2024',
-      title: 'Major Partnership',
-      description: 'Partnered with industry leaders to enhance our offerings.',
-      position: 'left'
+      title: 'Global Stage',
+      description: 'Qualified for the international UAV challenge, showcasing our VTOL drone.',
     },
-    {
-      id: 6,
-      year: '2025',
-      title: 'Innovation Award',
-      description: 'Recognized as the most innovative company in our sector.',
-      position: 'right'
-    }
   ];
-  // ============================================================
-  // END OF DATA SECTION
-  // ============================================================
 
   return (
     <div className="timeline-container">
-      {/* Background overlay for color transition */}
-      <div 
-        className="color-overlay" 
-        style={{ 
-          background: `linear-gradient(to bottom, #4A90E2 ${scrollProgress}%, white ${scrollProgress}%)` 
-        }}
-      ></div>
-
-      <div className="timeline-content">
-        <h1 className="timeline-header">Our Journey</h1>
-
-        <div className="timeline">
-          {/* Central vertical line */}
-          <div className="timeline-line"></div>
-
-          {/* Timeline events */}
-          {timelineData.map((event, index) => (
-            <div
-              key={event.id}
-              className={`timeline-event ${event.position} fade-in`}
-              style={{ animationDelay: `${index * 0.2}s` }}
-            >
-              <div className="event-content">
-                <div className="event-year">{event.year}</div>
-                <h3 className="event-title">{event.title}</h3>
-                <p className="event-description">{event.description}</p>
-              </div>
-              <div className="event-dot"></div>
+      <h2 className="timeline-header">OUR JOURNEY</h2>
+      <div className="timeline">
+        {timelineData.map((item, index) => (
+          <div key={index} className="timeline-item">
+            <div className="timeline-dot"></div>
+            <div className="timeline-content">
+              <span className="timeline-year">{item.year}</span>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </div>
   );

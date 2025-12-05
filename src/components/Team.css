@@ -1,19 +1,27 @@
 /* --- Unified Base Font Style Across Entire Project --- */
-body, html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Unified professional font */
-  font-size: 16px; /* Base font size */
+body,
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Unified professional font */
+  font-size: 16px;
+  /* Base font size */
   color: #f0f0f0;
   margin: 0;
   padding: 0;
 }
 
 /* --- Headings: Bold, No Underline, Unified Font and Size --- */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
   text-decoration: none;
   margin: 0 0 0.5em 0;
-  color: #ffffff; 
+  color: #ffffff;
 }
 
 h1 {
@@ -29,18 +37,28 @@ h2 {
 }
 
 h3 {
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
   line-height: 1.4;
 }
 
-p, span, li, a, button, div {
+p,
+span,
+li,
+a,
+button,
+div {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1rem;
   line-height: 1.5;
-  color: #ffffff; 
+  color: #ffffff;
 }
 
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
   text-decoration: none;
   color: inherit;
 }
@@ -54,72 +72,72 @@ button {
 
 a {
   text-decoration: none;
-  color: #007acc; 
+  color: #007acc;
   transition: color 0.2s ease-in-out;
 }
 
 a:hover {
   color: #005a99;
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 
 /* --- NAVBAR FIXES: Centering the links --- */
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: right;
-    padding: 20px 32px;
-    background: #000;
-    width: 100vw;
-    z-index: 100;
-    position: absolute;
-    top: 0;
-    left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding: 20px 32px;
+  background: #000;
+  width: 100vw;
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .navbar-logo {
-    width: 85px;
-    height: 85px;
-    /* ADDED: Ensure logo stays on the left */
-    flex-shrink: 0;
+  width: 85px;
+  height: 85px;
+  /* ADDED: Ensure logo stays on the left */
+  flex-shrink: 0;
 }
 
 .navbar-links {
-    display: flex;
-    gap: 30px;
-    /* FIX: Use auto margins to push the links to the center */
-    margin-left: auto;
-    margin-right: auto;
-    /* ADDED: Prevents links from being squished if space runs out */
-    flex-shrink: 0; 
+  display: flex;
+  gap: 30px;
+  /* FIX: Use auto margins to push the links to the center */
+  margin-left: auto;
+  margin-right: auto;
+  /* ADDED: Prevents links from being squished if space runs out */
+  flex-shrink: 0;
 }
 
 .navbar-links a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 15px;
-    letter-spacing: 1px;
-    font-weight: 500;
-    transition: color 200ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+  letter-spacing: 1px;
+  font-weight: 500;
+  transition: color 200ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
 }
 
 .navbar-links a:hover {
-    color: #2983e6;
+  color: #2983e6;
 }
 
 .hamburger-menu {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 101;
-    /* ADDED: Ensure hamburger stays on the right */
-    flex-shrink: 0; 
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 101;
+  /* ADDED: Ensure hamburger stays on the right */
+  flex-shrink: 0;
 }
 
 .hamburger-menu svg {
-    display: block;
+  display: block;
 }
 
 /* --- TEAM SECTION STYLES --- */
@@ -128,9 +146,11 @@ a:hover {
   color: #f0f0f0;
   padding: 80px 20px;
   min-height: 100vh;
-  text-align: center; /* This centers the headings and content */
+  text-align: center;
+  /* This centers the headings and content */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-top: 130px; /* ADDED: Push content below the fixed navbar */
+  padding-top: 130px;
+  /* ADDED: Push content below the fixed navbar */
 }
 
 .linkedin-link img {
@@ -269,6 +289,7 @@ a:hover {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -280,6 +301,7 @@ a:hover {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -380,7 +402,8 @@ a:hover {
 @media (max-width: 480px) {
   .team-section {
     padding: 60px 10px;
-    padding-top: 130px; /* Keep this updated for mobile */
+    padding-top: 130px;
+    /* Keep this updated for mobile */
   }
 
   .team-grid {
@@ -439,50 +462,50 @@ a:hover {
 }
 
 .footer {
-    width: 100%;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
-    color: #ffffff;
-    background-color: #1c1c1c;
-    padding: 50px 48px 30px;
-    position: relative;
-    z-index: 2;
+  width: 100%;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  color: #ffffff;
+  background-color: #000000;
+  padding: 50px 48px 30px;
+  position: relative;
+  z-index: 2;
 }
 
 .footer-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1100px;
-    margin: 0 auto 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto 30px auto;
 }
 
 .footer-logo {
-    width: 125px;
-    height: 125px;
+  width: 125px;
+  height: 125px;
 }
 
 .footer-icons {
-    display: flex;
-    align-items: center;
-    gap: 30px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }
 
 .social-icon {
-    height: 40px;
-    width: 40px;
-    object-fit: contain;
-    transition: transform 0.2s;
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  transition: transform 0.2s;
 }
 
 .footer-icons a:hover .social-icon {
-    transform: scale(1.14);
+  transform: scale(1.14);
 }
 
 .footer-credit {
-    text-align: center;
-    font-size: 16px;
-    letter-spacing: 1px;
-    max-width: 1100px;
-    margin: 0 auto;
+  text-align: center;
+  font-size: 16px;
+  letter-spacing: 1px;
+  max-width: 1100px;
+  margin: 0 auto;
 }

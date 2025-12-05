@@ -13,6 +13,7 @@ import UltimateCarousel from './components/UltimateCarousel.jsx';
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
 import BlurText from "./components/effects/bt.jsx";
+import Timeline from './components/Timeline.jsx';
 
 const AeroNITKHomepage = () => {
   const [showScrollDown, setShowScrollDown] = useState(true);
@@ -38,9 +39,9 @@ const AeroNITKHomepage = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-const handleAnimationComplete = () => {
-  console.log('Animation completed!');
-};
+  const handleAnimationComplete = () => {
+    console.log('Animation completed!');
+  };
 
   return (
     <div className="page-wrapper">
@@ -57,18 +58,18 @@ const handleAnimationComplete = () => {
               zIndex: 0,
             }}>
             </div>
-            
-{/* Wrapper div controls the size and spacing */}
-<div className="text-8xl mb-8" style={{ paddingLeft:'55px', fontSize: '6rem', fontWeight: 'bold' }}>
- <BlurText
-  text="AERO NITK   "
-  className="hero-title"  // <--- This matches the new CSS class
-  delay={150}
-  animateBy="words"
-  direction="top"
-  onAnimationComplete={handleAnimationComplete}
-/>
-</div>
+
+            {/* Wrapper div controls the size and spacing */}
+            <div className="text-8xl mb-8" style={{ paddingLeft: '55px', fontSize: '6rem', fontWeight: 'bold' }}>
+              <BlurText
+                text="AERO NITK   "
+                className="hero-title"  // <--- This matches the new CSS class
+                delay={150}
+                animateBy="words"
+                direction="top"
+                onAnimationComplete={handleAnimationComplete}
+              />
+            </div>
             {showScrollDown && (
               <div className="scroll-down bounce-indicator">
                 SCROLL DOWN

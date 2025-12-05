@@ -7,17 +7,10 @@ import logoImage from '../images/Aero_NITK_logo.png';
 import instagramLogo from '../images/instagram_logo.png';
 import youtubeLogo from '../images/youtube_logo.png';
 import linkedInLogo from '../images/linkedIn_logo.png';
+import Header from './header';
 
 const AboutPage = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
 
 
   useEffect(() => {
@@ -26,12 +19,12 @@ const AboutPage = () => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('animate');
-            observer.unobserve(entry.target); 
+            observer.unobserve(entry.target);
           }
         });
       },
       {
-        threshold: 0.2, 
+        threshold: 0.2,
       }
     );
 
@@ -43,35 +36,7 @@ const AboutPage = () => {
 
   return (
     <>
-      <nav className="navbar">
-        <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
-        <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
-          <Link to="/" onClick={closeMobileMenu}>HOME</Link>
-          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
-          <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
-          <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
-          <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
-          <a href="#contact" onClick={closeMobileMenu}>CONTACT</a>
-        </div>
-        <button
-          className="hamburger-menu"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle mobile menu"
-        >
-          {mobileMenuOpen ? (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          ) : (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          )}
-        </button>
-      </nav>
+      <Header></Header>
 
       <div className="about-page-container">
         <header className="about-hero">
@@ -80,7 +45,7 @@ const AboutPage = () => {
         </header>
 
         <section className="about-content-section">
-          
+
           <div className="section-block" data-animation-delay="0.1s">
             <h2>Our Mission</h2>
             <p>Our goal is to foster a culture of technical excellence and innovation in aerospace technology. We strive to provide students with hands-on experience in the entire engineering life cycle, from conceptual design to manufacturing and testing.</p>

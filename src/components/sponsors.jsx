@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './sponsors.css';
 import logoImage from '../images/Aero_NITK_logo.png';
-import heroBackgroundImage from '../images/sponsersbg.jpg'; 
+import heroBackgroundImage from '../images/sponsersbg.jpg';
 import instagramLogo from '../images/instagram_logo.png';
 import youtubeLogo from '../images/youtube_logo.png';
 import linkedInLogo from '../images/linkedIn_logo.png';
@@ -10,12 +10,10 @@ import Header from './header';
 import Footer from './footer';
 
 const Sponsors = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showBankDetails, setShowBankDetails] = useState(false);
   const [showEmailDetails, setShowEmailDetails] = useState(false);
 
-  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+
   const toggleBankDetails = () => setShowBankDetails(!showBankDetails);
   const toggleEmailDetails = () => setShowEmailDetails(!showEmailDetails);
 
@@ -28,9 +26,7 @@ const Sponsors = () => {
     upiId: 'aeronitk@sbi',
   };
 
-  // Define the inline style object for the hero section
   const heroStyle = {
-    // This is applied via inline style because of previous path issues
     backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${heroBackgroundImage})`,
   };
 
@@ -38,7 +34,6 @@ const Sponsors = () => {
     <div className="sponsors-page">
       <Header></Header>
 
-      {/* Hero: Apply the corrected inline style */}
       <header className="sponsors-hero" style={heroStyle}>
         <div className="sponsors-hero-content">
           <h1>Partner with Aero NITK and be part of our journey in aerospace innovation</h1>
@@ -46,7 +41,6 @@ const Sponsors = () => {
         </div>
       </header>
 
-      {/* About + Why Sponsor (scroll content) */}
       <section id="about" className="brochure-section">
         <div className="container">
           <div className="brochure-container">
@@ -69,10 +63,8 @@ const Sponsors = () => {
               </div>
             </div>
 
-            {/* MOVED: Brochure is now directly below About/Why sponsor and full-width enabled via CSS */}
             <div id="brochure" className="brochure-content">
               <h3>Download/Preview Brochure</h3>
-              {/* Ensure full width */}
               <object
                 data="/brochure.pdf"
                 type="application/pdf"
@@ -89,11 +81,10 @@ const Sponsors = () => {
         </div>
       </section>
 
-      {/* Contact */}
       <section id="contact" className="sponsors-contact">
         <div className="container">
           <div className="contact-buttons">
-            
+
             <a className="contact-btn secondary" href="/brochure.pdf" download>
               Download Brochure
             </a>
@@ -145,7 +136,7 @@ const Sponsors = () => {
         </div>
       </section>
 
-<Footer></Footer>
+      <Footer></Footer>
     </div>
   );
 };

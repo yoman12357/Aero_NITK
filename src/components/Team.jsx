@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// --- Image Imports ---
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abel_thomas_mathew from '../images/team-members/Abel_Thomas_Mathew.jpg';
@@ -54,9 +53,10 @@ import youtubeLogo from '../images/youtube_logo.png';
 import logoImage from '../images/Aero_NITK_logo.png';
 
 import './Team.css';
+import Header from './header';
 
 const teamHeads = [
-   {
+  {
     name: 'Bhimu Daddimani',
     role: 'Convenor',
     image: bhimu_daddimani,
@@ -162,56 +162,18 @@ const finalSubsystems = [
 ];
 
 const Team = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  // CHANGED: Replaced object state ({0: true}) with single index state (0 or null)
+
   const [activeSubsystem, setActiveSubsystem] = useState(null);
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
 
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-  };
 
-  // CHANGED: Logic to toggle unique active state
   const toggleSubsystem = (idx) => {
-    // If the clicked index is already active, close it (null). Otherwise, open it (idx).
     setActiveSubsystem(prev => (prev === idx ? null : idx));
   };
 
   return (
     <>
-      <nav className="navbar">
-        <img src={logoImage} alt="Aero NITK Logo" className="navbar-logo" />
-        <div className={`navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
-          <Link to="/" onClick={closeMobileMenu}>HOME</Link>
-          <Link to="/about" onClick={closeMobileMenu}>ABOUT</Link>
-          <Link to="/gallery" onClick={closeMobileMenu}>GALLERY</Link>
-          <Link to="/team" onClick={closeMobileMenu}>TEAM</Link>
-          <Link to="/sponsors" onClick={closeMobileMenu}>SPONSORS</Link>
-          <a href="/#contact" onClick={closeMobileMenu}>CONTACT</a>
-        </div>
-        <button
-          className="hamburger-menu"
-          onClick={toggleMobileMenu}
-          aria-label="Toggle mobile menu"
-        >
-          {mobileMenuOpen ? (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          ) : (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          )}
-        </button>
-      </nav>
+      <Header></Header>
 
       <div className="team-section">
         <h2>TEAM HEADS</h2>
@@ -231,7 +193,6 @@ const Team = () => {
           {finalSubsystems.map(({ name }, idx) => (
             <button
               key={idx}
-              // CHANGED: Check if activeSubsystem matches current index
               className={`subsystem-grid-btn ${activeSubsystem === idx ? 'active' : ''}`}
               onClick={() => toggleSubsystem(idx)}
             >
@@ -242,16 +203,15 @@ const Team = () => {
 
         <div className="team-grid subsystem-members">
           {finalSubsystems.map(({ members }, idx) =>
-            // CHANGED: Only render members if this specific index is the active one
             activeSubsystem === idx
               ? members.map(({ name, role, image, linkedIn }, mIdx) => (
-                  <div key={mIdx} className="team-member" style={{ '--delay': mIdx }}>
-                    {image && <img src={image} alt={name} className="team-photo" />}
-                    <h3>{name}</h3>
-                    <p>{role}</p>
-                    {linkedIn && <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer"><img src={linkedInLogo} alt="LinkedIn" /></a>}
-                  </div>
-                ))
+                <div key={mIdx} className="team-member" style={{ '--delay': mIdx }}>
+                  {image && <img src={image} alt={name} className="team-photo" />}
+                  <h3>{name}</h3>
+                  <p>{role}</p>
+                  {linkedIn && <a href={linkedIn} className="linkedin-link" target="_blank" rel="noopener noreferrer"><img src={linkedInLogo} alt="LinkedIn" /></a>}
+                </div>
+              ))
               : null
           )}
         </div>

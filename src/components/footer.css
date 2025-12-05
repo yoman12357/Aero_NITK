@@ -1,13 +1,10 @@
-/* --- Footer Styles --- */
-
 .footer {
     width: 100%;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     color: #ffffff;
-    background-color: #1c1c1c;
+    background-color: #000000;
     padding: 50px 48px 30px;
-    /* Merged from bottom of original file */
     position: relative;
     z-index: 2;
     box-sizing: border-box;
@@ -51,7 +48,6 @@
     margin: 0 auto;
 }
 
-/* --- Footer Responsiveness --- */
 
 @media (max-width: 900px) {
     .footer {

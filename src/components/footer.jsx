@@ -1,10 +1,9 @@
 import React from 'react';
 
-// Placeholder images used for preview. In your local setup, uncomment the imports below.
- import logoImage from '../images/Aero_NITK_logo.png';
- import instagramLogo from '../images/instagram_logo.png';
- import youtubeLogo from '../images/youtube_logo.png';
- import linkedInLogo from '../images/linkedIn_logo.png';
+import logoImage from '../images/Aero_NITK_logo.png';
+import instagramLogo from '../images/instagram_logo.png';
+import youtubeLogo from '../images/youtube_logo.png';
+import linkedInLogo from '../images/linkedIn_logo.png';
 
 
 

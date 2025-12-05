@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
+
     <style>
         * {
             margin: 0;
@@ -25,7 +26,6 @@
             position: relative;
         }
 
-        /* Animated Background */
         .animated-bg {
             position: fixed;
             top: 0;
@@ -39,12 +39,19 @@
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
-        /* Particle Effect */
         .particles {
             position: fixed;
             top: 0;
@@ -63,11 +70,19 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.4;
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 0.8;
+            }
         }
 
-        /* Main Container */
         .carousel-container {
             display: flex;
             justify-content: center;
@@ -76,7 +91,6 @@
             padding: 2rem;
         }
 
-        /* Carousel Wrapper */
         .ultimate-carousel {
             position: relative;
             width: 100%;
@@ -85,7 +99,7 @@
             backdrop-filter: blur(20px);
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
+            box-shadow:
                 0 25px 50px rgba(0, 0, 0, 0.2),
                 0 0 0 1px rgba(255, 255, 255, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -96,13 +110,12 @@
 
         .ultimate-carousel:hover {
             transform: perspective(1000px) rotateX(0deg) translateY(-10px);
-            box-shadow: 
+            box-shadow:
                 0 35px 80px rgba(0, 0, 0, 0.3),
                 0 0 0 1px rgba(255, 255, 255, 0.2),
                 inset 0 1px 0 rgba(255, 255, 255, 0.4);
         }
 
-        /* Slides Container */
         .slides-container {
             position: relative;
             width: 100%;
@@ -137,7 +150,6 @@
             filter: brightness(1) contrast(1.2) saturate(1.3);
         }
 
-        /* Gradient Overlay */
         .slide::before {
             content: '';
             position: absolute;
@@ -145,18 +157,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(
-                45deg,
-                rgba(0, 0, 0, 0.1) 0%,
-                transparent 40%,
-                transparent 60%,
-                rgba(255, 255, 255, 0.1) 100%
-            );
+            background: linear-gradient(45deg,
+                    rgba(0, 0, 0, 0.1) 0%,
+                    transparent 40%,
+                    transparent 60%,
+                    rgba(255, 255, 255, 0.1) 100%);
             z-index: 1;
             pointer-events: none;
         }
 
-        /* Navigation Buttons */
         .nav-btn {
             position: absolute;
             top: 50%;
@@ -198,7 +207,6 @@
             right: 25px;
         }
 
-        /* Dots Navigation */
         .dots-container {
             display: flex;
             justify-content: center;
@@ -251,7 +259,6 @@
             transform: translate(-50%, -50%) scale(1);
         }
 
-        /* Progress Bar */
         .progress-bar {
             position: absolute;
             bottom: 0;
@@ -263,7 +270,6 @@
             z-index: 10;
         }
 
-        /* Slide Counter */
         .slide-counter {
             position: absolute;
             top: 25px;
@@ -279,7 +285,6 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        /* Auto-play pause button */
         .autoplay-btn {
             position: absolute;
             top: 25px;
@@ -304,7 +309,6 @@
             transform: scale(1.1);
         }
 
-        /* Loading Animation */
         .loading {
             position: absolute;
             top: 50%;
@@ -320,51 +324,62 @@
         }
 
         @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
         }
 
-        /* Mobile Responsiveness */
         @media (max-width: 768px) {
             .ultimate-carousel {
                 max-width: 95%;
                 transform: none;
             }
-            
+
             .slides-container {
                 height: 400px;
             }
-            
+
             .nav-btn {
                 width: 50px;
                 height: 50px;
                 font-size: 20px;
             }
-            
+
             .nav-btn.prev {
                 left: 15px;
             }
-            
+
             .nav-btn.next {
                 right: 15px;
             }
         }
 
-        /* Smooth fade animation for initial load */
         .fade-in {
             animation: fadeIn 1s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="animated-bg"></div>
     <div class="particles" id="particles"></div>
-    
+
     <div id="carousel-root"></div>
 
     <script type="text/babel">
@@ -378,7 +393,6 @@
             const [touchEnd, setTouchEnd] = useState(0);
             const intervalRef = useRef();
 
-            // Demo images - replace with your actual image paths
             const images = [
                 "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
                 "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
@@ -407,7 +421,6 @@
                 setIsAutoPlay(!isAutoPlay);
             };
 
-            // Touch handlers
             const handleTouchStart = (e) => {
                 setTouchStart(e.targetTouches[0].clientX);
             };
@@ -426,7 +439,6 @@
                 if (isRightSwipe) changeSlide(-1);
             };
 
-            // Auto-play functionality
             useEffect(() => {
                 if (isAutoPlay) {
                     intervalRef.current = setInterval(() => {
@@ -439,7 +451,6 @@
                 return () => clearInterval(intervalRef.current);
             }, [isAutoPlay, slideIndex]);
 
-            // Loading simulation
             useEffect(() => {
                 const timer = setTimeout(() => {
                     setIsLoading(false);
@@ -447,7 +458,6 @@
                 return () => clearTimeout(timer);
             }, []);
 
-            // Keyboard navigation
             useEffect(() => {
                 const handleKeyPress = (e) => {
                     if (e.key === 'ArrowLeft') changeSlide(-1);
@@ -466,7 +476,7 @@
                 <div className="carousel-container">
                     <div className="ultimate-carousel fade-in">
                         {isLoading && <div className="loading"></div>}
-                        
+
                         <div className="autoplay-btn" onClick={toggleAutoPlay}>
                             <i className={`fas ${isAutoPlay ? 'fa-pause' : 'fa-play'}`}></i>
                         </div>
@@ -475,22 +485,22 @@
                             {slideIndex + 1} / {totalSlides}
                         </div>
 
-                        <div 
+                        <div
                             className="slides-container"
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
                         >
-                            <div 
+                            <div
                                 className="slides-wrapper"
-                                style={{ 
+                                style={{
                                     transform: `translateX(-${slideIndex * 100}%)`,
                                 }}
                             >
                                 {images.map((src, idx) => (
                                     <div key={idx} className="slide">
-                                        <img 
-                                            src={src} 
+                                        <img
+                                            src={src}
                                             alt={`Slide ${idx + 1}`}
                                             loading="lazy"
                                         />
@@ -499,23 +509,23 @@
                             </div>
                         </div>
 
-                        <div 
+                        <div
                             className="progress-bar"
-                            style={{ 
-                                width: `${((slideIndex + 1) / totalSlides) * 100}%` 
+                            style={{
+                                width: `${((slideIndex + 1) / totalSlides) * 100}%`
                             }}
                         ></div>
 
-                        <button 
-                            className="nav-btn prev" 
+                        <button
+                            className="nav-btn prev"
                             onClick={() => changeSlide(-1)}
                             aria-label="Previous slide"
                         >
                             <i className="fas fa-chevron-left"></i>
                         </button>
 
-                        <button 
-                            className="nav-btn next" 
+                        <button
+                            className="nav-btn next"
                             onClick={() => changeSlide(1)}
                             aria-label="Next slide"
                         >
@@ -537,7 +547,6 @@
             );
         };
 
-        // Create particles
         const createParticles = () => {
             const container = document.getElementById('particles');
             const particleCount = 50;
@@ -560,4 +569,5 @@
         ReactDOM.render(<UltimateCarousel />, document.getElementById('carousel-root'));
     </script>
 </body>
+
 </html>
