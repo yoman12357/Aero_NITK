@@ -124,7 +124,6 @@ a:hover {
 .about-hero {
     text-align: center;
     padding: 60px 20px;
-    background: linear-gradient(135deg, #0a0a0a, #0d2843);
     margin-bottom: 50px;
 }
 
@@ -192,7 +191,7 @@ a:hover {
 }
 
 .section-block ul li::before {
-    content: '🚀';
+
     position: absolute;
     left: 0;
     color: #1da1f2;

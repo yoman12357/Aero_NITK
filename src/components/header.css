@@ -11,7 +11,7 @@
     background: #000;
 
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 9999;
@@ -41,6 +41,11 @@
 
 .app-navbar-links a:hover {
     color: #2983e6;
+    text-decoration: none !important;
+}
+
+.app-navbar-links.open {
+    text-decoration: underline !important;
 }
 
 .app-hamburger {
@@ -74,6 +79,7 @@
 
     .app-navbar-links.open {
         display: flex;
+        text-decoration: underline !important;
         flex-direction: column;
         position: fixed;
         top: 0;

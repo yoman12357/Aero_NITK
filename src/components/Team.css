@@ -503,8 +503,8 @@ a:hover {
 }
 
 .footer-credit {
-  text-align: center;
-  font-size: 16px;
+  text-align: left;
+  font-size: 11px;
   letter-spacing: 1px;
   max-width: 1100px;
   margin: 0 auto;

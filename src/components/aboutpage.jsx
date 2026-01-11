@@ -53,22 +53,22 @@ const AboutPage = () => {
 
           <div className="section-block" data-animation-delay="0.3s">
             <h2>Core Projects & Disciplines</h2>
-            <ul>
-              <li>**Aerodynamics:** Utilizing CFD software and wind tunnel analysis to optimize flight performance.</li>
-              <li>**Structures:** Focusing on lightweight and robust design using composites and advanced materials.</li>
-              <li>**Avionics:** Implementing complex flight control systems, telemetry, and sensor integration.</li>
-              <li>**Manufacturing:** Precision fabrication using 3D printing, CNC machining, and composite layups.</li>
-            </ul>
+            <ol>
+              <li>Aerodynamics: Utilizing CFD software and wind tunnel analysis to optimize flight performance.</li>
+              <li>Structures: Focusing on lightweight and robust design using composites and advanced materials.</li>
+              <li>Avionics: Implementing complex flight control systems, telemetry, and sensor integration.</li>
+              <li>Manufacturing: Precision fabrication using 3D printing, CNC machining, and composite layups.</li>
+            </ol>
           </div>
 
           <div className="section-block" data-animation-delay="0.5s">
             <h2>Achievements</h2>
             <p>Over the years, Aero NITK has consistently achieved top ranks in national and international competitions, showcasing our dedication and skill.</p>
-            <ul>
+            <ol>
               <li>Placed in the top 5 at SAE Aero Design West/East.</li>
               <li>Winners of various national-level drone and RC competitions.</li>
               <li>Strong track record in developing custom UAV solutions for industrial challenges.</li>
-            </ul>
+            </ol>
           </div>
         </section>
       </div>

@@ -246,9 +246,12 @@ html,
 .about-text {
     flex: 1;
     max-width: 600px;
+    text-align: left;
 }
 
 .about-text h2 {
+    text-align: left;
+
     font-family: Roboto;
     font-weight: 500;
     font-size: 36px;
@@ -259,6 +262,7 @@ html,
 }
 
 .about-text p {
+    text-align: justify;
     font-family: Roboto;
     font-weight: 400;
     font-size: 18px;
@@ -277,7 +281,6 @@ html,
     color: #fff;
     font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s ease;
 }
 
 .learn-more-btn:hover {

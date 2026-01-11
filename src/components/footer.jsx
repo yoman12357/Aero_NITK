@@ -25,7 +25,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-credit">
-        © 2025 Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
+        © 2026 Aero NITK | Built with <span style={{ color: '#3490eb' }}>💙</span> by Web Team , AeroNITK
       </div>
     </footer>
   );

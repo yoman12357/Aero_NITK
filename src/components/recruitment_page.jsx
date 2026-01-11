@@ -156,7 +156,7 @@ const RecruitmentForm = () => {
                     onChange={() => handleTeamSelect(team)}
                     disabled={
                       !formData.selectedTeams.includes(team) &&
-                      formData.selectedTeams.length >= 2
+                      formData.selectedTeams.length >= 3
                     }
                   />
                   {team}

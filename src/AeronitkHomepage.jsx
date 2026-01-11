@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import './AeronitkHomepage.css';
-// import logoImage from './images/Aero_NITK_logo.png';
 import aboutDrone from './images/drone.png';
 
 import plane1 from './images/plane1.png';
@@ -102,6 +101,7 @@ const AeroNITKHomepage = () => {
 
           <section className="carousel-section">
             <UltimateCarousel />
+            <Timeline></Timeline>
           </section>
           <section className="contact-section" id="contact">
             <img src={plane1} className="contact-img plane-top-left" alt="Plane Top Left" />
