@@ -1,81 +1,107 @@
 .footer {
     width: 100%;
+    background-color: #1C1C1C;
+    /* Exact Figma Color */
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
+    /* Exact Figma Padding */
+    padding: 56px 72px 32px 72px;
     color: #ffffff;
-    background-color: #000000;
-    padding: 50px 48px 30px;
-    position: relative;
-    z-index: 2;
     box-sizing: border-box;
+    font-family: sans-serif;
+    /* Adjust to match your global font */
 }
 
-.footer-row {
+.footer-main-content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    max-width: 1100px;
-    margin: 0 auto 30px auto;
+    align-items: flex-start;
+    max-width: 1256px;
+    /* 1400px width minus 72px padding on each side */
+    margin: 0 auto;
+    gap: 32px;
+    /* Figma Gap */
 }
 
 .footer-logo {
-    width: 125px;
-    height: 125px;
+    width: 250px;
+    /* Adjusted to match visual proportion in design */
+    height: auto;
 }
 
-.footer-icons {
+.footer-links-container {
     display: flex;
-    align-items: center;
-    gap: 30px;
+    gap: 80px;
+    /* Spacing between columns */
 }
 
-.social-icon {
-    height: 40px;
-    width: 40px;
-    object-fit: contain;
-    transition: transform 0.2s;
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
-.footer-icons a:hover .social-icon {
-    transform: scale(1.14);
+.footer-column h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
 }
 
-.footer-credit {
-    text-align: center !important;
+.footer-column a,
+.footer-column p {
     font-size: 16px;
-    letter-spacing: 1px;
-    max-width: 1100px;
-    margin: 0 auto;
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0;
+    opacity: 0.9;
+    transition: opacity 0.2s;
 }
 
+.footer-column a:hover {
+    opacity: 1;
+}
 
-@media (max-width: 900px) {
+.contact-col {
+    min-width: 200px;
+}
+
+.footer-bottom {
+    margin-top: 60px;
+    font-size: 14px;
+    opacity: 0.6;
+    text-align: left;
+    /* Aligned left as per design */
+}
+
+.heart {
+    color: #3490eb;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
     .footer {
-        padding: 40px 24px 20px;
+        padding: 40px 32px 32px;
     }
 
-    .footer-row {
+    .footer-links-container {
+        gap: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-main-content {
         flex-direction: column;
-        gap: 20px;
+        align-items: center;
+        text-align: center;
     }
 
-    .footer-icons {
-        gap: 20px;
-    }
-}
-
-@media (max-width: 600px) {
-    .footer {
-        padding: 30px 16px 15px;
+    .footer-links-container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
     }
 
-    .footer-logo {
-        width: 80px;
-        height: 80px;
-    }
-
-    .footer-credit {
-        font-size: 14px;
-        padding: 0 10px;
+    .footer-bottom {
+        text-align: center;
     }
 }

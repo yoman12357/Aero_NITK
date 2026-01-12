@@ -1,163 +1,93 @@
+/* Base Styles */
 body,
 html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 16px;
-    color: #f0f0f0;
     margin: 0;
     padding: 0;
     background-color: #121212;
-    scroll-behavior: smooth;
+    font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bold;
-    text-decoration: none;
-    margin: 0 0 0.5em 0;
+/* HERO SECTION - EXACT MATCH TO IMAGE */
+.about-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* Full viewport height */
+    /* Update path to your local image */
+    background: url('../images/hero_background.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    /* Darkens image to make text pop */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    max-width: 1000px;
+    text-align: center;
+    padding: 0 40px;
+    z-index: 2;
+}
+
+.about-hero h1,
+.about-hero h1 .highlight {
+    font-size: 3.5rem;
+    font-weight: 800;
     color: #ffffff;
-}
-
-h1 {
-    font-size: 2.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
     line-height: 1.2;
 }
 
-h2 {
-    font-size: 2rem;
-    line-height: 1.3;
-}
-
-h3 {
-    font-size: 1.5rem;
-    line-height: 1.4;
-}
-
-p,
-span,
-li,
-a,
-button,
-div {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #ffffff;
-}
-
-a {
-    text-decoration: none;
-    color: #007acc;
-    transition: color 0.2s ease-in-out;
-}
-
-a:hover {
-    color: #005a99;
-}
-
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 32px;
-    background: #000;
-    width: 100%;
-    z-index: 1000;
-    position: fixed;
-    top: 0;
-    left: 0;
-    box-sizing: border-box;
-}
-
-.navbar-logo {
-    width: 85px;
-    height: 85px;
-    flex-shrink: 0;
-}
-
-.navbar-links {
-    display: flex;
-    gap: 30px;
-    margin-left: auto;
-    margin-right: 30px;
-}
-
-.navbar-links a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 15px;
-    letter-spacing: 1px;
-    font-weight: 500;
-    transition: color 200ms cubic-bezier(0.895, 0.03, 0.685, 0.22);
-}
-
-.navbar-links a:hover {
-    color: #2983e6;
-}
-
-.hamburger-menu {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    z-index: 101;
-    flex-shrink: 0;
-}
-
-.hamburger-menu svg {
-    display: block;
-}
-
-.about-page-container {
-    background-color: #121212;
-    min-height: 100vh;
-    padding-top: 130px;
-    padding-bottom: 80px;
-    color: #f0f0f0;
-}
-
-.about-hero {
-    text-align: center;
-    padding: 60px 20px;
-    margin-bottom: 50px;
-}
-
-.about-hero h1 {
-    font-size: 3.5rem;
+.about-hero h1 .highlight {
     color: #3490eb;
-    text-transform: uppercase;
-    letter-spacing: 5px;
-    margin-bottom: 15px;
+    /* Aero NITK Blue */
 }
 
 .about-hero p {
-    font-size: 1.2rem;
-    color: #ccc;
+    font-size: 1.25rem;
+    color: #ffffff;
+    line-height: 1.6;
     max-width: 800px;
     margin: 0 auto;
+    font-weight: 400;
+}
+
+/* CONTENT CONTAINER */
+.about-page-container {
+    background-color: #121212;
+    padding: 80px 20px;
 }
 
 .about-content-section {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0 20px;
 }
 
+/* Updated Section Blocks to match Figma #1C1C1C */
 .section-block {
-    margin-bottom: 50px;
-    padding: 30px;
-    background: #1e1e1e;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    border-left: 5px solid #007acc;
+    margin-bottom: 40px;
+    padding: 40px;
+    background: #1C1C1C;
+    /* Figma Background Color */
+    border-radius: 8px;
+    /* Requested Radius */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    border-left: 5px solid #3490eb;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
 }
 
 .section-block.animate {
@@ -165,72 +95,102 @@ a:hover {
     transform: translateY(0);
 }
 
+
 .section-block h2 {
     color: #3490eb;
-    font-size: 2rem;
-    margin-bottom: 15px;
-    border-bottom: 2px solid rgba(52, 144, 235, 0.2);
-    padding-bottom: 10px;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 
-.section-block p,
-.section-block li {
-    color: #e0e0e0;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-
-.section-block ul {
-    list-style: none;
-    padding-left: 0;
-}
-
-.section-block ul li {
-    position: relative;
+.styled-list {
     padding-left: 20px;
 }
 
-.section-block ul li::before {
-
-    position: absolute;
-    left: 0;
-    color: #1da1f2;
+.styled-list li {
+    margin-bottom: 12px;
+    color: #e0e0e0;
 }
 
+/* Responsive Fixes */
 @media (max-width: 768px) {
-    .hamburger-menu {
-        display: block;
+    .about-hero h1 {
+        font-size: 2.2rem;
     }
 
-    .navbar-links {
-        flex-direction: column;
-        position: fixed;
-        top: 105px;
-        right: 0;
-        background: #000;
-        width: 100%;
-        padding: 20px 0;
-        margin-right: 0;
-        text-align: center;
-
-        transform: translateX(100%);
-        transition: transform 0.3s ease-out;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        z-index: 999;
+    .about-hero p {
+        font-size: 1rem;
     }
 
-    .navbar-links a {
-        padding: 10px 0;
-        width: 100%;
-        display: block;
+    .section-block {
+        padding: 25px;
     }
+}
 
-    .navbar-links.open {
-        transform: translateX(0);
-    }
+/* --- HERO SECTION --- */
+.about-hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    /* ADD YOUR HERO IMAGE PATH HERE: */
+    background: url('../images/hero_background.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    .footer-row {
-        flex-direction: column;
-        gap: 20px;
-    }
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Dark overlay to match image_e6778b.jpg */
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-content {
+    /* Exact width from Figma screenshot image_e66845.png */
+    max-width: 1090px;
+    text-align: center;
+    padding: 0 20px;
+    z-index: 2;
+}
+
+.about-hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+}
+
+/* Blue highlight for INNOVATION as seen in design */
+.about-hero h1 .highlight {
+    color: #3490eb;
+}
+
+.about-hero p {
+    font-size: 1.25rem;
+    color: #ffffff;
+    line-height: 1.6;
+    max-width: 850px;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+/* --- ABOUT PAGE CONTAINER --- */
+.about-page-container {
+    background-color: #121212;
+    padding: 80px 20px;
+}
+
+.section-block {
+    /* ... keep your existing section-block styles ... */
+    background: #1C1C1C;
+    /* Matching Figma Color */
+    border-radius: 8px;
 }

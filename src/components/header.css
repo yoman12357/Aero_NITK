@@ -111,3 +111,25 @@
         }
     }
 }
+
+/* ... keep all your existing CSS ... */
+
+/* Add this at the bottom or near your link styles */
+
+.app-navbar-links a.active-link {
+    color: #2983e6;
+    /* The highlight color */
+    border-bottom: 2px solid #2983e6;
+    /* Optional: adds an underline to the active link */
+    font-weight: 700;
+    /* Makes it slightly bolder */
+}
+
+@media (max-width: 900px) {
+
+    .app-navbar-links.open a.active-link {
+        color: #2983e6;
+        border-bottom: none;
+        transform: scale(1.1);
+    }
+}

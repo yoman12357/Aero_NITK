@@ -127,6 +127,7 @@ const AeroNITKHomepage = () => {
         <div style={{ minHeight: '100vh', paddingTop: '125px', background: '#fff' }}>
         </div>
       )}
+
       <Footer></Footer>
     </div>
   );

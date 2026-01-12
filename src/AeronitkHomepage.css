@@ -1,6 +1,6 @@
 body,
 html {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
     /* Unified professional font */
     font-size: 16px;
     color: #ffffff;
@@ -36,7 +36,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: bold;
     text-decoration: none;
     margin: 0 0 0.5em 0;
@@ -64,7 +64,7 @@ li,
 a,
 button,
 div {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1rem;
     line-height: 1.5;
     color: #ffffff;
@@ -103,7 +103,7 @@ html,
 #root {
     width: 100vw;
     overflow-x: hidden;
-    font-family: 'Montserrat', 'Segoe UI', Arial, Helvetica, sans-serif;
+    font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
     background-color: #000;
     color: #fff;
 }
@@ -604,7 +604,7 @@ body:not(.homepage) .hero-section {
     }
 }
 
-/* Extra Small Mobile (Max width 480px) */
+/* Extra Small Mobile (Maxd width 480px) */
 @media screen and (max-width: 480px) {
 
 

@@ -1,6 +1,6 @@
 body,
 html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
   /* Unified professional font */
   font-size: 16px;
   color: #f0f0f0;
@@ -14,7 +14,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
   text-decoration: none;
   margin: 0 0 0.5em 0;
@@ -42,7 +42,7 @@ li,
 a,
 button,
 div {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1rem;
   line-height: 1.5;
   color: #ffffff;
@@ -137,7 +137,7 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Montserrat', 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
   box-sizing: border-box;
 }
 
@@ -202,7 +202,7 @@ a:hover {
   color: #fff;
   background-color: #000000;
   outline: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
   transition: border-color 0.3s;
   box-sizing: border-box;
 }
@@ -255,7 +255,7 @@ a:hover {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(52, 148, 235, 0.4);
   border: none;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
   max-width: 400px;
   width: 100%;
 }

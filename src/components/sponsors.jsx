@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './sponsors.css';
-import logoImage from '../images/Aero_NITK_logo.png';
-import heroBackgroundImage from '../images/sponsersbg.jpg';
-import instagramLogo from '../images/instagram_logo.png';
-import youtubeLogo from '../images/youtube_logo.png';
-import linkedInLogo from '../images/linkedIn_logo.png';
 import Header from './header';
 import Footer from './footer';
 
 const Sponsors = () => {
   const [showBankDetails, setShowBankDetails] = useState(false);
-  const [showEmailDetails, setShowEmailDetails] = useState(false);
-
-
   const toggleBankDetails = () => setShowBankDetails(!showBankDetails);
-  const toggleEmailDetails = () => setShowEmailDetails(!showEmailDetails);
 
   const bankDetails = {
     accountName: 'Aero NITK',
@@ -27,116 +17,89 @@ const Sponsors = () => {
   };
 
   const heroStyle = {
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url(${heroBackgroundImage})`,
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7))`,
   };
 
   return (
     <div className="sponsors-page">
-      <Header></Header>
+      <Header />
 
+      {/* HERO SECTION */}
       <header className="sponsors-hero" style={heroStyle}>
         <div className="sponsors-hero-content">
-          <h1>Partner with Aero NITK and be part of our journey in aerospace innovation</h1>
-          <p>Learn more about our team, projects, and sponsorship opportunities</p>
+          <h1>
+            PARTNER WITH AERO NITK AND BE PART OF OUR <span className="highlight">JOURNEY</span> IN AEROSPACE <span className="highlight">INNOVATION</span>.
+          </h1>
+          <p>Learn More About Our Team, Projects, And Sponsorship Opportunities.</p>
         </div>
       </header>
 
+      {/* INFO & BROCHURE SECTION */}
       <section id="about" className="brochure-section">
         <div className="container">
-          <div className="brochure-container">
-            <div className="brochure-scroll-content">
-              <div className="scroll-item">
-                <h4>About Aero NITK</h4>
-                <p>We proudly constitute the official aeromodelling contingent of NITK Surathkal, ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.</p>
-              </div>
-              <div id="why-sponsor" className="scroll-item">
-                <h4>Why Sponsor Us?</h4>
-                <p>Our repertoire boasts multiple triumphs in competitive arenas, groundbreaking ventures that continually push the envelope of innovation, and a robust and discerning alumni network deeply entrenched in the aerospace industry’s vanguard.</p>
-              </div>
-              <div className="scroll-item">
-                <h4>Benefits for Sponsors</h4>
-                <p>Seize unparalleled brand prominence, champion nascent talent, and immerse yourself in the vanguard of avant-garde aerospace research and development.</p>
-              </div>
-              <div className="scroll-item">
-                <h4>Sponsorship Levels</h4>
-                <p>A diverse array of sponsorship tiers is meticulously curated to accommodate varying fiscal allotments and align harmoniously with distinct partnership aspirations.</p>
-              </div>
+          <div className="info-vertical-list">
+            <div className="scroll-item">
+              <h4>About Aero NITK</h4>
+              <p>We proudly constitute the official aeromodelling contingent of NITK Surathkal, ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.</p>
             </div>
+            <div className="scroll-item">
+              <h4>Why Sponsor Us?</h4>
+              <p>Our repertoire boasts multiple triumphs in competitive arenas, groundbreaking ventures that continually push the envelope of innovation, and a robust and discerning alumni network.</p>
+            </div>
+          </div>
 
-            <div id="brochure" className="brochure-content">
-              <h3>Download/Preview Brochure</h3>
+          <div id="brochure" className="brochure-view">
+            <h3>Preview Brochure</h3>
+            <div className="pdf-frame">
               <object
                 data="/brochure.pdf"
                 type="application/pdf"
                 width="100%"
-                height="600px"
+                height="800px"
               >
-                <p>
-                  Your browser does not support PDFs. Download the brochure
-                  <a href="/brochure.pdf" download> here</a>.
-                </p>
+                <div className="pdf-fallback">
+                  <p>Your browser does not support PDFs. <a href="/brochure.pdf" download>Download the brochure here</a>.</p>
+                </div>
               </object>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="contact" className="sponsors-contact">
-        <div className="container">
-          <div className="contact-buttons">
-
-            <a className="contact-btn secondary" href="/brochure.pdf" download>
-              Download Brochure
-            </a>
-          </div>
-          <p>Ready to sponsor us? Have questions about partnership opportunities?</p>
+      {/* CALL TO ACTION SECTION - BELOW BROCHURE */}
+      <section className="sponsors-cta">
+        <div className="cta-container">
+          <a className="download-btn" href="/brochure.pdf" download>
+            DOWNLOAD BROCHURE
+          </a>
+          <p className="partnership-inquiry">
+            Ready To Sponsor Us? Have Questions About Partnership Opportunities?
+          </p>
         </div>
       </section>
+
+      {/* BANK DETAILS SECTION */}
       <section id="bank" className="bank-details-section">
         <div className="container">
           <h2>For sponsorship payments and donations</h2>
-          <p><strong>Note:</strong> Please contact us before making any payments to confirm the details and discuss sponsorship terms.</p>
-
           <button className="bank-details-toggle" onClick={toggleBankDetails}>
             View Bank Details <span className={`arrow ${showBankDetails ? 'rotated' : ''}`}>▾</span>
           </button>
 
           <div className={`bank-details-card ${showBankDetails ? 'visible' : ''}`}>
             <div className="bank-info-grid">
-              <div className="bank-info-item">
-                <label>Account Name</label>
-                <span>{bankDetails.accountName}</span>
-              </div>
-              <div className="bank-info-item">
-                <label>Account Number</label>
-                <span>{bankDetails.accountNumber}</span>
-              </div>
-              <div className="bank-info-item">
-                <label>Bank Name</label>
-                <span>{bankDetails.bankName}</span>
-              </div>
-              <div className="bank-info-item">
-                <label>IFSC Code</label>
-                <span>{bankDetails.ifscCode}</span>
-              </div>
-              <div className="bank-info-item">
-                <label>Branch</label>
-                <span>{bankDetails.branch}</span>
-              </div>
-              <div className="bank-info-item">
-                <label>UPI ID</label>
-                <span>{bankDetails.upiId}</span>
-              </div>
-            </div>
-
-            <div className="bank-details-note">
-              <p><strong>Note:</strong> Contact us to confirm details before proceeding with any transaction.</p>
+              <div className="bank-info-item"><label>Account Name</label><span>{bankDetails.accountName}</span></div>
+              <div className="bank-info-item"><label>Account Number</label><span>{bankDetails.accountNumber}</span></div>
+              <div className="bank-info-item"><label>Bank Name</label><span>{bankDetails.bankName}</span></div>
+              <div className="bank-info-item"><label>IFSC Code</label><span>{bankDetails.ifscCode}</span></div>
+              <div className="bank-info-item"><label>Branch</label><span>{bankDetails.branch}</span></div>
+              <div className="bank-info-item"><label>UPI ID</label><span>{bankDetails.upiId}</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };
