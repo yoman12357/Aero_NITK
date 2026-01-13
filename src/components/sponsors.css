@@ -12,12 +12,10 @@
 
 .sponsors-page .sponsors-hero-content {
   max-width: 1097px;
-  /* Figma Width */
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  /* Figma Gap */
   padding: 0 20px;
   z-index: 2;
 }
@@ -25,17 +23,11 @@
 .sponsors-page .sponsors-hero-content h1,
 .sponsors-page .sponsors-hero-content h1 .highlight {
   font-family: 'Roboto', sans-serif;
-  /* */
   font-weight: 600;
-  /* SemiBold */
   font-size: 36px;
-  /* */
   line-height: 120%;
-  /* */
   letter-spacing: 0.04em;
-  /* 4% */
   text-transform: uppercase;
-  /* */
   color: #ffffff;
 }
 
@@ -93,25 +85,20 @@
 
 .cta-container {
   max-width: 1097px;
-  /* */
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  /* */
 }
 
 .download-btn {
   background-color: #3E93CE;
-  /* Figma CTA Color */
+  /* Blue by default */
   color: #FFFFFF;
   width: 208px;
-  /* */
   height: 39px;
-  /* */
   border-radius: 5px;
-  /* */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,20 +107,23 @@
   font-weight: 600;
   font-size: 14px;
   padding: 10px;
-  /* */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Smooth transition */
+}
+
+/* Change to white on hover */
+.download-btn:hover {
+  background-color: #FFFFFF;
+  color: #3E93CE;
+  /* Text turns blue for contrast */
 }
 
 .partnership-inquiry {
   font-family: 'Roboto', sans-serif;
-  /* */
   font-weight: 400;
-  /* Regular */
   font-size: 16px;
-  /* */
   line-height: 120%;
-  /* */
   letter-spacing: 0.04em;
-  /* 4% */
   text-align: center;
   color: #FFFFFF;
 }

@@ -8,13 +8,24 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 32px;
-    background: #000;
+
+    /* 40% opacity and 4px blur */
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 9999;
+    transition: all 0.4s ease-in-out;
+}
+
+.app-navbar-logo-wrapper {
+    display: flex;
+    align-items: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .app-navbar-logo {
@@ -28,6 +39,7 @@
 .app-navbar-links {
     display: flex;
     gap: 30px;
+    transition: all 0.4s ease-in-out;
 }
 
 .app-navbar-links a {
@@ -44,8 +56,15 @@
     text-decoration: none !important;
 }
 
-.app-navbar-links.open {
-    text-decoration: underline !important;
+/* --- Desktop Scrolled State --- */
+@media (min-width: 901px) {
+    .app-navbar.scrolled-layout {
+        justify-content: center;
+    }
+
+    .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
+        display: none;
+    }
 }
 
 .app-hamburger {
@@ -67,6 +86,11 @@
 @media (max-width: 900px) {
     .app-navbar {
         padding: 10px 20px;
+        justify-content: space-between !important;
+    }
+
+    .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
+        display: flex !important;
     }
 
     .app-navbar-links {
@@ -79,7 +103,8 @@
 
     .app-navbar-links.open {
         display: flex;
-        text-decoration: underline !important;
+        /* REMOVED UNDERLINE HERE */
+        text-decoration: none !important;
         flex-direction: column;
         position: fixed;
         top: 0;
@@ -99,6 +124,7 @@
         padding: 10px;
         width: 100%;
         text-align: center;
+        text-decoration: none !important;
     }
 
     @keyframes fadeIn {
@@ -112,24 +138,19 @@
     }
 }
 
-/* ... keep all your existing CSS ... */
-
-/* Add this at the bottom or near your link styles */
-
 .app-navbar-links a.active-link {
     color: #2983e6;
-    /* The highlight color */
-    border-bottom: 2px solid #2983e6;
-    /* Optional: adds an underline to the active link */
+    /* REMOVED UNDERLINE/BORDER-BOTTOM HERE */
+    border-bottom: none;
+    text-decoration: none !important;
     font-weight: 700;
-    /* Makes it slightly bolder */
 }
 
 @media (max-width: 900px) {
-
     .app-navbar-links.open a.active-link {
         color: #2983e6;
         border-bottom: none;
+        text-decoration: none !important;
         transform: scale(1.1);
     }
 }

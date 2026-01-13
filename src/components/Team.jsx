@@ -24,7 +24,6 @@ import dhanasree from '../images/team-members/Dhanasree.jpg';
 import g_shifa_khanum_niraj from '../images/team-members/G_Shifa_Khanum.jpg';
 import kenge_madhur_niraj from '../images/team-members/Kenge_Madhur_Niraj.jpeg';
 import makwana_dhruv_dilipbhai from '../images/team-members/Makwana_Dhruv_Dilipbhai.jpeg';
-import nitesh_p from '../images/team-members/Nitesh_P.jpg';
 import om_srivastava from '../images/team-members/Om_Srivastava.jpg';
 import omkar_kharade from '../images/team-members/Omkar_Kharade.png';
 import peddinti_ananta_venkata_seersha from '../images/team-members/Peddinti_Ananta_Venkata_Seersha.jpg';
@@ -49,6 +48,7 @@ import LavnnyaPatil from '../images/team-members/LavnnyaPatil.jpg';
 import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Trivedi.jpg';
 import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
+import nitesh_p from '../images/team-members/nitesh_p.jpg';
 import linkedInLogo from '../images/linkedIn_logo.png';
 
 const Team = () => {
@@ -74,7 +74,7 @@ const Team = () => {
     { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'www.linkedin.com/in/om-srivastava-2k28' },
     { name: 'Varshith J', role: 'Structures Lead', subsystem: 'Structures', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a' },
     { name: 'Chetan Kumar Sah', role: 'Drone Lead', subsystem: 'Avionics', image: chetan_kumar_sah, linkedIn: 'https://www.linkedin.com/in/sahchetan' },
-    { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: '' },
+    { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: 'https://www.linkedin.com/in/abhishek-m-959609318/' },
     { name: 'Appuganesh', role: 'Rc R&D Lead', subsystem: 'Avionics', image: appuganesh, linkedIn: 'www.linkedin.com/in/appuganesh' },
     { name: 'Pratham P Palankar', role: 'Aerodynamics Design Lead', subsystem: 'Aerodynamics', image: pratham_p_palankar, linkedIn: 'www.linkedin.com/in/pratham-palankar-277421293' },
     { name: 'Makwana Dhruv', role: 'Member', subsystem: 'Aerodynamics', image: makwana_dhruv_dilipbhai, linkedIn: 'https://www.linkedin.com/in/dhruv-makwana-724358327' },
@@ -106,6 +106,7 @@ const Team = () => {
     { name: 'Vedant Sabnis', role: 'CFD Lead', subsystem: 'Aerodynamics', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
     { name: 'Akhilesh', role: 'Member', subsystem: 'Avionics', image: akhilesh, linkedIn: 'https://www.linkedin.com/in/akhilesh-vadde-b0a6b2364' },
     { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Avionics', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
+    { name: 'Nitesh ', role: 'LG Lead', subsystem: 'Avionics', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' }
   ];
 
   const categories = ['Aerodynamics', 'Structures', 'Avionics', 'Marketing', 'Media', 'Web Team'];
@@ -136,7 +137,8 @@ const Team = () => {
 
   return (
     <div className="team-page-bg">
-      <Header />
+      {/* Passing isScrolled={true} ensures the header is centered and logo-free on desktop */}
+      <Header isScrolled={true} />
       <div className="team-main-container">
 
         <section className="section-group">

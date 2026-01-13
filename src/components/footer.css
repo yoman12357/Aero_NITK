@@ -1,15 +1,20 @@
 .footer {
     width: 100%;
-    background-color: #1C1C1C;
-    /* Exact Figma Color */
+    z-index: 100;
+    /* Updated background color to 1c1c1c */
+    background-color: #1c1c1c !important;
+
+    /* FIX: This shadow prevents the black background from showing at the rounded corners */
+
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
-    /* Exact Figma Padding */
+
     padding: 56px 72px 32px 72px;
     color: #ffffff;
     box-sizing: border-box;
     font-family: sans-serif;
-    /* Adjust to match your global font */
+    position: relative;
+    z-index: 10;
 }
 
 .footer-main-content {
@@ -17,22 +22,18 @@
     justify-content: space-between;
     align-items: flex-start;
     max-width: 1256px;
-    /* 1400px width minus 72px padding on each side */
     margin: 0 auto;
     gap: 32px;
-    /* Figma Gap */
 }
 
 .footer-logo {
     width: 250px;
-    /* Adjusted to match visual proportion in design */
     height: auto;
 }
 
 .footer-links-container {
     display: flex;
     gap: 80px;
-    /* Spacing between columns */
 }
 
 .footer-column {
@@ -59,6 +60,7 @@
 
 .footer-column a:hover {
     opacity: 1;
+    color: #3490eb;
 }
 
 .contact-col {
@@ -70,7 +72,6 @@
     font-size: 14px;
     opacity: 0.6;
     text-align: left;
-    /* Aligned left as per design */
 }
 
 .heart {

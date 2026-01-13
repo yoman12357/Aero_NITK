@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, Link } from 'react-router-dom';
 import './header.css';
 import logoImage from '../images/Aero_NITK_logo.png';
 
-const Header = () => {
+const Header = ({ isScrolled }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const location = useLocation();
@@ -13,7 +13,6 @@ const Header = () => {
 
   // Scroll Spy Logic
   useEffect(() => {
-    // Only run scroll spy on the homepage
     if (location.pathname !== '/') {
       setActiveSection('');
       return;
@@ -22,7 +21,7 @@ const Header = () => {
     const sections = ['home', 'contact'];
     const observerOptions = {
       root: null,
-      rootMargin: '-50% 0px -50% 0px', // Trigger when section is in the middle of the viewport
+      rootMargin: '-50% 0px -50% 0px',
       threshold: 0,
     };
 
@@ -43,15 +42,30 @@ const Header = () => {
     return () => observer.disconnect();
   }, [location]);
 
+  // Handle links for HOME and CONTACT
+  const handleHashLink = (e, id) => {
+    closeMobileMenu();
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    // If NOT on homepage, the default <a href="/#id"> will trigger
+    // and the browser will handle the jump.
+  };
+
   return (
-    <nav className="app-navbar">
-      <img src={logoImage} alt="Aero NITK Logo" className="app-navbar-logo" />
+    <nav className={`app-navbar ${isScrolled ? 'scrolled-layout' : ''}`}>
+      <Link to="/" onClick={closeMobileMenu} className="app-navbar-logo-wrapper">
+        <img src={logoImage} alt="Aero NITK Logo" className="app-navbar-logo" />
+      </Link>
 
       <div className={`app-navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
-        {/* Updated Anchor Links for Scroll Spy */}
         <a
           href="/#home"
-          onClick={closeMobileMenu}
+          onClick={(e) => handleHashLink(e, 'home')}
           className={activeSection === 'home' ? 'active-link' : ''}
         >
           HOME
@@ -64,7 +78,7 @@ const Header = () => {
 
         <a
           href="/#contact"
-          onClick={closeMobileMenu}
+          onClick={(e) => handleHashLink(e, 'contact')}
           className={activeSection === 'contact' ? 'active-link' : ''}
         >
           CONTACT
