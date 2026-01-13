@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './sponsors.css';
-import Header from './header';
-import Footer from './footer';
+import Header from './header.jsx';
+import Footer from './footer.jsx';
 
 const Sponsors = () => {
   const [showBankDetails, setShowBankDetails] = useState(false);

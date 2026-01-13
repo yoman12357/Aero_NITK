@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Team.css';
-import Header from './header';
+import Header from './header.jsx';
 import Footer from './footer.jsx';
 
 // Image Imports
