@@ -48,7 +48,7 @@ import LavnnyaPatil from '../images/team-members/LavnnyaPatil.jpg';
 import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Trivedi.jpg';
 import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
-import nitesh_p from '../images/team-members/nitesh_p.jpg';
+import nitesh_p from '../images/team-members/Nitesh_P.jpg';
 import linkedInLogo from '../images/linkedIn_logo.png';
 
 const Team = () => {
