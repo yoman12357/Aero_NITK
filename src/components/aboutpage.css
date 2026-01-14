@@ -3,127 +3,9 @@ body,
 html {
     margin: 0;
     padding: 0;
-    background-color: #1c1c1c;
+    /* Changed to pure black */
+    background-color: #000000;
     font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* HERO SECTION - EXACT MATCH TO IMAGE */
-.about-hero {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    /* Full viewport height */
-    /* Update path to your local image */
-    background: url('../images/hero_background.jpg') no-repeat center center/cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    /* Darkens image to make text pop */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hero-content {
-    max-width: 1000px;
-    text-align: center;
-    padding: 0 40px;
-    z-index: 2;
-}
-
-.about-hero h1,
-.about-hero h1 .highlight {
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-    line-height: 1.2;
-}
-
-.about-hero h1 .highlight {
-    color: #3490eb;
-    /* Aero NITK Blue */
-}
-
-.about-hero p {
-    font-size: 1.25rem;
-    color: #ffffff;
-    line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto;
-    font-weight: 400;
-}
-
-/* CONTENT CONTAINER */
-.about-page-container {
-    background-color: #1c1c1c;
-    padding: 80px 20px;
-}
-
-.about-content-section {
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-/* Updated Section Blocks to match Figma #1C1C1C */
-.section-block {
-    margin-bottom: 40px;
-    padding: 40px;
-    background: #1C1C1C;
-    /* Figma Background Color */
-    border-radius: 8px;
-    /* Requested Radius */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    border-left: 5px solid #3490eb;
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s ease-out;
-}
-
-.section-block.animate {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-
-.section-block h2 {
-    color: #3490eb;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
-
-.styled-list {
-    padding-left: 20px;
-}
-
-.styled-list li {
-    margin-bottom: 12px;
-    color: #e0e0e0;
-}
-
-/* Responsive Fixes */
-@media (max-width: 768px) {
-    .about-hero h1 {
-        font-size: 2.2rem;
-    }
-
-    .about-hero p {
-        font-size: 1rem;
-    }
-
-    .section-block {
-        padding: 25px;
-    }
 }
 
 /* --- HERO SECTION --- */
@@ -131,8 +13,8 @@ html {
     position: relative;
     width: 100%;
     height: 100vh;
-    /* ADD YOUR HERO IMAGE PATH HERE: */
-    background: url('../images/hero_background.jpg') no-repeat center center/cover;
+    /* Ensure this path is correct relative to this CSS file */
+    background: url('../images/aboutpage.png') no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,15 +26,14 @@ html {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Dark overlay to match image_e6778b.jpg */
     background: rgba(0, 0, 0, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 }
 
 .hero-content {
-    /* Exact width from Figma screenshot image_e66845.png */
     max-width: 1090px;
     text-align: center;
     padding: 0 20px;
@@ -168,7 +49,6 @@ html {
     text-transform: uppercase;
 }
 
-/* Blue highlight for INNOVATION as seen in design */
 .about-hero h1 .highlight {
     color: #3490eb;
 }
@@ -182,15 +62,62 @@ html {
     font-weight: 400;
 }
 
-/* --- ABOUT PAGE CONTAINER --- */
+/* --- CONTENT CONTAINER --- */
 .about-page-container {
-    background-color: #121212;
+    /* Changed from #1c1c1c to #000000 for a "whole black" look */
+    background-color: #000000;
     padding: 80px 20px;
 }
 
+.about-content-section {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
 .section-block {
-    /* ... keep your existing section-block styles ... */
+    margin-bottom: 40px;
+    padding: 40px;
     background: #1C1C1C;
-    /* Matching Figma Color */
+    /* Keep blocks slightly grey to stand out or change to #000 */
     border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    border-left: 5px solid #3490eb;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.section-block.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section-block h2 {
+    color: #3490eb;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.styled-list {
+    padding-left: 20px;
+    color: #e0e0e0;
+}
+
+.styled-list li {
+    margin-bottom: 12px;
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+    .about-hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .about-hero p {
+        font-size: 1rem;
+    }
+
+    .section-block {
+        padding: 25px;
+    }
 }
