@@ -139,7 +139,6 @@ const Team = () => {
   return (
     <div className="team-page-bg">
       {/* Passing isScrolled={true} ensures the header is centered and logo-free on desktop */}
-      <Header isScrolled={true} />
       <div className="team-main-container">
 
         <section className="section-group">

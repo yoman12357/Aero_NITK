@@ -24,7 +24,6 @@ const Gallery = () => {
 
   return (
     <>
-      <Header></Header>
       <div className="gallery-section">
         <h2>GALLERY</h2>
         <div className="gallery-grid">

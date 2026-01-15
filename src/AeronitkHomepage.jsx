@@ -37,7 +37,6 @@ const AeroNITKHomepage = () => {
 
   return (
     <div className="page-wrapper">
-      <Header />
 
       <section className="hero-section" id="home">
         <div className="hero-container">

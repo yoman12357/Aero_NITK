@@ -25,7 +25,6 @@ const AboutPage = () => {
 
   return (
     <div className="about-page-wrapper">
-      <Header />
 
       <section className="about-hero">
         <div className="hero-overlay">

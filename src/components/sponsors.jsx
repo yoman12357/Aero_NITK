@@ -23,7 +23,6 @@ const Sponsors = () => {
   return (
     <div className="sponsors-page">
       {/* Passing isScrolled={true} for centered desktop navbar */}
-      <Header isScrolled={true} />
 
       {/* HERO SECTION */}
       <header className="sponsors-hero" style={heroStyle}>

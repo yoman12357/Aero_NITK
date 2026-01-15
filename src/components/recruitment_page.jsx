@@ -73,7 +73,6 @@ const RecruitmentForm = () => {
 
   return (
     <>
-      <Header></Header>
       <section className="recruitment-section">
         <form
           className="recruitment-card"
