@@ -64,23 +64,24 @@ const Team = () => {
     { name: 'BHARAT PATEL', role: 'Operational Lead', image: bharat_patel, linkedIn: 'https://www.linkedin.com/in/bharatnitk/' },
     { name: 'TANAY SHEKOKAR', role: 'Operational Lead', image: tanay_praveen_shekokar, linkedIn: 'https://www.linkedin.com/in/tanay-shekokar-04730829b' },
     { name: 'GOUTHAM SUNIL', role: 'Outreach Lead', image: gouthamSunilKumar, linkedIn: 'https://www.linkedin.com/in/goutham-sunil-kumar-a95777253' },
+    { name: 'Rathod Smit Amitkumar', role: 'Web Dev Lead', subsystem: 'Web Team', image: rathod_smit_amitkumar, linkedIn: 'https://www.linkedin.com/in/smit-rathod-a2900b312/' },
     { name: 'GOWTHAM B M', role: 'Media Lead', image: gowthambm, linkedIn: 'http://www.linkedin.com/in/gowthambm' }
   ];
 
   const rawMembersData = [
-    { name: 'Rathod Smit Amitkumar', role: 'Web Dev Lead', subsystem: 'Web Team', image: rathod_smit_amitkumar, linkedIn: 'https://www.linkedin.com/in/smit-rathod-a2900b312/' },
+    { name: 'Aryan Bokolia', role: 'Developer', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
     { name: 'Tirth Vishalkumar Patel', role: 'Fuselage Lead', subsystem: 'Structures', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
     { name: 'Prithviraj Thokare', role: 'Member', subsystem: 'Structures', image: thokare_prithviraj_dilip, linkedIn: 'https://www.linkedin.com/in/prithviraj-thokare-0232a5380/' },
     { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'www.linkedin.com/in/om-srivastava-2k28' },
     { name: 'Varshith J', role: 'Structures Lead', subsystem: 'Structures', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a' },
     { name: 'Chetan Kumar Sah', role: 'Drone Lead', subsystem: 'Avionics', image: chetan_kumar_sah, linkedIn: 'https://www.linkedin.com/in/sahchetan' },
     { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: 'https://www.linkedin.com/in/abhishek-m-959609318/' },
-    { name: 'Appuganesh', role: 'Rc R&D Lead', subsystem: 'Avionics', image: appuganesh, linkedIn: 'www.linkedin.com/in/appuganesh' },
+
     { name: 'Pratham P Palankar', role: 'Aerodynamics Design Lead', subsystem: 'Aerodynamics', image: pratham_p_palankar, linkedIn: 'www.linkedin.com/in/pratham-palankar-277421293' },
     { name: 'Makwana Dhruv', role: 'Member', subsystem: 'Aerodynamics', image: makwana_dhruv_dilipbhai, linkedIn: 'https://www.linkedin.com/in/dhruv-makwana-724358327' },
     { name: 'Aryan Gupta', role: 'Member', subsystem: 'Aerodynamics', image: aryan_gupta, linkedIn: 'www.linkedin.com/in/aryan-g-b27278247' },
     { name: 'Madhur Kenge', role: 'Member', subsystem: 'Structures', image: kenge_madhur_niraj, linkedIn: 'www.linkedin.com/in/madhur-kenge-354238326' },
-    { name: 'Aryan Bokolia', role: 'Developer', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
+
     { name: 'Abhhay S Sharma', role: 'Member', subsystem: 'Aerodynamics', image: abhhay_s_sharma, linkedIn: 'https://www.linkedin.com/in/abhhay-s-sharma-40142225a' },
     { name: 'Abel Thomas Mathew', role: 'Member', subsystem: 'Avionics', image: abel_thomas_mathew, linkedIn: 'https://www.linkedin.com/in/abelthomasmathew' },
     { name: 'Omkar Kharade', role: 'Member', subsystem: 'Aerodynamics', image: omkar_kharade, linkedIn: 'www.linkedin.com/in/omkar-kharade-53a05232b' },
@@ -97,7 +98,7 @@ const Team = () => {
     { name: 'Ryan Thomas', role: 'Member', subsystem: 'Structures', image: ryan_varghese_thomas, linkedIn: 'https://www.linkedin.com/in/ryanthomas2005/' },
     { name: 'Shamit Hoysal', role: 'Member', subsystem: 'Avionics', image: shamit_hoysal, linkedIn: 'https://www.linkedin.com/in/shamit-hoysal-6066072b9/' },
     { name: 'Abhinay P A', role: 'Marketing Lead', subsystem: 'Marketing', image: abhinay_p_a, linkedIn: 'https://www.linkedin.com/in/abhinaypa101' },
-    { name: 'Shubhang Galagali', role: 'Simulator Lead', subsystem: 'Aerodynamics', image: shubhang_galagali, linkedIn: 'https://www.linkedin.com/in/galavashubhang' },
+    { name: 'Shubhang Galagali', role: 'Simulator Lead', subsystem: 'Avionics', image: shubhang_galagali, linkedIn: 'https://www.linkedin.com/in/galavashubhang' },
     { name: 'Tejaswini Magani', role: 'Member', subsystem: 'Avionics', image: tejaswini_magani, linkedIn: 'https://www.linkedin.com/in/magani-tejaswini-a70a68346' },
     { name: 'Aman Nagpal', role: 'Member', subsystem: 'Avionics', image: aman_nagpal, linkedIn: 'www.linkedin.com/in/aman-nagpal-781721345' },
     { name: 'Aadhithya RK', role: 'Member', subsystem: 'Aerodynamics', image: aadhithya_r_k, linkedIn: 'www.linkedin.com/in/aadhithya-karthik-558b57382' },
@@ -106,7 +107,7 @@ const Team = () => {
     { name: 'Vedant Sabnis', role: 'CFD Lead', subsystem: 'Aerodynamics', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
     { name: 'Akhilesh', role: 'Member', subsystem: 'Avionics', image: akhilesh, linkedIn: 'https://www.linkedin.com/in/akhilesh-vadde-b0a6b2364' },
     { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Avionics', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
-    { name: 'Nitesh ', role: 'LG Lead', subsystem: 'Avionics', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' }
+    { name: 'Nitesh ', role: 'LG Lead', subsystem: 'Structures', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' }
   ];
 
   const categories = ['Aerodynamics', 'Structures', 'Avionics', 'Marketing', 'Media', 'Web Team'];

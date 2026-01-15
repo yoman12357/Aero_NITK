@@ -15,8 +15,6 @@ import BlurText from "./components/effects/bt.jsx";
 import Timeline from './components/Timeline.jsx';
 
 const AeroNITKHomepage = () => {
-  const [showScrollDown, setShowScrollDown] = useState(true);
-  const [isScrolledPastHero, setIsScrolledPastHero] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -31,21 +29,7 @@ const AeroNITKHomepage = () => {
     };
   }, [isHomePage]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Logic for "Scroll Down" indicator
-      setShowScrollDown(window.scrollY <= 60);
 
-      // Logic for Navbar transformation (Triggered after 80% of viewport height)
-      if (window.scrollY > window.innerHeight * 0.8) {
-        setIsScrolledPastHero(true);
-      } else {
-        setIsScrolledPastHero(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleAnimationComplete = () => {
     console.log('Animation completed!');
@@ -53,30 +37,26 @@ const AeroNITKHomepage = () => {
 
   return (
     <div className="page-wrapper">
-      {/* Pass the scroll state to the Header */}
-      <Header isScrolled={isScrolledPastHero} />
+      <Header />
 
       <section className="hero-section" id="home">
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 0,
-        }}>
+        <div className="hero-container">
+          {/* Main Animated Title */}
+          <div className="hero-title-wrapper">
+            <BlurText
+              text="AERO NITK"
+              className="hero-title"
+              delay={150}
+              animateBy="words"
+              direction="top"
+              onAnimationComplete={handleAnimationComplete}
+            />
+          </div>
+
+          {/* Static Subtitle */}
+          <p className="hero-subtitle">WINGS OF TEAM WORK</p>
         </div>
 
-        <div className="text-8xl mb-8" style={{ paddingLeft: '55px', fontSize: '6rem', fontWeight: 'bold' }}>
-          <BlurText
-            text="AERO NITK   "
-            className="hero-title"
-            delay={150}
-            animateBy="words"
-            direction="top"
-            onAnimationComplete={handleAnimationComplete}
-          />
-        </div>
 
       </section>
 

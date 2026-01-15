@@ -40,7 +40,8 @@ html {
     z-index: 2;
 }
 
-.about-hero h1 {
+.about-hero h1,
+.about-hero h1 .highlight {
     font-size: 3.5rem;
     font-weight: 800;
     color: #ffffff;

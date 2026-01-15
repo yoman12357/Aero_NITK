@@ -211,6 +211,74 @@ html,
     /* Force the specific blue color */
 }
 
+/* --- Hero Layout --- */
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 8rem;
+    /* Matches your image scale */
+    font-weight: 900;
+    margin: 0;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+}
+
+/* TARGETING THE WORDS INSIDE BLURTEXT */
+
+/* Word 1: AERO (Solid) */
+.hero-title span:nth-child(1) {
+    color: #ffffff !important;
+}
+
+/* Word 2: NITK (Hollow/Stroke) */
+.hero-title span:nth-child(2) {
+    color: transparent !important;
+    -webkit-text-stroke: 4px #ffffff;
+}
+
+/* Subtitle (WINGS OF TEAM WORK) */
+.hero-subtitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: #ffffff;
+    margin-top: 20px;
+    text-transform: uppercase;
+}
+
+
+
+/* --- Mobile Responsiveness --- */
+@media screen and (max-width: 1024px) {
+    .hero-title {
+        font-size: 5rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .hero-title {
+        font-size: 3.5rem;
+        flex-direction: column;
+        line-height: 1.2;
+    }
+
+    .hero-title span:nth-child(2) {
+        color: transparent !important;
+        -webkit-text-stroke: 2px #ffffff;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
 
 /* ... keep the rest of your existing CSS ... */
 
