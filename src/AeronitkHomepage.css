@@ -116,7 +116,7 @@ html,
 
 .hero-section {
     /* Background with 40% opacity look (0.6 darkness overlay) */
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('./images/hero_background.png');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('./images/hero_background.webp');
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -186,7 +186,7 @@ html,
 
 .hero-section {
     /* Use a linear gradient to create the 40% opacity overlay effect */
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('./images/hero_background.png');
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('./images/hero_background.webp');
     background-size: cover;
     background-position: center;
     width: 100%;
