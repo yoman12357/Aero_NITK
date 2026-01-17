@@ -9,7 +9,7 @@ import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
 import dronePic from './images/drone-pic.png';
 import UltimateCarousel from './components/UltimateCarousel.jsx';
-import Header from './components/header.jsx';
+import contactus from './images/contactus.webp'
 import Footer from './components/footer.jsx';
 import BlurText from "./components/effects/bt.jsx";
 import Timeline from './components/Timeline.jsx';
@@ -64,7 +64,7 @@ const AeroNITKHomepage = () => {
           <div className="about-text">
             <h2>ABOUT</h2>
             <p>
-              The official NITK Surathkal student consortium, masterfully transmutes aviatic passion into tangible, high-performance aeromodelling and unmanned aerial vehicle designs, fostering a culture of trenchant innovation and empirical engineering excellence.
+              Aero NITK is the official aeromodelling and aviation-focused student team of NITK Surathkal. As a student initiative supported by the institute, we design, analyze, and build RC planes, UAVs, and autonomous drones, combining creativity with engineering precision.
             </p>
             <Link to="/about" className="learn-more-btn">Learn More</Link>
           </div>
@@ -78,22 +78,43 @@ const AeroNITKHomepage = () => {
         <UltimateCarousel />
         <Timeline />
       </section>
+      <section className="pre-contact-image" style={{ width: '100%', textAlign: 'center' }}>
+        <img
+          src={contactus}
+          alt="Pre-contact decoration"
+          style={{ width: '100%', height: 'auto', display: 'block' }}
+        />
+      </section>
 
       <section className="contact-section" id="contact">
         <img src={plane1} className="contact-img plane-top-left" alt="Plane Top Left" />
         <img src={dronePic} className="contact-img drone-bottom-left" alt="Drone Bottom Left" />
         <img src={plane2} className="contact-img plane-top-right" alt="Plane Top Right" />
         <img src={plane3} className="contact-img plane-bottom-right" alt="Plane Bottom Right" />
+
         <div className="contact-card">
+
           <h4>Contact us</h4>
-          <h2>Get in touch</h2>
+          <h2>GET IN TOUCH</h2>
           <form className="contact-form" onSubmit={e => { e.preventDefault(); alert("Submitted!"); }}>
             <div className="form-row">
-              <input type="text" placeholder="First name" required />
-              <input type="text" placeholder="Last name" required />
+              <div className="input-group">
+                <label>First name</label>
+                <input type="text" placeholder="First name" required />
+              </div>
+              <div className="input-group">
+                <label>Last name</label>
+                <input type="text" placeholder="Last name" required />
+              </div>
             </div>
-            <input type="email" placeholder="email" required />
-            <textarea placeholder="Message" rows={4} required />
+            <div className="input-group">
+              <label>Email</label>
+              <input type="email" placeholder="you@company.com" required />
+            </div>
+            <div className="input-group">
+              <label>Message</label>
+              <textarea rows={4} required />
+            </div>
             <button type="submit" className="submit-btn">SUBMIT</button>
           </form>
         </div>

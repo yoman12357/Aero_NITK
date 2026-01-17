@@ -45,7 +45,7 @@ const Timeline = () => {
       description: 'Expanded into avionics research, developing custom flight controllers.',
     },
     {
-      year: '2024',
+      year: '2020',
       title: 'Global Stage',
       description: 'Qualified for the international UAV challenge, showcasing our VTOL drone.',
     },

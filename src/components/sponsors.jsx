@@ -16,16 +16,13 @@ const Sponsors = () => {
     upiId: 'aeronitk@sbi',
   };
 
-  const heroStyle = {
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7))`,
-  };
+
 
   return (
     <div className="sponsors-page">
-      {/* Passing isScrolled={true} for centered desktop navbar */}
 
       {/* HERO SECTION */}
-      <header className="sponsors-hero" style={heroStyle}>
+      <header className="sponsors-hero" >
         <div className="sponsors-hero-content">
           <h1>
             PARTNER WITH AERO NITK AND BE PART OF OUR <span className="highlight">JOURNEY</span> IN AEROSPACE <span className="highlight">INNOVATION</span>.

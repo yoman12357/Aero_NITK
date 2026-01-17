@@ -448,7 +448,10 @@ html,
     z-index: 2;
 }
 
+/* --- Final Contact Section Styles --- */
+
 .contact-section {
+
     scroll-margin-top: 100px;
     position: relative;
     background: #fff;
@@ -456,143 +459,132 @@ html,
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 96px 48px;
+    padding: 100px 48px;
     overflow: hidden;
     z-index: 2;
 }
 
 .contact-img {
     position: absolute;
-    z-index: 2;
+    z-index: 1;
     pointer-events: none;
-    opacity: 0.92;
+    opacity: 1;
+    /* Keeping images vibrant like the reference */
 }
 
+/* Increased Image Sizes & Precise Positioning */
 .plane-top-left {
-    top: 40px;
-    left: 30px;
-    transform: rotate(-10deg);
-    width: 200px;
-    height: auto;
+    top: 30px;
+    left: 40px;
+    width: 320px;
+    transform: rotate(5deg);
 }
 
 .drone-bottom-left {
-    bottom: 56px;
-    left: 50px;
-    width: 100px;
-    height: 103px;
+    bottom: 60px;
+    left: 40px;
+    width: 260px;
 }
 
 .plane-top-right {
-    top: 30px;
-    right: 40px;
-    transform: rotate(15deg);
-    width: 200px;
-    height: auto;
+    top: 40px;
+    right: 60px;
+    width: 240px;
 }
 
 .plane-bottom-right {
-    bottom: 56px;
-    right: 50px;
-    width: 200px;
-    height: auto;
-    transform: rotate(-15deg);
+    bottom: 20px;
+    right: 20px;
+    width: 380px;
+    transform: rotate(-5deg);
 }
 
 .contact-card {
     position: relative;
     background: #fff;
-    color: #111;
-    padding: 48px 38px 40px;
-    border-radius: 16px;
-    box-shadow: 0 12px 38px rgba(0, 0, 0, 0.14);
-    max-width: 420px;
+    padding: 20px;
+    max-width: 550px;
     width: 100%;
-    margin: 0 auto;
     z-index: 3;
     text-align: center;
 }
 
 .contact-card h4 {
-    font-size: 1.08rem;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 7px;
-    letter-spacing: 1px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 5px;
 }
 
 .contact-card h2 {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.5rem;
+    font-weight: 500;
     color: #111;
-    margin-bottom: 24px;
-    letter-spacing: 2px;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
 }
 
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #344054;
 }
 
 .form-row {
     display: flex;
-    gap: 12px;
-}
-
-.form-row input {
-    flex: 1;
+    gap: 20px;
+    width: 100%;
 }
 
 .contact-form input,
 .contact-form textarea {
-    background: #f6f6f8;
-    border: 1.8px solid #d1d9e6;
-    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #D0D5DD;
+    border-radius: 8px;
     padding: 12px 14px;
     font-size: 1rem;
-    margin-bottom: 0;
-    outline: none;
-    transition: border 0.2s;
     width: 100%;
-    color: #000;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-    border-color: #3a6f9e;
-}
-
-.contact-form textarea {
-    resize: vertical;
-    min-height: 85px;
-    max-height: 220px;
-    font-family: inherit;
+    color: #667085;
+    box-sizing: border-box;
 }
 
 .submit-btn {
-    background: #3E7DA6;
+    background: #4497d2;
+    /* Matched to the image's blue */
     color: #fff;
     font-weight: 600;
-    letter-spacing: 2px;
     border: none;
-    border-radius: 7px;
-    padding: 13px;
-    margin-top: 8px;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 10px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s;
+    width: 100%;
 }
 
-.submit-btn:hover {
-    background: #3a6f9e;
-}
+/* Hide images on mobile for better form usability */
+@media screen and (max-width: 1024px) {
+    .contact-img {
+        display: none;
+    }
 
-.navbar-links a:focus,
-.learn-more-btn:focus,
-.submit-btn:focus {
-    outline: 2px solid #2983e6;
-    outline-offset: 2px;
+    .form-row {
+        flex-direction: column;
+    }
 }
 
 html {

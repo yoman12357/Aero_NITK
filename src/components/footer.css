@@ -2,6 +2,7 @@
     width: 100%;
     z-index: 100;
     /* Updated background color to 1c1c1c */
+
     background-color: #1c1c1c !important;
 
     /* FIX: This shadow prevents the black background from showing at the rounded corners */

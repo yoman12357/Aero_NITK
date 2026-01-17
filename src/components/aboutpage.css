@@ -4,7 +4,7 @@ html {
     margin: 0;
     padding: 0;
     /* Changed to pure black */
-    background-color: #000000;
+    background-color: #000000 !important;
     font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
 }
 

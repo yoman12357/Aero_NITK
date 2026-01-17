@@ -5,9 +5,15 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  position: relative;
+  /* The background-image below uses a linear-gradient as an overlay.
+     The "0.4" in rgba(0, 0, 0, 0.4) controls the black tint opacity.
+  */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url('../images/sponsors_background.png');
   background-size: cover;
   background-position: center;
-  position: relative;
+  background-repeat: no-repeat;
 }
 
 .sponsors-page .sponsors-hero-content {
@@ -35,10 +41,17 @@
   color: #3490eb;
 }
 
+.sponsors-page .sponsors-hero-content p {
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
 /* --- BROCHURE SECTION --- */
 .sponsors-page .brochure-section {
   padding: 80px 0;
-  background: #121212;
+  background: #000000;
 }
 
 .sponsors-page .container {
@@ -69,7 +82,7 @@
 }
 
 .pdf-frame {
-  background: #1c1c1c;
+  background: #000000;
   padding: 10px;
   border-radius: 15px;
   border: 1px solid rgba(52, 144, 235, 0.3);
@@ -94,7 +107,6 @@
 
 .download-btn {
   background-color: #3E93CE;
-  /* Blue by default */
   color: #FFFFFF;
   width: 208px;
   height: 39px;
@@ -108,14 +120,11 @@
   font-size: 14px;
   padding: 10px;
   transition: background-color 0.3s ease, color 0.3s ease;
-  /* Smooth transition */
 }
 
-/* Change to white on hover */
 .download-btn:hover {
   background-color: #FFFFFF;
   color: #3E93CE;
-  /* Text turns blue for contrast */
 }
 
 .partnership-inquiry {
