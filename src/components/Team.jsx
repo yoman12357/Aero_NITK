@@ -44,6 +44,7 @@ import LavnnyaPatil from '../images/team-members/LavnnyaPatil.jpg';
 import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Trivedi.jpg';
 import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
+import Darshan from '../images/team-members/darshanupadhaya.jpeg'
 import nitesh_p from '../images/team-members/Nitesh_P.jpg';
 import linkedInLogo from '../images/linkedIn_logo.png';
 
@@ -66,6 +67,7 @@ const Team = () => {
 
   const rawMembersData = [
     { name: 'Aryan Bokolia', role: 'Developer', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
+    { name: 'Darshan Upadhye', role: 'UI/UX Designer', subsystem: 'Web Team', image: Darshan, linkedIn: 'https://www.linkedin.com/in/darshan-upadhye-b20374312?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
     { name: 'Tirth Vishalkumar Patel', role: 'Fuselage Lead', subsystem: 'Structures', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
     { name: 'Prithviraj Thokare', role: 'Member', subsystem: 'Structures', image: thokare_prithviraj_dilip, linkedIn: 'https://www.linkedin.com/in/prithviraj-thokare-0232a5380/' },
     { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'www.linkedin.com/in/om-srivastava-2k28' },
