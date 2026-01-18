@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
 import './header.css';
 import logoImage from '../images/Aero_NITK_logo.png';
+import ThemeToggle from './ThemeToggle';
 
 const Header = ({ isScrolled }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

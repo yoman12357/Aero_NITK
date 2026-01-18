@@ -1,3 +1,6 @@
+@import url(https://fonts.googleapis.com/css?family=Orbitron:regular,500,600,700,800,900);
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+
 body,
 html {
     font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
@@ -143,7 +146,11 @@ html,
     color: #ffffff !important;
     text-align: center;
     margin: 0;
+    font-family: ;
+
 }
+
+.hero
 
 /* Force BlurText internal spans to inherit the blue color and size */
 .hero-title span,
@@ -167,12 +174,7 @@ html,
     padding: 20px;
 }
 
-.hero-spline-bg img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    max-height: 400px;
-}
+
 
 .split-text-wrapper {
     font-size: inherit !important;
@@ -235,6 +237,14 @@ html,
     /* Prevents letters from breaking apart */
 }
 
+.hero-title span,
+.hero-title div,
+.split-text-wrapper span {
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+}
+
 /* Word 1: AERO (Solid) */
 .hero-title span:nth-child(1) {
     color: #ffffff !important;
@@ -244,21 +254,19 @@ html,
 .hero-title span:nth-child(2) {
     color: transparent !important;
     -webkit-text-stroke: 4px #ffffff;
-    /* Slightly thinner stroke for better legibility on mobile */
 }
 
 .hero-subtitle {
     font-size: clamp(0.9rem, 2vw, 1.5rem);
+    font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     letter-spacing: 0.3em;
     color: #ffffff;
     margin-top: 20px;
     text-transform: uppercase;
     padding: 0 20px;
-    /* Prevents text hitting screen edges */
 }
 
-/* --- Tablet & Phone Specific Fixes --- */
 
 /* Tablets (iPad, etc.) */
 @media screen and (max-width: 1024px) {

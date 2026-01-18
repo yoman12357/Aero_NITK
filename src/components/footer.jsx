@@ -39,6 +39,7 @@ const Footer = () => {
         © 2026 Aero NITK | Built with <span className="heart">💙</span> by Web Team, AeroNITK
       </div>
     </footer>
+
   );
 };
 

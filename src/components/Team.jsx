@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import './Team.css';
-import Header from './header.jsx';
 import Footer from './footer.jsx';
-
-// Image Imports
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abel_thomas_mathew from '../images/team-members/Abel_Thomas_Mathew.jpg';
@@ -14,7 +11,6 @@ import abir_saha from '../images/team-members/Abir_Saha.jpg';
 import ajay_sharma_sambara from '../images/team-members/Ajay_Sharma_Sambara.jpeg';
 import aman_nagpal from '../images/team-members/Aman_Nagpal.jpg';
 import anmol_bohra from '../images/team-members/Anmol_Bohra.jpeg';
-import appuganesh from '../images/team-members/Appuganesh.jpeg';
 import aryan_bokolia from '../images/team-members/Aryan_Bokolia.jpeg';
 import aryan_gupta from '../images/team-members/Aryan_Gupta.JPG';
 import bharat_patel from '../images/team-members/Bharat_Patel.jpg';

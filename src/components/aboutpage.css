@@ -1,4 +1,6 @@
 /* Base Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 body,
 html {
     margin: 0;
@@ -9,12 +11,15 @@ html {
 }
 
 /* --- HERO SECTION --- */
+/* --- HERO SECTION --- */
 .about-hero {
     position: relative;
     width: 100%;
     height: 100vh;
-    /* Ensure this path is correct relative to this CSS file */
-    background: url('../images/aboutpage.webp') no-repeat center center/cover;
+    /* This creates a gradient from transparent at the top to solid black at the bottom */
+    background:
+        linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000 90%),
+        url('../images/aboutpage.webp') no-repeat center center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -55,12 +60,15 @@ html {
 }
 
 .about-hero p {
+
     font-size: 1.25rem;
     color: #ffffff;
     line-height: 1.6;
     max-width: 850px;
     margin: 0 auto;
     font-weight: 400;
+    font-family: 'Inter', sans-serif !important;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* --- CONTENT CONTAINER --- */
