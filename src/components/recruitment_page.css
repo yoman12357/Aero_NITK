@@ -286,3 +286,72 @@ a:hover {
     justify-content: center;
   }
 }
+
+/* Update the form to ensure children take full width and center items */
+.recruitment-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  /* This centers the children horizontally */
+  width: 100%;
+}
+
+/* Ensure the fieldset and labels stretch properly */
+.recruitment-card label,
+.recruitment-card fieldset {
+  width: 100%;
+  max-width: 450px;
+  /* Increased slightly for better desktop look */
+  text-align: left;
+  box-sizing: border-box;
+}
+
+/* Fix for the "Apply Now" Button to be centered */
+.apply-btn {
+  display: block;
+  /* Changed from inline-block */
+  margin: 30px auto;
+  /* auto on left/right centers it in the form */
+  padding: 14px 40px;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/* MOBILE FIXES */
+@media (max-width: 700px) {
+  .recruitment-card {
+    padding: 25px 15px;
+    width: 95%;
+  }
+
+  .recruitment-card h2 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+
+  /* Force the checkboxes to stay in a neat vertical list on small screens */
+  .teams-checkboxes {
+    display: flex;
+    flex-direction: column;
+    /* Stack them vertically for better touch targets */
+    align-items: flex-start;
+    gap: 12px;
+    padding-left: 10px;
+  }
+
+  .team-checkbox {
+    width: 100%;
+    text-align: left;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Ensure the button stays centered and doesn't hug the edges */
+  .apply-btn {
+    width: 90%;
+    margin: 20px auto;
+  }
+}

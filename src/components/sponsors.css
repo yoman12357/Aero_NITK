@@ -1,4 +1,6 @@
 /* --- HERO SECTION --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+
 .sponsors-page .sponsors-hero {
   height: 100vh;
   display: flex;
@@ -9,7 +11,7 @@
   /* The background-image below uses a linear-gradient as an overlay.
      The "0.4" in rgba(0, 0, 0, 0.4) controls the black tint opacity.
   */
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
     url('../images/sponsors_background.png');
   background-size: cover;
   background-position: center;
@@ -28,7 +30,7 @@
 
 .sponsors-page .sponsors-hero-content h1,
 .sponsors-page .sponsors-hero-content h1 .highlight {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 36px;
   line-height: 120%;
