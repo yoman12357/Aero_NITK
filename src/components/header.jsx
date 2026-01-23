@@ -55,7 +55,9 @@ const Header = ({ isScrolled }) => {
         <NavLink to="/recruitment" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>RECRUITMENT</NavLink>
         <NavLink to="/team" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>TEAM</NavLink>
         <NavLink to="/sponsors" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>SPONSORS</NavLink>
-        <a href="/#contact" onClick={(e) => handleHashLink(e, 'contact')} className={activeSection === 'contact' ? 'active-link' : ''}>CONTACT</a>
+        <button className='contact-button'>
+                  <a href="/#contact" onClick={(e) => handleHashLink(e, 'contact')} className={activeSection === 'contact' ? 'active-link' : ''}>CONTACT</a>
+        </button>
       </div>
 
       <div className="nav-spacer-right"></div>

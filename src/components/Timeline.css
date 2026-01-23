@@ -1,15 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+
 .timeline-container {
   background-color: #000;
   padding: 80px 20px;
   position: relative;
   overflow: hidden;
   color: #fff;
-  font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .timeline-header {
   text-align: center;
-  font-size: 3rem;
+  font-size: 2.25rem;
+  font-family: 'Montserrat',sans-serif;
+  font-weight: 500;
   margin-bottom: 60px;
   color: #fff;
   text-transform: uppercase;
@@ -116,25 +120,27 @@
 
 .timeline-year {
   display: inline-block;
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 1.75rem;
+  font-weight: 500;
   color: #2983e6;
   /* Aero Blue */
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .timeline-content h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.4rem;
-  font-weight: 600;
+  /* margin: 0 0 10px 0; */
+  font-size: 1.95rem;
+  font-weight: 500;
+  font-family: 'Montserrat',sans-serif;
   letter-spacing: 1px;
 }
 
 .timeline-content p {
-  margin: 0;
+  /* margin: 0; */
   color: #ccc;
   line-height: 1.6;
-  font-size: 1rem;
+  font-size: 1.125rem;
+  font-weight: 400;
 }
 
 /* --- Mobile / Tablet Responsiveness --- */

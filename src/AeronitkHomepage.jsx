@@ -64,8 +64,8 @@ const AeroNITKHomepage = () => {
             <h2>ABOUT</h2>
             <p>
               Aero NITK is the official aeromodelling and aviation-focused student team of NITK Surathkal. As a student initiative supported by the institute, we design, analyze, and build RC planes, UAVs, and autonomous drones, combining creativity with engineering precision.
-            </p>
-            <Link to="/about" className="learn-more-btn">Learn More</Link>
+            </p><br/>
+            <Link to="/about" className="learn-more-btn">LEARN MORE</Link>
           </div>
           <div className="about-image">
             <img src={aboutDrone} alt="Aero NITK Drone" />
