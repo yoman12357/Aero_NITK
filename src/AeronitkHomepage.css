@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Orbitron:regular,500,600,700,800,900);
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 body,
 html {
@@ -313,7 +314,7 @@ html,
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 64px 48px;
+    padding: 4rem 3rem ;
     position: relative;
     z-index: 2;
 }
@@ -334,40 +335,41 @@ html,
 
 .about-text h2 {
     text-align: left;
-
-    font-family: Roboto;
-    font-weight: 500;
+    font-family: 'Montserrat',sans-serif;
+    font-weight: 501;
     font-size: 36px;
     line-height: 1.5;
     letter-spacing: 0.04em;
     color: #000;
-    margin-bottom: 20px;
 }
 
 .about-text p {
-    text-align: justify;
-    font-family: Roboto;
+    font-family: 'Inter',sans-serif;
     font-weight: 400;
-    font-size: 18px;
-    line-height: 1.5;
-    letter-spacing: 0.01em;
+    font-size: 20px;
+    line-height: 1.995rem;
+    letter-spacing: 0.1em;
     text-transform: capitalize;
     color: #1f1f1f;
     margin-bottom: 30px;
 }
 
 .learn-more-btn {
-    padding: 12px 20px;
-    border: none;
+    padding: 8px 16px;
+    border:2px solid #3e7da6;
     border-radius: 8px;
     background: #3e7da6;
     color: #fff;
-    font-size: 16px;
+    font-size: 18px;
+    font-family: 'Montserrat';
     cursor: pointer;
 }
 
 .learn-more-btn:hover {
-    background: #3a6f9e;
+    background: #ffffff;
+    color:#3e7da6;
+
+    
 }
 
 .about-image {
