@@ -1,3 +1,4 @@
+///time line components onn home page 
 import React, { useEffect } from 'react';
 import './Timeline.css';
 
@@ -20,9 +21,7 @@ const Timeline = () => {
     return () => items.forEach((item) => observer.unobserve(item));
   }, []);
 
-  // ==========================================
-  // EDIT YOUR TIMELINE DATA HERE
-  // ==========================================
+
   const timelineData = [
     {
       year: '2020',

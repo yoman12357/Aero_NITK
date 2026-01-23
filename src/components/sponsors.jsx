@@ -1,6 +1,6 @@
+///sponsors page in header
 import React, { useState } from 'react';
 import './sponsors.css';
-import Header from './header.jsx';
 import Footer from './footer.jsx';
 
 const Sponsors = () => {
@@ -31,7 +31,6 @@ const Sponsors = () => {
         </div>
       </header>
 
-      {/* INFO & BROCHURE SECTION */}
       <section id="about" className="brochure-section">
         <div className="container">
           <div className="info-vertical-list">
@@ -63,7 +62,6 @@ const Sponsors = () => {
         </div>
       </section>
 
-      {/* CALL TO ACTION SECTION - BELOW BROCHURE */}
       <section className="sponsors-cta">
         <div className="cta-container">
           <a className="download-btn" href="/brochure.pdf" download>
@@ -75,7 +73,6 @@ const Sponsors = () => {
         </div>
       </section>
 
-      {/* BANK DETAILS SECTION */}
       <section id="bank" className="bank-details-section">
         <div className="container">
           <h2>For sponsorship payments and donations</h2>

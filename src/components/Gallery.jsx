@@ -1,9 +1,8 @@
+///Gallery page in the header
 import React from 'react';
 import './Gallery.css';
 import Footer from './footer';
-import Header from './header';
 
-// --- ALL 18 IMAGE IMPORTS ---
 import gallery1 from '../images/Gallery/gallery1.png';
 import gallery2 from '../images/Gallery/gallery2.png';
 import gallery3 from '../images/Gallery/gallery3.png';
@@ -24,7 +23,6 @@ import gallery17 from '../images/Gallery/gallery17.png';
 import gallery18 from '../images/Gallery/gallery18.png';
 
 const images = [
-  // Only height matters now for the masonry effect; width will fill the column
   { src: gallery1, alt: 'Img 1', height: 300 },
   { src: gallery2, alt: 'Img 2', height: 300 },
   { src: gallery3, alt: 'Img 3', height: 300 },
@@ -56,7 +54,6 @@ const Gallery = () => {
               key={idx}
               className={`gallery-item ${image.wide ? 'wide' : ''}`}
               style={{
-                // Mapping height to 10px grid units
                 gridRowEnd: `span ${Math.round(image.height / 30)}`,
               }}
             >

@@ -1,3 +1,4 @@
+///file related to databases
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 
@@ -22,7 +23,7 @@ export const saveApplicant = async (data) => {
     try {
         await addDoc(collection(db, "applicants"), {
             ...data,
-            submittedAt: serverTimestamp(), // Records when they applied
+            submittedAt: serverTimestamp(),
         });
         return { success: true };
     } catch (error) {

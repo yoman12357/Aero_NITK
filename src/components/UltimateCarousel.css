@@ -34,7 +34,6 @@
 .slide {
   min-width: 100%;
   height: 100%;
-  /* Background properties for the "lightgray 50% / cover" effect */
   background-position: 50% 50%;
   background-size: cover;
   background-repeat: no-repeat;
@@ -103,7 +102,6 @@
   transform: scale(1.2);
 }
 
-/* Maintain responsiveness for screens smaller than 900px */
 @media (max-width: 940px) {
   .ultimate-carousel {
     width: 95%;

@@ -1,8 +1,8 @@
+///Header file 
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
 import './header.css';
 import logoImage from '../images/Aero_NITK_logo.png';
-import ThemeToggle from './ThemeToggle';
 
 const Header = ({ isScrolled }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,14 +45,14 @@ const Header = ({ isScrolled }) => {
         <img src={logoImage} alt="Logo" className="app-navbar-logo" />
       </Link>
 
-      {/* These spacers handle the sliding transition */}
       <div className="nav-spacer-left"></div>
 
       <div className={`app-navbar-links ${mobileMenuOpen ? 'open' : ''}`}>
         <a href="/#home" onClick={(e) => handleHashLink(e, 'home')} className={activeSection === 'home' ? 'active-link' : ''}>HOME</a>
         <NavLink to="/about" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>ABOUT</NavLink>
         <NavLink to="/gallery" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>GALLERY</NavLink>
-        {/* <NavLink to="/recruitment" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>RECRUITMENT</NavLink> */}
+        <NavLink to="/alumni" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>ALUMNI</NavLink>
+        <NavLink to="/recruitment" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>RECRUITMENT</NavLink>
         <NavLink to="/team" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>TEAM</NavLink>
         <NavLink to="/sponsors" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>SPONSORS</NavLink>
         <button className='contact-button'>

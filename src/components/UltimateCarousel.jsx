@@ -1,3 +1,4 @@
+///carousel page on home page 
 import React, { useState, useEffect, useRef } from "react";
 import "./UltimateCarousel.css";
 import Achievement1 from '../images/Achievements/Achievements_1.webp'
