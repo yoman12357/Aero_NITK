@@ -1,3 +1,4 @@
+///main aero home page file 
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -40,7 +41,6 @@ const AeroNITKHomepage = () => {
 
       <section className="hero-section" id="home">
         <div className="hero-container">
-          {/* Main Animated Title */}
           <div className="hero-title-wrapper">
             <BlurText
 
@@ -53,7 +53,6 @@ const AeroNITKHomepage = () => {
             />
           </div>
 
-          {/* Static Subtitle */}
           <p className="hero-subtitle">WINGS OF TEAM WORK</p>
         </div>
 

@@ -15,7 +15,6 @@ const App = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Sets to true if user scrolls more than 50px
       setIsScrolled(window.scrollY > 50);
     };
 
@@ -26,7 +25,6 @@ const App = () => {
   return (
     <>
       <ScrollToTop />
-      {/* Header is placed here once, passing the scroll state */}
       <Header isScrolled={isScrolled} />
 
       <Routes>

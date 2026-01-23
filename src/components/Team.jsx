@@ -1,3 +1,4 @@
+///Team page in header
 import React, { useState } from 'react';
 import './Team.css';
 import Footer from './footer.jsx';
@@ -136,7 +137,6 @@ const Team = () => {
 
   return (
     <div className="team-page-bg">
-      {/* Passing isScrolled={true} ensures the header is centered and logo-free on desktop */}
       <div className="team-main-container">
 
         <section className="section-group">

@@ -9,7 +9,6 @@
     justify-content: space-between;
     padding: 10px 32px;
 
-    /* 40% opacity and 4px blur */
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -56,7 +55,6 @@
     text-decoration: none !important;
 }
 
-/* --- Desktop Scrolled State --- */
 @media (min-width: 901px) {
     .app-navbar.scrolled-layout {
         justify-content: center;
@@ -103,7 +101,6 @@
 
     .app-navbar-links.open {
         display: flex;
-        /* REMOVED UNDERLINE HERE */
         text-decoration: none !important;
         flex-direction: column;
         position: fixed;
@@ -140,7 +137,6 @@
 
 .app-navbar-links a.active-link {
     color: #2983e6;
-    /* REMOVED UNDERLINE/BORDER-BOTTOM HERE */
     border-bottom: none;
     text-decoration: none !important;
     font-weight: 700;
@@ -184,16 +180,13 @@
     border-radius: 50%;
 }
 
-/* Spacers for the sliding effect */
 .nav-spacer-left {
     flex-grow: 1;
-    /* Pushes links to the right initially */
     transition: all 0.5s ease-in-out;
 }
 
 .nav-spacer-right {
     flex-grow: 0;
-    /* No space on the right initially */
     transition: all 0.3s ease-in-out;
 }
 
@@ -203,7 +196,6 @@
     white-space: nowrap;
 }
 
-/* --- SCROLLED STATE --- */
 @media (min-width: 901px) {
     .app-navbar.scrolled-layout {
         height: 70px;
@@ -215,13 +207,11 @@
         opacity: 0;
     }
 
-    /* By making both spacers grow equally, the links move to the center */
     .app-navbar.scrolled-layout .nav-spacer-right {
         flex-grow: 1;
     }
 }
 
-/* --- LINKS STYLING --- */
 .app-navbar-links a {
     color: #ffffff;
     text-decoration: none;
@@ -235,7 +225,6 @@
     color: #2983e6;
 }
 
-/* --- MOBILE --- */
 @media (max-width: 900px) {
     .app-navbar {
         justify-content: space-between;

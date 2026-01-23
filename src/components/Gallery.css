@@ -18,11 +18,8 @@
 
 .gallery-grid {
   display: grid;
-  /* Fixed 3-column layout ensures rows fill up left-to-right */
   grid-template-columns: repeat(3, 1fr);
-  /* 10px rows allow for the custom heights you set in JSX */
   grid-auto-rows: 10px;
-  /* Maintains strict order: 1, 2, 3, 4, 5... */
   grid-auto-flow: row;
   gap: 20px;
   max-width: 1200px;
@@ -39,7 +36,6 @@
   display: flex;
 }
 
-/* Class for the group photo to span all 3 columns */
 .gallery-item.wide {
   grid-column: span 3;
 }
@@ -56,7 +52,6 @@
   transform: scale(1.05);
 }
 
-/* Tablet: 2 columns */
 @media (max-width: 968px) {
   .gallery-section {
     padding: 100px 15px 50px 15px;
@@ -65,20 +60,16 @@
   .gallery-grid {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: auto;
-    /* Allow rows to size naturally */
     gap: 15px;
   }
 
   .gallery-item,
   .gallery-item.wide {
     grid-column: span 1;
-    /* Reset wide items to fit 2-col grid better */
     grid-row-end: auto !important;
-    /* Override the inline style from JSX */
   }
 }
 
-/* Mobile: 1 column (As shown in your screenshot) */
 @media (max-width: 600px) {
   .gallery-section {
     padding: 80px 10px 40px 10px;
@@ -86,7 +77,6 @@
 
   .gallery-grid {
     display: flex;
-    /* Switch to flex for a simple vertical stack */
     flex-direction: column;
     gap: 12px;
   }
@@ -98,13 +88,10 @@
 
   .gallery-item img {
     height: auto;
-    /* Maintains natural aspect ratio like the screenshot */
     max-height: 400px;
-    /* Optional: prevents very tall images from taking over */
   }
 }
 
-/* Mobile and Tablet overrides - Laptop remains unchanged */
 @media (max-width: 1024px) {
   .gallery-grid {
     display: flex !important;
@@ -115,13 +102,11 @@
 
   .gallery-item {
     grid-row-end: auto !important;
-    /* Forces natural height */
     width: 100% !important;
   }
 
   .gallery-item img {
     height: auto !important;
-    /* Maintains image aspect ratio */
     object-fit: contain;
   }
 

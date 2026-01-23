@@ -153,13 +153,11 @@
     /* Force left alignment */
   }
 
-  /* Reset positioning for all items */
   .timeline-item:nth-child(odd),
   .timeline-item:nth-child(even) {
     left: 0;
   }
 
-  /* Adjust dots to the left line */
   .timeline-dot,
   .timeline-item:nth-child(even) .timeline-dot {
     left: 21px;

@@ -1,7 +1,5 @@
-/* Updated container to accommodate 4 cards across (approx 1400px) */
 .team-main-container {
   max-width: 1400px;
-  /* Increased from 1264px to fit 4 cards */
   margin: 0 auto;
   padding: 147px 20px 100px;
   display: flex;
@@ -31,14 +29,12 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 32px;
-  /* Adjusted gap for better distribution */
   margin-bottom: 32px;
   width: 100%;
 }
 
 .team-card {
   width: 280px;
-  /* Reduced from 300px to fit 4 per row */
   height: 400px;
   background: #606060;
   border-radius: 15px;
@@ -137,7 +133,6 @@
 @media (max-width: 1150px) {
   .team-card {
     width: 240px;
-    /* Scale down for smaller laptops before wrapping */
   }
 }
 

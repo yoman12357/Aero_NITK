@@ -1,7 +1,7 @@
+/// about page in the header
 import React, { useEffect } from 'react';
 import './aboutpage.css';
-import Header from './header';
-import Footer from './footer.jsx'; // Using the updated footer we made
+import Footer from './footer.jsx';
 
 const AboutPage = () => {
   useEffect(() => {
