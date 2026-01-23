@@ -53,7 +53,7 @@ const RecruitmentForm = () => {
     e.preventDefault();
 
     // Strict validation: Must have exactly 2 teams
-    if (formData.selectedTeams.length !== 2) {
+    if (formData.selectedTeams.length !== 3) {
       alert("Please select exactly two teams to indicate your 1st and 2nd priority.");
       return;
     }
@@ -125,6 +125,17 @@ const RecruitmentForm = () => {
               })}
             </div>
           </fieldset>
+          <label>Why do you want to join AeroNITK?
+            <textarea
+              name="whyJoin"
+              value={formData.whyJoin}
+              onChange={handleInputChange}
+              required
+              placeholder="Tell us about your interest and motivation..."
+              rows="5"
+              style={{ width: '100%', marginTop: '10px', padding: '10px', borderRadius: '8px', border: '1.8px solid #1da1f2', background: '#000', color: '#fff' }}
+            />
+          </label>
 
           <button className="apply-btn" type="submit" disabled={isSubmitting}>
             {isSubmitting ? "SUBMITTING..." : "APPLY NOW"}

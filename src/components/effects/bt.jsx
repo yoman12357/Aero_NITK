@@ -42,7 +42,6 @@ const BlurText = ({
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [threshold, rootMargin]);
 
   const defaultFrom = useMemo(
@@ -92,7 +91,10 @@ const BlurText = ({
             onAnimationComplete={index === elements.length - 1 ? onAnimationComplete : undefined}
           >
             {segment === ' ' ? '\u00A0' : segment}
-            {animateBy === 'words' && index < elements.length - 1 && '\u00A0'}
+            {/* Custom spacer class added here */}
+            {animateBy === 'words' && index < elements.length - 1 && (
+              <span className="word-spacer">{"\u00A0"}</span>
+            )}
           </motion.span>
         );
       })}

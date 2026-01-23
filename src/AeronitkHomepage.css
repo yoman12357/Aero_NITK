@@ -138,21 +138,60 @@ html,
     width: 100%;
 }
 
+/* --- Hero Title Adjustments --- */
 .hero-title {
     font-size: clamp(3rem, 10vw, 8rem);
     font-weight: 900;
     margin: 0;
-    line-height: 1.1;
+    line-height: 0.8;
+    /* Reduced line-height pulls the subtitle up */
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.2em;
+    flex-wrap: nowrap;
     width: 100%;
 }
 
-.hero-title span {
+/* Control the specific gap between 'AERO' and 'NITK' */
+.hero-title .word-spacer {
     display: inline-block;
-    white-space: nowrap;
+    width: 0.2em;
+    /* Smaller value = closer words */
+}
+
+.hero-title span {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* --- Hero Subtitle Adjustments --- */
+.hero-subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.5rem);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: #ffffff;
+    margin-top: 10px;
+    /* Negative margin brings it very close to the title */
+    text-transform: uppercase;
+    padding: 0 20px;
+}
+
+/* Mobile responsive tight-spacing */
+@media screen and (max-width: 768px) {
+    .hero-title {
+        font-size: 3.5rem;
+        flex-direction: row;
+        line-height: 0.8;
+    }
+
+    .hero-title .word-spacer {
+        width: 0.15em;
+    }
+
+    .hero-subtitle {
+        margin-top: -5px;
+        letter-spacing: 0.15em;
+    }
 }
 
 .hero-title span,
@@ -172,16 +211,6 @@ html,
     -webkit-text-stroke: 4px #ffffff;
 }
 
-.hero-subtitle {
-    font-size: clamp(0.9rem, 2vw, 1.5rem);
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    color: #ffffff;
-    margin-top: 20px;
-    text-transform: uppercase;
-    padding: 0 20px;
-}
 
 
 @media screen and (max-width: 1024px) {

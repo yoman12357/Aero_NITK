@@ -43,7 +43,6 @@ const AeroNITKHomepage = () => {
         <div className="hero-container">
           <div className="hero-title-wrapper">
             <BlurText
-
               text="AERO NITK"
               className="hero-title"
               delay={150}
