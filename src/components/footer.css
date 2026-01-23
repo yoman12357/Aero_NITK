@@ -1,21 +1,26 @@
+.pagewrapper {
+    transition: background-color 0.3s ease;
+}
+
+.pagewrapper.home-bg {
+    background-color: #ffffff;
+}
+
+.pagewrapper.other-bg {
+    background-color: #000000;
+}
+
 .footer {
     width: 100%;
-    z-index: 100;
-    /* Updated background color to 1c1c1c */
-
+    z-index: 10;
     background-color: #1c1c1c !important;
-
-    /* FIX: This shadow prevents the black background from showing at the rounded corners */
-
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
-
     padding: 56px 72px 32px 72px;
     color: #ffffff;
     box-sizing: border-box;
     font-family: sans-serif;
     position: relative;
-    z-index: 10;
 }
 
 .footer-main-content {
@@ -64,10 +69,6 @@
     color: #3490eb;
 }
 
-.contact-col {
-    min-width: 200px;
-}
-
 .footer-bottom {
     margin-top: 60px;
     font-size: 14px;
@@ -79,7 +80,6 @@
     color: #3490eb;
 }
 
-/* RESPONSIVE DESIGN */
 @media (max-width: 1024px) {
     .footer {
         padding: 40px 32px 32px;

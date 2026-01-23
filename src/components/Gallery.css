@@ -1,3 +1,7 @@
+.body {
+  background-color: #000000;
+}
+
 .gallery-section {
   padding: 130px 20px 70px 20px;
   background: #000;
@@ -97,5 +101,31 @@
     /* Maintains natural aspect ratio like the screenshot */
     max-height: 400px;
     /* Optional: prevents very tall images from taking over */
+  }
+}
+
+/* Mobile and Tablet overrides - Laptop remains unchanged */
+@media (max-width: 1024px) {
+  .gallery-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    padding: 0 10px;
+  }
+
+  .gallery-item {
+    grid-row-end: auto !important;
+    /* Forces natural height */
+    width: 100% !important;
+  }
+
+  .gallery-item img {
+    height: auto !important;
+    /* Maintains image aspect ratio */
+    object-fit: contain;
+  }
+
+  .gallery-item.wide {
+    grid-column: auto !important;
   }
 }
