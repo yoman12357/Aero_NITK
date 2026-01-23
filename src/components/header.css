@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -40,20 +42,36 @@
     display: flex;
     gap: 30px;
     transition: all 0.4s ease-in-out;
+    align-items: center;
 }
 
 .app-navbar-links a {
     color: #fff;
     text-decoration: none;
-    font-size: 15px;
-    letter-spacing: 1px;
+    font-size: 1rem;
+    font-family: 'Montserrat',sans-serif;
+    letter-spacing:normal;
     font-weight: 500;
     transition: color 200ms ease;
+    
 }
 
 .app-navbar-links a:hover {
     color: #2983e6;
     text-decoration: none !important;
+}
+
+.contact-button{
+    height:2.45rem;
+    width: 6.40625rem;
+    padding:0 0.625rem 0 0.625rem ;
+    border:2px solid #3e7da6;
+    border-radius: 8px;
+    background: #3E93CE;
+    color: #fff;
+    font-size: 0.75rem;
+    font-family: 'Montserrat';
+    cursor: pointer;
 }
 
 /* --- Desktop Scrolled State --- */
