@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./UltimateCarousel.css";
+import Achievement1 from '../images/Achievements/Achievements_1.webp'
+import Achievement2 from '../images/Achievements/Achievements_2.webp'
+import Achievement3 from '../images/Achievements/Achievements_3.webp'
+import Achievement4 from '../images/Achievements/Achievements_4.webp'
+
 
 const UltimateCarousel = () => {
   const [slideIndex, setSlideIndex] = useState(0);
   const intervalRef = useRef(null);
 
   const images = [
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80",
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2071&q=80",
-    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2074&q=80"
+    Achievement1,
+    Achievement2,
+    Achievement3,
+    Achievement4,
+
   ];
 
   const totalSlides = images.length;

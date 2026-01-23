@@ -117,72 +117,6 @@ html,
     position: relative;
 }
 
-.hero-section {
-    /* Background with 40% opacity look (0.6 darkness overlay) */
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('./images/hero_background.webp');
-    background-size: cover;
-    background-position: center;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    /* Perfect Centering */
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    box-sizing: border-box;
-    overflow: hidden;
-    margin-top: 0;
-    /* Removed padding-top to ensure vertical centering */
-    padding-top: 0;
-}
-
-.hero-title {
-    /* 8xl equivalent */
-    font-size: 6rem;
-    line-height: 1.1;
-    font-weight: 800;
-    /* Apply requested color: 3E93CE */
-    color: #ffffff !important;
-    text-align: center;
-    margin: 0;
-
-}
-
-.hero
-
-/* Force BlurText internal spans to inherit the blue color and size */
-.hero-title span,
-.hero-title div {
-    color: #ffffff !important;
-    font-size: xxxx-large !important;
-}
-
-.hero-spline-bg {
-    width: 100%;
-    max-width: 600px;
-
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    background-color: transparent;
-    position: relative;
-    z-index: 1;
-    padding: 20px;
-}
-
-
-
-.split-text-wrapper {
-    font-size: inherit !important;
-}
-
-.split-text-wrapper span {
-    font-size: inherit !important;
-}
-
 /* --- Updated Section in AeronitkHomepage.css --- */
 
 .hero-section {
@@ -453,6 +387,22 @@ html,
     width: 100%;
     position: relative;
     z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .about-image {
+        display: none;
+    }
+
+    .about-text {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .about-text h2,
+    .about-text p {
+        text-align: left;
+    }
 }
 
 /* --- Final Contact Section Styles --- */
