@@ -1,13 +1,12 @@
-///recuruitment form 
 import React, { useState } from 'react';
 import './recruitment_page.css';
 import Footer from './footer.jsx';
 import { saveApplicant } from '../firebase.js';
 
-const teams = ["Web Team", "Avionics", "Structures", "Aerodynamics", "Marketing", "Media", "Flight Simulator"];
-const semesters = ["SELECT-HERE","1", "2", "3", "4", "5", "6", "7", "8"];
+const teams = ["Web Team", "Structures", "Media", "Avionics", "Aerodynamics", "Marketing"];
+const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
 const branches = [
-  "SELECT-HERE","Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
+  "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
   "Electronics and Communication Engineering", "Electrical and Electronics Engineering",
   "Computational and Data Science", "Mechanical Engineering", "Mathematical and Computational Sciences",
   "Civil Engineering", "Chemical Engineering", "Metallurgical and Materials Engineering", "Mining Engineering"
@@ -19,9 +18,10 @@ const RecruitmentForm = () => {
     name: "",
     rollNo: "",
     phone: "",
-    branch: branches[0],
-    semester: semesters[0],
-    selectedTeams: [], // Stores teams in order: index 0 is Priority 1, index 1 is Priority 2
+    branch: "",
+    semester: "",
+    selectedTeams: [],
+    whyJoin: ""
   });
 
   const handleInputChange = (e) => {
@@ -32,29 +32,22 @@ const RecruitmentForm = () => {
   const handleTeamSelect = (team) => {
     setFormData((prev) => {
       let newSelected = [...prev.selectedTeams];
-
-      // If already selected, remove it (Deselect)
       if (newSelected.includes(team)) {
         newSelected = newSelected.filter((t) => t !== team);
       } else {
-        // Sliding logic: If we already have 2, remove the oldest (Priority 1)
-        // so the old Priority 2 becomes Priority 1, and new choice becomes Priority 2
         if (newSelected.length >= 3) {
-          newSelected.shift(); // Removes the first element
+          newSelected.shift();
         }
-        newSelected.push(team); // Adds new choice to the end
+        newSelected.push(team);
       }
-
       return { ...prev, selectedTeams: newSelected };
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Strict validation: Must have exactly 2 teams
     if (formData.selectedTeams.length !== 3) {
-      alert("Please select exactly two teams to indicate your 1st and 2nd priority.");
+      alert("Please select exactly three teams to indicate your 1st and 2nd priority.");
       return;
     }
 
@@ -66,51 +59,60 @@ const RecruitmentForm = () => {
       alert("Application submitted successfully!");
       setFormData({
         name: "", rollNo: "", phone: "",
-        branch: branches[0], semester: semesters[0],
-        selectedTeams: []
+        branch: "", semester: "",
+        selectedTeams: [], whyJoin: ""
       });
-    } else {
-      alert("Submission failed. Please check your connection.");
     }
   };
 
   return (
     <>
       <section className="recruitment-section">
+        {/* Header moved outside the form to be styled independently */}
+        <h2 className="recruitment-title">JOIN OUR TEAM</h2>
+
         <form className="recruitment-card" onSubmit={handleSubmit}>
-          <h2>JOIN OUR TEAM</h2>
-
-          <label>Name:
-            <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your full name" />
+          <label>NAME
+            <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
           </label>
 
-          <label>Roll Number:
-            <input type="text" name="rollNo" value={formData.rollNo} onChange={handleInputChange} required placeholder="Your roll number" />
+          <label>ROLL NUMBER
+            <input type="text" name="rollNo" value={formData.rollNo} onChange={handleInputChange} required placeholder="Your Roll Number" />
           </label>
 
-          <label>Phone Number:
-            <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="10-digit number" pattern="[0-9]{10}" />
+          <label>PHONE NUMBER
+            <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="10-Digit Number" pattern="[0-9]{10}" />
           </label>
 
-          <label>Branch:
+          <label>BRANCH
             <select name="branch" value={formData.branch} onChange={handleInputChange} required>
-              {branches.map((br, idx) => <option key={idx} value={br}>{br}</option>)}
+              <option value="" disabled hidden>Select Here</option>
+              {branches.map((br, idx) => (
+                <option key={idx} value={br} style={{ color: '#ffffff' }}>
+                  {br}
+                </option>
+              ))}
             </select>
           </label>
 
-          <label>Semester:
+          <label>SEMESTER
             <select name="semester" value={formData.semester} onChange={handleInputChange} required>
-              {semesters.map((sem, idx) => <option key={idx} value={sem}>{sem}</option>)}
+              <option value="" disabled hidden>Select Here</option>
+              {semesters.map((sem, idx) => (
+                <option key={idx} value={sem} style={{ color: '#ffffff' }}>
+                  {sem}
+                </option>
+              ))}
             </select>
           </label>
 
           <fieldset>
-            <legend>Select Preferences (1st & 2nd Choice):</legend>
+            <legend>SELECT PREFERENCE ORDER (1ST AND 2ND)</legend>
             <div className="teams-checkboxes">
               {teams.map((team) => {
                 const priorityIndex = formData.selectedTeams.indexOf(team);
                 return (
-                  <label key={team} className={`team-checkbox ${priorityIndex !== -1 ? 'selected' : ''}`}>
+                  <label key={team} className="team-checkbox">
                     <input
                       type="checkbox"
                       checked={priorityIndex !== -1}
@@ -125,15 +127,15 @@ const RecruitmentForm = () => {
               })}
             </div>
           </fieldset>
-          <label>Why do you want to join AeroNITK?
+
+          <label>WHY DO YOU WANT TO JOIN AERONITK?
             <textarea
               name="whyJoin"
               value={formData.whyJoin}
               onChange={handleInputChange}
               required
               placeholder="Tell us about your interest and motivation..."
-              rows="5"
-              style={{ width: '100%', marginTop: '10px', padding: '10px', borderRadius: '8px', border: '1.8px solid #1da1f2', background: '#000', color: '#fff' }}
+              rows="4"
             />
           </label>
 
