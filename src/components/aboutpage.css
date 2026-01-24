@@ -79,7 +79,7 @@ html {
 .about-page-container {
     background-color: #000000;
     padding: 80px 20px;
-    text-transform: uppercase;
+    text-transform: capitalize;
 
     line-height: 34px;
     size: 20px;
@@ -131,7 +131,7 @@ html {
 
     .about-hero p {
         font-size: 1rem;
-        text-transform: uppercase;
+        text-transform: capitalize;
     }
 
     .section-block {
