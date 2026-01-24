@@ -4,7 +4,8 @@
   background-color: #000;
   padding: 80px 20px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y:visible;
   color: #fff;
   font-family: 'Montserrat', sans-serif;
 }
@@ -28,6 +29,7 @@
   position: relative;
   max-width: 1000px;
   margin: 0 auto;
+  padding-bottom: 140px;
 }
 
 /* The vertical line */

@@ -19,35 +19,47 @@ const Timeline = () => {
     items.forEach((item) => observer.observe(item));
 
     return () => items.forEach((item) => observer.unobserve(item));
+    
   }, []);
 
 
   const timelineData = [
     {
-      year: '2020',
+      year: '2023',
       title: 'Inception',
       description: 'Aero NITK was founded with a vision to innovate in unmanned aerial systems.',
     },
     {
-      year: '2021',
-      title: 'First Flight',
-      description: 'Successfully designed and tested our first fixed-wing prototype, the "Falcon-X".',
+      year: 'Dec 2023',
+      title: 'Boeing Competition',
+      description: 'National debut at Boeing competition held at IITB, strong first showing.',
     },
     {
-      year: '2022',
-      title: 'National Recognition',
-      description: 'Secured 3rd place at the SAE Aero Design Challenge amongst 50+ teams.',
+      year: 'Feb 2024',
+      title: 'NITTE Vayurva ',
+      description: 'Finished 4th, narrowly missing the podium.',
     },
     {
-      year: '2023',
-      title: 'Tech Expansion',
-      description: 'Expanded into avionics research, developing custom flight controllers.',
+      year: 'Dec 2024',
+      title: 'IITB TechFest',
+      description: 'Secured 3rd place at a national-level tech fest.',
     },
     {
-      year: '2020',
-      title: 'Global Stage',
-      description: 'Qualified for the international UAV challenge, showcasing our VTOL drone.',
+      year: 'Mar 2025',
+      title: 'SAE DDC Chennai',
+      description: 'Won 2nd place for best aerodynamic analysis.',
     },
+    {
+      year: 'Nov 2025',
+      title: 'JNCC Shivamogga',
+      description: 'Dominated competition, securing 1st and 2nd.',
+    },
+    {
+      year: 'Dec 2025',
+      title: 'IITB Aeromodelling',
+      description: 'Claimed 2nd place at IIT Bombay.',
+    },
+  
   ];
 
   return (
