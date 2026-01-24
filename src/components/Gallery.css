@@ -10,10 +10,17 @@
 }
 
 .gallery-section h2 {
-  color: #fff;
-  font-size: 2.5rem;
-  margin-bottom: 50px;
-  letter-spacing: 3px;
+  color: #FFF;
+  text-align: center;
+  align-self: stretch;
+
+  font-family: " Montserrat";
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.72px;
+  text-transform: capitalize;
 }
 
 .gallery-grid {

@@ -133,6 +133,25 @@ html {
 
 /* Responsive Fixes */
 @media (max-width: 768px) {
+
+    .about-hero h1,
+    .about-hero h1 .highlight {
+        font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
+
+        font-size: 32px;
+        font-weight: 500;
+        color: #ffffff;
+        line-height: 120%;
+        letter-spacing: 4;
+        margin-bottom: 24px;
+        text-transform: uppercase;
+
+    }
+
+    .about-hero h1 .highlight {
+        color: #3490eb;
+    }
+
     .about-hero h1 {
         font-size: 2.2rem;
     }

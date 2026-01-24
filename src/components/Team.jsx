@@ -67,7 +67,7 @@ const Team = () => {
   ];
 
   const rawMembersData = [
-    { name: 'Aryan Bokolia', role: 'Web Developer', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
+    { name: 'Aryan Bokolia', role: 'Web Developer ', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
     { name: 'Darshan Upadhye', role: 'UI/UX Designer', subsystem: 'Web Team', image: Darshan, linkedIn: 'https://www.linkedin.com/in/darshan-upadhye-b20374312?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
     { name: 'Varshith J', role: 'Structures Lead', subsystem: 'Structures', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a' },
     { name: 'Tirth Vishalkumar Patel', role: 'Fuselage Lead', subsystem: 'Structures', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
