@@ -314,7 +314,7 @@ html,
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 4rem 3rem ;
+    padding: 4rem 3rem;
     position: relative;
     z-index: 2;
 }
@@ -323,28 +323,33 @@ html,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 48px;
     box-sizing: border-box;
 }
 
 .about-text {
     flex: 1;
-    max-width: 600px;
-    text-align: left;
+    max-width: 674px;
+    height: 222px;
+    text-align: justify;
+    line-height: 34px;
+    font-size: 20px;
+    letter-spacing: 8%;
+    gap: 8px;
+
 }
 
 .about-text h2 {
     text-align: left;
-    font-family: 'Montserrat',sans-serif;
-    font-weight: 501;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
     font-size: 36px;
-    line-height: 1.5;
-    letter-spacing: 0.04em;
+    line-height: 44px;
+    letter-spacing: 2%;
     color: #000;
 }
 
 .about-text p {
-    font-family: 'Inter',sans-serif;
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
     font-size: 20px;
     line-height: 1.995rem;
@@ -355,9 +360,12 @@ html,
 }
 
 .learn-more-btn {
-    padding: 8px 16px;
-    border:2px solid #3e7da6;
-    border-radius: 8px;
+    padding: 10px;
+    width: 132px;
+    height: 40px;
+    gap: 20px;
+    border: 2px solid #3e7da6;
+    border-radius: 5px;
     background: #3e7da6;
     color: #fff;
     font-size: 18px;
@@ -367,9 +375,9 @@ html,
 
 .learn-more-btn:hover {
     background: #ffffff;
-    color:#3e7da6;
+    color: #3e7da6;
 
-    
+
 }
 
 .about-image {
@@ -469,16 +477,20 @@ html,
 }
 
 .contact-card h4 {
+    font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
     font-size: 18px;
+    line-height: 24px;
     font-weight: 600;
-    color: #111;
+    color: #000000;
     margin-bottom: 5px;
 }
 
 .contact-card h2 {
-    font-size: 2.5rem;
+    font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
+    font-size: 36px;
     font-weight: 500;
-    color: #111;
+    color: #000000;
+    line-height: 43px;
     margin-bottom: 35px;
     letter-spacing: 1px;
 }
