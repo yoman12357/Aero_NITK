@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+
 .body {
   background-color: #000000;
 }
@@ -14,7 +16,7 @@
   text-align: center;
   align-self: stretch;
 
-  font-family: " Montserrat";
+  font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
   font-size: 36px;
   font-style: normal;
   font-weight: 500;
