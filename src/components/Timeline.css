@@ -12,7 +12,7 @@
 .timeline-header {
   text-align: center;
   font-size: 2.25rem;
-  font-family: 'Montserrat',sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 500;
   margin-bottom: 60px;
   color: #fff;
@@ -120,26 +120,25 @@
 
 .timeline-year {
   display: inline-block;
-  font-size: 1.75rem;
+  font-size: 20px;
   font-weight: 500;
   color: #2983e6;
-  /* Aero Blue */
-  /* margin-bottom: 10px; */
+  line-height: 34px;
+  size: 32px;
 }
 
 .timeline-content h3 {
   /* margin: 0 0 10px 0; */
   font-size: 1.95rem;
   font-weight: 500;
-  font-family: 'Montserrat',sans-serif;
+  font-family: 'Montserrat', sans-serif;
   letter-spacing: 1px;
 }
 
 .timeline-content p {
-  /* margin: 0; */
-  color: #ccc;
-  line-height: 1.6;
-  font-size: 1.125rem;
+  color: #ffffff;
+  line-height: 34px;
+  font-size: 20px;
   font-weight: 400;
 }
 

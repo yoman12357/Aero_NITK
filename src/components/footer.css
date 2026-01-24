@@ -1,5 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+
 .pagewrapper {
     transition: background-color 0.3s ease;
+}
+
+.footer h3 {
+    font-family: 'Montserrat', 'Roboto', Arial, Helvetica, sans-serif;
+    size: 18px;
+    line-height: 28px;
+    font-weight: 600 !important;
 }
 
 .pagewrapper.home-bg {
@@ -16,7 +26,7 @@
     background-color: #1c1c1c !important;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
-    padding: 56px 72px 32px 72px;
+    padding: 56px 72px 24px 72px;
     color: #ffffff;
     box-sizing: border-box;
     font-family: sans-serif;
@@ -29,39 +39,46 @@
     align-items: flex-start;
     max-width: 1256px;
     margin: 0 auto;
-    gap: 32px;
+    gap: 3px;
 }
 
 .footer-logo {
-    width: 250px;
+    width: 200px;
+
+
     height: auto;
 }
 
 .footer-links-container {
     display: flex;
-    gap: 80px;
+    justify-content: center;
+    gap: 72px;
 }
 
 .footer-column {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
 }
 
 .footer-column h3 {
     font-size: 18px;
     font-weight: 700;
-    margin: 0 0 10px 0;
+    gap: 48px;
 }
 
 .footer-column a,
 .footer-column p {
-    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500 !important;
+    line-height: 22px !important;
+    text-align: justify !important;
+
+
     color: #ffffff;
-    text-decoration: none;
     margin: 0;
     opacity: 0.9;
-    transition: opacity 0.2s;
+    transition: opacity 0.12s;
 }
 
 .footer-column a:hover {
@@ -70,7 +87,8 @@
 }
 
 .footer-bottom {
-    margin-top: 60px;
+
+    margin-top: 32px;
     font-size: 14px;
     opacity: 0.6;
     text-align: left;
