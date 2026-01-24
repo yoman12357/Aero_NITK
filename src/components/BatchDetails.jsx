@@ -12,7 +12,14 @@ const alumniData = {
             image: null,
             linkedIn: "https://www.linkedin.com/in/aryan-bokolia-365aa4326"
         },
-        // ... add more members
+    ],
+    "2023": [
+        {
+            name: "MEMBER NAME",
+            role: "MEMBER ROLE",
+            image: null,
+            linkedIn: "LINKEDIN_URL_HERE"
+        }
     ]
 };
 
