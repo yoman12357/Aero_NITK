@@ -8,10 +8,7 @@ html {
     padding: 0;
     /* Changed to pure black */
     background-color: #000000 !important;
-    font-family: 'Montserrat', sans-serif;
-    font-size:3rem;
-    font-weight: 600;
-    letter-spacing: 0.12rem;
+    font-family: 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 
@@ -88,7 +85,7 @@ html {
     /* Changed from #1c1c1c to #000000 for a "whole black" look */
     background-color: #000000;
     padding: 80px 20px;
-    text-transform: uppercase;
+    text-transform: capitalize;
 
     line-height: 34px;
     size: 20px;
@@ -142,6 +139,7 @@ html {
 
     .about-hero p {
         font-size: 1rem;
+        text-transform: capitalize;
     }
 
     .section-block {
