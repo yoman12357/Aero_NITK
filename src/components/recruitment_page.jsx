@@ -5,9 +5,9 @@ import Footer from './footer.jsx';
 import { saveApplicant } from '../firebase.js';
 
 const teams = ["Web Team", "Avionics", "Structures", "Aerodynamics", "Marketing", "Media", "Flight Simulator"];
-const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const semesters = ["SELECT-HERE","1", "2", "3", "4", "5", "6", "7", "8"];
 const branches = [
-  "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
+  "SELECT-HERE","Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
   "Electronics and Communication Engineering", "Electrical and Electronics Engineering",
   "Computational and Data Science", "Mechanical Engineering", "Mathematical and Computational Sciences",
   "Civil Engineering", "Chemical Engineering", "Metallurgical and Materials Engineering", "Mining Engineering"
