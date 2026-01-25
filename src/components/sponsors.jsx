@@ -1,4 +1,3 @@
-///sponsors page in header
 import React, { useState } from 'react';
 import './sponsors.css';
 import Footer from './footer.jsx';
@@ -16,43 +15,35 @@ const Sponsors = () => {
     upiId: 'aeronitk@sbi',
   };
 
-
-
   return (
     <div className="sponsors-page">
-
-      {/* HERO SECTION */}
-      <header className="sponsors-hero" >
+      <header className="sponsors-hero">
         <div className="sponsors-hero-content">
           <h1>
             PARTNER WITH AERO NITK AND BE PART OF OUR <span className="highlight">JOURNEY</span> IN AEROSPACE <span className="highlight">INNOVATION</span>.
           </h1>
           <p>Learn More About Our Team, Projects, And Sponsorship Opportunities.</p>
-        </div>
-      </header>
 
-      <section id="about" className="brochure-section">
-        <div className="container">
-          <div className="info-vertical-list">
-            <div className="scroll-item">
+          {/* Overlay Cards inside Hero */}
+          <div className="hero-overlay-container">
+            <div className="overlay-card">
               <h4>About Aero NITK</h4>
               <p>We proudly constitute the official aeromodelling contingent of NITK Surathkal, ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.</p>
             </div>
-            <div className="scroll-item">
+            <div className="overlay-card">
               <h4>Why Sponsor Us?</h4>
               <p>Our repertoire boasts multiple triumphs in competitive arenas, groundbreaking ventures that continually push the envelope of innovation, and a robust and discerning alumni network.</p>
             </div>
           </div>
+        </div>
+      </header>
 
+      <section className="brochure-section">
+        <div className="container">
           <div id="brochure" className="brochure-view">
             <h3>Preview Brochure</h3>
             <div className="pdf-frame">
-              <object
-                data="/brochure.pdf"
-                type="application/pdf"
-                width="100%"
-                height="800px"
-              >
+              <object data="/brochure.pdf" type="application/pdf" width="100%" height="800px">
                 <div className="pdf-fallback">
                   <p>Your browser does not support PDFs. <a href="/brochure.pdf" download>Download the brochure here</a>.</p>
                 </div>
@@ -64,12 +55,8 @@ const Sponsors = () => {
 
       <section className="sponsors-cta">
         <div className="cta-container">
-          <a className="download-btn" href="/brochure.pdf" download>
-            DOWNLOAD BROCHURE
-          </a>
-          <p className="partnership-inquiry">
-            Ready To Sponsor Us? Have Questions About Partnership Opportunities?
-          </p>
+          <a className="download-btn" href="/brochure.pdf" download>DOWNLOAD BROCHURE</a>
+          <p className="partnership-inquiry">Ready To Sponsor Us? Have Questions About Partnership Opportunities?</p>
         </div>
       </section>
 
@@ -79,7 +66,6 @@ const Sponsors = () => {
           <button className="bank-details-toggle" onClick={toggleBankDetails}>
             View Bank Details <span className={`arrow ${showBankDetails ? 'rotated' : ''}`}>▾</span>
           </button>
-
           <div className={`bank-details-card ${showBankDetails ? 'visible' : ''}`}>
             <div className="bank-info-grid">
               <div className="bank-info-item"><label>Account Name</label><span>{bankDetails.accountName}</span></div>
@@ -92,7 +78,6 @@ const Sponsors = () => {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );

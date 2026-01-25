@@ -107,7 +107,8 @@ const RecruitmentForm = () => {
           </label>
 
           <fieldset>
-            <legend>SELECT PREFERENCE ORDER (1ST AND 2ND)</legend>
+            {/* Update preference legend in recruitment_page.jsx if needed */}
+            <legend>SELECT PREFERENCE ORDER (1ST, 2ND, 3RD)</legend>
             <div className="teams-checkboxes">
               {teams.map((team) => {
                 const priorityIndex = formData.selectedTeams.indexOf(team);

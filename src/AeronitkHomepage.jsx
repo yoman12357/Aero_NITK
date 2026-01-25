@@ -1,10 +1,7 @@
-///main aero home page file 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
 import './AeronitkHomepage.css';
 import aboutDrone from './images/drone.png';
-
 import plane1 from './images/plane1.png';
 import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
@@ -20,51 +17,40 @@ const AeroNITKHomepage = () => {
   const isHomePage = location.pathname === '/';
 
   useEffect(() => {
-    if (isHomePage) {
-      document.body.classList.add('homepage');
-    } else {
-      document.body.classList.remove('homepage');
-    }
-    return () => {
-      document.body.classList.remove('homepage');
-    };
+    if (isHomePage) document.body.classList.add('homepage');
+    else document.body.classList.remove('homepage');
+    return () => document.body.classList.remove('homepage');
   }, [isHomePage]);
-
-
-
-  const handleAnimationComplete = () => {
-    console.log('Animation completed!');
-  };
 
   return (
     <div className="page-wrapper">
-
       <section className="hero-section" id="home">
         <div className="hero-container">
-          <div className="hero-title-wrapper">
-            <BlurText
-              text="AERO NITK"
-              className="hero-title"
-              delay={150}
-              animateBy="words"
-              direction="top"
-              onAnimationComplete={handleAnimationComplete}
-            />
-          </div>
-
-          <p className="hero-subtitle">WINGS OF TEAM WORK</p>
+          <BlurText
+            text="AERO NITK"
+            className="hero-title"
+            delay={150}
+            animateBy="words"
+            direction="top"
+          />
+          <BlurText
+            text="WINGS OF TEAMWORK"
+            className="hero-subtitle highlight-subtitle"
+            delay={300}
+            animateBy="words"
+            direction="top"
+          />
         </div>
-
-
       </section>
 
+      {/* ... Rest of the sections remain identical to your current file ... */}
       <section className="about-section" id="about">
         <div className="about-content">
           <div className="about-text">
             <h2>ABOUT</h2>
             <p>
               Aero NITK is the official aeromodelling and aviation-focused student team of NITK Surathkal. As a student initiative supported by the institute, we design, analyze, and build RC planes, UAVs, and autonomous drones, combining creativity with engineering precision.
-            </p><br/>
+            </p><br />
             <Link to="/about" className="learn-more-btn">LEARN MORE</Link>
           </div>
           <div className="about-image">
@@ -77,12 +63,9 @@ const AeroNITKHomepage = () => {
         <UltimateCarousel />
         <Timeline />
       </section>
+
       <section className="pre-contact-image" style={{ width: '100%', textAlign: 'center' }}>
-        <img
-          src={contactus}
-          alt="Pre-contact decoration"
-          style={{ width: '100%', height: 'auto', display: 'block' }}
-        />
+        <img src={contactus} alt="Pre-contact decoration" style={{ width: '100%', height: 'auto', display: 'block' }} />
       </section>
 
       <section className="contact-section" id="contact">
@@ -92,7 +75,6 @@ const AeroNITKHomepage = () => {
         <img src={plane3} className="contact-img plane-bottom-right" alt="Plane Bottom Right" />
 
         <div className="contact-card">
-
           <h4>Contact us</h4>
           <h2>GET IN TOUCH</h2>
           <form className="contact-form" onSubmit={e => { e.preventDefault(); alert("Submitted!"); }}>
@@ -118,7 +100,6 @@ const AeroNITKHomepage = () => {
           </form>
         </div>
       </section>
-
       <Footer />
     </div>
   );

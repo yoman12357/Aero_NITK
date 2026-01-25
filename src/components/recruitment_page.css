@@ -92,10 +92,21 @@
   margin-bottom: 15px;
 }
 
+/* Add/Update in recruitment_page.css */
+
 .teams-checkboxes {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 in each row */
+  gap: 15px;
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .teams-checkboxes {
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 per row on small screens */
+  }
 }
 
 .team-checkbox {
