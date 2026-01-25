@@ -109,6 +109,7 @@ html {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease-out;
+    
 }
 
 .section-block.animate {
@@ -117,15 +118,29 @@ html {
 }
 
 .section-block h2 {
-    color: #3490eb;
+    color: rgb(255, 255, 255);
     font-size: 1.8rem;
     margin-bottom: 20px;
+    font-family: 'Montserrat',sans-serif;
+    font-weight:500;
 }
 
-.styled-list {
+.section-block p{
+    font-family: 'Inter',sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
+}
+
+.styled-list{
+    font-family: 'Inter',sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    letter-spacing: 0.1rem;
     padding-left: 20px;
     color: #e0e0e0;
 }
+
 
 .styled-list li {
     margin-bottom: 12px;

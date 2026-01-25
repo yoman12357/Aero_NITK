@@ -49,10 +49,10 @@ const AboutPage = () => {
           <div className="section-block">
             <h2>Core Projects & Disciplines</h2>
             <ul className="styled-list">
-              <li><strong>Aerodynamics:</strong> Aerodynamics : Utilizing CFD software and wind tunnel analysis to optimize flight performance.</li>
-              <li><strong>Structures:</strong>  Focusing on lightweight and robust design using composites and advanced materials.</li>
-              <li><strong>Avionics:</strong> Implementing complex flight control systems, telemetry, and sensor integration.</li>
-              <li><strong>Manufacturing:</strong> Precision fabrication using 3D printing, CNC machining, and composite layups.</li>
+              <li> Aerodynamics : Utilizing CFD software and wind tunnel analysis to optimize flight performance.</li>
+              <li>Structures: Focusing on lightweight and robust design using composites and advanced materials.</li>
+              <li>Avionics: Implementing complex flight control systems, telemetry, and sensor integration.</li>
+              <li>Manufacturing: Precision fabrication using 3D printing, CNC machining, and composite layups.</li>
             </ul>
           </div>
 
