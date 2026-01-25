@@ -16,7 +16,7 @@ const AlumniPage = () => {
     return (
         <div className="alumni-page-wrapper">
             <main className="alumni-container">
-                <h1 className="alumni-header-text">ALUMNI</h1>
+                <h1 className="alumni-header-text">ALUMNIS</h1>
 
                 <div className="alumni-grid">
                     {alumniBatches.map((batch) => (
