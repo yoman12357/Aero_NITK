@@ -1,4 +1,3 @@
-///file related to databases
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 
@@ -12,13 +11,11 @@ const firebaseConfig = {
     measurementId: "G-Y9NX05GYV8"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Firestore
 export const db = getFirestore(app);
+export { collection, addDoc, serverTimestamp };
 
-// Helper function to save application data
 export const saveApplicant = async (data) => {
     try {
         await addDoc(collection(db, "applicants"), {
