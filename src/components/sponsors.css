@@ -224,3 +224,99 @@
   border-radius: 8px;
   display: block;
 }
+
+/* ... keep all your existing desktop styles above ... */
+
+/* --- MEDIA QUERIES FOR TABLETS AND PHONES --- */
+
+@media screen and (max-width: 1024px) {
+  .sponsors-page .sponsors-hero {
+    height: auto;
+    min-height: 100vh;
+    padding: 120px 20px 60px;
+    /* Space for navbar */
+  }
+
+  .sponsors-page .sponsors-hero-content {
+    margin-top: 0;
+    /* Remove the large desktop margin */
+  }
+
+  .sponsors-page .sponsors-hero-content h1 {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sponsors-page .sponsors-hero-content h1 {
+    font-size: 24px;
+    line-height: 1.3;
+  }
+
+  .sponsors-page .sponsors-hero-content p {
+    font-size: 1rem;
+  }
+
+  .hero-overlay-container {
+    gap: 15px;
+  }
+
+  .overlay-card {
+    padding: 20px;
+  }
+
+  .overlay-card h4 {
+    font-size: 1.2rem;
+  }
+
+  .overlay-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .sponsors-page .brochure-section {
+    margin-top: 50px;
+    /* Reduce large gap on mobile */
+    padding: 40px 0;
+  }
+
+  .brochure-view h3 {
+    font-size: 1.5rem;
+  }
+
+  /* Adjust PDF height for smaller screens */
+  .pdf-frame object {
+    height: 500px;
+  }
+
+  .sponsors-page .bank-info-grid {
+    grid-template-columns: 1fr;
+    /* Single column for bank details */
+  }
+
+  .sponsors-page .bank-details-card.visible {
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .sponsors-page .sponsors-hero-content h1 {
+    font-size: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .download-btn {
+    width: 100%;
+    /* Full width button on very small phones */
+    max-width: 280px;
+  }
+
+  .partnership-inquiry {
+    font-size: 14px;
+  }
+
+  .sponsors-page .bank-details-toggle {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
