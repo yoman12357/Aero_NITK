@@ -137,12 +137,10 @@ html {
     font-weight: 400;
     font-size: 1rem;
     letter-spacing: 0.1rem;
-}
-
-.styled-list {
     padding-left: 20px;
     color: #e0e0e0;
 }
+
 
 .styled-list li {
     margin-bottom: 12px;
