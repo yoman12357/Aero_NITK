@@ -60,7 +60,7 @@ const Sponsors = () => {
         </div>
       </section>
 
-      <section id="bank" className="bank-details-section">
+      {/* <section id="bank" className="bank-details-section">
         <div className="container">
           <h2>For sponsorship payments and donations</h2>
           <button className="bank-details-toggle" onClick={toggleBankDetails}>
@@ -77,7 +77,7 @@ const Sponsors = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       <Footer />
     </div>
   );
