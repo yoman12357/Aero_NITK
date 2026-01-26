@@ -20,7 +20,6 @@ import chetan_kumar_sah from '../images/team-members/Chetan_Kumar_Sah.jpg';
 import dhanasree from '../images/team-members/Dhanasree.jpg';
 import g_shifa_khanum_niraj from '../images/team-members/G_Shifa_Khanum.jpg';
 import kenge_madhur_niraj from '../images/team-members/Kenge_Madhur_Niraj.jpeg';
-import makwana_dhruv_dilipbhai from '../images/team-members/Makwana_Dhruv_Dilipbhai.jpeg';
 import om_srivastava from '../images/team-members/Om_Srivastava.jpg';
 import omkar_kharade from '../images/team-members/Omkar_Kharade.png';
 import peddinti_ananta_venkata_seersha from '../images/team-members/Peddinti_Ananta_Venkata_Seersha.jpg';
@@ -75,7 +74,7 @@ const Team = () => {
     { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'www.linkedin.com/in/om-srivastava-2k28' },
     { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: 'https://www.linkedin.com/in/abhishek-m-959609318/' },
 
-    { name: 'Makwana Dhruv', role: 'Member', subsystem: 'Aerodynamics', image: makwana_dhruv_dilipbhai, linkedIn: 'https://www.linkedin.com/in/dhruv-makwana-724358327' },
+
     { name: 'Aryan Gupta', role: 'Member', subsystem: 'Aerodynamics', image: aryan_gupta, linkedIn: 'www.linkedin.com/in/aryan-g-b27278247' },
     { name: 'Madhur Kenge', role: 'Member', subsystem: 'Structures', image: kenge_madhur_niraj, linkedIn: 'www.linkedin.com/in/madhur-kenge-354238326' },
 
