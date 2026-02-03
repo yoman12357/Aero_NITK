@@ -89,7 +89,7 @@ const AeroNITKHomepage = () => {
     <div className="page-wrapper">
       <section className="hero-section" id="home">
         <div className="hero-container">
-          <BlurText text="AERO NITK" className="hero-title" delay={150} animateBy="words" direction="top" />
+          <BlurText text="AERONITK" className="hero-title" delay={150} animateBy="words" direction="top" />
           <BlurText text="WINGS OF TEAMWORK" className="hero-subtitle" delay={300} animateBy="words" direction="top" />
         </div>
       </section>
