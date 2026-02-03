@@ -16,15 +16,18 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export { collection, addDoc, serverTimestamp };
 
-export const saveApplicant = async (data) => {
+export const saveToCollection = async (collectionName, data) => {
     try {
-        await addDoc(collection(db, "applicants"), {
+        await addDoc(collection(db, collectionName), {
             ...data,
             submittedAt: serverTimestamp(),
         });
         return { success: true };
     } catch (error) {
-        console.error("Error saving to Firebase:", error);
+        console.error(`Error saving to ${collectionName}:`, error);
         return { success: false, error };
     }
 };
+
+// Compatibility for recruitment page
+export const saveApplicant = (data) => saveToCollection("applicants", data);

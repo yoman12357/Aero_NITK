@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './workshop_registration.css';
 import Footer from './footer.jsx';
-import { db, collection, addDoc, serverTimestamp } from '../firebase.js';
+import { saveToCollection } from '../firebase.js';
 
 const branches = [
     "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
@@ -13,13 +13,8 @@ const branches = [
 const WorkshopRegistration = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        rollNo: "",
-        phone: "",
-        branch: "",
-        year: "1",
-        expectations: ""
+        name: "", email: "", rollNo: "", phone: "",
+        branch: "", year: "1", expectations: ""
     });
 
     const handleInputChange = (e) => {
@@ -31,31 +26,18 @@ const WorkshopRegistration = () => {
         e.preventDefault();
         setIsSubmitting(true);
 
-        try {
-            // This will automatically create the "workshop_registrations" collection on first submit
-            await addDoc(collection(db, "workshop_registrations"), {
-                ...formData,
-                submittedAt: serverTimestamp()
-            });
+        const result = await saveToCollection("workshop_registrations", formData);
 
-            alert("Registration Successful! See you at the workshop.");
-
-            // Correctly resetting fields to match the initial state
+        if (result.success) {
+            alert("Registration Successful!");
             setFormData({
-                name: "",
-                email: "",
-                rollNo: "",
-                phone: "",
-                branch: "",
-                year: "1",
-                expectations: ""
+                name: "", email: "", rollNo: "", phone: "",
+                branch: "", year: "1", expectations: ""
             });
-        } catch (error) {
-            console.error("Firebase Error:", error);
-            alert("Submission failed. Check your console for details.");
-        } finally {
-            setIsSubmitting(false);
+        } else {
+            alert("Submission failed. Please try again.");
         }
+        setIsSubmitting(false);
     };
 
     return (
@@ -66,19 +48,15 @@ const WorkshopRegistration = () => {
                     <label>NAME
                         <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
                     </label>
-
                     <label>E-Mail
                         <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="E-mail" />
                     </label>
-
                     <label>ROLL NUMBER
                         <input type="text" name="rollNo" value={formData.rollNo} onChange={handleInputChange} required placeholder="Your Roll Number" />
                     </label>
-
                     <label>PHONE NUMBER
                         <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="10-Digit Number" pattern="[0-9]{10}" />
                     </label>
-
                     <label>BRANCH
                         <select name="branch" value={formData.branch} onChange={handleInputChange} required>
                             <option value="" disabled hidden>Select Here</option>
@@ -87,7 +65,6 @@ const WorkshopRegistration = () => {
                             ))}
                         </select>
                     </label>
-
                     <label>YEAR OF STUDY
                         <select name="year" value={formData.year} onChange={handleInputChange} required>
                             <option value="1">1st Year</option>
@@ -96,18 +73,9 @@ const WorkshopRegistration = () => {
                             <option value="4">4th Year</option>
                         </select>
                     </label>
-
                     <label>WHAT DO YOU EXPECT FROM THIS WORKSHOP?
-                        <textarea
-                            name="expectations"
-                            value={formData.expectations}
-                            onChange={handleInputChange}
-                            required
-                            placeholder="Tell us what you'd like to learn..."
-                            rows="4"
-                        />
+                        <textarea name="expectations" value={formData.expectations} onChange={handleInputChange} required placeholder="Tell us what you'd like to learn..." rows="4" />
                     </label>
-
                     <button className="register-btn" type="submit" disabled={isSubmitting}>
                         {isSubmitting ? "REGISTERING..." : "REGISTER NOW"}
                     </button>
