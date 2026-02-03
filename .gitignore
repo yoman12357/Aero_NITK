@@ -7,6 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 aeronitk-e0863-firebase-adminsdk-fbsvc-03fe4f4a36.json
+# Sensitive files
+.env
+.env.local
 
 node_modules
 dist
