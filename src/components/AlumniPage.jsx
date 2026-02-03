@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import './AlumniPage.css';
 import Footer from './footer.jsx';
 
-// Ensure these paths are exact; Vite is case-sensitive!
 import alumniImg1 from '../images/alumni/alumni1.png';
 // import alumniImg2 from '../images/alumini/alumni2.png';
 
@@ -20,7 +19,6 @@ const AlumniPage = () => {
 
                 <div className="alumni-grid">
                     {alumniBatches.map((batch) => (
-                        /* link to /alumni/ to match App.jsx */
                         <Link to={`/alumni/${batch.id}`} key={batch.id} className="alumni-card-link">
                             <div className="alumni-card">
                                 <div className="alumni-card-overlay">

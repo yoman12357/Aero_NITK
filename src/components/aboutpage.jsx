@@ -30,7 +30,7 @@ const AboutPage = () => {
         <div className="hero-overlay">
           <div className="hero-content">
             <h1>
-              AERO NITK : WINGS OF <span className="highlight">INNOVATION</span>
+              AERONITK : WINGS OF <span className="highlight">INNOVATION</span>
             </h1>
             <p>
               We Are The Official Aeromodelling Club Of NITK Surathkal, Dedicated To Designing, Building, And Flying Competitive Unmanned Aerial Vehicles (UAVs).

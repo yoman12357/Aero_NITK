@@ -1,0 +1,96 @@
+/* workshop_registration.css */
+
+.workshop-section {
+    background-color: #000;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 120px 20px 60px 20px;
+    /* Same padding as recruitment */
+    font-family: 'Roboto', 'Arial', sans-serif;
+    box-sizing: border-box;
+}
+
+.workshop-title {
+    color: #ffffff;
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.workshop-card {
+    background: #1a1a1a;
+    border: 1px solid #3494eb;
+    /* Matches recruitment blue border */
+    border-radius: 4px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.workshop-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #bbb;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.workshop-card input,
+.workshop-card select,
+.workshop-card textarea {
+    background: #111111 !important;
+    border: 1.5px solid #1da1f2 !important;
+    border-radius: 4px;
+    padding: 14px;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.workshop-card select option {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.register-btn {
+    background: #4a9bd4;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.register-btn:hover {
+    background: #3a84bc;
+}
+
+@media (max-width: 600px) {
+    .workshop-card {
+        padding: 30px 20px;
+    }
+}

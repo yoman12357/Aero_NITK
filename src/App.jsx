@@ -5,6 +5,8 @@ import Header from './components/header.jsx';
 
 // Pages
 import AeroNITKHomepage from './AeronitkHomepage.jsx';
+import WorkshopRegistration from './components/workshop_registration.jsx';
+
 import AboutPage from './components/aboutpage.jsx';
 import Gallery from './components/Gallery.jsx';
 import Team from './components/Team.jsx';
@@ -108,6 +110,7 @@ const App = () => {
       <Header isScrolled={isScrolled} />
       <Routes>
         <Route path="/" element={<AeroNITKHomepage />} />
+        <Route path="/workshop_registration" element={<WorkshopRegistration />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/team" element={<Team />} />

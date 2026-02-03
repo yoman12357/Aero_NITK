@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import { db, collection, addDoc, serverTimestamp } from './firebase';
 import './AeronitkHomepage.css';
+import { useNavigate } from 'react-router-dom';
 
 import aboutDrone from './images/drone.png';
 import plane1 from './images/plane1.png';
@@ -14,8 +15,11 @@ import contactus from './images/contactus.webp';
 import Footer from './components/footer.jsx';
 import BlurText from "./components/effects/bt.jsx";
 import Timeline from './components/Timeline.jsx';
+import Popup from './components/Popup.jsx'; // adjust path if needed
 
 const AeroNITKHomepage = () => {
+  const navigate = useNavigate();
+  const [showWorkshopPopup, setShowWorkshopPopup] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -26,6 +30,17 @@ const AeroNITKHomepage = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // New state for popup
+
+  useEffect(() => {
+    if (isHomePage) {
+      const t = setTimeout(() => setShowWorkshopPopup(true), 1200); return () => clearTimeout(t);
+      return () => clearTimeout(t);
+    } else {
+      setShowPopup(false);
+    }
+  }, [isHomePage]);
 
   useEffect(() => {
     if (isHomePage) document.body.classList.add('homepage');
@@ -60,7 +75,7 @@ const AeroNITKHomepage = () => {
         'fqdVPbYlWDMrpqGwl'
       );
 
-      alert("Success! Your message was sent.");
+      setIsPopupOpen(true);
       setFormData({ firstName: '', lastName: '', email: '', message: '' });
     } catch (err) {
       console.error("Submission error:", err);
@@ -78,6 +93,27 @@ const AeroNITKHomepage = () => {
           <BlurText text="WINGS OF TEAMWORK" className="hero-subtitle" delay={300} animateBy="words" direction="top" />
         </div>
       </section>
+      <Popup
+        open={showWorkshopPopup}
+        onClose={() => setShowWorkshopPopup(false)}
+        className="workshop-popup-bottom-right"
+      >
+        <div className="workshop-popup-content">
+          <h4 style={{ color: '#0076B2', marginBottom: '8px' }}>Upcoming Workshop!</h4>
+          <p style={{ fontSize: '14px', color: '#333' }}>
+            Join our hands-on Aeromodelling session. Limited slots available!
+          </p>
+          <button
+            onClick={() => {
+              setShowWorkshopPopup(false);
+              navigate('/workshop_registration'); // Redirects to your page
+            }}
+            className="workshop-register-btn-small"
+          >
+            Register Here
+          </button>
+        </div>
+      </Popup>
 
       <section className="about-section" id="about">
         <div className="about-content">
@@ -120,6 +156,19 @@ const AeroNITKHomepage = () => {
         </div>
       </section>
       <Footer />
+
+      <Popup open={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
+        <h2>Success!</h2>
+        <p>Your message was sent successfully. We'll get back to you soon.</p>
+      </Popup>
+
+      <Popup open={showPopup} onClose={() => setShowPopup(false)} className="hero-popup">
+        <div style={{ padding: 16 }}>
+          <h4>Join Aero NITK</h4>
+          <p>Quick info or CTA here.</p>
+          <Link to="/workshop_registration" onClick={() => setShowPopup(false)}>Contact</Link>
+        </div>
+      </Popup>
     </div>
   );
 };

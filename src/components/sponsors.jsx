@@ -20,7 +20,7 @@ const Sponsors = () => {
       <header className="sponsors-hero">
         <div className="sponsors-hero-content">
           <h1>
-            PARTNER WITH AERO NITK AND BE PART OF OUR <span className="highlight">JOURNEY</span> IN AEROSPACE <span className="highlight">INNOVATION</span>.
+            PARTNER WITH AERONITK AND BE PART OF OUR <span className="highlight">JOURNEY</span> IN AEROSPACE <span className="highlight">INNOVATION</span>.
           </h1>
           <p>Learn More About Our Team, Projects, And Sponsorship Opportunities.</p>
 

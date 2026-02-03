@@ -16,6 +16,7 @@ const RecruitmentForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
+    email: "", 
     rollNo: "",
     phone: "",
     branch: "",
@@ -58,7 +59,7 @@ const RecruitmentForm = () => {
     if (result.success) {
       alert("Application submitted successfully!");
       setFormData({
-        name: "", rollNo: "", phone: "",
+        name: "", email: "", rollNo: "", phone: "",
         branch: "", semester: "",
         selectedTeams: [], whyJoin: ""
       });
@@ -74,6 +75,9 @@ const RecruitmentForm = () => {
         <form className="recruitment-card" onSubmit={handleSubmit}>
           <label>NAME
             <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
+          </label>
+          <label>E-Mail
+            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="E-mail" />
           </label>
 
           <label>ROLL NUMBER

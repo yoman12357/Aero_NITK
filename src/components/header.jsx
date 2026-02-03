@@ -52,11 +52,11 @@ const Header = ({ isScrolled }) => {
         <NavLink to="/about" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>ABOUT</NavLink>
         <NavLink to="/gallery" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>GALLERY</NavLink>
         <NavLink to="/alumni" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>ALUMNI</NavLink>
-        <NavLink to="/recruitment" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>RECRUITMENT</NavLink>
+        {/* <NavLink to="/recruitment" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>RECRUITMENT</NavLink> */}
         <NavLink to="/team" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>TEAM</NavLink>
         <NavLink to="/sponsors" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>SPONSORS</NavLink>
         <button className='contact-button'>
-                  <a href="/#contact" onClick={(e) => handleHashLink(e, 'contact')} className={activeSection === 'contact' ? 'active-link' : ''}>CONTACT</a>
+          <a href="/#contact" onClick={(e) => handleHashLink(e, 'contact')} className={activeSection === 'contact' ? 'active-link' : ''}>CONTACT</a>
         </button>
       </div>
 
