@@ -29,6 +29,7 @@ import rathod_smit_amitkumar from '../images/team-members/Rathod_Smit_Amitkumar.
 import ryan_varghese_thomas from '../images/team-members/Ryan_Varghese_Thomas.jpg';
 import sairaj from '../images/team-members/Sairaj.jpeg';
 import shamit_hoysal from '../images/team-members/Shamit_Hoysal.jpg';
+import Shaarvari from '../images/team-members/Shaarvari_Prashanth.jpg';
 import shubhang_galagali from '../images/team-members/Shubhang_Galagali.jpg';
 import soham_anand_jain from '../images/team-members/Soham_Anand_Jain.png';
 import tanay_praveen_shekokar from '../images/team-members/Tanay_Praveen_Shekokar.jpeg';
@@ -68,7 +69,7 @@ const Team = () => {
   const rawMembersData = [
     { name: 'Aryan Bokolia', role: 'Web Developer ', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
     { name: 'Darshan Upadhye', role: 'UI/UX Designer', subsystem: 'Web Team', image: Darshan, linkedIn: 'https://www.linkedin.com/in/darshan-upadhye-b20374312?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
-    { name: 'Shaarvari Prashanth', role: 'Web Associate', subsystem: 'Web Team', image: Darshan, linkedIn: 'https://www.linkedin.com/in/shaarvari-prashanth-5764b6331?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app' },
+    { name: 'Shaarvari Prashanth', role: 'Web Associate', subsystem: 'Web Team', image: Shaarvari, linkedIn: 'https://www.linkedin.com/in/shaarvari-prashanth-5764b6331?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app' },
 
     { name: 'Varshith J', role: 'Structures Lead', subsystem: 'Structures', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a' },
     { name: 'Tirth Vishalkumar Patel', role: 'Fuselage Lead', subsystem: 'Structures', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
