@@ -35,8 +35,7 @@ const AeroNITKHomepage = () => {
 
   useEffect(() => {
     if (isHomePage) {
-      const t = setTimeout(() => setShowWorkshopPopup(true), 1200); return () => clearTimeout(t);
-      return () => clearTimeout(t);
+      const t = setTimeout(() => setShowWorkshopPopup(true), 1400); return () => clearTimeout(t);
     } else {
       setShowPopup(false);
     }
@@ -96,23 +95,22 @@ const AeroNITKHomepage = () => {
       <Popup
         open={showWorkshopPopup}
         onClose={() => setShowWorkshopPopup(false)}
-        className="workshop-popup-bottom-right"
+        className="workshop-popup-bottom-right workshop-popup"
+        containerStyle={{ '--popup-width': '400px', '--popup-height': '180px' }}
       >
-        <div className="workshop-popup-content">
-          <h4 style={{ color: '#0076B2', marginBottom: '8px' }}>Upcoming Workshop!</h4>
-          <p style={{ fontSize: '14px', color: '#333' }}>
-            Join our hands-on Aeromodelling session. Limited slots available!
-          </p>
-          <button
-            onClick={() => {
-              setShowWorkshopPopup(false);
-              navigate('/workshop_registration'); // Redirects to your page
-            }}
-            className="workshop-register-btn-small"
-          >
-            Register Here
-          </button>
-        </div>
+        {/* Added the white square icon shown in your new image */}
+        <div className="workshop-icon"></div>
+        <h4 className="workshop-title">BOEING AERO MODELLING WORKSHOP</h4>
+        <p className="workshop-date">On 26th Feb 2026</p>
+        <button
+          onClick={() => {
+            setShowWorkshopPopup(false);
+            navigate('/workshop_registration');
+          }}
+          className="workshop-register-btn"
+        >
+          REGISTER NOW
+        </button>
       </Popup>
 
       <section className="about-section" id="about">
