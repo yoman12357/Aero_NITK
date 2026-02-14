@@ -180,7 +180,7 @@
     .workshop-popup-overlay.workshop-popup-bottom-right .workshop-popup-container {
         right: 20px;
         top: 100px;
-        width: calc(100% - 40px);
+        height: calc(var(--popup-height) + 30px);
     }
 
     .workshop-title {
