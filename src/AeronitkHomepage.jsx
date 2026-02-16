@@ -54,6 +54,11 @@ const AeroNITKHomepage = () => {
   const handleContactSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    let firestoreOk = false;
+    let emailOk = false;
+
+    // Step 1: Save to Firestore
     try {
       await addDoc(collection(db, "contact_submissions"), {
         firstName: formData.firstName,
@@ -62,7 +67,14 @@ const AeroNITKHomepage = () => {
         message: formData.message,
         submittedAt: serverTimestamp()
       });
+      firestoreOk = true;
+      console.log("✅ Firestore: saved successfully");
+    } catch (err) {
+      console.error("❌ Firestore error:", err);
+    }
 
+    // Step 2: Send email via EmailJS
+    try {
       await emailjs.send(
         'service_4d4ymu4',
         'template_30emeep',
@@ -73,15 +85,20 @@ const AeroNITKHomepage = () => {
         },
         'fqdVPbYlWDMrpqGwl'
       );
+      emailOk = true;
+      console.log("✅ EmailJS: sent successfully");
+    } catch (err) {
+      console.error("❌ EmailJS error:", err);
+    }
 
+    if (firestoreOk || emailOk) {
       setIsPopupOpen(true);
       setFormData({ firstName: '', lastName: '', email: '', message: '' });
-    } catch (err) {
-      console.error("Submission error:", err);
-      alert("Submission failed. Check console.");
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      alert("Submission failed. Check console for details.");
     }
+
+    setIsSubmitting(false);
   };
 
   return (
