@@ -137,8 +137,8 @@ const images = [
   { src: gallery12, alt: 'Img 12', rowSpan: 10, colSpan: 1 },
   { src: gallery13, alt: 'Img 13', rowSpan: 10, colSpan: 1 },
 
-{ src: gallery14, alt: 'Group Photo', rowSpan: 20, colSpan: 3 },
-  
+  { src: gallery14, alt: 'Group Photo', rowSpan: 20, colSpan: 3 },
+
   { src: gallery15, alt: 'Img 15', rowSpan: 20, colSpan: 1 },
   { src: gallery16, alt: 'Img 16', rowSpan: 10, colSpan: 1 },
   { src: gallery17, alt: 'Img 17', rowSpan: 20, colSpan: 1 },
@@ -148,7 +148,7 @@ const images = [
   { src: gallery20, alt: 'Img 20', rowSpan: 10, colSpan: 1 },
   { src: gallery21, alt: 'Img 21', rowSpan: 10, colSpan: 1 },
 
-   { src: gallery22, alt: 'Img 22', rowSpan: 10, colSpan: 1 },
+  { src: gallery22, alt: 'Img 22', rowSpan: 10, colSpan: 1 },
   { src: gallery23, alt: 'Img 23', rowSpan: 10, colSpan: 1 },
   { src: gallery24, alt: 'Img 24', rowSpan: 10, colSpan: 1 },
 
@@ -171,7 +171,7 @@ const Gallery = () => {
   return (
     <>
       <div className="gallery-section">
-        <h2>GALLERY</h2>
+        <h1>GALLERY</h1>
 
         <div className="gallery-grid">
           {images.map((image, idx) => (
@@ -183,7 +183,7 @@ const Gallery = () => {
                 gridColumnEnd: `span ${image.colSpan}`,
               }}
             >
-              <img src={image.src} alt={image.alt} />
+              <img src={image.src} alt={image.alt} loading="lazy" />
             </div>
           ))}
         </div>

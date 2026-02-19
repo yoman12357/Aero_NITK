@@ -76,14 +76,14 @@ const AeroNITKHomepage = () => {
     // Step 2: Send email via EmailJS
     try {
       await emailjs.send(
-        'service_4d4ymu4',
-        'template_30emeep',
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         {
           name: `${formData.firstName} ${formData.lastName}`,
           email: formData.email,
           message: formData.message,
         },
-        'fqdVPbYlWDMrpqGwl'
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
       emailOk = true;
       console.log("✅ EmailJS: sent successfully");

@@ -14,6 +14,7 @@ import AlumniPage from './components/AlumniPage.jsx';
 import BatchDetails from './components/BatchDetails.jsx';
 import Recruitment from './components/recruitment_page.jsx';
 import Sponsors from './components/sponsors.jsx';
+import NotFound from './components/NotFound.jsx';
 
 const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -118,6 +119,7 @@ const App = () => {
         <Route path="/alumni/:year" element={<BatchDetails />} />
         <Route path="/recruitment" element={<Recruitment />} />
         <Route path="/sponsors" element={<Sponsors />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
