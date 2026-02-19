@@ -1,22 +1,131 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+// import './sponsors.css';
+// import Footer from './footer.jsx';
+
+// const Sponsors = () => {
+//   const [showBankDetails, setShowBankDetails] = useState(false);
+//   const toggleBankDetails = () => setShowBankDetails(!showBankDetails);
+
+//   const bankDetails = {
+//     accountName: 'Aero NITK',
+//     accountNumber: 'XXXX XXXX XXXX XXXX',
+//     bankName: 'State Bank of India',
+//     ifscCode: 'SBIN0XXXXXX',
+//     branch: 'NITK Surathkal Branch',
+//     upiId: 'aeronitk@sbi',
+//   };
+
+//   return (
+//     <div className="sponsors-page">
+//       <header className="sponsors-hero">
+//         <div className="sponsors-hero-content">
+//           <h1>
+//             PARTNER WITH AERONITK AND BE PART OF OUR <span className="highlight">JOURNEY</span> IN AEROSPACE <span className="highlight">INNOVATION</span>.
+//           </h1>
+//           <p>Learn More About Our Team, Projects, And Sponsorship Opportunities.</p>
+
+//           {/* Overlay Cards inside Hero */}
+//           <div className="hero-overlay-container">
+//             <div className="overlay-card">
+//               <h4>About Aero NITK</h4>
+//               <p>We proudly constitute the official aeromodelling contingent of NITK Surathkal, ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.</p>
+//             </div>
+//             <div className="overlay-card">
+//               <h4>Why Sponsor Us?</h4>
+//               <p>Our repertoire boasts multiple triumphs in competitive arenas, groundbreaking ventures that continually push the envelope of innovation, and a robust and discerning alumni network.</p>
+//             </div>
+//           </div>
+//         </div>
+//       </header>
+
+//       <section className="brochure-section">
+//         <div className="container">
+//           <div id="brochure" className="brochure-view">
+//             <h3>Preview Brochure</h3>
+//             <div className="pdf-frame">
+//               <object data="/brochure.pdf" type="application/pdf" width="100%" height="800px">
+//                 <div className="pdf-fallback">
+//                   <p>Your browser does not support PDFs. <a href="/brochure.pdf" download>Download the brochure here</a>.</p>
+//                 </div>
+//               </object>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+
+//       <section className="sponsors-cta">
+//         <div className="cta-container">
+//           <a className="download-btn" href="/brochure.pdf" download>DOWNLOAD BROCHURE</a>
+//           <p className="partnership-inquiry">Ready To Sponsor Us? Have Questions About Partnership Opportunities?</p>
+//         </div>
+//       </section>
+
+//       {/* <section id="bank" className="bank-details-section">
+//         <div className="container">
+//           <h2>For sponsorship payments and donations</h2>
+//           <button className="bank-details-toggle" onClick={toggleBankDetails}>
+//             View Bank Details <span className={`arrow ${showBankDetails ? 'rotated' : ''}`}>▾</span>
+//           </button>
+//           <div className={`bank-details-card ${showBankDetails ? 'visible' : ''}`}>
+//             <div className="bank-info-grid">
+//               <div className="bank-info-item"><label>Account Name</label><span>{bankDetails.accountName}</span></div>
+//               <div className="bank-info-item"><label>Account Number</label><span>{bankDetails.accountNumber}</span></div>
+//               <div className="bank-info-item"><label>Bank Name</label><span>{bankDetails.bankName}</span></div>
+//               <div className="bank-info-item"><label>IFSC Code</label><span>{bankDetails.ifscCode}</span></div>
+//               <div className="bank-info-item"><label>Branch</label><span>{bankDetails.branch}</span></div>
+//               <div className="bank-info-item"><label>UPI ID</label><span>{bankDetails.upiId}</span></div>
+//             </div>
+//           </div>
+//         </div>
+//       </section> */}
+//       <Footer />
+//     </div>
+//   );
+// };
+
+// export default Sponsors;
+
+import React from 'react';
+import Slider from "react-slick";
 import './sponsors.css';
 import Footer from './footer.jsx';
 
 const Sponsors = () => {
-  const [showBankDetails, setShowBankDetails] = useState(false);
-  const toggleBankDetails = () => setShowBankDetails(!showBankDetails);
 
-  const bankDetails = {
-    accountName: 'Aero NITK',
-    accountNumber: 'XXXX XXXX XXXX XXXX',
-    bankName: 'State Bank of India',
-    ifscCode: 'SBIN0XXXXXX',
-    branch: 'NITK Surathkal Branch',
-    upiId: 'aeronitk@sbi',
-  };
+  const brochureImages = [
+"/brochure_page-0001.jpg",  
+"/brochure_page-0002.jpg",
+"/brochure_page-0003.jpg",
+"/brochure_page-0004.jpg",
+"/brochure_page-0005.jpg",
+"/brochure_page-0006.jpg",
+"/brochure_page-0007.jpg",
+"/brochure_page-0008.jpg",
+"/brochure_page-0009.jpg",
+"/brochure_page-0010.jpg",
+"/brochure_page-0011.jpg",
+  ];
+
+  const sliderSettings = {
+  dots: true,
+  infinite: true,
+  speed: 600,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2750,
+  arrows: true,
+  appendDots: dots => (
+    <div>
+      <ul className="custom-dots"> {dots} </ul>
+    </div>
+  ),
+};
+
 
   return (
     <div className="sponsors-page">
+
       <header className="sponsors-hero">
         <div className="sponsors-hero-content">
           <h1>
@@ -24,60 +133,62 @@ const Sponsors = () => {
           </h1>
           <p>Learn More About Our Team, Projects, And Sponsorship Opportunities.</p>
 
-          {/* Overlay Cards inside Hero */}
           <div className="hero-overlay-container">
             <div className="overlay-card">
               <h4>About Aero NITK</h4>
-              <p>We proudly constitute the official aeromodelling contingent of NITK Surathkal, ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.</p>
+              <p>
+                We proudly constitute the official aeromodelling contingent of NITK Surathkal,
+                ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.
+              </p>
             </div>
             <div className="overlay-card">
               <h4>Why Sponsor Us?</h4>
-              <p>Our repertoire boasts multiple triumphs in competitive arenas, groundbreaking ventures that continually push the envelope of innovation, and a robust and discerning alumni network.</p>
+              <p>
+                Our repertoire boasts multiple triumphs in competitive arenas,
+                groundbreaking ventures that continually push the envelope of innovation,
+                and a robust and discerning alumni network.
+              </p>
             </div>
           </div>
         </div>
       </header>
 
+      {/* 🔥 Brochure Carousel Section */}
       <section className="brochure-section">
         <div className="container">
           <div id="brochure" className="brochure-view">
             <h3>Preview Brochure</h3>
-            <div className="pdf-frame">
-              <object data="/brochure.pdf" type="application/pdf" width="100%" height="800px">
-                <div className="pdf-fallback">
-                  <p>Your browser does not support PDFs. <a href="/brochure.pdf" download>Download the brochure here</a>.</p>
+
+            <Slider {...sliderSettings}>
+              {brochureImages.map((img, index) => (
+                <div key={index}>
+                  <img
+                    src={img}
+                    alt={`Brochure page ${index + 1}`}
+                    style={{
+                      width: "100%",
+                      borderRadius: "12px"
+                    }}
+                  />
                 </div>
-              </object>
-            </div>
+              ))}
+            </Slider>
+
           </div>
         </div>
       </section>
 
       <section className="sponsors-cta">
         <div className="cta-container">
-          <a className="download-btn" href="/brochure.pdf" download>DOWNLOAD BROCHURE</a>
-          <p className="partnership-inquiry">Ready To Sponsor Us? Have Questions About Partnership Opportunities?</p>
+          <a className="download-btn" href="/brochure.pdf" download>
+            DOWNLOAD BROCHURE
+          </a>
+          <p className="partnership-inquiry">
+            Ready To Sponsor Us? Have Questions About Partnership Opportunities?
+          </p>
         </div>
       </section>
 
-      {/* <section id="bank" className="bank-details-section">
-        <div className="container">
-          <h2>For sponsorship payments and donations</h2>
-          <button className="bank-details-toggle" onClick={toggleBankDetails}>
-            View Bank Details <span className={`arrow ${showBankDetails ? 'rotated' : ''}`}>▾</span>
-          </button>
-          <div className={`bank-details-card ${showBankDetails ? 'visible' : ''}`}>
-            <div className="bank-info-grid">
-              <div className="bank-info-item"><label>Account Name</label><span>{bankDetails.accountName}</span></div>
-              <div className="bank-info-item"><label>Account Number</label><span>{bankDetails.accountNumber}</span></div>
-              <div className="bank-info-item"><label>Bank Name</label><span>{bankDetails.bankName}</span></div>
-              <div className="bank-info-item"><label>IFSC Code</label><span>{bankDetails.ifscCode}</span></div>
-              <div className="bank-info-item"><label>Branch</label><span>{bankDetails.branch}</span></div>
-              <div className="bank-info-item"><label>UPI ID</label><span>{bankDetails.upiId}</span></div>
-            </div>
-          </div>
-        </div>
-      </section> */}
       <Footer />
     </div>
   );

@@ -320,3 +320,29 @@
     font-size: 1rem;
   }
 }
+
+/* Container width */
+.brochure-view {
+  max-width: 1000px;
+  margin: auto;
+}
+
+/* Arrows */
+.slick-prev:before,
+.slick-next:before {
+  color: #0a3d62;
+  font-size: 30px;
+}
+
+/* Make default slick dots white */
+.slick-dots li button:before {
+  color: white !important;
+  opacity: 0.7;
+}
+
+/* Active dot bright white */
+.slick-dots li.slick-active button:before {
+  color: white !important;
+  opacity: 1;
+}
+

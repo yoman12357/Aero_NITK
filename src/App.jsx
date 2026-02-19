@@ -16,6 +16,10 @@ import Recruitment from './components/recruitment_page.jsx';
 import Sponsors from './components/sponsors.jsx';
 import NotFound from './components/NotFound.jsx';
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+
 const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
