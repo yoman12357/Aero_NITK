@@ -69,3 +69,83 @@
 .alumni-card-link {
     text-decoration: none;
 }
+
+/* ===== Batch Page Container ===== */
+.alumni-list-section {
+  margin-top: 50px;
+}
+
+/* ===== Grid Layout ===== */
+.alumni-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+/* ===== Individual Card ===== */
+.alumni-list-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.alumni-list-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Name Styling */
+.alumni-list-card span {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+}
+
+/* LinkedIn Icon */
+.linkedin-icon {
+  color: #0a66c2;
+  font-size: 20px;
+  transition: transform 0.2s ease;
+}
+
+.linkedin-icon:hover {
+  transform: scale(1.2);
+}
+
+/* Back Button */
+.back-button {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 8px 16px;
+  background: #0a3d62;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.back-button:hover {
+  background: #062b45;
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .alumni-list-card {
+    padding: 15px;
+  }
+
+  .alumni-list-card span {
+    font-size: 14px;
+  }
+
+  .linkedin-icon {
+    font-size: 18px;
+  }
+}

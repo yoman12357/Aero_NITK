@@ -11,6 +11,7 @@ import AboutPage from './components/aboutpage.jsx';
 import Gallery from './components/Gallery.jsx';
 import Team from './components/Team.jsx';
 import AlumniPage from './components/AlumniPage.jsx';
+import AlumniBatchPage from "./components/AlumniBatchPage";
 import BatchDetails from './components/BatchDetails.jsx';
 import Recruitment from './components/recruitment_page.jsx';
 import Sponsors from './components/sponsors.jsx';
@@ -120,6 +121,7 @@ const App = () => {
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/team" element={<Team />} />
         <Route path="/alumni" element={<AlumniPage />} />
+        <Route path="/alumni/:batchId" element={<AlumniBatchPage />} />
         <Route path="/alumni/:year" element={<BatchDetails />} />
         <Route path="/recruitment" element={<Recruitment />} />
         <Route path="/sponsors" element={<Sponsors />} />
