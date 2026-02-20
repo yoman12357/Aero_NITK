@@ -47,7 +47,7 @@ import { Link } from 'react-router-dom';
 import './AlumniPage.css';
 import Footer from './footer.jsx';
 import alumniImg1 from '../images/alumni/alumni1.png';
-import alumniImg2 from '../images/alumni/alumni2.png';
+import alumniImg2 from '../images/alumni/alumni2.jpeg';
 
 
 const AlumniPage = () => {
