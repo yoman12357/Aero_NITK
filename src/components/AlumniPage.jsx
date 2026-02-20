@@ -47,12 +47,14 @@ import { Link } from 'react-router-dom';
 import './AlumniPage.css';
 import Footer from './footer.jsx';
 import alumniImg1 from '../images/alumni/alumni1.png';
+import alumniImg2 from '../images/alumni/alumni2.png';
+
 
 const AlumniPage = () => {
 
     const alumniBatches = [
         { id: '2024', title: '2024', img: alumniImg1 },
-        { id: '2025', title: '2025', img: alumniImg1 },
+        { id: '2025', title: '2025', img: alumniImg2 },
     ];
 
     return (
