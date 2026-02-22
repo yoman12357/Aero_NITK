@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import './BatchDetails.css';
 import Footer from './footer.jsx';
+import { Helmet } from 'react-helmet-async';
 import linkedInLogo from '../images/linkedIn_logo.png';
 
 const alumniData = {
@@ -29,6 +30,11 @@ const BatchDetails = () => {
 
     return (
         <div className="batch-page-bg">
+            <Helmet>
+                <title>Alumni Batch {year} | Aero NITK</title>
+                <meta name="description" content={`Meet the members of the Aero NITK Alumni Batch ${year}. Once a part of the team, always wings of teamwork.`} />
+                <link rel="canonical" href={`https://aeronitk.in/alumni/${year}`} />
+            </Helmet>
             <div className="batch-main-container">
                 <h1 className="batch-header-text">ALUMNI BATCH - {year}</h1>
 
@@ -36,7 +42,7 @@ const BatchDetails = () => {
                     {members.map((m, i) => (
                         <div key={i} className="batch-member-card">
                             <div className="batch-profile-circle">
-                                {m.image ? <img src={m.image} alt={m.name} /> : <div className="batch-placeholder-circle" />}
+                                {m.image ? <img src={m.image} alt={m.name} loading="lazy" /> : <div className="batch-placeholder-circle" />}
                             </div>
                             <h3 className="batch-member-name">{m.name}</h3>
                             <p className="batch-member-role">{m.role}</p>

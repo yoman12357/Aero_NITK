@@ -89,42 +89,48 @@ import React from 'react';
 import Slider from "react-slick";
 import './sponsors.css';
 import Footer from './footer.jsx';
+import { Helmet } from 'react-helmet-async';
 
 const Sponsors = () => {
 
   const brochureImages = [
-"/brochure_page-0001.jpg",  
-"/brochure_page-0002.jpg",
-"/brochure_page-0003.jpg",
-"/brochure_page-0004.jpg",
-"/brochure_page-0005.jpg",
-"/brochure_page-0006.jpg",
-"/brochure_page-0007.jpg",
-"/brochure_page-0008.jpg",
-"/brochure_page-0009.jpg",
-"/brochure_page-0010.jpg",
-"/brochure_page-0011.jpg",
+    "/brochure_page-0001.jpg",
+    "/brochure_page-0002.jpg",
+    "/brochure_page-0003.jpg",
+    "/brochure_page-0004.jpg",
+    "/brochure_page-0005.jpg",
+    "/brochure_page-0006.jpg",
+    "/brochure_page-0007.jpg",
+    "/brochure_page-0008.jpg",
+    "/brochure_page-0009.jpg",
+    "/brochure_page-0010.jpg",
+    "/brochure_page-0011.jpg",
   ];
 
   const sliderSettings = {
-  dots: true,
-  infinite: true,
-  speed: 600,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 2750,
-  arrows: true,
-  appendDots: dots => (
-    <div>
-      <ul className="custom-dots"> {dots} </ul>
-    </div>
-  ),
-};
+    dots: true,
+    infinite: true,
+    speed: 600,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2750,
+    arrows: true,
+    appendDots: dots => (
+      <div>
+        <ul className="custom-dots"> {dots} </ul>
+      </div>
+    ),
+  };
 
 
   return (
     <div className="sponsors-page">
+      <Helmet>
+        <title>Sponsors | Aero NITK</title>
+        <meta name="description" content="Partner with Aero NITK. Support aerospace innovation and student engineering excellence at NITK Surathkal." />
+        <link rel="canonical" href="https://aeronitk.in/sponsors" />
+      </Helmet>
 
       <header className="sponsors-hero">
         <div className="sponsors-hero-content">
@@ -165,6 +171,7 @@ const Sponsors = () => {
                   <img
                     src={img}
                     alt={`Brochure page ${index + 1}`}
+                    loading="lazy"
                     style={{
                       width: "100%",
                       borderRadius: "12px"

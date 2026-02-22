@@ -7,6 +7,15 @@ const Footer = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
+  const handleSocialClick = (platform) => {
+    if (window.gtag) {
+      window.gtag('event', 'social_link_click', {
+        'event_category': 'Engagement',
+        'event_label': platform
+      });
+    }
+  };
+
   return (
     <div className={`pagewrapper ${isHomePage ? 'home-bg' : 'other-bg'}`}>
       <footer className="footer">
@@ -20,9 +29,9 @@ const Footer = () => {
           <div className="footer-links-container">
             <div className="footer-column">
               <h3>Socials</h3>
-              <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noreferrer">Instagram</a>
-              <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noreferrer">YouTube</a>
-              <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href="https://www.instagram.com/aeronitk/" target="_blank" rel="noreferrer" onClick={() => handleSocialClick('Instagram')}>Instagram</a>
+              <a href="https://www.youtube.com/@AeroNITK" target="_blank" rel="noreferrer" onClick={() => handleSocialClick('YouTube')}>YouTube</a>
+              <a href="https://www.linkedin.com/company/aero-nitk" target="_blank" rel="noreferrer" onClick={() => handleSocialClick('LinkedIn')}>LinkedIn</a>
             </div>
 
             <div className="footer-column">

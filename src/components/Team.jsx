@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './Team.css';
 import Footer from './footer.jsx';
+import { Helmet } from 'react-helmet-async';
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abel_thomas_mathew from '../images/team-members/Abel_Thomas_Mathew.jpg';
@@ -138,7 +139,7 @@ const Team = () => {
   const MemberCard = ({ m }) => (
     <div className="team-card">
       <div className="profile-circle">
-        {m.image ? <img src={m.image} alt={m.name} /> : <div className="placeholder-circle" />}
+        {m.image ? <img src={m.image} alt={m.name} loading="lazy" /> : <div className="placeholder-circle" />}
       </div>
       <h3 className="name">{m.name}</h3>
       <p className="role">{m.role}</p>
@@ -154,6 +155,11 @@ const Team = () => {
 
   return (
     <div className="team-page-bg">
+      <Helmet>
+        <title>Our Team | Aero NITK</title>
+        <meta name="description" content="Meet the passionate students behind Aero NITK - from aerodynamics enthusiasts to avionics experts." />
+        <link rel="canonical" href="https://aeronitk.in/team" />
+      </Helmet>
       <div className="team-main-container">
 
         <section className="section-group">

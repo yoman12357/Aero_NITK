@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './recruitment_page.css';
 import Footer from './footer.jsx';
 import { saveApplicant } from '../firebase.js';
+import { Helmet } from 'react-helmet-async';
 
 const teams = ["Web Team", "Structures", "Media", "Avionics", "Aerodynamics", "Marketing"];
 const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -16,7 +17,7 @@ const RecruitmentForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    email: "", 
+    email: "",
     rollNo: "",
     phone: "",
     branch: "",
@@ -57,6 +58,12 @@ const RecruitmentForm = () => {
     setIsSubmitting(false);
 
     if (result.success) {
+      if (window.gtag) {
+        window.gtag('event', 'recruitment_apply_submit', {
+          'event_category': 'Engagement',
+          'event_label': 'Join Our Team'
+        });
+      }
       alert("Application submitted successfully!");
       setFormData({
         name: "", email: "", rollNo: "", phone: "",
@@ -68,6 +75,11 @@ const RecruitmentForm = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Recruitment | Aero NITK</title>
+        <meta name="description" content="Join Aero NITK! We are looking for passionate students to join our technical and marketing subsystems." />
+        <link rel="canonical" href="https://aeronitk.in/recruitment" />
+      </Helmet>
       <section className="recruitment-section">
         {/* Header moved outside the form to be styled independently */}
         <h2 className="recruitment-title">JOIN OUR TEAM</h2>

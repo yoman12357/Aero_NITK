@@ -46,6 +46,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './AlumniPage.css';
 import Footer from './footer.jsx';
+import { Helmet } from 'react-helmet-async';
 import alumniImg1 from '../images/alumni/alumni1.png';
 import alumniImg2 from '../images/alumni/alumni2.jpeg';
 
@@ -59,6 +60,11 @@ const AlumniPage = () => {
 
     return (
         <div className="alumni-page-wrapper">
+            <Helmet>
+                <title>Alumni | Aero NITK</title>
+                <meta name="description" content="Our alumni are our pride. Explore the achievements and career paths of former Aero NITK members." />
+                <link rel="canonical" href="https://aeronitk.in/alumni" />
+            </Helmet>
             <main className="alumni-container">
                 <h1 className="alumni-header-text">ALUMNI</h1>
 
@@ -74,6 +80,7 @@ const AlumniPage = () => {
                                     src={batch.img}
                                     alt={`Batch ${batch.title}`}
                                     className="alumni-img"
+                                    loading="lazy"
                                 />
                                 <div className="batch-overlay-text">
                                     {batch.title}

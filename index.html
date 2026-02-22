@@ -7,16 +7,47 @@
   <title>AeroNITK — Official Aeromodelling Club of NITK Surathkal</title>
 
   <!-- SEO -->
-  <meta name="description" content="Aero NITK is the official Aeromodelling and Aviation-focused student team of NITK Surathkal. We Design, Analyze, and Build RC Planes, UAVs, and Autonomous Drones." />
+  <meta name="description"
+    content="Aero NITK is the official Aeromodelling and Aviation-focused student team of NITK Surathkal. We Design, Analyze, and Build RC Planes, UAVs, and Autonomous Drones." />
 
   <!-- Open Graph (social media previews) -->
   <meta property="og:title" content="AeroNITK — Wings of Teamwork" />
-  <meta property="og:description" content="Official Aeromodelling Club of NITK Surathkal. Designing, analyzing, and building RC planes, UAVs, and autonomous drones." />
+  <meta property="og:description"
+    content="Official Aeromodelling Club of NITK Surathkal. Designing, analyzing, and building RC planes, UAVs, and autonomous drones." />
   <meta property="og:image" content="/Aero_NITK_logo.png" />
   <meta property="og:type" content="website" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/Aero_NITK_logo.png" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#2983e6" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Aero NITK",
+      "url": "https://aeronitk.in",
+      "logo": "https://aeronitk.in/Aero_NITK_logo.png",
+      "sameAs": [
+        "https://www.instagram.com/aeronitk/",
+        "https://www.linkedin.com/company/aero-nitk",
+        "https://www.youtube.com/@AeroNITK"
+      ]
+    }
+  </script>
+
+  <!-- Google Analytics 4 (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFHQQG3DN2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-JFHQQG3DN2');
+  </script>
 </head>
 
 <body>

@@ -16,6 +16,8 @@ import Footer from './components/footer.jsx';
 import BlurText from "./components/effects/bt.jsx";
 import Timeline from './components/Timeline.jsx';
 import Popup from './components/Popup.jsx'; // adjust path if needed
+import { Helmet } from 'react-helmet-async';
+
 
 const AeroNITKHomepage = () => {
   const navigate = useNavigate();
@@ -93,6 +95,12 @@ const AeroNITKHomepage = () => {
     }
 
     if (firestoreOk || emailOk) {
+      if (window.gtag) {
+        window.gtag('event', 'contact_form_submit', {
+          'event_category': 'Engagement',
+          'event_label': 'Homepage Contact'
+        });
+      }
       setIsPopupOpen(true);
       setFormData({ firstName: '', lastName: '', email: '', message: '' });
     } else {
@@ -104,6 +112,14 @@ const AeroNITKHomepage = () => {
 
   return (
     <div className="page-wrapper">
+      <Helmet>
+        <title>Aero NITK | Wings of Teamwork</title>
+        <meta name="description" content="Official Aeromodelling Club of NITK Surathkal. We design, build, and fly RC Planes, UAVs, and Autonomous Drones." />
+        <link rel="canonical" href="https://aeronitk.in/" />
+        <meta property="og:title" content="Aero NITK | Wings of Teamwork" />
+        <meta property="og:description" content="Design, Build, Fly. The official Aeromodelling team of NITK Surathkal." />
+        <meta property="og:url" content="https://aeronitk.in/" />
+      </Helmet>
       <section className="hero-section" id="home">
         <div className="hero-container">
           <BlurText text="AERONITK" className="hero-title" delay={150} animateBy="words" direction="top" />
@@ -151,10 +167,10 @@ const AeroNITKHomepage = () => {
       </section>
 
       <section className="contact-section" id="contact">
-        <img src={plane1} className="contact-img plane-top-left" alt="decor" />
-        <img src={dronePic} className="contact-img drone-bottom-left" alt="decor" />
-        <img src={plane2} className="contact-img plane-top-right" alt="decor" />
-        <img src={plane3} className="contact-img plane-bottom-right" alt="decor" />
+        <img src={plane1} className="contact-img plane-top-left" alt="decor" loading="lazy" />
+        <img src={dronePic} className="contact-img drone-bottom-left" alt="decor" loading="lazy" />
+        <img src={plane2} className="contact-img plane-top-right" alt="decor" loading="lazy" />
+        <img src={plane3} className="contact-img plane-bottom-right" alt="decor" loading="lazy" />
 
         <div className="contact-card">
           <h4>Contact us</h4>

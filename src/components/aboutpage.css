@@ -109,7 +109,7 @@ html {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease-out;
-    
+
 }
 
 .section-block.animate {
@@ -121,29 +121,38 @@ html {
     color: rgb(255, 255, 255);
     font-size: 1.8rem;
     margin-bottom: 20px;
-    font-family: 'Montserrat',sans-serif;
-    font-weight:500;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
 }
 
-.section-block p{
-    font-family: 'Inter',sans-serif;
+.section-block p {
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
     font-size: 1rem;
     letter-spacing: 0.1rem;
 }
 
-.styled-list{
-    font-family: 'Inter',sans-serif;
+.styled-list {
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
     font-size: 1rem;
     letter-spacing: 0.1rem;
-    padding-left: 20px;
+    padding-left: 0;
     color: #e0e0e0;
+    list-style: none;
 }
 
 
 .styled-list li {
     margin-bottom: 12px;
+    position: relative;
+    padding-left: 1.2em;
+}
+
+.styled-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
 }
 
 /* Responsive Fixes */

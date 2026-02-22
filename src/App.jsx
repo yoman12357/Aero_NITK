@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import Header from './components/header.jsx';
 
@@ -24,6 +24,16 @@ import "slick-carousel/slick/slick-theme.css";
 const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
+  const location = useLocation();
+
+  // GA4: track page views on route change
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag('config', 'G-JFHQQG3DN2', {
+        page_path: location.pathname + location.search,
+      });
+    }
+  }, [location]);
 
   // Controls if maintenance is active based on your .env file
   const [isMaintenanceActive, setIsMaintenanceActive] = useState(

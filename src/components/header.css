@@ -49,11 +49,11 @@
     color: #fff;
     text-decoration: none;
     font-size: 1rem;
-    font-family: 'Montserrat',sans-serif;
-    letter-spacing:normal;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: normal;
     font-weight: 500;
     transition: color 200ms ease;
-    
+
 }
 
 .app-navbar-links a:hover {
@@ -61,10 +61,10 @@
     text-decoration: none !important;
 }
 
-.contact-button{
-    height:2.45rem;
-    padding:0 0.625rem 0 0.625rem ;
-    border:2px solid #3e7da6;
+.contact-button {
+    height: 2.45rem;
+    padding: 0 0.625rem 0 0.625rem;
+    border: 2px solid #3e7da6;
     border-radius: 8px;
     background: #3E93CE;
     color: #fff;
@@ -243,7 +243,7 @@
     color: #ffffff;
     text-decoration: none;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     letter-spacing: 1px;
     transition: color 0.3s ease;
 }
@@ -279,5 +279,9 @@
         justify-content: center;
         align-items: center;
         gap: 2rem;
+    }
+
+    .app-navbar-links.open a {
+        font-weight: 400;
     }
 }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './workshop_registration.css';
 import Footer from './footer.jsx';
 import { saveToCollection } from '../firebase.js';
+import { Helmet } from 'react-helmet-async';
 
 const branches = [
     "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
@@ -29,6 +30,12 @@ const WorkshopRegistration = () => {
         const result = await saveToCollection("workshop_registrations", formData);
 
         if (result.success) {
+            if (window.gtag) {
+                window.gtag('event', 'workshop_registration_submit', {
+                    'event_category': 'Conversion',
+                    'event_label': 'Boeing Workshop'
+                });
+            }
             alert("Registration Successful!");
             setFormData({
                 name: "", email: "", rollNo: "", phone: "",
@@ -42,6 +49,11 @@ const WorkshopRegistration = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Workshop Registration | Aero NITK</title>
+                <meta name="description" content="Register for the Boeing Aeromodelling Workshop at NITK Surathkal. Join us for a day of aviation and innovation." />
+                <link rel="canonical" href="https://aeronitk.in/workshop_registration" />
+            </Helmet>
             <section className="workshop-section">
                 <h2 className="workshop-title">WORKSHOP REGISTRATION</h2>
                 <form className="workshop-card" onSubmit={handleSubmit}>

@@ -74,6 +74,7 @@
 import React from 'react';
 import './Gallery.css';
 import Footer from './footer';
+import { Helmet } from 'react-helmet-async';
 
 // Images (Vite / public folder)
 import gallery1 from '/gallery_1.png';
@@ -170,6 +171,11 @@ const images = [
 const Gallery = () => {
   return (
     <>
+      <Helmet>
+        <title>Gallery | Aero NITK</title>
+        <meta name="description" content="Explore a collection of memories and technical milestones from Aero NITK's journey in aeromodelling." />
+        <link rel="canonical" href="https://aeronitk.in/gallery" />
+      </Helmet>
       <div className="gallery-section">
         <h1>GALLERY</h1>
 

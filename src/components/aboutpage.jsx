@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import './aboutpage.css';
 import Footer from './footer.jsx';
+import { Helmet } from 'react-helmet-async';
 
 const AboutPage = () => {
   useEffect(() => {
@@ -25,6 +26,12 @@ const AboutPage = () => {
 
   return (
     <div className="about-page-wrapper">
+      <Helmet>
+        <title>About Us | Aero NITK</title>
+        <meta name="description" content="Learn about the mission, projects, and achievements of Aero NITK, the official aeromodelling club of NITK Surathkal." />
+        <link rel="canonical" href="https://aeronitk.in/about" />
+      </Helmet>
+
 
       <section className="about-hero">
         <div className="hero-overlay">
