@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -26,6 +26,18 @@ export const saveToCollection = async (collectionName, data) => {
     } catch (error) {
         console.error(`Error saving to ${collectionName}:`, error);
         return { success: false, error };
+    }
+};
+
+// Internal visitor tracking (visible only in Firebase Console)
+export const incrementVisitorCount = async () => {
+    try {
+        const statsRef = doc(db, "metadata", "siteStats");
+        await setDoc(statsRef, {
+            total_visits: increment(1)
+        }, { merge: true });
+    } catch (error) {
+        console.error("Error updating visitor stats:", error);
     }
 };
 

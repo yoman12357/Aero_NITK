@@ -6,6 +6,7 @@ import Header from './components/header.jsx';
 // Pages
 import AeroNITKHomepage from './AeronitkHomepage.jsx';
 import WorkshopRegistration from './components/workshop_registration.jsx';
+import { incrementVisitorCount } from './firebase.js';
 
 import AboutPage from './components/aboutpage.jsx';
 import Gallery from './components/Gallery.jsx';
@@ -34,6 +35,15 @@ const App = () => {
       });
     }
   }, [location]);
+
+  // Internal Visitor Tracking (Firebase only, not shown on site)
+  useEffect(() => {
+    const hasBeenCounted = sessionStorage.getItem('v_counted');
+    if (!hasBeenCounted) {
+      incrementVisitorCount();
+      sessionStorage.setItem('v_counted', 'true');
+    }
+  }, []);
 
   // Controls if maintenance is active based on your .env file
   const [isMaintenanceActive, setIsMaintenanceActive] = useState(
