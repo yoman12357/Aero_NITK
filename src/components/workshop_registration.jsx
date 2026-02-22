@@ -15,7 +15,8 @@ const WorkshopRegistration = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         name: "", email: "", rollNo: "", phone: "",
-        branch: "", year: "1", expectations: ""
+        branch: "", year: "1", expectations: "",
+        hp_field: ""
     });
 
     const handleInputChange = (e) => {
@@ -25,6 +26,13 @@ const WorkshopRegistration = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Honeypot check: if hp_field is filled, it's likely a bot
+        if (formData.hp_field) {
+            console.warn("Bot detected via honeypot.");
+            return;
+        }
+
         setIsSubmitting(true);
 
         const result = await saveToCollection("workshop_registrations", formData);
@@ -39,7 +47,8 @@ const WorkshopRegistration = () => {
             alert("Registration Successful!");
             setFormData({
                 name: "", email: "", rollNo: "", phone: "",
-                branch: "", year: "1", expectations: ""
+                branch: "", year: "1", expectations: "",
+                hp_field: ""
             });
         } else {
             alert("Submission failed. Please try again.");
@@ -57,6 +66,10 @@ const WorkshopRegistration = () => {
             <section className="workshop-section">
                 <h2 className="workshop-title">WORKSHOP REGISTRATION</h2>
                 <form className="workshop-card" onSubmit={handleSubmit}>
+                    {/* Honeypot field */}
+                    <div style={{ display: 'none' }} aria-hidden="true">
+                        <input type="text" name="hp_field" value={formData.hp_field} onChange={handleInputChange} tabIndex="-1" autoComplete="off" />
+                    </div>
                     <label>NAME
                         <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
                     </label>

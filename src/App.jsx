@@ -45,6 +45,23 @@ const App = () => {
     }
   }, []);
 
+  // Performance Optimization: Dynamic Prefetching for Gallery & Team
+  useEffect(() => {
+    // Only prefetch after the initial page is fully interactive
+    const timer = setTimeout(() => {
+      const links = ['/gallery', '/team'];
+      links.forEach(path => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = path;
+        document.head.appendChild(link);
+      });
+      console.log("🚀 Critical routes prefetched for instant navigation.");
+    }, 3000); // 3-second delay to prioritize current page assets
+
+    return () => clearTimeout(timer);
+  }, []);
+
   // Controls if maintenance is active based on your .env file
   const [isMaintenanceActive, setIsMaintenanceActive] = useState(
     import.meta.env.VITE_MAINTENANCE_MODE === 'true'

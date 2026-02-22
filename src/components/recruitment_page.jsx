@@ -23,7 +23,8 @@ const RecruitmentForm = () => {
     branch: "",
     semester: "",
     selectedTeams: [],
-    whyJoin: ""
+    whyJoin: "",
+    hp_field: ""
   });
 
   const handleInputChange = (e) => {
@@ -48,6 +49,13 @@ const RecruitmentForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Honeypot check
+    if (formData.hp_field) {
+      console.warn("Bot detected via honeypot.");
+      return;
+    }
+
     if (formData.selectedTeams.length !== 3) {
       alert("Please select exactly three teams to indicate your 1st and 2nd priority.");
       return;
@@ -85,6 +93,10 @@ const RecruitmentForm = () => {
         <h2 className="recruitment-title">JOIN OUR TEAM</h2>
 
         <form className="recruitment-card" onSubmit={handleSubmit}>
+          {/* Honeypot field */}
+          <div style={{ display: 'none' }} aria-hidden="true">
+            <input type="text" name="hp_field" value={formData.hp_field} onChange={handleInputChange} tabIndex="-1" autoComplete="off" />
+          </div>
           <label>NAME
             <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
           </label>

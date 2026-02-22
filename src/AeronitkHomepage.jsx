@@ -29,7 +29,8 @@ const AeroNITKHomepage = () => {
     firstName: '',
     lastName: '',
     email: '',
-    message: ''
+    message: '',
+    hp_field: '' // Honeypot field
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -56,6 +57,13 @@ const AeroNITKHomepage = () => {
 
   const handleContactSubmit = async (e) => {
     e.preventDefault();
+
+    // Honeypot check: if hp_field is filled, it's likely a bot
+    if (formData.hp_field) {
+      console.warn("Bot detected via honeypot.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     let firestoreOk = false;
@@ -176,6 +184,17 @@ const AeroNITKHomepage = () => {
           <h4>Contact us</h4>
           <h2>GET IN TOUCH</h2>
           <form className="contact-form" onSubmit={handleContactSubmit}>
+            {/* Honeypot field (hidden from users) */}
+            <div style={{ display: 'none' }} aria-hidden="true">
+              <input
+                type="text"
+                name="hp_field"
+                value={formData.hp_field}
+                onChange={handleChange}
+                tabIndex="-1"
+                autocomplete="off"
+              />
+            </div>
             <div className="form-row">
               <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First name" required />
               <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last name" required />
