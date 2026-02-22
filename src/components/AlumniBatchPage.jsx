@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet-async';
 
 const alumniData = {
   "2024": [
-    { name: "OJAS AGRAWAL", linkedin: "https://share.google/CPtcO871FQiCzy1A4" },
+    { name: "Ojas Agrawal", linkedin: "https://share.google/CPtcO871FQiCzy1A4" },
     { name: "Abhiraj Pravin Mengade", linkedin: "https://share.google/o4uz5MDg6JSPFbZRk" },
     { name: "Mehul Todi", linkedin: "https://in.linkedin.com/in/mehul-todi" },
     { name: "Madhav Kumar", linkedin: "https://in.linkedin.com/in/minimaddy" },

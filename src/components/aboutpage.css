@@ -137,7 +137,7 @@ html {
     font-weight: 400;
     font-size: 1rem;
     letter-spacing: 0.1rem;
-    padding-left: 0;
+    padding-left: 15px;
     color: #e0e0e0;
     list-style: none;
 }

@@ -53,18 +53,34 @@
     letter-spacing: normal;
     font-weight: 500;
     transition: color 200ms ease;
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> ce6a1dce075338da7a5ff177de94226edacb162c
 }
 
 .app-navbar-links a:hover {
     color: #2983e6;
     text-decoration: none !important;
 }
+a{
+    margin: 0;
+    display: inline;
+    padding :0;
+}
 
+<<<<<<< HEAD
 .contact-button {
     height: 2.45rem;
     padding: 0 0.625rem 0 0.625rem;
     border: 2px solid #3e7da6;
+=======
+.contact-button{
+    height:2.45rem;
+    padding:0 10px 0 10px ;
+    border:2px solid #3e7da6;
+>>>>>>> ce6a1dce075338da7a5ff177de94226edacb162c
     border-radius: 8px;
     background: #3E93CE;
     color: #fff;
@@ -72,6 +88,8 @@
     font-family: 'Montserrat';
     cursor: pointer;
 }
+
+
 
 /* --- Desktop Scrolled State --- */
 @media (min-width: 901px) {
