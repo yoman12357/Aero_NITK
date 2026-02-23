@@ -207,7 +207,7 @@ const AeroNITKHomepage = () => {
                 value={formData.hp_field}
                 onChange={handleChange}
                 tabIndex="-1"
-                autocomplete="off"
+                autoComplete="off"
               />
             </div>
             <div className="form-row">

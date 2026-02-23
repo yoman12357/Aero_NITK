@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import Header from './components/header.jsx';
+import LoadingSpinner from './components/LoadingSpinner.jsx';
 
 // Pages - Lazy Loaded for performance
 const AeroNITKHomepage = lazy(() => import('./AeronitkHomepage.jsx'));
@@ -56,7 +57,9 @@ const App = () => {
         link.href = path;
         document.head.appendChild(link);
       });
-      console.log("🚀 Critical routes prefetched for instant navigation.");
+      if (import.meta.env.MODE === 'development') {
+        console.log("🚀 Critical routes prefetched for instant navigation.");
+      }
     }, 3000); // 3-second delay to prioritize current page assets
 
     return () => clearTimeout(timer);
@@ -151,7 +154,7 @@ const App = () => {
     <div className="App">
       <ScrollToTop />
       <Header isScrolled={isScrolled} />
-      <Suspense fallback={<div style={{ height: '100vh', background: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#fff', fontFamily: 'Montserrat' }}>LOADING...</div>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route path="/" element={<AeroNITKHomepage />} />
           <Route path="/workshop_registration" element={<WorkshopRegistration />} />

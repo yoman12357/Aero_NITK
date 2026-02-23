@@ -16,6 +16,7 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export { collection, addDoc, serverTimestamp };
 
+// Optimized save to collection with better error handling
 export const saveToCollection = async (collectionName, data) => {
     try {
         await addDoc(collection(db, collectionName), {
@@ -24,20 +25,30 @@ export const saveToCollection = async (collectionName, data) => {
         });
         return { success: true };
     } catch (error) {
-        console.error(`Error saving to ${collectionName}:`, error);
+        if (import.meta.env.MODE === 'development') {
+            console.error(`Error saving to ${collectionName}:`, error);
+        }
         return { success: false, error };
     }
 };
 
-// Internal visitor tracking (visible only in Firebase Console)
-export const incrementVisitorCount = async () => {
-    try {
-        const statsRef = doc(db, "metadata", "siteStats");
-        await setDoc(statsRef, {
-            total_visits: increment(1)
-        }, { merge: true });
-    } catch (error) {
-        console.error("Error updating visitor stats:", error);
+// Internal visitor tracking - optimized with retry logic
+export const incrementVisitorCount = async (retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const statsRef = doc(db, "metadata", "siteStats");
+            await setDoc(statsRef, {
+                total_visits: increment(1)
+            }, { merge: true });
+            break;
+        } catch (error) {
+            if (i === retries - 1 && import.meta.env.MODE === 'development') {
+                console.error("Error updating visitor stats:", error);
+            }
+            if (i < retries - 1) {
+                await new Promise(resolve => setTimeout(resolve, 100 * (i + 1)));
+            }
+        }
     }
 };
 

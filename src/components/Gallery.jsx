@@ -113,7 +113,6 @@ import gallery33 from '/gallery_33.png';
 import gallery34 from '/gallery_34.png';
 import gallery35 from '/gallery_35.png';
 
-
 /**
  * rowSpan × grid-auto-rows = height
  * colSpan × column width = width
@@ -201,3 +200,4 @@ const Gallery = () => {
 };
 
 export default Gallery;
+
