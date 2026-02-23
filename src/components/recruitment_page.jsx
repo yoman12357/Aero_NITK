@@ -50,14 +50,29 @@ const RecruitmentForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Honeypot check
+    // 1. Honeypot check
     if (formData.hp_field) {
       console.warn("Bot detected via honeypot.");
       return;
     }
 
+    // 2. Data Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (formData.name.trim().length < 3) {
+      alert("Name must be at least 3 characters.");
+      return;
+    }
+    if (!/^[0-9]{10}$/.test(formData.phone)) {
+      alert("Phone number must be exactly 10 digits.");
+      return;
+    }
+
     if (formData.selectedTeams.length !== 3) {
-      alert("Please select exactly three teams to indicate your 1st and 2nd priority.");
+      alert("Please select exactly three teams to indicate your 1st, 2nd, and 3rd priority.");
       return;
     }
 

@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import Header from './components/header.jsx';
 
-// Pages
-import AeroNITKHomepage from './AeronitkHomepage.jsx';
-import WorkshopRegistration from './components/workshop_registration.jsx';
-import { incrementVisitorCount } from './firebase.js';
+// Pages - Lazy Loaded for performance
+const AeroNITKHomepage = lazy(() => import('./AeronitkHomepage.jsx'));
+const WorkshopRegistration = lazy(() => import('./components/workshop_registration.jsx'));
+const AboutPage = lazy(() => import('./components/aboutpage.jsx'));
+const Gallery = lazy(() => import('./components/Gallery.jsx'));
+const Team = lazy(() => import('./components/Team.jsx'));
+const AlumniPage = lazy(() => import('./components/AlumniPage.jsx'));
+const AlumniBatchPage = lazy(() => import("./components/AlumniBatchPage"));
+const BatchDetails = lazy(() => import('./components/BatchDetails.jsx'));
+const Recruitment = lazy(() => import('./components/recruitment_page.jsx'));
+const Sponsors = lazy(() => import('./components/sponsors.jsx'));
+const NotFound = lazy(() => import('./components/NotFound.jsx'));
 
-import AboutPage from './components/aboutpage.jsx';
-import Gallery from './components/Gallery.jsx';
-import Team from './components/Team.jsx';
-import AlumniPage from './components/AlumniPage.jsx';
-import AlumniBatchPage from "./components/AlumniBatchPage";
-import BatchDetails from './components/BatchDetails.jsx';
-import Recruitment from './components/recruitment_page.jsx';
-import Sponsors from './components/sponsors.jsx';
-import NotFound from './components/NotFound.jsx';
+import { incrementVisitorCount } from './firebase.js';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -151,19 +151,21 @@ const App = () => {
     <div className="App">
       <ScrollToTop />
       <Header isScrolled={isScrolled} />
-      <Routes>
-        <Route path="/" element={<AeroNITKHomepage />} />
-        <Route path="/workshop_registration" element={<WorkshopRegistration />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/team" element={<Team />} />
-        <Route path="/alumni" element={<AlumniPage />} />
-        <Route path="/alumni/:batchId" element={<AlumniBatchPage />} />
-        <Route path="/alumni/:year" element={<BatchDetails />} />
-        <Route path="/recruitment" element={<Recruitment />} />
-        <Route path="/sponsors" element={<Sponsors />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<div style={{ height: '100vh', background: '#000', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#fff', fontFamily: 'Montserrat' }}>LOADING...</div>}>
+        <Routes>
+          <Route path="/" element={<AeroNITKHomepage />} />
+          <Route path="/workshop_registration" element={<WorkshopRegistration />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/alumni" element={<AlumniPage />} />
+          <Route path="/alumni/:batchId" element={<AlumniBatchPage />} />
+          <Route path="/alumni/:year" element={<BatchDetails />} />
+          <Route path="/recruitment" element={<Recruitment />} />
+          <Route path="/sponsors" element={<Sponsors />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 };

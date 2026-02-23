@@ -27,9 +27,29 @@ const WorkshopRegistration = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Honeypot check: if hp_field is filled, it's likely a bot
+        // 1. Honeypot check
         if (formData.hp_field) {
             console.warn("Bot detected via honeypot.");
+            return;
+        }
+
+        // 2. Data Validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+        if (formData.name.trim().length < 3) {
+            alert("Please enter your full name (min 3 characters).");
+            return;
+        }
+        // Basic Roll No check (e.g., 23BCS001)
+        if (formData.rollNo.trim().length < 6) {
+            alert("Please enter a valid Roll Number.");
+            return;
+        }
+        if (!/^[0-9]{10}$/.test(formData.phone)) {
+            alert("Phone number must be exactly 10 digits.");
             return;
         }
 

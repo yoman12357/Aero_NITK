@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /private/
+Disallow: /config/
+Disallow: /admin/
+Disallow: /*?*
 
+# Allow search engines to pick up all main content
 Sitemap: https://aeronitk.in/sitemap.xml

@@ -58,9 +58,24 @@ const AeroNITKHomepage = () => {
   const handleContactSubmit = async (e) => {
     e.preventDefault();
 
-    // Honeypot check: if hp_field is filled, it's likely a bot
+    // 1. Honeypot check
     if (formData.hp_field) {
       console.warn("Bot detected via honeypot.");
+      return;
+    }
+
+    // 2. Data Validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    if (formData.firstName.trim().length < 2) {
+      alert("First name must be at least 2 characters long.");
+      return;
+    }
+    if (formData.message.trim().length < 10) {
+      alert("Message must be at least 10 characters long.");
       return;
     }
 
