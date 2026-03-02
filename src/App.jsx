@@ -7,6 +7,7 @@ import LoadingSpinner from './components/LoadingSpinner.jsx';
 // Pages - Lazy Loaded for performance
 const AeroNITKHomepage = lazy(() => import('./AeronitkHomepage.jsx'));
 const WorkshopRegistration = lazy(() => import('./components/workshop_registration.jsx'));
+const WorkshopSuccess = lazy(() => import('./components/WorkshopSuccess.jsx'));
 const AboutPage = lazy(() => import('./components/aboutpage.jsx'));
 const Gallery = lazy(() => import('./components/Gallery.jsx'));
 const Team = lazy(() => import('./components/Team.jsx'));
@@ -158,6 +159,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AeroNITKHomepage />} />
           <Route path="/workshop_registration" element={<WorkshopRegistration />} />
+          <Route path="/workshop_success" element={<WorkshopSuccess />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/team" element={<Team />} />

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './workshop_registration.css';
 import Footer from './footer.jsx';
-import { saveToCollection } from '../firebase.js';
+import { saveToCollection, checkDuplicateRegistration } from '../firebase.js';
 import { Helmet } from 'react-helmet-async';
 
 const branches = [
@@ -12,11 +13,14 @@ const branches = [
 ];
 
 const WorkshopRegistration = () => {
+    const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [hasTeam, setHasTeam] = useState("");
+    const [duplicateError, setDuplicateError] = useState(""); // inline error for duplicate
     const [formData, setFormData] = useState({
         name: "", email: "", rollNo: "", phone: "",
         branch: "", year: "1", expectations: "",
-        hp_field: ""
+        teamName: "", hp_field: ""
     });
 
     const handleInputChange = (e) => {
@@ -43,9 +47,15 @@ const WorkshopRegistration = () => {
             alert("Please enter your full name (min 3 characters).");
             return;
         }
-        // Basic Roll No check (e.g., 23BCS001)
-        if (formData.rollNo.trim().length < 6) {
-            alert("Please enter a valid Roll Number.");
+        // Roll No must start with 251
+        const rollNoTrimmed = formData.rollNo.trim();
+        if (!rollNoTrimmed.startsWith("251") || rollNoTrimmed.length < 8) {
+            alert("Roll Number must start with 251 (e.g., 251CS001). Please check and try again.");
+            return;
+        }
+        // Team name required if user has a team
+        if (hasTeam === "yes" && formData.teamName.trim().length < 2) {
+            alert("Please enter a valid Team Name.");
             return;
         }
         if (!/^[0-9]{10}$/.test(formData.phone)) {
@@ -54,6 +64,21 @@ const WorkshopRegistration = () => {
         }
 
         setIsSubmitting(true);
+        setDuplicateError("");
+
+        // 3. Duplicate check against Firestore
+        const dupCheck = await checkDuplicateRegistration({
+            rollNo: formData.rollNo.trim(),
+            email: formData.email.trim().toLowerCase(),
+            phone: formData.phone.trim(),
+        });
+        if (dupCheck.duplicate) {
+            setDuplicateError(
+                `Your ${dupCheck.field} is already registered. It looks like you've already filled the form! If you think this is a mistake, please contact us.`
+            );
+            setIsSubmitting(false);
+            return;
+        }
 
         const result = await saveToCollection("workshop_registrations", formData);
 
@@ -61,15 +86,16 @@ const WorkshopRegistration = () => {
             if (window.gtag) {
                 window.gtag('event', 'workshop_registration_submit', {
                     'event_category': 'Conversion',
-                    'event_label': 'Boeing Workshop'
+                    'event_label': 'Skyverse Workshop'
                 });
             }
-            alert("Registration Successful!");
+            setHasTeam("");
             setFormData({
                 name: "", email: "", rollNo: "", phone: "",
                 branch: "", year: "1", expectations: "",
-                hp_field: ""
+                teamName: "", hp_field: ""
             });
+            navigate('/workshop_success');
         } else {
             alert("Submission failed. Please try again.");
         }
@@ -85,6 +111,17 @@ const WorkshopRegistration = () => {
             </Helmet>
             <section className="workshop-section">
                 <h2 className="workshop-title">WORKSHOP REGISTRATION</h2>
+                <div className="workshop-guidelines">
+                    <h3 className="guidelines-heading">Guidelines:</h3>
+                    <ul className="guidelines-list">
+                        <li>Each member has to register <strong>individually</strong> by filling this google form using <strong>EDU mail</strong>.</li>
+                        <li>If you have a group, you may opt for the <strong>'yes'</strong> in the team option and provide a common team name.</li>
+                        <li>If at all you don't have a group you will be assigned one considering participation.</li>
+                        <li>The size of the team may vary according to the number of participants. Flexibility is expected from participants.</li>
+                        <li>The allotment is on first-come first-serve basis. Registration will close once <strong>slots are full</strong>.</li>
+                        <li>Every participant is expected to be present throughout the duration of the workshop as and when informed.</li>
+                    </ul>
+                </div>
                 <form className="workshop-card" onSubmit={handleSubmit}>
                     {/* Honeypot field */}
                     <div style={{ display: 'none' }} aria-hidden="true">
@@ -96,8 +133,16 @@ const WorkshopRegistration = () => {
                     <label>E-Mail
                         <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="E-mail" />
                     </label>
-                    <label>ROLL NUMBER
-                        <input type="text" name="rollNo" value={formData.rollNo} onChange={handleInputChange} required placeholder="Your Roll Number" />
+                    <label>
+                        ROLL NUMBER <span className="roll-hint">(e.g., 251CS001)</span>
+                        <input
+                            type="text"
+                            name="rollNo"
+                            value={formData.rollNo}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="251XXXXXX"
+                        />
                     </label>
                     <label>PHONE NUMBER
                         <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="10-Digit Number" pattern="[0-9]{10}" />
@@ -111,19 +156,61 @@ const WorkshopRegistration = () => {
                         </select>
                     </label>
                     <label>YEAR OF STUDY
-                        <select name="year" value={formData.year} onChange={handleInputChange} required>
-                            <option value="1">1st Year</option>
-                            <option value="2">2nd Year</option>
-                            <option value="3">3rd Year</option>
-                            <option value="4">4th Year</option>
-                        </select>
+                        <input type="text" value="1st Year" readOnly className="readonly-input" />
                     </label>
+                    {/* Do You Have a Team */}
+                    <div className="team-question-block">
+                        <span className="team-question-label">DO YOU HAVE A TEAM?</span>
+                        <div className="team-radio-group">
+                            <label className="radio-label">
+                                <input
+                                    type="radio"
+                                    name="hasTeam"
+                                    value="yes"
+                                    checked={hasTeam === "yes"}
+                                    onChange={() => setHasTeam("yes")}
+                                    required
+                                />
+                                Yes
+                            </label>
+                            <label className="radio-label">
+                                <input
+                                    type="radio"
+                                    name="hasTeam"
+                                    value="no"
+                                    checked={hasTeam === "no"}
+                                    onChange={() => { setHasTeam("no"); setFormData(prev => ({ ...prev, teamName: "" })); }}
+                                />
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    {hasTeam === "yes" && (
+                        <label className="team-name-label">
+                            TEAM NAME
+                            <input
+                                type="text"
+                                name="teamName"
+                                value={formData.teamName}
+                                onChange={handleInputChange}
+                                required
+                                placeholder="Enter your common team name"
+                                autoFocus
+                            />
+                        </label>
+                    )}
                     <label>WHAT DO YOU EXPECT FROM THIS WORKSHOP?
                         <textarea name="expectations" value={formData.expectations} onChange={handleInputChange} required placeholder="Tell us what you'd like to learn..." rows="4" />
                     </label>
                     <button className="register-btn" type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "REGISTERING..." : "REGISTER NOW"}
+                        {isSubmitting ? "CHECKING & REGISTERING..." : "REGISTER NOW"}
                     </button>
+                    {duplicateError && (
+                        <div className="duplicate-error-box" role="alert">
+                            <span className="duplicate-error-icon">⚠️</span>
+                            <p>{duplicateError}</p>
+                        </div>
+                    )}
                 </form>
             </section>
             <Footer />

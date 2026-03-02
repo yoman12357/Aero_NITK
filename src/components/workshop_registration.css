@@ -18,9 +18,51 @@
     font-size: 2.5rem;
     letter-spacing: 4px;
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 28px;
     text-transform: uppercase;
     font-weight: 700;
+}
+
+/* Guidelines card */
+.workshop-guidelines {
+    background: #111827;
+    border: 1px solid #3494eb;
+    border-left: 4px solid #3494eb;
+    border-radius: 6px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 20px rgba(52, 148, 235, 0.12);
+}
+
+.guidelines-heading {
+    color: #3494eb;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 16px 0;
+}
+
+.guidelines-list {
+    color: #cccccc;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    padding-left: 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.guidelines-list li {
+    list-style-type: disc;
+}
+
+.guidelines-list li strong {
+    color: #ffffff;
 }
 
 .workshop-card {
@@ -89,8 +131,114 @@
     background: #3a84bc;
 }
 
+/* Duplicate registration error banner */
+.duplicate-error-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.6);
+    border-left: 4px solid #dc2626;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-top: 4px;
+    animation: slideDown 0.25s ease;
+}
+
+.duplicate-error-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.duplicate-error-box p {
+    color: #fca5a5;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Roll number hint text */
+.roll-hint {
+    font-size: 0.72rem;
+    color: #3494eb;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-left: 4px;
+}
+
+/* Readonly year field */
+.readonly-input {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+/* Team question block */
+.team-question-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.team-question-label {
+    color: #bbb;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.team-radio-group {
+    display: flex;
+    gap: 32px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    cursor: pointer;
+    width: auto;
+}
+
+.radio-label input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #3494eb;
+    cursor: pointer;
+    border: none;
+    flex-shrink: 0;
+}
+
+/* Team name input — slides in smoothly */
+.team-name-label {
+    animation: slideDown 0.25s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 600px) {
     .workshop-card {
         padding: 30px 20px;
+    }
+
+    .team-radio-group {
+        gap: 20px;
     }
 }

@@ -95,7 +95,7 @@
 
 
 /* title/date/button styling - compact to avoid overflow */
-.workshop-title {
+.workshop-popup-content .workshop-title {
     margin: 0 !important;
     font-size: 22px !important;
     font-family: 'Montserrat', sans-serif;

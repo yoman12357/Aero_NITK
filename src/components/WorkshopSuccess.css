@@ -1,0 +1,166 @@
+/* WorkshopSuccess.css — Success page specific styles */
+
+/* Overrides / extensions on top of workshop_registration.css */
+
+.success-guidelines {
+    text-align: center;
+    max-width: 540px;
+    padding: 40px 36px;
+}
+
+/* Animated checkmark circle */
+.success-icon-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.success-checkmark {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1a6e35, #25d366);
+    color: #fff;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    animation: pulse-green 1.8s ease infinite;
+}
+
+@keyframes pulse-green {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+.success-subtext {
+    color: #cccccc;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 12px 0 0 0;
+}
+
+.success-subtext strong {
+    color: #ffffff;
+}
+
+.success-divider {
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #3494eb55, transparent);
+    margin: 24px auto;
+}
+
+.whatsapp-instruction {
+    color: #cccccc;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 24px;
+}
+
+.whatsapp-instruction strong {
+    color: #ffffff;
+}
+
+/* WhatsApp CTA button */
+.whatsapp-join-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #1a6e35, #25d366);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 32px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+    animation: glow-pulse 2.5s ease-in-out infinite;
+}
+
+.whatsapp-join-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5);
+    animation: none;
+}
+
+.whatsapp-join-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+@keyframes glow-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 4px 32px rgba(37, 211, 102, 0.6);
+    }
+}
+
+/* After joining */
+.whatsapp-joined {
+    background: #1a1a1a;
+    border: 1px solid #25d366;
+    color: #25d366;
+    cursor: default;
+    animation: none;
+    box-shadow: none;
+    opacity: 0.85;
+}
+
+.whatsapp-icon {
+    width: 24px;
+    height: 24px;
+    fill: #ffffff;
+    flex-shrink: 0;
+}
+
+/* Warning below the button */
+.whatsapp-warning {
+    margin-top: 18px;
+    font-size: 0.82rem;
+    color: #f0a500;
+    line-height: 1.5;
+    animation: fadeInWarn 1.5s ease;
+}
+
+@keyframes fadeInWarn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .success-guidelines {
+        padding: 28px 20px;
+    }
+
+    .whatsapp-join-btn {
+        font-size: 0.9rem;
+        padding: 14px 20px;
+    }
+}

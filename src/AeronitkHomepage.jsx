@@ -38,8 +38,8 @@ const AeroNITKHomepage = () => {
 
   useEffect(() => {
     if (isHomePage) {
-      // UNCOMMENT BELOW TO RE-ENABLE WORKSHOP POPUP
-      // const t = setTimeout(() => setShowWorkshopPopup(true), 1400); return () => clearTimeout(t);
+      const t = setTimeout(() => setShowWorkshopPopup(true), 1400);
+      return () => clearTimeout(t);
     } else {
       setShowPopup(false);
     }
@@ -149,7 +149,6 @@ const AeroNITKHomepage = () => {
           <BlurText text="WINGS OF TEAMWORK" className="hero-subtitle" delay={300} animateBy="words" direction="top" />
         </div>
       </section>
-      {/* UNCOMMENT BELOW TO RE-ENABLE WORKSHOP POPUP
       <Popup
         open={showWorkshopPopup}
         onClose={() => setShowWorkshopPopup(false)}
@@ -157,8 +156,8 @@ const AeroNITKHomepage = () => {
         containerStyle={{ '--popup-width': '400px', '--popup-height': '180px' }}
       >
         <div className="workshop-icon"></div>
-        <h4 className="workshop-title">BOEING AERO MODELLING WORKSHOP</h4>
-        <p className="workshop-date">On 26th Feb 2026</p>
+        <h4 className="workshop-title">SKYVERSE AERO MODELLING WORKSHOP</h4>
+        <p className="workshop-date">Register now — slots are limited!</p>
         <button
           onClick={() => {
             setShowWorkshopPopup(false);
@@ -169,7 +168,6 @@ const AeroNITKHomepage = () => {
           REGISTER NOW
         </button>
       </Popup>
-      */}
 
       <section className="about-section" id="about">
         <div className="about-content">
@@ -229,13 +227,6 @@ const AeroNITKHomepage = () => {
         <p>Your message was sent successfully. We'll get back to you soon.</p>
       </Popup>
 
-      <Popup open={showPopup} onClose={() => setShowPopup(false)} className="hero-popup">
-        <div style={{ padding: 16 }}>
-          <h4>Join Aero NITK</h4>
-          <p>Quick info or CTA here.</p>
-          <Link to="/workshop_registration" onClick={() => setShowPopup(false)}>Contact</Link>
-        </div>
-      </Popup>
     </div>
   );
 };

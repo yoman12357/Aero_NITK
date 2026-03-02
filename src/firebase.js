@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -29,6 +29,33 @@ export const saveToCollection = async (collectionName, data) => {
             console.error(`Error saving to ${collectionName}:`, error);
         }
         return { success: false, error };
+    }
+};
+
+// Check for duplicate workshop registration by rollNo, email, or phone
+export const checkDuplicateRegistration = async ({ rollNo, email, phone }) => {
+    try {
+        const col = collection(db, 'workshop_registrations');
+        const checks = [
+            { field: 'rollNo', value: rollNo, label: 'Roll Number' },
+            { field: 'email', value: email, label: 'Email ID' },
+            { field: 'phone', value: phone, label: 'Phone Number' },
+        ];
+
+        for (const { field, value, label } of checks) {
+            if (!value) continue;
+            const snap = await getDocs(query(col, where(field, '==', value)));
+            if (!snap.empty) {
+                return { duplicate: true, field: label };
+            }
+        }
+        return { duplicate: false };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Duplicate check error:', error);
+        }
+        // On error, let the submission through (fail open)
+        return { duplicate: false };
     }
 };
 
