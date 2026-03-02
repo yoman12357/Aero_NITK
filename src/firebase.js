@@ -59,15 +59,30 @@ export const checkDuplicateRegistration = async ({ rollNo, email, phone }) => {
     }
 };
 
-// Internal visitor tracking - optimized with retry logic
+// Internal visitor tracking — writes to:
+//   metadata/siteStats         → total_visits (all-time counter)
+//   daily_visits/YYYY-MM-DD    → count        (per-day counter, IST)
 export const incrementVisitorCount = async (retries = 3) => {
+    // Get today's date in IST (UTC+5:30) as YYYY-MM-DD
+    const nowIST = new Date(Date.now() + 5.5 * 60 * 60 * 1000);
+    const dateKey = nowIST.toISOString().slice(0, 10); // e.g. "2026-03-03"
+
     for (let i = 0; i < retries; i++) {
         try {
+            // 1. Increment global all-time counter
             const statsRef = doc(db, "metadata", "siteStats");
             await setDoc(statsRef, {
                 total_visits: increment(1)
             }, { merge: true });
-            break;
+
+            // 2. Increment today's daily counter
+            const dailyRef = doc(db, "daily_visits", dateKey);
+            await setDoc(dailyRef, {
+                date: dateKey,
+                count: increment(1)
+            }, { merge: true });
+
+            break; // success — stop retrying
         } catch (error) {
             if (i === retries - 1 && import.meta.env.MODE === 'development') {
                 console.error("Error updating visitor stats:", error);
@@ -78,6 +93,7 @@ export const incrementVisitorCount = async (retries = 3) => {
         }
     }
 };
+
 
 // Compatibility for recruitment page
 export const saveApplicant = (data) => saveToCollection("applicants", data);

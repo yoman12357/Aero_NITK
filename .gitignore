@@ -14,6 +14,7 @@ aeronitk-e0863-firebase-adminsdk-fbsvc-03fe4f4a36.json
 .env.*.local
 *.json.enc
 *-firebase-adminsdk-*.json
+*.gs
 
 node_modules
 dist
