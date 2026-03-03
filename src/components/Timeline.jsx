@@ -59,6 +59,16 @@ const Timeline = () => {
       title: 'IITB Aeromodelling',
       description: 'Claimed 2nd place at IIT Bombay.',
     },
+    {
+      year: 'Jan 2026',
+      title: 'SAE DDC',
+      description: 'Won 3rd place for best payload dropping mechanism.',
+    },
+    {
+      year: 'Feb 2026',
+      title: 'SAE DDC',
+      description: 'Won 3rd place for best aerodynamic analysis.',
+    },
   
   ];
 

@@ -53,8 +53,8 @@
   background-color: inherit;
   width: 50%;
   box-sizing: border-box;
-  opacity: 0;
-  transform: translateY(30px);
+  opacity: 1;              /* always visible */
+  transform: none;         /* remove hidden position */
   transition: all 0.6s ease-out;
 }
 

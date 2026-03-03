@@ -113,7 +113,7 @@ const WorkshopRegistration = () => {
                         <li>The size of the team may vary according to the number of participants. Flexibility is expected from participants.</li> */}
                         <li>The allotment is on first-come first-serve basis. Registration will close once <strong>slots are full</strong>.</li>
                         <li>Every participant is expected to be present throughout the duration of the workshop as and when informed.</li>
-                        <li>The workshop is onyl for <strong>1st years</strong>.</li>
+                        <li>The workshop is only for <strong>1st years</strong>.</li>
                     </ul>
                 </div>
                 <form className="workshop-card" onSubmit={handleSubmit}>
