@@ -68,7 +68,7 @@ a {
 
 .contact-button {
     height: 2.45rem;
-    padding: 0 0.625rem 0 0.625rem;
+    padding: 0 0.625rem 0 0.625rem !important;
     border: 2px solid #3e7da6;
     border-radius: 8px;
     background: #3E93CE;

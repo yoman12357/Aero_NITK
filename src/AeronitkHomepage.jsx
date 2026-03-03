@@ -169,7 +169,7 @@ const AeroNITKHomepage = () => {
         >
           REGISTER NOW
         </button>
-        <p className="workshop-date">Workshop dates: <strong>6th, 7th & 8th March 2026</strong></p>
+        <p className="workshop-date">Workshop dates: <strong>6th, 7th & 8th March</strong></p>
       </Popup>
 
       <section className="about-section" id="about">

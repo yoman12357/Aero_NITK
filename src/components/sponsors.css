@@ -328,21 +328,100 @@
 }
 
 /* Arrows */
+/* .slick-prev:before,
+.slick-next:before {
+  color: #0a3d62 !important;
+  font-size: 30px !important;
+} */
+/* =========================
+   Custom Slick Arrows
+========================= */
+
+/* Remove default arrow content */
 .slick-prev:before,
 .slick-next:before {
-  color: #0a3d62;
-  font-size: 30px;
+  content: '' !important;
 }
 
-/* Make default slick dots white */
+/* Base arrow button */
+.slick-prev,
+.slick-next {
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+
+/* Custom arrow shape */
+.slick-prev::after,
+.slick-next::after {
+  content: '';
+  display: block;
+  width: 14px;
+  height: 14px;
+  border: solid #0a3d62;
+  border-width: 0 2px 2px 0;
+  transition: all 0.3s ease;
+}
+
+/* Rotate for direction */
+.slick-prev::after {
+  transform: rotate(135deg);
+  margin-left: 12px;
+}
+
+.slick-next::after {
+  transform: rotate(-45deg);
+  margin-left: 8px;
+}
+
+/* Hover effect */
+.slick-prev:hover::after,
+.slick-next:hover::after {
+  border-color: #000;
+  transform: scale(1.1) rotate(135deg);
+}
+
+.slick-next:hover::after {
+  transform: scale(1.1) rotate(-45deg);
+}
+/* Make default slick dots white
 .slick-dots li button:before {
   color: white !important;
   opacity: 0.7;
-}
+} */
 
 /* Active dot bright white */
-.slick-dots li.slick-active button:before {
+/* .slick-dots li.slick-active button:before {
   color: white !important;
   opacity: 1;
+} */
+
+/* Center dots and control spacing */
+.slick-dots {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;              /* 🔥 Change this to reduce/increase spacing */
+  padding: 0 !important;
+  margin: 15px 0 0 0 !important;
+}
+
+/* Remove default spacing */
+.slick-dots li {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Default dot */
+.slick-dots li button:before {
+  color: white !important;
+  opacity: 0.7 !important;
+  font-size: 8px !important;   /* Smaller dots */
+}
+
+/* Active dot */
+.slick-dots li.slick-active button:before {
+  color: white !important;
+  opacity: 1 !important;
 }
 
