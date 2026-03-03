@@ -48,6 +48,7 @@ import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
 import Darshan from '../images/team-members/darshanupadhaya.jpeg'
 import nitesh_p from '../images/team-members/Nitesh_P.jpg';
+import Shubham_Shah from '../images/team-members/Shubham_Shah.jpeg';
 import linkedInLogo from '../images/linkedIn_logo.png';
 
 const Team = () => {
@@ -78,7 +79,7 @@ const Team = () => {
     { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'https://www.linkedin.com/in/om-srivastava-2k28' },
     { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: 'https://www.linkedin.com/in/abhishek-m-959609318/' },
 
-
+    { name: 'Shubham Shah', role: 'Member', subsystem: 'Aerodynamics', image: Shubham_Shah, linkedIn: 'https://www.linkedin.com/in/shubham-shah-445ab9312?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
     { name: 'Aryan Gupta', role: 'Member', subsystem: 'Aerodynamics', image: aryan_gupta, linkedIn: 'https://www.linkedin.com/in/aryan-g-b27278247' },
     { name: 'Madhur Kenge', role: 'Member', subsystem: 'Structures', image: kenge_madhur_niraj, linkedIn: 'https://www.linkedin.com/in/madhur-kenge-354238326' },
 
