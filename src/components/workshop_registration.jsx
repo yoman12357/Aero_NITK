@@ -15,12 +15,11 @@ const branches = [
 const WorkshopRegistration = () => {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [hasTeam, setHasTeam] = useState("");
-    const [duplicateError, setDuplicateError] = useState(""); // inline error for duplicate
+    const [duplicateError, setDuplicateError] = useState("");
     const [formData, setFormData] = useState({
         name: "", email: "", rollNo: "", phone: "",
         branch: "", year: "1", expectations: "",
-        teamName: "", hp_field: ""
+        hp_field: ""
     });
 
     const handleInputChange = (e) => {
@@ -51,11 +50,6 @@ const WorkshopRegistration = () => {
         const rollNoTrimmed = formData.rollNo.trim();
         if (!rollNoTrimmed.startsWith("251") || rollNoTrimmed.length < 8) {
             alert("Roll Number must start with 251 (e.g., 251CS001). Please check and try again.");
-            return;
-        }
-        // Team name required if user has a team
-        if (hasTeam === "yes" && formData.teamName.trim().length < 2) {
-            alert("Please enter a valid Team Name.");
             return;
         }
         if (!/^[0-9]{10}$/.test(formData.phone)) {
@@ -89,11 +83,10 @@ const WorkshopRegistration = () => {
                     'event_label': 'Skyverse Workshop'
                 });
             }
-            setHasTeam("");
             setFormData({
                 name: "", email: "", rollNo: "", phone: "",
                 branch: "", year: "1", expectations: "",
-                teamName: "", hp_field: ""
+                hp_field: ""
             });
             navigate('/workshop_success');
         } else {
@@ -158,47 +151,6 @@ const WorkshopRegistration = () => {
                     <label>YEAR OF STUDY
                         <input type="text" value="1st Year" readOnly className="readonly-input" />
                     </label>
-                    {/* Do You Have a Team */}
-                    <div className="team-question-block">
-                        <span className="team-question-label">DO YOU HAVE A TEAM?</span>
-                        <div className="team-radio-group">
-                            <label className="radio-label">
-                                <input
-                                    type="radio"
-                                    name="hasTeam"
-                                    value="yes"
-                                    checked={hasTeam === "yes"}
-                                    onChange={() => setHasTeam("yes")}
-                                    required
-                                />
-                                Yes
-                            </label>
-                            <label className="radio-label">
-                                <input
-                                    type="radio"
-                                    name="hasTeam"
-                                    value="no"
-                                    checked={hasTeam === "no"}
-                                    onChange={() => { setHasTeam("no"); setFormData(prev => ({ ...prev, teamName: "" })); }}
-                                />
-                                No
-                            </label>
-                        </div>
-                    </div>
-                    {hasTeam === "yes" && (
-                        <label className="team-name-label">
-                            TEAM NAME
-                            <input
-                                type="text"
-                                name="teamName"
-                                value={formData.teamName}
-                                onChange={handleInputChange}
-                                required
-                                placeholder="Enter your common team name"
-                                autoFocus
-                            />
-                        </label>
-                    )}
                     <label>WHAT DO YOU EXPECT FROM THIS WORKSHOP?
                         <textarea name="expectations" value={formData.expectations} onChange={handleInputChange} required placeholder="Tell us what you'd like to learn..." rows="4" />
                     </label>

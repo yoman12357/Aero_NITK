@@ -174,71 +174,8 @@
     opacity: 0.65;
 }
 
-/* Team question block */
-.team-question-block {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.team-question-label {
-    color: #bbb;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.team-radio-group {
-    display: flex;
-    gap: 32px;
-}
-
-.radio-label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #ffffff;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-transform: none;
-    cursor: pointer;
-    width: auto;
-}
-
-.radio-label input[type="radio"] {
-    width: 18px;
-    height: 18px;
-    accent-color: #3494eb;
-    cursor: pointer;
-    border: none;
-    flex-shrink: 0;
-}
-
-/* Team name input — slides in smoothly */
-.team-name-label {
-    animation: slideDown 0.25s ease;
-}
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @media (max-width: 600px) {
     .workshop-card {
         padding: 30px 20px;
-    }
-
-    .team-radio-group {
-        gap: 20px;
     }
 }
