@@ -107,12 +107,13 @@ const WorkshopRegistration = () => {
                 <div className="workshop-guidelines">
                     <h3 className="guidelines-heading">Guidelines:</h3>
                     <ul className="guidelines-list">
-                        <li>Each member has to register <strong>individually</strong> by filling this google form using <strong>EDU mail</strong>.</li>
-                        <li>If you have a group, you may opt for the <strong>'yes'</strong> in the team option and provide a common team name.</li>
+                        <li>Each member has to register <strong>individually</strong> by filling this form using <strong>EDU mail</strong>.</li>
+                        {/* <li>If you have a group, you may opt for the <strong>'yes'</strong> in the team option and provide a common team name.</li>
                         <li>If at all you don't have a group you will be assigned one considering participation.</li>
-                        <li>The size of the team may vary according to the number of participants. Flexibility is expected from participants.</li>
+                        <li>The size of the team may vary according to the number of participants. Flexibility is expected from participants.</li> */}
                         <li>The allotment is on first-come first-serve basis. Registration will close once <strong>slots are full</strong>.</li>
                         <li>Every participant is expected to be present throughout the duration of the workshop as and when informed.</li>
+                        <li>The workshop is onyl for <strong>1st years</strong>.</li>
                     </ul>
                 </div>
                 <form className="workshop-card" onSubmit={handleSubmit}>

@@ -11,6 +11,7 @@ import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
 import dronePic from './images/drone-pic.png';
 import UltimateCarousel from './components/UltimateCarousel.jsx';
+// eslint-disable-next-line no-unused-vars
 import contactus from './images/contactus.webp';
 import Footer from './components/footer.jsx';
 import BlurText from "./components/effects/bt.jsx";
@@ -34,6 +35,7 @@ const AeroNITKHomepage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [showPopup, setShowPopup] = useState(false); // New state for popup
 
   useEffect(() => {
@@ -167,6 +169,7 @@ const AeroNITKHomepage = () => {
         >
           REGISTER NOW
         </button>
+        <p className="workshop-date">Workshop dates: <strong>6th, 7th & 8th March 2026</strong></p>
       </Popup>
 
       <section className="about-section" id="about">
