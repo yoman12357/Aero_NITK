@@ -79,7 +79,6 @@ const Team = () => {
     { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'https://www.linkedin.com/in/om-srivastava-2k28' },
     { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: 'https://www.linkedin.com/in/abhishek-m-959609318/' },
 
-    { name: 'Shubham Shah', role: 'Member', subsystem: 'Aerodynamics', image: Shubham_Shah, linkedIn: 'https://www.linkedin.com/in/shubham-shah-445ab9312?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
     { name: 'Aryan Gupta', role: 'Member', subsystem: 'Aerodynamics', image: aryan_gupta, linkedIn: 'https://www.linkedin.com/in/aryan-g-b27278247' },
     { name: 'Madhur Kenge', role: 'Member', subsystem: 'Structures', image: kenge_madhur_niraj, linkedIn: 'https://www.linkedin.com/in/madhur-kenge-354238326' },
 
@@ -110,7 +109,9 @@ const Team = () => {
     { name: 'Pratham P Palankar', role: 'Aerodynamics Design Lead', subsystem: 'Aerodynamics', image: pratham_p_palankar, linkedIn: 'https://www.linkedin.com/in/pratham-palankar-277421293' },
     { name: 'Akhilesh', role: 'Member', subsystem: 'Avionics', image: akhilesh, linkedIn: 'https://www.linkedin.com/in/akhilesh-vadde-b0a6b2364' },
     { name: 'Nitesh ', role: 'LG Lead', subsystem: 'Structures', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
-    { name: 'Anindith B L', role: 'Manufacturing Lead', subsystem: 'Structures', image: anindith, linkedIn: 'https://www.linkedin.com/in/anindithbl' }
+    { name: 'Anindith B L', role: 'Manufacturing Lead', subsystem: 'Structures', image: anindith, linkedIn: 'https://www.linkedin.com/in/anindithbl' },
+    { name: 'Shubham Shah', role: 'Member', subsystem: 'Aerodynamics', image: Shubham_Shah, linkedIn: 'https://www.linkedin.com/in/shubham-shah-445ab9312?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
+
   ];
 
   const categories = ['Aerodynamics', 'Structures', 'Avionics', 'Marketing', 'Media', 'Web Team'];
