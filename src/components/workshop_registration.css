@@ -174,6 +174,53 @@
     opacity: 0.65;
 }
 
+/* Registration closed box */
+.registration-closed-box {
+    text-align: center;
+    padding: 48px 36px;
+    max-width: 540px;
+    border-color: #ef4444;
+    border-left-color: #ef4444;
+}
+
+.closed-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    animation: pulse-red 2s ease infinite;
+}
+
+@keyframes pulse-red {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.closed-subtext {
+    color: #d1d5db;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 10px 0 0 0;
+}
+
+.closed-subtext strong {
+    color: #ffffff;
+}
+
+/* Slots remaining counter */
+.slots-remaining {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 6px 0 0 0;
+    letter-spacing: 0.5px;
+}
+
 @media (max-width: 600px) {
     .workshop-card {
         padding: 30px 20px;

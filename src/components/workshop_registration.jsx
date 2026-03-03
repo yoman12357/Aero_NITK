@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './workshop_registration.css';
 import Footer from './footer.jsx';
-import { saveToCollection, checkDuplicateRegistration } from '../firebase.js';
+import { saveToCollection, checkDuplicateRegistration, getRegistrationCount } from '../firebase.js';
 import { Helmet } from 'react-helmet-async';
+
+const MAX_SLOTS = 100; // Block submission when this many registrations exist
 
 const branches = [
     "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
@@ -46,7 +48,6 @@ const WorkshopRegistration = () => {
             alert("Please enter your full name (min 3 characters).");
             return;
         }
-        // Roll No must start with 251
         const rollNoTrimmed = formData.rollNo.trim();
         if (!rollNoTrimmed.startsWith("251") || rollNoTrimmed.length < 8) {
             alert("Roll Number must start with 251 (e.g., 251CS001). Please check and try again.");
@@ -60,7 +61,17 @@ const WorkshopRegistration = () => {
         setIsSubmitting(true);
         setDuplicateError("");
 
-        // 3. Duplicate check against Firestore
+        // 3. Slot capacity check — live count from Firestore at submit time
+        const currentCount = await getRegistrationCount();
+        if (currentCount !== null && currentCount >= MAX_SLOTS) {
+            setDuplicateError(
+                `Registrations are now closed — we've reached the maximum of ${MAX_SLOTS} participants. Thank you for your interest in the Skyverse Workshop!`
+            );
+            setIsSubmitting(false);
+            return;
+        }
+
+        // 4. Duplicate check against Firestore
         const dupCheck = await checkDuplicateRegistration({
             rollNo: formData.rollNo.trim(),
             email: formData.email.trim().toLowerCase(),
@@ -74,6 +85,7 @@ const WorkshopRegistration = () => {
             return;
         }
 
+        // 5. Save to Firestore
         const result = await saveToCollection("workshop_registrations", formData);
 
         if (result.success) {
@@ -99,7 +111,7 @@ const WorkshopRegistration = () => {
         <>
             <Helmet>
                 <title>Workshop Registration | Aero NITK</title>
-                <meta name="description" content="Register for the Boeing Aeromodelling Workshop at NITK Surathkal. Join us for a day of aviation and innovation." />
+                <meta name="description" content="Register for the Skyverse Aeromodelling Workshop at NITK Surathkal. Join us for a day of aviation and innovation." />
                 <link rel="canonical" href="https://aeronitk.in/workshop_registration" />
             </Helmet>
             <section className="workshop-section">
@@ -108,9 +120,6 @@ const WorkshopRegistration = () => {
                     <h3 className="guidelines-heading">Guidelines:</h3>
                     <ul className="guidelines-list">
                         <li>Each member has to register <strong>individually</strong> by filling this form using <strong>EDU mail</strong>.</li>
-                        {/* <li>If you have a group, you may opt for the <strong>'yes'</strong> in the team option and provide a common team name.</li>
-                        <li>If at all you don't have a group you will be assigned one considering participation.</li>
-                        <li>The size of the team may vary according to the number of participants. Flexibility is expected from participants.</li> */}
                         <li>The allotment is on first-come first-serve basis. Registration will close once <strong>slots are full</strong>.</li>
                         <li>Every participant is expected to be present throughout the duration of the workshop as and when informed.</li>
                         <li>The workshop is only for <strong>1st years</strong>.</li>

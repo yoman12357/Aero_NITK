@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where, getCountFromServer } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -56,6 +56,20 @@ export const checkDuplicateRegistration = async ({ rollNo, email, phone }) => {
         }
         // On error, let the submission through (fail open)
         return { duplicate: false };
+    }
+};
+
+// Returns current number of workshop registrations (efficient — no document download)
+export const getRegistrationCount = async () => {
+    try {
+        const col = collection(db, 'workshop_registrations');
+        const snapshot = await getCountFromServer(col);
+        return snapshot.data().count;
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Registration count error:', error);
+        }
+        return null; // null = unknown, don't block form
     }
 };
 
