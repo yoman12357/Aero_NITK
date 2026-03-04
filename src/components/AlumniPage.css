@@ -11,6 +11,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+     width: 100%;
+    box-sizing: border-box;
 }
 
 .alumni-header-text {
@@ -33,8 +35,9 @@
 
 .alumni-card {
     position: relative;
-    width: 604px;
-    height: 342px;
+    width: 100%;
+    max-width: 604px;
+    aspect-ratio: 604 / 342;
     background: #1a1a1a;
     border-radius: 4px;
     overflow: hidden;
@@ -152,4 +155,36 @@
     .linkedin-icon {
         font-size: 18px;
     }
+}
+
+
+@media (max-width: 768px) {
+
+    .alumni-container {
+        padding: 100px 20px 50px 20px;
+    }
+
+    .alumni-header-text {
+        font-size: 28px;
+        margin-bottom: 40px;
+    }
+
+    .alumni-grid {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      
+    }
+
+    .alumni-card {
+        width: 100%;
+        max-width: 90%;
+        margin: 0 auto;
+       
+    }
+
+    .batch-overlay-text {
+        font-size: 32px;
+    }
+
 }
