@@ -398,13 +398,27 @@
 
 /* Center dots and control spacing */
 .slick-dots {
+  position:static !important;
   display: flex !important;
-  justify-content: center;
+  justify-content: center !important;
   align-items: center;
-  gap: 6px;              /* 🔥 Change this to reduce/increase spacing */
+  gap: 6px;
+  width: 100%;           
   padding: 0 !important;
-  margin: 15px 0 0 0 !important;
+  margin: 15px auto 0 auto !important;
+
+  transform: translateX(-19px);
 }
+
+/* .slick-dots {
+  position: static !important;   
+  justify-content: center !important;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin: 20px auto 0 auto !important;
+  padding: 0 !important;
+} */
 
 /* Remove default spacing */
 .slick-dots li {
@@ -416,7 +430,7 @@
 .slick-dots li button:before {
   color: white !important;
   opacity: 0.7 !important;
-  font-size: 8px !important;   /* Smaller dots */
+  font-size: 10px !important;   /* Smaller dots */
 }
 
 /* Active dot */
