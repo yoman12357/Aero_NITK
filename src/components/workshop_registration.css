@@ -174,6 +174,132 @@
     opacity: 0.65;
 }
 
+/* ── Slots banner ────────────────────────────────────────────────────────── */
+.slots-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px 24px;
+    margin-bottom: 20px;
+    max-width: 560px;
+    width: 100%;
+    backdrop-filter: blur(4px);
+}
+
+.slots-loading {
+    font-size: 0.82rem;
+    color: #6b7280;
+    letter-spacing: 0.5px;
+    animation: pulse-fade 1.4s ease infinite;
+}
+
+@keyframes pulse-fade {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.slots-count {
+    font-size: 0.9rem;
+    color: #60a5fa;
+    letter-spacing: 0.3px;
+}
+
+.slots-count strong {
+    font-size: 1.1rem;
+    color: #93c5fd;
+}
+
+/* turns orange/red when ≤ 15 slots left */
+.slots-count.slots-low {
+    color: #fb923c;
+}
+
+.slots-count.slots-low strong {
+    color: #f97316;
+}
+
+.slots-closed {
+    font-size: 0.92rem;
+    color: #ef4444;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* progress bar */
+.slots-bar-track {
+    width: 100%;
+    max-width: 340px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.slots-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3494eb, #60a5fa);
+    border-radius: 99px;
+    transition: width 0.6s ease;
+}
+
+/* Registration closed box */
+.registration-closed-box {
+    text-align: center;
+    padding: 48px 36px;
+    max-width: 540px;
+    border-color: #ef4444;
+    border-left-color: #ef4444;
+}
+
+.closed-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    animation: pulse-red 2s ease infinite;
+}
+
+@keyframes pulse-red {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.closed-subtext {
+    color: #d1d5db;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 10px 0 0 0;
+}
+
+.closed-subtext strong {
+    color: #ffffff;
+}
+
+/* Slots remaining counter */
+.slots-remaining {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin: 6px 0 0 0;
+    letter-spacing: 0.5px;
+}
+
 @media (max-width: 600px) {
     .workshop-card {
         padding: 30px 20px;
