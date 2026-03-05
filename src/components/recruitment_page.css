@@ -97,7 +97,7 @@
 .teams-checkboxes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  /* 3 in each row */
+  /* 3 in first row, 2 in second row */
   gap: 15px;
   margin-top: 10px;
 }
@@ -118,11 +118,14 @@
   cursor: pointer;
 }
 
-.priority-badge {
+.team-checkbox input[type="radio"] {
+  width: auto;
+  margin: 0;
+  accent-color: #1da1f2;
+}
+
+.team-checkbox input[type="radio"]:checked + span {
   color: #1da1f2;
-  font-weight: bold;
-  font-size: 0.8rem;
-  margin-left: 5px;
 }
 
 .apply-btn {

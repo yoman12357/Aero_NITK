@@ -4,8 +4,8 @@ import Footer from './footer.jsx';
 import { saveApplicant } from '../firebase.js';
 import { Helmet } from 'react-helmet-async';
 
-const teams = ["Web Team", "Structures", "Media", "Avionics", "Aerodynamics", "Marketing"];
-const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const teams = ["Technical", "Web team", "Designer", "Media", "Marketing"];
+const years = ["1st Year", "2nd Year"];
 const branches = [
   "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
   "Electronics and Communication Engineering", "Electrical and Electronics Engineering",
@@ -21,8 +21,8 @@ const RecruitmentForm = () => {
     rollNo: "",
     phone: "",
     branch: "",
-    semester: "",
-    selectedTeams: [],
+    year: "",
+    selectedTeam: "",
     whyJoin: "",
     hp_field: ""
   });
@@ -33,18 +33,7 @@ const RecruitmentForm = () => {
   };
 
   const handleTeamSelect = (team) => {
-    setFormData((prev) => {
-      let newSelected = [...prev.selectedTeams];
-      if (newSelected.includes(team)) {
-        newSelected = newSelected.filter((t) => t !== team);
-      } else {
-        if (newSelected.length >= 3) {
-          newSelected.shift();
-        }
-        newSelected.push(team);
-      }
-      return { ...prev, selectedTeams: newSelected };
-    });
+    setFormData((prev) => ({ ...prev, selectedTeam: team }));
   };
 
   const handleSubmit = async (e) => {
@@ -57,13 +46,17 @@ const RecruitmentForm = () => {
     }
 
     // 2. Data Validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@nitk\.edu\.in$/;
     if (!emailRegex.test(formData.email)) {
-      alert("Please enter a valid email address.");
+      alert("Please enter a valid NITK email address (@nitk.edu.in).");
       return;
     }
     if (formData.name.trim().length < 3) {
       alert("Name must be at least 3 characters.");
+      return;
+    }
+    if (!/^(251|241)/.test(formData.rollNo)) {
+      alert("Roll number must start with 251 or 241.");
       return;
     }
     if (!/^[0-9]{10}$/.test(formData.phone)) {
@@ -71,8 +64,8 @@ const RecruitmentForm = () => {
       return;
     }
 
-    if (formData.selectedTeams.length !== 3) {
-      alert("Please select exactly three teams to indicate your 1st, 2nd, and 3rd priority.");
+    if (!formData.selectedTeam) {
+      alert("Please select one team to join.");
       return;
     }
 
@@ -87,12 +80,7 @@ const RecruitmentForm = () => {
           'event_label': 'Join Our Team'
         });
       }
-      alert("Application submitted successfully!");
-      setFormData({
-        name: "", email: "", rollNo: "", phone: "",
-        branch: "", semester: "",
-        selectedTeams: [], whyJoin: ""
-      });
+      window.location.href = '/recruitment-success';
     }
   };
 
@@ -138,37 +126,31 @@ const RecruitmentForm = () => {
             </select>
           </label>
 
-          <label>SEMESTER
-            <select name="semester" value={formData.semester} onChange={handleInputChange} required>
+          <label>YEAR
+            <select name="year" value={formData.year} onChange={handleInputChange} required>
               <option value="" disabled hidden>Select Here</option>
-              {semesters.map((sem, idx) => (
-                <option key={idx} value={sem} style={{ color: '#ffffff' }}>
-                  {sem}
+              {years.map((year, idx) => (
+                <option key={idx} value={year} style={{ color: '#ffffff' }}>
+                  {year}
                 </option>
               ))}
             </select>
           </label>
 
           <fieldset>
-            {/* Update preference legend in recruitment_page.jsx if needed */}
-            <legend>SELECT PREFERENCE ORDER (1ST, 2ND, 3RD)</legend>
+            <legend>SELECT YOUR PREFERRED TEAM</legend>
             <div className="teams-checkboxes">
-              {teams.map((team) => {
-                const priorityIndex = formData.selectedTeams.indexOf(team);
-                return (
-                  <label key={team} className="team-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={priorityIndex !== -1}
-                      onChange={() => handleTeamSelect(team)}
-                    />
-                    {team}
-                    {priorityIndex !== -1 && (
-                      <span className="priority-badge"> (P{priorityIndex + 1})</span>
-                    )}
-                  </label>
-                );
-              })}
+              {teams.map((team) => (
+                <label key={team} className="team-checkbox">
+                  <input
+                    type="radio"
+                    name="teamSelection"
+                    checked={formData.selectedTeam === team}
+                    onChange={() => handleTeamSelect(team)}
+                  />
+                  <span>{team}</span>
+                </label>
+              ))}
             </div>
           </fieldset>
 

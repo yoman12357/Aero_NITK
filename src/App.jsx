@@ -15,6 +15,7 @@ const AlumniPage = lazy(() => import('./components/AlumniPage.jsx'));
 const AlumniBatchPage = lazy(() => import("./components/AlumniBatchPage"));
 const BatchDetails = lazy(() => import('./components/BatchDetails.jsx'));
 const Recruitment = lazy(() => import('./components/recruitment_page.jsx'));
+const RecruitmentSuccess = lazy(() => import('./components/RecruitmentSuccess.jsx'));
 const Sponsors = lazy(() => import('./components/sponsors.jsx'));
 const NotFound = lazy(() => import('./components/NotFound.jsx'));
 
@@ -167,6 +168,7 @@ const App = () => {
           <Route path="/alumni/:batchId" element={<AlumniBatchPage />} />
           <Route path="/alumni/:year" element={<BatchDetails />} />
           <Route path="/recruitment" element={<Recruitment />} />
+          <Route path="/recruitment-success" element={<RecruitmentSuccess />} />
           <Route path="/sponsors" element={<Sponsors />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
