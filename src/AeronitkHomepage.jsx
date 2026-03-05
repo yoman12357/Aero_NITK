@@ -22,7 +22,7 @@ import { Helmet } from 'react-helmet-async';
 
 const AeroNITKHomepage = () => {
   const navigate = useNavigate();
-  const [showWorkshopPopup, setShowWorkshopPopup] = useState(false);
+  // const [showWorkshopPopup, setShowWorkshopPopup] = useState(false); // workshop popup disabled
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
@@ -38,14 +38,15 @@ const AeroNITKHomepage = () => {
   // eslint-disable-next-line no-unused-vars
   const [showPopup, setShowPopup] = useState(false); // New state for popup
 
-  useEffect(() => {
-    if (isHomePage) {
-      const t = setTimeout(() => setShowWorkshopPopup(true), 1400);
-      return () => clearTimeout(t);
-    } else {
-      setShowPopup(false);
-    }
-  }, [isHomePage]);
+  // Workshop popup auto-trigger — disabled
+  // useEffect(() => {
+  //   if (isHomePage) {
+  //     const t = setTimeout(() => setShowWorkshopPopup(true), 1400);
+  //     return () => clearTimeout(t);
+  //   } else {
+  //     setShowPopup(false);
+  //   }
+  // }, [isHomePage]);
 
   useEffect(() => {
     if (isHomePage) document.body.classList.add('homepage');
@@ -151,6 +152,7 @@ const AeroNITKHomepage = () => {
           <BlurText text="WINGS OF TEAMWORK" className="hero-subtitle" delay={300} animateBy="words" direction="top" />
         </div>
       </section>
+      {/* Workshop popup — disabled
       <Popup
         open={showWorkshopPopup}
         onClose={() => setShowWorkshopPopup(false)}
@@ -171,6 +173,7 @@ const AeroNITKHomepage = () => {
         </button>
         <p className="workshop-date">Workshop dates: <strong>6th, 7th & 8th March</strong></p>
       </Popup>
+      */}
 
       <section className="about-section" id="about">
         <div className="about-content">
