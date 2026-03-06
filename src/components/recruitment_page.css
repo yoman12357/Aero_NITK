@@ -13,6 +13,34 @@
   box-sizing: border-box;
 }
 
+/* Application Counter */
+.application-counter {
+  background: #111827;
+  border: 1px solid #3494eb;
+  border-left: 4px solid #3494eb;
+  border-radius: 6px;
+  padding: 16px 20px;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  margin-bottom: 32px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(52, 148, 235, 0.12);
+}
+
+.counter-label {
+  font-size: 0.9rem;
+  color: #60a5fa;
+  letter-spacing: 0.3px;
+  margin-right: 8px;
+}
+
+.counter-number {
+  font-size: 1.1rem;
+  color: #93c5fd;
+  font-weight: 700;
+}
+
 .recruitment-title {
   color: #ffffff;
   font-size: 2.5rem;

@@ -111,3 +111,44 @@ export const incrementVisitorCount = async (retries = 3) => {
 
 // Compatibility for recruitment page
 export const saveApplicant = (data) => saveToCollection("applicants", data);
+
+// Check for duplicate recruitment application by rollNo, email, or phone
+export const checkDuplicateApplication = async ({ rollNo, email, phone }) => {
+    try {
+        const col = collection(db, 'applicants');
+        const checks = [
+            { field: 'rollNo', value: rollNo, label: 'Roll Number' },
+            { field: 'email', value: email, label: 'Email ID' },
+            { field: 'phone', value: phone, label: 'Phone Number' },
+        ];
+
+        for (const { field, value, label } of checks) {
+            if (!value) continue;
+            const snap = await getDocs(query(col, where(field, '==', value)));
+            if (!snap.empty) {
+                return { duplicate: true, field: label };
+            }
+        }
+        return { duplicate: false };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Duplicate check error:', error);
+        }
+        // On error, let the submission through (fail open)
+        return { duplicate: false };
+    }
+};
+
+// Returns current number of recruitment applications (efficient — no document download)
+export const getApplicationCount = async () => {
+    try {
+        const col = collection(db, 'applicants');
+        const snapshot = await getCountFromServer(col);
+        return snapshot.data().count;
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Application count error:', error);
+        }
+        return null; // null = unknown, don't block form
+    }
+};

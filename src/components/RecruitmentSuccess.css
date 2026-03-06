@@ -10,7 +10,7 @@
 
 .success-container {
   text-align: center;
-  max-width: 600px;
+  max-width: 700px; /* Increased slightly for side-by-side buttons */
   width: 100%;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
@@ -61,26 +61,74 @@
   color: #e2e8f0;
 }
 
+/* Layout for 2-over-1 buttons */
 .success-actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
   margin-bottom: 2rem;
+}
+
+.unstop-section,
+.whatsapp-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.section-heading {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.section-heading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #1da1f2);
+  border-radius: 1px;
+}
+
+.unstop-row {
+  display: flex;
+  gap: 2rem; /* Increased spacing between Unstop buttons */
+  width: 100%;
+  justify-content: center;
 }
 
 .action-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 12px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: all 0.3s ease;
   border: 2px solid transparent;
-  min-width: 200px;
+  min-width: 200px; /* Fixed width for all buttons */
+  max-width: 250px;
+}
+
+.whatsapp-btn {
+  width: auto; /* Allow natural width but maintain min-width */
+  min-width: 200px; /* Same as other buttons */
+  max-width: 250px; /* Same as other buttons */
 }
 
 .primary-btn {
@@ -132,23 +180,58 @@
     font-size: 1.1rem;
   }
   
-  .success-actions {
-    flex-direction: column;
-    align-items: center;
+  .unstop-row {
+    gap: 1rem; /* Reduce gap on tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .success-container {
+    padding: 1.5rem 1rem;
   }
   
-  .action-btn {
+  .success-title {
+    font-size: 2.2rem;
+  }
+  
+  .success-message {
+    font-size: 1rem;
+  }
+  
+  .unstop-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .action-btn, .whatsapp-btn {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
-  .success-title {
-    font-size: 2rem;
+  .success-section {
+    padding: 0.5rem;
   }
   
   .success-container {
-    padding: 1.5rem 1rem;
+    padding: 1rem;
+  }
+  
+  .success-title {
+    font-size: 1.8rem;
+  }
+  
+  .success-message {
+    font-size: 0.95rem;
+  }
+  
+  .action-btn, .whatsapp-btn {
+    max-width: 250px;
+    padding: 0.9rem 1rem;
+    font-size: 0.85rem;
   }
 }

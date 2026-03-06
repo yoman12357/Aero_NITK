@@ -27,16 +27,33 @@ const RecruitmentSuccess = () => {
           </p>
           
           <div className="success-actions">
-            <a href="#" className="action-btn primary-btn">
-              Unstop Registration
-            </a>
-            <a href="#" className="action-btn secondary-btn">
-              WhatsApp Community
-            </a>
+            <div className="unstop-section">
+              <h3 className="section-heading">UNSTOP</h3>
+              <div className="unstop-row">
+                <a href="https://unstop.com/o/e4yoEUt?lb=PVdiNfqQ&utm_medium=Share&utm_source=competitions&utm_campaign=Bharatpatel17" className="action-btn primary-btn" target="_blank" rel="noopener noreferrer">
+                  Technical Registration
+                </a>
+                <a href="https://unstop.com/o/aZglcms?lb=PVdiNfqQ&utm_medium=Share&utm_source=competitions&utm_campaign=Bharatpatel17" className="action-btn primary-btn" target="_blank" rel="noopener noreferrer">
+                  Web Registration
+                </a>
+              </div>
+            </div>
+            <div className="whatsapp-section">
+              <h3 className="section-heading">WHATSAPP COMMUNITY</h3>
+              <a href="https://chat.whatsapp.com/LnoyCk9reE2KfRmWOgOil3?mode=gi_t" className="action-btn secondary-btn whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                Join Our Community
+              </a>
+            </div>
           </div>
           
+          
+          
+          
+          
           <div className="success-footer">
-            <p>For any queries, feel free to contact us at recruitment@aeronitk.in</p>
+            <p><strong>POC:</strong> Varshith J | +91 87620 56779</p>
+            <p><strong>Email:</strong> varshithj.231me359@nitk.edu.in</p>
+            <p>For any queries, feel free to contact us at the above details</p>
           </div>
         </div>
       </section>

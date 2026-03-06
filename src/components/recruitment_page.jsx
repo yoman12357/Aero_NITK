@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './recruitment_page.css';
 import Footer from './footer.jsx';
-import { saveApplicant } from '../firebase.js';
+import { saveApplicant, checkDuplicateApplication, getApplicationCount } from '../firebase.js';
 import { Helmet } from 'react-helmet-async';
 
 const teams = ["Technical", "Web team", "Designer", "Media", "Marketing"];
@@ -15,6 +15,7 @@ const branches = [
 
 const RecruitmentForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [applicationCount, setApplicationCount] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -26,6 +27,15 @@ const RecruitmentForm = () => {
     whyJoin: "",
     hp_field: ""
   });
+
+  // Fetch application count on component mount
+  useEffect(() => {
+    const fetchCount = async () => {
+      const count = await getApplicationCount();
+      setApplicationCount(count);
+    };
+    fetchCount();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -70,6 +80,20 @@ const RecruitmentForm = () => {
     }
 
     setIsSubmitting(true);
+    
+    // Check for duplicates before submission
+    const duplicateCheck = await checkDuplicateApplication({
+      rollNo: formData.rollNo,
+      email: formData.email,
+      phone: formData.phone
+    });
+    
+    if (duplicateCheck.duplicate) {
+      alert(`An application with this ${duplicateCheck.field} already exists. Each user can only submit one application.`);
+      setIsSubmitting(false);
+      return;
+    }
+    
     const result = await saveApplicant(formData);
     setIsSubmitting(false);
 
@@ -92,6 +116,14 @@ const RecruitmentForm = () => {
         <link rel="canonical" href="https://aeronitk.in/recruitment" />
       </Helmet>
       <section className="recruitment-section">
+        {/* Application Counter */}
+        {applicationCount !== null && (
+          <div className="application-counter">
+            <span className="counter-label">Total Applications:</span>
+            <span className="counter-number">{applicationCount}</span>
+          </div>
+        )}
+        
         {/* Header moved outside the form to be styled independently */}
         <h2 className="recruitment-title">JOIN OUR TEAM</h2>
 
