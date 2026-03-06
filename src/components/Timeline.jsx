@@ -61,7 +61,7 @@ const Timeline = () => {
     },
     {
       year: 'Jan 2026',
-      title: 'SAE DDC',
+      title: 'SAE ADDC',
       description: 'Won 3rd place for best payload dropping mechanism.',
     },
     {
