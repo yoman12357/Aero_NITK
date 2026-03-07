@@ -50,7 +50,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          © 2026 Aero NITK | Built with <span className="heart">💙</span> by Web Team, AeroNITK
+          © AeroNITK 2026 | Built with <span className="heart">💙</span> by Web Team, AeroNITK
         </div>
       </footer>
     </div>
