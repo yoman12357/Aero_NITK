@@ -4,7 +4,7 @@ import Footer from './footer.jsx';
 import { saveApplicant, checkDuplicateApplication, getApplicationCount } from '../firebase.js';
 import { Helmet } from 'react-helmet-async';
 
-const teams = ["Technical", "Web team", "Designer", "Media", "Marketing"];
+const teams = ["Technical", "Web team", "UI/UX Designer", "Media", "Marketing"];
 const years = ["1st Year", "2nd Year"];
 const branches = [
   "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
@@ -76,6 +76,13 @@ const RecruitmentForm = () => {
 
     if (!formData.selectedTeam) {
       alert("Please select one team to join.");
+      return;
+    }
+
+    // Check minimum word count for whyJoin field
+    const whyJoinWords = formData.whyJoin.trim().split(/\s+/).filter(word => word.length > 0);
+    if (whyJoinWords.length < 50) {
+      alert(`Please write at least 50 words in the "Why do you want to join AeroNITK?" section. Current word count: ${whyJoinWords.length}`);
       return;
     }
 
@@ -186,13 +193,13 @@ const RecruitmentForm = () => {
             </div>
           </fieldset>
 
-          <label>WHY DO YOU WANT TO JOIN AERONITK?
+          <label>WHY DO YOU WANT TO JOIN AERONITK? (Minimum 50 words)
             <textarea
               name="whyJoin"
               value={formData.whyJoin}
               onChange={handleInputChange}
               required
-              placeholder="Tell us about your interest and motivation..."
+              placeholder="Please write at least 50 words explaining your interest, skills, and motivation for joining Aero NITK..."
               rows="4"
             />
           </label>
