@@ -30,10 +30,10 @@ const RecruitmentSuccess = () => {
             <div className="unstop-section">
               <h3 className="section-heading">UNSTOP</h3>
               <div className="unstop-row">
-                <a href="https://unstop.com/o/e4yoEUt?lb=PVdiNfqQ&utm_medium=Share&utm_source=competitions&utm_campaign=Bharatpatel17" className="action-btn primary-btn" target="_blank" rel="noopener noreferrer">
+                <a href=" https://unstop.com/o/e4yoEUt?lb=PVdiNfqQ&utm_medium=Share&utm_source=WhatsApp" className="action-btn primary-btn" target="_blank" rel="noopener noreferrer">
                   Technical Registration
                 </a>
-                <a href="https://unstop.com/o/aZglcms?lb=PVdiNfqQ&utm_medium=Share&utm_source=competitions&utm_campaign=Bharatpatel17" className="action-btn primary-btn" target="_blank" rel="noopener noreferrer">
+                <a href=" https://unstop.com/o/aZglcms?lb=PVdiNfqQ&utm_medium=Share&utm_source=WhatsApp" className="action-btn primary-btn" target="_blank" rel="noopener noreferrer">
                   Web Registration
                 </a>
               </div>
