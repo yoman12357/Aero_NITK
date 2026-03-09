@@ -13,9 +13,16 @@ const branches = [
   "Civil Engineering", "Chemical Engineering", "Metallurgical and Materials Engineering", "Mining Engineering"
 ];
 
+// Registration closure settings
+const CLOSURE_TIME = "18:05"; // 6:05 PM IST in 24-hour format
+const CLOSURE_DATE = new Date().toISOString().split('T')[0]; // Today's date in YYYY-MM-DD format
+const MAX_APPLICATIONS = 150; // Maximum applications allowed
+
 const RecruitmentForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [applicationCount, setApplicationCount] = useState(null);
+  const [isRegistrationClosed, setIsRegistrationClosed] = useState(false);
+  const [closureReason, setClosureReason] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,13 +35,37 @@ const RecruitmentForm = () => {
     hp_field: ""
   });
 
-  // Fetch application count on component mount
+  // Fetch application count and check closure status on component mount
   useEffect(() => {
-    const fetchCount = async () => {
+    const checkRegistrationStatus = async () => {
       const count = await getApplicationCount();
       setApplicationCount(count);
+      
+      // Check time-based closure
+      const now = new Date();
+      const currentTimeIST = new Date(now.getTime() + (5.5 * 60 * 60 * 1000)); // Convert to IST
+      const currentHour = currentTimeIST.getHours();
+      const currentMinute = currentTimeIST.getMinutes();
+      const currentTimeStr = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+      
+      if (currentTimeStr > CLOSURE_TIME) {
+        setIsRegistrationClosed(true);
+        setClosureReason("Registrations are now closed");
+        return;
+      }
+      
+      // Check capacity-based closure
+      if (count !== null && count >= MAX_APPLICATIONS) {
+        setIsRegistrationClosed(true);
+        setClosureReason(`Maximum capacity of ${MAX_APPLICATIONS} applications reached`);
+      }
     };
-    fetchCount();
+    
+    checkRegistrationStatus();
+    
+    // Set up interval to check time every minute
+    const interval = setInterval(checkRegistrationStatus, 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleInputChange = (e) => {
@@ -86,6 +117,25 @@ const RecruitmentForm = () => {
       return;
     }
 
+    // Check if registration is still open
+    const now = new Date();
+    const currentTimeIST = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
+    const currentHour = currentTimeIST.getHours();
+    const currentMinute = currentTimeIST.getMinutes();
+    const currentTimeStr = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+    
+    if (currentTimeStr > CLOSURE_TIME) {
+      alert(`Registrations are now closed.`);
+      return;
+    }
+    
+    // Check capacity before submission
+    const currentCount = await getApplicationCount();
+    if (currentCount !== null && currentCount >= MAX_APPLICATIONS) {
+      alert(`Registrations are closed. Maximum capacity of ${MAX_APPLICATIONS} applications has been reached.`);
+      return;
+    }
+
     setIsSubmitting(true);
     
     // Check for duplicates before submission
@@ -124,90 +174,118 @@ const RecruitmentForm = () => {
       </Helmet>
       <section className="recruitment-section">
         {/* Application Counter */}
-        {applicationCount !== null && (
+        {applicationCount !== null && !isRegistrationClosed && (
           <div className="application-counter">
             <span className="counter-label">Total Applications:</span>
             <span className="counter-number">{applicationCount}</span>
+            <span className="counter-deadline">Closes at {CLOSURE_TIME} IST</span>
           </div>
         )}
         
-        {/* Header moved outside the form to be styled independently */}
-        <h2 className="recruitment-title">JOIN OUR TEAM</h2>
-
-        <form className="recruitment-card" onSubmit={handleSubmit}>
-          {/* Honeypot field */}
-          <div style={{ display: 'none' }} aria-hidden="true">
-            <input type="text" name="hp_field" value={formData.hp_field} onChange={handleInputChange} tabIndex="-1" autoComplete="off" />
+        {/* Show closed page OR the registration form */}
+        {isRegistrationClosed ? (
+          <div className="registration-closed-box">
+            <div className="closed-icon">🔒</div>
+            <h3 className="guidelines-heading" style={{ color: '#ef4444' }}>
+              Recruitment is Closed
+            </h3>
+            <p className="closed-subtext">
+              {closureReason}. Thank you for your interest in joining Aero NITK!
+            </p>
+            <p className="closed-subtext" style={{ marginTop: '12px' }}>
+              Follow us on Instagram for updates on future recruitment drives:
+            </p>
+            <a
+              href="https://www.instagram.com/aeronitk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="apply-btn"
+              style={{ marginTop: '16px', textDecoration: 'none', display: 'inline-block' }}
+            >
+              @aeronitk on Instagram
+            </a>
           </div>
-          <label>NAME
-            <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
-          </label>
-          <label>E-Mail
-            <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="E-mail" />
-          </label>
+        ) : (
+          <>
+            {/* Header moved outside the form to be styled independently */}
+            <h2 className="recruitment-title">JOIN OUR TEAM</h2>
 
-          <label>ROLL NUMBER
-            <input type="text" name="rollNo" value={formData.rollNo} onChange={handleInputChange} required placeholder="Your Roll Number" />
-          </label>
+            <form className="recruitment-card" onSubmit={handleSubmit}>
+              {/* Honeypot field */}
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <input type="text" name="hp_field" value={formData.hp_field} onChange={handleInputChange} tabIndex="-1" autoComplete="off" />
+              </div>
+              <label>NAME
+                <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
+              </label>
+              <label>E-Mail
+                <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="E-mail" />
+              </label>
 
-          <label>PHONE NUMBER
-            <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="10-Digit Number" pattern="[0-9]{10}" />
-          </label>
+              <label>ROLL NUMBER
+                <input type="text" name="rollNo" value={formData.rollNo} onChange={handleInputChange} required placeholder="Your Roll Number" />
+              </label>
 
-          <label>BRANCH
-            <select name="branch" value={formData.branch} onChange={handleInputChange} required>
-              <option value="" disabled hidden>Select Here</option>
-              {branches.map((br, idx) => (
-                <option key={idx} value={br} style={{ color: '#ffffff' }}>
-                  {br}
-                </option>
-              ))}
-            </select>
-          </label>
+              <label>PHONE NUMBER
+                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="10-Digit Number" pattern="[0-9]{10}" />
+              </label>
 
-          <label>YEAR
-            <select name="year" value={formData.year} onChange={handleInputChange} required>
-              <option value="" disabled hidden>Select Here</option>
-              {years.map((year, idx) => (
-                <option key={idx} value={year} style={{ color: '#ffffff' }}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </label>
+              <label>BRANCH
+                <select name="branch" value={formData.branch} onChange={handleInputChange} required>
+                  <option value="" disabled hidden>Select Here</option>
+                  {branches.map((br, idx) => (
+                    <option key={idx} value={br} style={{ color: '#ffffff' }}>
+                      {br}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-          <fieldset>
-            <legend>SELECT YOUR PREFERRED TEAM</legend>
-            <div className="teams-checkboxes">
-              {teams.map((team) => (
-                <label key={team} className="team-checkbox">
-                  <input
-                    type="radio"
-                    name="teamSelection"
-                    checked={formData.selectedTeam === team}
-                    onChange={() => handleTeamSelect(team)}
-                  />
-                  <span>{team}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
+              <label>YEAR
+                <select name="year" value={formData.year} onChange={handleInputChange} required>
+                  <option value="" disabled hidden>Select Here</option>
+                  {years.map((year, idx) => (
+                    <option key={idx} value={year} style={{ color: '#ffffff' }}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
-          <label>WHY DO YOU WANT TO JOIN AERONITK? (Minimum 50 words)
-            <textarea
-              name="whyJoin"
-              value={formData.whyJoin}
-              onChange={handleInputChange}
-              required
-              placeholder="Please write at least 50 words explaining your interest, skills, and motivation for joining Aero NITK..."
-              rows="4"
-            />
-          </label>
+              <fieldset>
+                <legend>SELECT YOUR PREFERRED TEAM</legend>
+                <div className="teams-checkboxes">
+                  {teams.map((team) => (
+                    <label key={team} className="team-checkbox">
+                      <input
+                        type="radio"
+                        name="teamSelection"
+                        checked={formData.selectedTeam === team}
+                        onChange={() => handleTeamSelect(team)}
+                      />
+                      <span>{team}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
 
-          <button className="apply-btn" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "SUBMITTING..." : "APPLY NOW"}
-          </button>
-        </form>
+              <label>WHY DO YOU WANT TO JOIN AERONITK? (Minimum 50 words)
+                <textarea
+                  name="whyJoin"
+                  value={formData.whyJoin}
+                  onChange={handleInputChange}
+                  required
+                  placeholder="Please write at least 50 words explaining your interest, skills, and motivation for joining Aero NITK..."
+                  rows="4"
+                />
+              </label>
+
+              <button className="apply-btn" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "SUBMITTING..." : "APPLY NOW"}
+              </button>
+            </form>
+          </>
+        )}
       </section>
       <Footer />
     </>
