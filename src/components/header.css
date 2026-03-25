@@ -4,26 +4,6 @@
     box-sizing: border-box;
 }
 
-.app-navbar {
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 32px;
-
-    /* 40% opacity and 4px blur */
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    transition: all 0.4s ease-in-out;
-}
-
 .app-navbar-logo-wrapper {
     display: flex;
     align-items: center;
@@ -184,8 +164,6 @@ a {
     display: flex;
     align-items: center;
     padding: 0 40px;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
     width: 100%;
     position: fixed;
     top: 0;

@@ -158,6 +158,23 @@ const Sponsors = () => {
           </div>
         </div>
       </header>
+       <div className="hero-overlay-container-mobile">
+        <div className="overlay-card">
+          <h4>About Aero NITK</h4>
+          <p>
+            We proudly constitute the official aeromodelling contingent of NITK Surathkal,
+            ardently devoted to the pursuit of aerospace engineering and the relentless advance of innovation.
+          </p>
+        </div>
+        <div className="overlay-card">
+          <h4>Why Sponsor Us?</h4>
+          <p>
+            Our repertoire boasts multiple triumphs in competitive arenas,
+            groundbreaking ventures that continually push the envelope of innovation,
+            and a robust and discerning alumni network.
+          </p>
+        </div>
+      </div>
 
       {/* 🔥 Brochure Carousel Section */}
       <section className="brochure-section">
