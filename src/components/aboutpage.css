@@ -171,21 +171,35 @@ html {
         text-transform: uppercase;
 
     }
-
+    /* Reduced the size of the h1 to fit at middle and made it bold to increase readability on small screen*/
     .about-hero h1 .highlight {
         color: #3490eb;
+        font-size: 1.8rem;
+        font-weight: bold;
     }
 
     .about-hero h1 {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
+        font-weight: bold;
     }
 
     .about-hero p {
         font-size: 1rem;
         text-transform: capitalize;
+        font-weight: 550;
     }
 
     .section-block {
         padding: 25px;
     }
-}
+    .section-block h2{
+        font-weight: 700;
+    }
+    .section-block p{
+        font-weight: 500;
+    }
+    .styled-list li{
+        font-weight: 500;
+    }
+    /* increased font weight of the texts to increase readability on small screens */
+} 
