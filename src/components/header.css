@@ -1,272 +1,322 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;700;900&display=swap");
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .app-navbar-logo-wrapper {
-    display: flex;
-    align-items: center;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+  display: flex;
+  align-items: center;
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+.app-navbar {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 32px;
+
+  /* 40% opacity and 4px blur */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  transition: all 0.4s ease-in-out;
+  transition:
+    height 0.3s ease,
+    background 0.3s ease,
+    backdrop-filter 0.3s ease;
 }
 
 .app-navbar-logo {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid transparent;
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: all 0.3s ease-in-out;
+  border: 2px solid transparent;
 }
 
 .app-navbar-links {
-    display: flex;
-    gap: 30px;
-    transition: all 0.4s ease-in-out;
-    align-items: center;
+  display: flex;
+  gap: 30px;
+  transition: all 0.4s ease-in-out;
+  align-items: center;
 }
 
 .app-navbar-links a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1rem;
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: normal;
-    font-weight: 500;
-    transition: color 200ms ease;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: normal;
+  font-weight: 500;
+  transition: color 200ms ease;
 }
 
 .app-navbar-links a:hover {
-    color: #2983e6;
-    text-decoration: none !important;
+  color: #2983e6;
+  text-decoration: none !important;
 }
 
 a {
-    margin: 0;
-    display: inline;
-    padding: 0;
+  margin: 0;
+  display: inline;
+  padding: 0;
 }
 
 .contact-button {
-    height: 2.45rem;
-    padding: 0 0.625rem 0 0.625rem !important;
-    border: 2px solid #3e7da6;
-    border-radius: 8px;
-    background: #3E93CE;
-    color: #fff;
-    font-size: 0.75rem;
-    font-family: 'Montserrat';
-    cursor: pointer;
+  height: 2.45rem;
+  padding: 0 0.625rem 0 0.625rem !important;
+  border: 2px solid #3e7da6;
+  border-radius: 8px;
+  background: #3e93ce;
+  color: #fff;
+  font-size: 0.75rem;
+  font-family: "Montserrat";
+  cursor: pointer;
+}
+.app-navbar.scrolled-layout {
+  height: 65px; /* smaller */
+  background: rgba(0, 0, 0, 0.85); /* darker */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
-
-
+.app-navbar.scrolled-layout .app-navbar-logo {
+  width: 60px;
+  height: 60px;
+}
 /* --- Desktop Scrolled State --- */
 @media (min-width: 901px) {
-    .app-navbar.scrolled-layout {
-        justify-content: center;
-    }
+  .app-navbar.scrolled-layout {
+    justify-content: center;
+  }
 
-    .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
-        display: none;
-    }
+  .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
+    display: none;
+  }
 }
 
 .app-hamburger {
-    display: none;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    z-index: 10000;
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 10000;
 }
 
 .app-hamburger svg {
+  display: block;
+  stroke: #ffffff !important;
+  width: 32px;
+  height: 32px;
+}
+
+@media (max-width: 900px) {
+  .app-navbar {
+    padding: 10px 20px;
+    justify-content: space-between !important;
+  }
+
+  .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
+    display: flex !important;
+  }
+
+  .app-navbar-links {
+    display: none;
+  }
+
+  .app-hamburger {
     display: block;
-    stroke: #ffffff !important;
-    width: 32px;
-    height: 32px;
-}
+  }
 
-@media (max-width: 900px) {
-    .app-navbar {
-        padding: 10px 20px;
-        justify-content: space-between !important;
-    }
-
-    .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
-        display: flex !important;
-    }
-
-    .app-navbar-links {
-        display: none;
-    }
-
-    .app-hamburger {
-        display: block;
-    }
-
-    .app-navbar-links.open {
-        display: flex;
-        /* REMOVED UNDERLINE HERE */
-        text-decoration: none !important;
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.95);
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        z-index: 9998;
-        animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .app-navbar-links.open a {
-        font-size: 24px;
-        padding: 10px;
-        width: 100%;
-        text-align: center;
-        text-decoration: none !important;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-}
-
-.app-navbar-links a.active-link {
-    color: #2983e6;
-    /* REMOVED UNDERLINE/BORDER-BOTTOM HERE */
-    border-bottom: none;
-    text-decoration: none !important;
-    font-weight: 700;
-}
-
-@media (max-width: 900px) {
-    .app-navbar-links.open a.active-link {
-        color: #2983e6;
-        border-bottom: none;
-        text-decoration: none !important;
-        transform: scale(1.1);
-    }
-}
-
-.app-navbar {
-    height: 85px;
+  .app-navbar-links.open {
     display: flex;
-    align-items: center;
-    padding: 0 40px;
-    width: 100%;
+    /* REMOVED UNDERLINE HERE */
+    text-decoration: none !important;
+    flex-direction: column;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
-    transition: all 0.5s ease-in-out;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 9998;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .app-navbar-links.open a {
+    font-size: 24px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none !important;
+  }
+  .app-navbar-logo {
+    transform: scale(0.9);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+.app-navbar-links a.active-link {
+  color: #2983e6;
+  /* REMOVED UNDERLINE/BORDER-BOTTOM HERE */
+  border-bottom: none;
+  text-decoration: none !important;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .app-navbar-links.open a.active-link {
+    color: #2983e6;
+    border-bottom: none;
+    text-decoration: none !important;
+    transform: scale(1.1);
+  }
+}
+
+.app-navbar {
+  height: 85px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  transition: all 0.5s ease-in-out;
 }
 
 .app-navbar-logo-wrapper {
-    width: 85px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    transition: width 0.5s ease, opacity 0.4s ease;
+  width: 85px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  transition:
+    width 0.5s ease,
+    opacity 0.4s ease;
 }
 
 .app-navbar-logo {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
 }
 
 /* Spacers for the sliding effect */
 .nav-spacer-left {
-    flex-grow: 1;
-    /* Pushes links to the right initially */
-    transition: all 0.5s ease-in-out;
+  flex-grow: 1;
+  /* Pushes links to the right initially */
+  transition: all 0.5s ease-in-out;
 }
 
 .nav-spacer-right {
-    flex-grow: 0;
-    /* No space on the right initially */
-    transition: all 0.3s ease-in-out;
+  flex-grow: 0;
+  /* No space on the right initially */
+  transition: all 0.3s ease-in-out;
 }
 
 .app-navbar-links {
-    display: flex;
-    gap: 30px;
-    white-space: nowrap;
+  display: flex;
+  gap: 30px;
+  white-space: nowrap;
 }
 
 /* --- SCROLLED STATE --- */
 @media (min-width: 901px) {
-    .app-navbar.scrolled-layout {
-        height: 70px;
-        background: rgba(0, 0, 0, 0.4);
-    }
+  .app-navbar.scrolled-layout {
+    height: 70px;
+    background: rgba(0, 0, 0, 0.4);
+  }
 
-    .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
-        width: 0;
-        opacity: 0;
-    }
+  .app-navbar.scrolled-layout .app-navbar-logo-wrapper {
+    width: 0;
+    opacity: 0;
+  }
 
-    /* By making both spacers grow equally, the links move to the center */
-    .app-navbar.scrolled-layout .nav-spacer-right {
-        flex-grow: 1;
-    }
+  /* By making both spacers grow equally, the links move to the center */
+  .app-navbar.scrolled-layout .nav-spacer-right {
+    flex-grow: 1;
+  }
 }
 
 /* --- LINKS STYLING --- */
 .app-navbar-links a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    transition: color 0.3s ease;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
 }
 
 .app-navbar-links a.active-link {
-    color: #2983e6;
+  color: #2983e6;
 }
 
 /* --- MOBILE --- */
 @media (max-width: 900px) {
-    .app-navbar {
-        justify-content: space-between;
-    }
+  .app-navbar {
+    justify-content: space-between;
+  }
 
-    .nav-spacer-left,
-    .nav-spacer-right {
-        display: none;
-    }
+  .nav-spacer-left,
+  .nav-spacer-right {
+    display: none;
+  }
 
-    .app-navbar-links {
-        display: none;
-    }
+  .app-navbar-links {
+    display: none;
+  }
 
-    .app-navbar-links.open {
-        display: flex;
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.95);
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-    }
+  .app-navbar-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
 
-    .app-navbar-links.open a {
-        font-weight: 400;
-    }
+  .app-navbar-links.open a {
+    font-weight: 400;
+  }
+}
+@media (max-width: 900px) {
+  .app-navbar {
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .app-navbar.scrolled-layout {
+    background: rgba(0, 0, 0, 0.571);
+    backdrop-filter: blur(4px);
+  }
 }
