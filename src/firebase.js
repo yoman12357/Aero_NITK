@@ -73,6 +73,46 @@ export const getRegistrationCount = async () => {
     }
 };
 
+// Check for duplicate Wright Flight registration by rollNo, email, or phone
+export const checkDuplicateWrightFlightRegistration = async ({ rollNo, email, phone }) => {
+    try {
+        const col = collection(db, 'wright_flight_registrations');
+        const checks = [
+            { field: 'rollNo', value: rollNo, label: 'Roll Number' },
+            { field: 'email', value: email, label: 'Email ID' },
+            { field: 'phone', value: phone, label: 'Phone Number' },
+        ];
+
+        for (const { field, value, label } of checks) {
+            if (!value) continue;
+            const snap = await getDocs(query(col, where(field, '==', value)));
+            if (!snap.empty) {
+                return { duplicate: true, field: label };
+            }
+        }
+        return { duplicate: false };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Wright Flight duplicate check error:', error);
+        }
+        return { duplicate: false };
+    }
+};
+
+// Returns current number of Wright Flight registrations
+export const getWrightFlightRegistrationCount = async () => {
+    try {
+        const col = collection(db, 'wright_flight_registrations');
+        const snapshot = await getCountFromServer(col);
+        return snapshot.data().count;
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Wright Flight registration count error:', error);
+        }
+        return null;
+    }
+};
+
 // Internal visitor tracking — writes to:
 //   metadata/siteStats         → total_visits (all-time counter)
 //   daily_visits/YYYY-MM-DD    → count        (per-day counter, IST)

@@ -6,21 +6,19 @@ import logoImage from '../images/Aero_NITK_logo.png';
 
 const Header = ({ isScrolled }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const [homeActiveSection, setHomeActiveSection] = useState('home');
   const location = useLocation();
+  const activeSection = location.pathname === '/' ? homeActiveSection : '';
 
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   useEffect(() => {
-    if (location.pathname !== '/') {
-      setActiveSection('');
-      return;
-    }
+    if (location.pathname !== '/') return;
     const sections = ['home', 'contact'];
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) setActiveSection(entry.target.id);
+        if (entry.isIntersecting) setHomeActiveSection(entry.target.id);
       });
     }, { rootMargin: '-50% 0px -50% 0px' });
 
@@ -52,6 +50,7 @@ const Header = ({ isScrolled }) => {
         <NavLink to="/about" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>ABOUT</NavLink>
         <NavLink to="/gallery" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>GALLERY</NavLink>
         <NavLink to="/alumni" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>ALUMNI</NavLink>
+        <NavLink to="/registrations" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>REGISTRATIONS</NavLink>
         {/* <NavLink to="/recruitment" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>RECRUITMENT</NavLink> */}
         <NavLink to="/team" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>TEAM</NavLink>
         <NavLink to="/sponsors" onClick={closeMobileMenu} className={({ isActive }) => (isActive ? 'active-link' : '')}>SPONSORS</NavLink>
