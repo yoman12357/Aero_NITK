@@ -127,7 +127,6 @@ const WrightFlightRegistration = () => {
         setIsSubmitting(true);
         setDuplicateError('');
 
-        // Re-check current filled seats before saving,
         // so we do not accept responses above the slot limit.
         const currentCount = await getWrightFlightRegistrationCount();
         if (currentCount !== null && currentCount >= WRIGHT_FLIGHT_MAX_SLOTS) {
