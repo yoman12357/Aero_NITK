@@ -1,82 +1,7 @@
-// ///Gallery page in the header
-// import React from 'react';
-// import './Gallery.css';
-// import Footer from './footer';
-
-// import gallery1 from '/gallery_1.png';
-// import gallery2 from '/gallery_2.png';
-// import gallery3 from '/gallery_3.png';
-// import gallery4 from '/gallery_4.png';
-// import gallery5 from '/gallery_5.png';
-// import gallery6 from '/gallery_6.png';
-// import gallery7 from '/gallery_7.png';
-// import gallery8 from '/gallery_8.png';
-// // import gallery9 from '/gallery_9.png';
-// // import gallery10 from '/gallery_10.png';
-// import gallery11 from '/gallery_11.png';
-// import gallery12 from '/gallery_12.png';
-// import gallery13 from '/gallery_13.png';
-// import gallery14 from '/gallery_14.png';
-// import gallery15 from '/gallery_15.png';
-// import gallery16 from '/gallery_16.png';
-// import gallery17 from '/gallery_17.png';
-// import gallery18 from '/gallery_18.png';
-
-// const images = [
-//   { src: gallery1, alt: 'Img 1', height: 300 },
-//   { src: gallery2, alt: 'Img 2', height: 300 },
-//   { src: gallery3, alt: 'Img 3', height: 300 },
-//   { src: gallery4, alt: 'Img 4', height: 300 },
-//   { src: gallery5, alt: 'Trophy', height: 600 }, // Spans down across 2 rows
-//   { src: gallery6, alt: 'Img 6', height: 300 },
-//   { src: gallery7, alt: 'Img 7', height: 300 },
-//   { src: gallery8, alt: 'Img 8', height: 300 },
-//   // { src: gallery9, alt: 'Group photo',height: 600},
-//   // { src: gallery10, alt: 'Img 10', height: 600 },
-//   { src: gallery11, alt: 'Img 11', height: 300 },
-//   { src: gallery12, alt: 'Img 12', height: 300 },
-//   { src: gallery13, alt: 'Img 14', height: 300},
-//   { src: gallery14, alt: 'Group Photo', height: 600 ,wide:true},
-//   { src: gallery15, alt: 'Img 15', height: 600 },
-//   { src: gallery16, alt: 'Img 16', height: 300 },
-//   { src: gallery17, alt: 'Img 17', height: 600 },
-//   { src: gallery18, alt: 'Img 18', height: 300 },
-// ];
-
-// const Gallery = () => {
-//   return (
-//     <>
-//       <div className="gallery-section">
-//         <h2>GALLERY</h2>
-//         <div className="gallery-grid">
-//           {images.map((image, idx) => (
-//             <div
-//               key={idx}
-//               className={`gallery-item ${image.wide ? 'wide' : ''}`}
-//               style={{
-//                 gridRowEnd: `span ${Math.round(image.height / 30)}`,
-//               }}
-//             >
-//               <img src={image.src} alt={image.alt} />
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//       <Footer />
-
-//     </>
-//   );
-// };
-
-// export default Gallery;
-
-// Gallery page
-import React from 'react';
+import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import './Gallery.css';
 import Footer from './footer';
-import { Helmet } from 'react-helmet-async';
-
-// Images (Vite / public folder)
 import gallery1 from '/gallery_1.png';
 import gallery2 from '/gallery_2.png';
 import gallery3 from '/gallery_3.png';
@@ -113,86 +38,123 @@ import gallery33 from '/gallery_33.png';
 import gallery34 from '/gallery_34.png';
 import gallery35 from '/gallery_35.png';
 
-/**
- * rowSpan × grid-auto-rows = height
- * colSpan × column width = width
- */
-const images = [
-  { src: gallery1, alt: 'Img 1', rowSpan: 10, colSpan: 1 },
-  { src: gallery2, alt: 'Img 2', rowSpan: 10, colSpan: 1 },
-  { src: gallery3, alt: 'Img 3', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery4, alt: 'Img 4', rowSpan: 10, colSpan: 1 },
-  { src: gallery5, alt: 'Trophy', rowSpan: 20, colSpan: 1 },
-
-  { src: gallery6, alt: 'Img 6', rowSpan: 10, colSpan: 1 },
-  { src: gallery7, alt: 'Img 7', rowSpan: 10, colSpan: 1 },
-  { src: gallery8, alt: 'Img 8', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery9, alt: 'Img 9', rowSpan: 20, colSpan: 2 },
-  { src: gallery10, alt: 'Img 10', rowSpan: 20, colSpan: 1 },
-
-
-  { src: gallery11, alt: 'Img 11', rowSpan: 10, colSpan: 1 },
-  { src: gallery12, alt: 'Img 12', rowSpan: 10, colSpan: 1 },
-  { src: gallery13, alt: 'Img 13', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery14, alt: 'Group Photo', rowSpan: 20, colSpan: 3 },
-
-  { src: gallery15, alt: 'Img 15', rowSpan: 20, colSpan: 1 },
-  { src: gallery16, alt: 'Img 16', rowSpan: 10, colSpan: 1 },
-  { src: gallery17, alt: 'Img 17', rowSpan: 20, colSpan: 1 },
-  { src: gallery18, alt: 'Img 18', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery19, alt: 'Img 19', rowSpan: 20, colSpan: 2 },
-  { src: gallery20, alt: 'Img 20', rowSpan: 10, colSpan: 1 },
-  { src: gallery21, alt: 'Img 21', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery22, alt: 'Img 22', rowSpan: 10, colSpan: 1 },
-  { src: gallery23, alt: 'Img 23', rowSpan: 10, colSpan: 1 },
-  { src: gallery24, alt: 'Img 24', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery25, alt: 'Img 25', rowSpan: 20, colSpan: 2 },
-  { src: gallery26, alt: 'Img 26', rowSpan: 10, colSpan: 1 },
-  { src: gallery27, alt: 'Img 27', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery28, alt: 'Img 28', rowSpan: 10, colSpan: 1 },
-  { src: gallery29, alt: 'Img 29', rowSpan: 10, colSpan: 1 },
-  { src: gallery30, alt: 'Img 30', rowSpan: 10, colSpan: 1 },
-
-  { src: gallery31, alt: 'Img 31', rowSpan: 20, colSpan: 1 },
-  { src: gallery32, alt: 'Img 32', rowSpan: 10, colSpan: 1 },
-  { src: gallery33, alt: 'Img 33', rowSpan: 10, colSpan: 1 },
-  { src: gallery34, alt: 'Img 34', rowSpan: 10, colSpan: 1 },
-  { src: gallery35, alt: 'Img 35', rowSpan: 10, colSpan: 1 },
+const galleryFolders = [
+  {
+    title: 'Events',
+    cover: gallery5,
+    layout: 'events',
+    images: [
+      { src: gallery2, size: 'standard' },
+      { src: gallery26, size: 'standard' },
+      { src: gallery5, size: 'tall' },
+      { src: gallery9, size: 'wide' },
+      { src: gallery31, size: 'standard' },
+      { src: gallery15, size: 'standard' },
+      { src: gallery11, size: 'tall' },
+      { src: gallery14, size: 'wide' },
+    ],
+  },
+  {
+    title: 'Team',
+    cover: gallery35,
+    layout: 'team',
+    images: [
+      { src: gallery35, size: 'standard' },
+      { src: gallery28, size: 'standard' },
+      { src: gallery21, size: 'standard' },
+      { src: gallery19, size: 'wide' },
+      { src: gallery7, size: 'standard' },
+      { src: gallery1, size: 'standard' },
+      { src: gallery12, size: 'standard' },
+      { src: gallery13, size: 'standard' },
+    ],
+  },
+  {
+    title: 'Aircrafts',
+    cover: gallery34,
+    layout: 'aircrafts',
+    images: [
+      { src: gallery34, size: 'standard' },
+      { src: gallery10, size: 'tall' },
+      { src: gallery3, size: 'standard' },
+      { src: gallery23, size: 'standard' },
+      { src: gallery24, size: 'standard' },
+      { src: gallery27, size: 'wide' },
+      { src: gallery29, size: 'tall' },
+      { src: gallery30, size: 'standard' },
+    ],
+  },
+  {
+    title: 'Workshop',
+    cover: gallery22,
+    layout: 'workshop',
+    images: [
+      { src: gallery22, size: 'standard' },
+      { src: gallery16, size: 'standard' },
+      { src: gallery33, size: 'standard' },
+      { src: gallery6, size: 'standard' },
+      { src: gallery4, size: 'standard' },
+      { src: gallery18, size: 'standard' },
+      { src: gallery20, size: 'standard' },
+      { src: gallery6, size: 'standard' },
+      { src: gallery32, size: 'standard' },
+      
+    ],
+  },
 ];
 
 const Gallery = () => {
+  const [activeFolder, setActiveFolder] = useState(null);
+  const selectedFolder = galleryFolders.find((folder) => folder.title === activeFolder);
+
   return (
     <>
       <Helmet>
         <title>Gallery | Aero NITK</title>
-        <meta name="description" content="Explore a collection of memories and technical milestones from Aero NITK's journey in aeromodelling." />
+        <meta
+          name="description"
+          content="Explore Aero NITK's events, team moments, aircraft builds, and workshop memories."
+        />
         <link rel="canonical" href="https://aeronitk.in/gallery" />
       </Helmet>
-      <div className="gallery-section">
-        <h1>GALLERY</h1>
 
-        <div className="gallery-grid">
-          {images.map((image, idx) => (
-            <div
-              key={idx}
-              className="gallery-item"
-              style={{
-                gridRowEnd: `span ${image.rowSpan}`,
-                gridColumnEnd: `span ${image.colSpan}`,
-              }}
-            >
-              <img src={image.src} alt={image.alt} loading="lazy" />
+      <main className="gallery-section">
+        <h1>{selectedFolder ? selectedFolder.title : 'GALLERY'}</h1>
+
+        {selectedFolder ? (
+          <>
+            <button className="gallery-back" type="button" onClick={() => setActiveFolder(null)}>
+              Back
+            </button>
+
+            <div className={`gallery-photo-grid ${selectedFolder.layout}`}>
+              {selectedFolder.images.map((image, index) => (
+                <figure
+                  className={`gallery-photo ${image.size}`}
+                  key={`${selectedFolder.title}-${index}`}
+                >
+                  <img src={image.src} alt={`${selectedFolder.title} ${index + 1}`} loading="lazy" />
+                </figure>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </>
+        ) : (
+          <div className="gallery-grid">
+            {galleryFolders.map((folder) => (
+              <button
+                className="gallery-card"
+                key={folder.title}
+                type="button"
+                onClick={() => setActiveFolder(folder.title)}
+              >
+                <img src={folder.cover} alt={`${folder.title} gallery`} loading="lazy" />
+                <span className="gallery-card-overlay" />
+                <span>{folder.title}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </main>
 
       <Footer />
     </>
@@ -200,4 +162,3 @@ const Gallery = () => {
 };
 
 export default Gallery;
-
