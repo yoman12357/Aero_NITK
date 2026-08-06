@@ -21,6 +21,7 @@ const Recruitment = lazy(() => import('./components/recruitment_page.jsx'));
 const RecruitmentSuccess = lazy(() => import('./components/RecruitmentSuccess.jsx'));
 const Sponsors = lazy(() => import('./components/sponsors.jsx'));
 const NotFound = lazy(() => import('./components/NotFound.jsx'));
+const Login = lazy(() => import('./components/LoginPage.jsx'));
 
 import { incrementVisitorCount } from './firebase.js';
 
@@ -176,6 +177,7 @@ const App = () => {
           <Route path="/recruitment" element={<Recruitment />} />
           <Route path="/recruitment-success" element={<RecruitmentSuccess />} />
           <Route path="/sponsors" element={<Sponsors />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

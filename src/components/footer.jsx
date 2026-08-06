@@ -45,6 +45,7 @@ const Footer = () => {
               <h3>Contact Us</h3>
               <p>E-mail: <a href="mailto:varshithj.231me359@nitk.edu.in">varshithj.231me359@nitk.edu.in</a></p>
               <p>Phone No: +91 87620 56779</p>
+              <a href="/login">Admin</a>
             </div>
           </div>
         </div>
