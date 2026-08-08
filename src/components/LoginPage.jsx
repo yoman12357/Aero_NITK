@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { User, Lock, Eye, EyeOff } from 'lucide-react';
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+// import { signInWithPopup } from 'firebase/auth';
+// import { googleProvider } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import logo from '../images/Aero_NITK_logo.png';
 import './LoginPage.css';
@@ -35,9 +37,10 @@ const Login = () => {
 
   // Read authorized emails from environment variable
   // Expected format in .env: VITE_ALLOWED_EMAIL=admin@aeronitk.in,other@gmail.com
-  const allowedEmailsEnv = import.meta.env.VITE_ALLOWED_EMAIL || '';
-  const ALLOWED_EMAILS = allowedEmailsEnv.split(',').map(email => email.trim());
+  // const allowedEmailsEnv = import.meta.env.VITE_ALLOWED_EMAIL || '';
+  // const ALLOWED_EMAILS = allowedEmailsEnv.split(',').map(email => email.trim());
 
+  /*
   const handleGoogleLogin = async () => {
     setError('');
     setLoading(true);
@@ -63,6 +66,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+  */
 
   return (
     <>
@@ -133,6 +137,7 @@ const Login = () => {
               {loading ? 'LOGGING IN...' : 'LOGIN'}
             </button>
 
+            {/* 
             <div className="divider">
               <span>OR</span>
             </div>
@@ -152,6 +157,7 @@ const Login = () => {
               </svg>
               Sign in with Google
             </button>
+            */}
             
             {/* forgot password functionality - for future use */}  
             {/* <div className="forgot-password">
