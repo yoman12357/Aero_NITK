@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import Header from './components/header.jsx';
 import LoadingSpinner from './components/LoadingSpinner.jsx';
@@ -22,8 +22,10 @@ const RecruitmentSuccess = lazy(() => import('./components/RecruitmentSuccess.js
 const Sponsors = lazy(() => import('./components/sponsors.jsx'));
 const NotFound = lazy(() => import('./components/NotFound.jsx'));
 const Login = lazy(() => import('./components/LoginPage.jsx'));
+const DashBoard = lazy(() => import('./components/DashBoard.jsx'));
 
-import { incrementVisitorCount } from './firebase.js';
+import { incrementVisitorCount, auth } from './firebase.js';
+import { onAuthStateChanged } from 'firebase/auth';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -33,6 +35,17 @@ const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const location = useLocation();
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // Check auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // GA4: track page views on route change
   useEffect(() => {
@@ -155,11 +168,19 @@ const App = () => {
     );
   }
 
+  const ProtectedRoute = ({ children }) => {
+    if (authLoading) return <LoadingSpinner />;
+    if (!user) return <Navigate to="/login" replace />;
+    return children;
+  };
+
+  const isDashboardRoute = location.pathname.startsWith('/dashboard');
+
   // --- NORMAL SITE RENDER ---
   return (
     <div className="App">
       <ScrollToTop />
-      <Header isScrolled={isScrolled} />
+      {!isDashboardRoute && <Header isScrolled={isScrolled} />}
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
           <Route path="/" element={<AeroNITKHomepage />} />
@@ -178,6 +199,7 @@ const App = () => {
           <Route path="/recruitment-success" element={<RecruitmentSuccess />} />
           <Route path="/sponsors" element={<Sponsors />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
