@@ -18,6 +18,7 @@ import GalleryEditorModal from './Dashboard/components/GalleryEditorModal.jsx';
 import HomeTab from './Dashboard/views/HomeTab.jsx';
 import EventsTab from './Dashboard/views/EventsTab.jsx';
 import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
+import { getStudioUrl } from '../lib/sanity.js';
 import GalleryTab from './Dashboard/views/GalleryTab.jsx';
 import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
 
@@ -43,19 +44,6 @@ function AdminDashboard() {
     const {
         events,
         eventsLoading,
-        eventImages,
-        isAddEventOpen,
-        editingEventId,
-        newEventForm,
-        newEventImage,
-        openAddEventModal,
-        openEditEventModal,
-        closeAddEventModal,
-        handleCreateEvent,
-        handleDeleteEvent,
-        handleEventImageChange,
-        handleNewEventImageChange,
-        setNewEventForm,
     } = useEvents();
 
     const { regCounts, recentRegistrations, regLoading } = useRegistrations(5);
@@ -79,10 +67,11 @@ function AdminDashboard() {
         handleSetFolderCover,
     } = useGallery();
 
-    const onEscape = useCallback(() => {
-        closeAddEventModal();
-    }, [closeAddEventModal]);
+    const openStudio = useCallback((eventId) => {
+        window.open(getStudioUrl(eventId), '_blank', 'noopener,noreferrer');
+    }, []);
 
+    const { isTopbarHidden } = useScrollAndKeyboard({});
     const { isTopbarHidden } = useScrollAndKeyboard({ onEscape });
 
     const handleTabChange = useCallback((tab) => {
@@ -108,6 +97,32 @@ function AdminDashboard() {
                 <section className="admin-dashboard-content">
                     <HeroSection />
 
+                    {activeTab === 'home' && (
+                        <HomeTab
+                            events={events}
+                            eventsLoading={eventsLoading}
+                            regCounts={regCounts}
+                            regLoading={regLoading}
+                            onAddEvent={() => openStudio()}
+                        />
+                    )}
+
+                    {activeTab === 'events' && (
+                        <EventsTab
+                            events={events}
+                            eventsLoading={eventsLoading}
+                            regCounts={regCounts}
+                            onAddEvent={() => openStudio()}
+                            onManageEvent={openStudio}
+                        />
+                    )}
+
+                    {activeTab === 'registrations' && (
+                        <RegistrationsTab
+                            recentRegistrations={recentRegistrations}
+                            regLoading={regLoading}
+                        />
+                    )}
                     <Routes>
                         <Route
                             path="home"

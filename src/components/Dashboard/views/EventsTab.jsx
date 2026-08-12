@@ -7,15 +7,12 @@ import EventCard from '../components/EventCard.jsx';
  * @param {{
  *   events: Array,
  *   eventsLoading: boolean,
- *   eventImages: Object,
  *   regCounts: Object|null,
  *   onAddEvent: () => void,
- *   onEditEvent: (eventId: string) => void,
- *   onDeleteEvent: (eventId: string) => void,
- *   onImageChange: (eventId: string, file: File) => void,
+ *   onManageEvent: (eventId: string) => void,
  * }} props
  */
-function EventsTab({ events, eventsLoading, eventImages, regCounts, onAddEvent, onEditEvent, onDeleteEvent, onImageChange }) {
+function EventsTab({ events, eventsLoading, regCounts, onAddEvent, onManageEvent }) {
     return (
         <div className="admin-dashboard-section">
             <div className="admin-dashboard-section-header">
@@ -33,14 +30,11 @@ function EventsTab({ events, eventsLoading, eventImages, regCounts, onAddEvent, 
                 <div className="admin-dashboard-events">
                     {events.map((event, index) => (
                         <EventCard
-                            key={event.id}
+                            key={event._id}
                             event={event}
                             index={index}
-                            eventImage={eventImages[event.id]}
                             regCounts={regCounts}
-                            onImageChange={onImageChange}
-                            onEdit={onEditEvent}
-                            onDelete={onDeleteEvent}
+                            onManage={onManageEvent}
                         />
                     ))}
                 </div>
