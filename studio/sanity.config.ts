@@ -5,7 +5,7 @@ import { schemaTypes } from './schemaTypes'
 export default defineConfig({
   name: 'aeronitk',
   title: 'Aero NITK Content Studio',
-  projectId: "zjq9gqub" ,
+  projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'zjq9gqub',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
   plugins: [structureTool()],
   schema: { types: schemaTypes },

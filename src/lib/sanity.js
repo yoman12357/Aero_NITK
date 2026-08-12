@@ -1,35 +1,36 @@
 import { createClient } from '@sanity/client';
 
-const projectId = import.meta.env.VITE_SANITY_PROJECT_ID;
-const dataset = import.meta.env.VITE_SANITY_DATASET || 'production';
+// Check if Sanity is configured properly
+export const isSanityConfigured = Boolean(
+  import.meta.env.VITE_SANITY_PROJECT_ID && 
+  import.meta.env.VITE_SANITY_PROJECT_ID !== 'your_project_id'
+);
 
-export const isSanityConfigured = Boolean(projectId);
+// Frontend read-only client
+export const client = createClient({
+  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || '',
+  dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: true,
+});
 
-export const sanityClient = isSanityConfigured
-    ? createClient({
-        projectId,
-        dataset,
-        apiVersion: '2026-08-12',
-        useCdn: true,
-        perspective: 'published',
-    })
-    : null;
+// Alias for compatibility with hooks expecting sanityClient
+export const sanityClient = client;
 
-export const EVENTS_QUERY = `
-    *[_type == "event"] | order(startDate asc, _createdAt desc) {
-        _id,
-        title,
-        description,
-        "imageUrl": image.asset->url,
-        registrationKey,
-        manualParticipantCount,
-        maxCapacity,
-        status,
-        startDate
-    }
-`;
+// GROQ query used by useEvents.js
+export const EVENTS_QUERY = `*[_type == "event"] | order(_createdAt desc) {
+  _id,
+  title,
+  description,
+  "imageUrl": image.asset->url,
+  registrationKey,
+  manualParticipantCount,
+  maxCapacity,
+  status,
+  startDate
+}`;
 
-export function getStudioUrl(eventId) {
-    const studioUrl = import.meta.env.VITE_SANITY_STUDIO_URL || 'http://localhost:3333';
-    return eventId ? `${studioUrl}/desk/event;${eventId}` : `${studioUrl}/desk/event`;
-}
+// Helper to get Sanity Studio URL pointing directly to the event creation form
+export const getStudioUrl = () => {
+  return 'https://aeronitk.sanity.studio/intent/create/type=event';
+};

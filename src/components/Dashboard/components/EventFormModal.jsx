@@ -3,17 +3,6 @@ import React, { useEffect } from 'react';
 /**
  * Modal dialog for adding or editing an event.
  * Manages body overflow lock via its own useEffect.
- *
- * @param {{
- *   isOpen: boolean,
- *   editingEventId: string|null,
- *   form: Object,
- *   image: string,
- *   onFormChange: (updater: Function) => void,
- *   onImageChange: (file: File|undefined) => void,
- *   onSubmit: (formEvent: Event) => void,
- *   onClose: () => void,
- * }} props
  */
 function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onImageChange, onSubmit, onClose }) {
     // Lock body scroll while modal is open
@@ -54,7 +43,7 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                         <span>Event Title</span>
                         <input
                             type="text"
-                            value={form.title}
+                            value={form.title || ''}
                             onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, title: changeEvent.target.value }))}
                             placeholder="Enter event name"
                             required
@@ -65,7 +54,7 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                         <span>Description</span>
                         <textarea
                             rows="4"
-                            value={form.description}
+                            value={form.description || ''}
                             onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, description: changeEvent.target.value }))}
                             placeholder="Add a short description"
                             required
@@ -78,7 +67,7 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                             <input
                                 type="number"
                                 min="0"
-                                value={form.currentParticipants}
+                                value={form.currentParticipants ?? form.manualParticipantCount ?? 0}
                                 onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, currentParticipants: changeEvent.target.value }))}
                                 placeholder="0"
                             />
@@ -89,9 +78,32 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                             <input
                                 type="number"
                                 min="0"
-                                value={form.maxCapacity}
+                                value={form.maxCapacity || ''}
                                 onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, maxCapacity: changeEvent.target.value }))}
                                 placeholder="e.g. 50"
+                            />
+                        </label>
+                    </div>
+
+                    <div className="admin-dashboard-modal-row">
+                        <label className="admin-dashboard-modal-field">
+                            <span>Registration Source</span>
+                            <select
+                                value={form.registrationKey || 'none'}
+                                onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, registrationKey: changeEvent.target.value }))}
+                            >
+                                <option value="none">No live registration source</option>
+                                <option value="workshop">Skyverse workshop</option>
+                                <option value="wrightFlight">Wright Flight</option>
+                            </select>
+                        </label>
+
+                        <label className="admin-dashboard-modal-field">
+                            <span>Start Date & Time</span>
+                            <input
+                                type="datetime-local"
+                                value={form.startDate || ''}
+                                onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, startDate: changeEvent.target.value }))}
                             />
                         </label>
                     </div>
@@ -100,14 +112,14 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                         <label className="admin-dashboard-modal-field" style={{ gridColumn: "1 / -1" }}>
                             <span>Event Status</span>
                             <select
-                                value={form.statusTone}
+                                value={form.statusTone || form.status || 'soon'}
                                 onChange={(changeEvent) => {
                                     const tone = changeEvent.target.value;
                                     const statusMap = {
-                                        'open': 'OPEN',
-                                        'closed': 'CLOSED',
-                                        'soon': 'OPENS SOON',
-                                        'none': ''
+                                        'open': 'open',
+                                        'closed': 'closed',
+                                        'soon': 'soon',
+                                        'none': 'none'
                                     };
                                     onFormChange((currentForm) => ({
                                         ...currentForm,
@@ -116,7 +128,7 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                                     }));
                                 }}
                             >
-                                <option value="none">Hidden (No Status)</option>
+                                <option value="none">Hidden (No Badge)</option>
                                 <option value="open">Open (Green Badge)</option>
                                 <option value="closed">Closed (Red Badge)</option>
                                 <option value="soon">Opens Soon (Orange Badge)</option>
