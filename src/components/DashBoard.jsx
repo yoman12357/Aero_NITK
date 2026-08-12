@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Footer from './footer.jsx';
 
 // Hooks
@@ -11,7 +11,7 @@ import { useScrollAndKeyboard } from './Dashboard/hooks/useScrollAndKeyboard.js'
 import Topbar from './Dashboard/components/Topbar.jsx';
 import Sidebar from './Dashboard/components/Sidebar.jsx';
 import HeroSection from './Dashboard/components/HeroSection.jsx';
-import EventFormModal from './Dashboard/components/EventFormModal.jsx';
+
 import GalleryEditorModal from './Dashboard/components/GalleryEditorModal.jsx';
 
 // Tab views
@@ -52,26 +52,26 @@ function AdminDashboard() {
         activeFolderId,
         editingFolderId,
         folderForm,
-        folderCoverPreview,
         isFolderEditorOpen,
         openNewFolderForm,
         openEditFolderForm,
         closeFolderForm,
         handleFolderFormChange,
-        handleFolderCoverChange,
         handleSaveFolder,
         handleDeleteFolder,
         handleSelectFolder,
         handleUploadImages,
         handleDeleteImage,
-        handleSetFolderCover,
     } = useGallery();
 
     const openStudio = useCallback((eventId) => {
         window.open(getStudioUrl(eventId), '_blank', 'noopener,noreferrer');
     }, []);
 
-    const { isTopbarHidden } = useScrollAndKeyboard({});
+    const onEscape = useCallback(() => {
+        closeFolderForm();
+    }, [closeFolderForm]);
+
     const { isTopbarHidden } = useScrollAndKeyboard({ onEscape });
 
     const handleTabChange = useCallback((tab) => {
@@ -123,58 +123,19 @@ function AdminDashboard() {
                             regLoading={regLoading}
                         />
                     )}
+                    {activeTab === 'gallery' && !location.pathname.includes('/gallery/') && (
+                        <GalleryTab
+                            folders={folders}
+                            activeFolderId={activeFolderId}
+                            editingFolderId={editingFolderId}
+                            folderForm={folderForm}
+                            onAddFolder={openNewFolderForm}
+                            onOpenFolder={handleOpenFolder}
+                            onEditFolder={openEditFolderForm}
+                        />
+                    )}
+
                     <Routes>
-                        <Route
-                            path="home"
-                            element={(
-                                <HomeTab
-                                    events={events}
-                                    eventsLoading={eventsLoading}
-                                    regCounts={regCounts}
-                                    regLoading={regLoading}
-                                    onAddEvent={openAddEventModal}
-                                />
-                            )}
-                        />
-                        <Route
-                            path="events"
-                            element={(
-                                <EventsTab
-                                    events={events}
-                                    eventsLoading={eventsLoading}
-                                    eventImages={eventImages}
-                                    regCounts={regCounts}
-                                    onAddEvent={openAddEventModal}
-                                    onEditEvent={openEditEventModal}
-                                    onDeleteEvent={handleDeleteEvent}
-                                    onImageChange={handleEventImageChange}
-                                />
-                            )}
-                        />
-                        <Route
-                            path="registrations"
-                            element={(
-                                <RegistrationsTab
-                                    recentRegistrations={recentRegistrations}
-                                    regLoading={regLoading}
-                                />
-                            )}
-                        />
-                        <Route
-                            path="gallery"
-                            element={(
-                                <GalleryTab
-                                    folders={folders}
-                                    activeFolderId={activeFolderId}
-                                    editingFolderId={editingFolderId}
-                                    folderForm={folderForm}
-                                    folderCoverPreview={folderCoverPreview}
-                                    onAddFolder={openNewFolderForm}
-                                    onOpenFolder={handleOpenFolder}
-                                    onEditFolder={openEditFolderForm}
-                                />
-                            )}
-                        />
                         <Route
                             path="gallery/:folderId"
                             element={(
@@ -185,51 +146,32 @@ function AdminDashboard() {
                                     onDeleteFolder={handleDeleteFolder}
                                     onUploadImages={handleUploadImages}
                                     onDeleteImage={handleDeleteImage}
-                                    onSetFolderCover={handleSetFolderCover}
                                 />
                             )}
                         />
-                        <Route
-                            path="participants"
-                            element={(
-                                <SectionPlaceholder
-                                    title="Participants"
-                                    description="This section is reserved for future participant management tools."
-                                />
-                            )}
-                        />
-                        <Route
-                            path="settings"
-                            element={(
-                                <SectionPlaceholder
-                                    title="Settings"
-                                    description="This section is reserved for future dashboard settings."
-                                />
-                            )}
-                        />
-                        <Route path="*" element={<Navigate to="/dashboard/home" replace />} />
                     </Routes>
+
+                    {activeTab === 'participants' && (
+                        <SectionPlaceholder
+                            title="Participants"
+                            description="This section is reserved for future participant management tools."
+                        />
+                    )}
+
+                    {activeTab === 'settings' && (
+                        <SectionPlaceholder
+                            title="Settings"
+                            description="This section is reserved for future dashboard settings."
+                        />
+                    )}
                 </section>
             </div>
-
-            <EventFormModal
-                isOpen={isAddEventOpen}
-                editingEventId={editingEventId}
-                form={newEventForm}
-                image={newEventImage}
-                onFormChange={setNewEventForm}
-                onImageChange={handleNewEventImageChange}
-                onSubmit={handleCreateEvent}
-                onClose={closeAddEventModal}
-            />
 
             <GalleryEditorModal
                 isOpen={isFolderEditorOpen}
                 editingFolderId={editingFolderId}
                 folderForm={folderForm}
-                folderCoverPreview={folderCoverPreview}
                 onFolderFormChange={handleFolderFormChange}
-                onFolderCoverChange={handleFolderCoverChange}
                 onSubmit={handleSaveFolder}
                 onClose={closeFolderForm}
             />

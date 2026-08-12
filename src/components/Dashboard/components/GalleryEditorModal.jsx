@@ -4,9 +4,7 @@ function GalleryEditorModal({
     isOpen,
     editingFolderId,
     folderForm,
-    folderCoverPreview,
     onFolderFormChange,
-    onFolderCoverChange,
     onSubmit,
     onClose,
 }) {
@@ -33,15 +31,7 @@ function GalleryEditorModal({
                 </div>
 
                 <form className="admin-dashboard-modal-form" onSubmit={onSubmit}>
-                    <div className="admin-dashboard-modal-image">
-                        <div className="admin-dashboard-modal-preview" style={folderCoverPreview ? { backgroundImage: `url(${folderCoverPreview})` } : undefined}>
-                            {!folderCoverPreview ? <span>No cover selected</span> : null}
-                        </div>
-                        <label className="admin-dashboard-modal-upload">
-                            <input type="file" accept="image/*" onChange={(changeEvent) => onFolderCoverChange(changeEvent.target.files?.[0])} />
-                            <span>{folderCoverPreview ? 'Replace cover image' : 'Upload cover image'}</span>
-                        </label>
-                    </div>
+
 
                     <label className="admin-dashboard-modal-field">
                         <span>Folder Name</span>

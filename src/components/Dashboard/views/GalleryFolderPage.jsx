@@ -8,7 +8,6 @@ function GalleryFolderPage({
     onDeleteFolder,
     onUploadImages,
     onDeleteImage,
-    onSetFolderCover,
 }) {
     const [deleteWarningOpen, setDeleteWarningOpen] = useState(false);
     const { folderId } = useParams();
@@ -62,15 +61,11 @@ function GalleryFolderPage({
                         No images in this folder yet. Upload one to populate the gallery.
                     </div>
                 ) : folder.images.map((image) => (
-                    <figure key={image.id} className={`admin-dashboard-gallery-image-card ${folder.coverImage === image.src ? 'is-cover' : ''}`}>
+                    <figure key={image.id} className="admin-dashboard-gallery-image-card">
                         <img src={image.src} alt={image.name} loading="lazy" />
-                        {folder.coverImage === image.src ? <span className="admin-dashboard-gallery-cover-badge">Cover image</span> : null}
                         <figcaption>
                             <span>{image.name}</span>
                             <div className="admin-dashboard-gallery-image-actions">
-                                <button type="button" onClick={() => onSetFolderCover(folder.id, image.src)}>
-                                    Use as cover
-                                </button>
                                 <button type="button" onClick={() => onDeleteImage(folder.id, image.id)}>
                                     Remove
                                 </button>

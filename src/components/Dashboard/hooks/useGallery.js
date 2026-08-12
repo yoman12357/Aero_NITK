@@ -5,7 +5,6 @@ const STORAGE_KEY = 'aeronitk-admin-gallery-v1';
 const DEFAULT_FOLDER_FORM = {
     name: '',
     description: '',
-    coverImage: '',
 };
 
 function createId(prefix) {
@@ -26,7 +25,6 @@ function normalizeFolder(folder) {
         id: folder.id || createId('folder'),
         name: folder.name || 'Untitled Folder',
         description: folder.description || '',
-        coverImage: folder.coverImage || '',
         images: Array.isArray(folder.images) ? folder.images : [],
     };
 }
@@ -36,7 +34,6 @@ export function useGallery() {
     const [activeFolderId, setActiveFolderId] = useState(null);
     const [editingFolderId, setEditingFolderId] = useState(null);
     const [folderForm, setFolderForm] = useState({ ...DEFAULT_FOLDER_FORM });
-    const [folderCoverPreview, setFolderCoverPreview] = useState('');
     const [isFolderEditorOpen, setIsFolderEditorOpen] = useState(false);
     const [isHydrated, setIsHydrated] = useState(false);
 
@@ -92,7 +89,6 @@ export function useGallery() {
     const resetFolderForm = useCallback(() => {
         setEditingFolderId(null);
         setFolderForm({ ...DEFAULT_FOLDER_FORM });
-        setFolderCoverPreview('');
     }, []);
 
     const openNewFolderForm = useCallback(() => {
@@ -108,33 +104,21 @@ export function useGallery() {
         setFolderForm({
             name: folderToEdit.name,
             description: folderToEdit.description || '',
-            coverImage: '',
         });
-        setFolderCoverPreview(folderToEdit.coverImage || '');
         setActiveFolderId(folderId);
         setIsFolderEditorOpen(true);
     }, [folders]);
 
     const closeFolderForm = useCallback(() => {
         resetFolderForm();
+        setIsFolderEditorOpen(false);
     }, [resetFolderForm]);
 
     const handleFolderFormChange = useCallback((updater) => {
         setFolderForm((currentForm) => updater(currentForm));
     }, []);
 
-    const handleFolderCoverChange = useCallback((file) => {
-        if (!file) {
-            setFolderCoverPreview('');
-            return;
-        }
 
-        const reader = new FileReader();
-        reader.onload = () => {
-            setFolderCoverPreview(String(reader.result || ''));
-        };
-        reader.readAsDataURL(file);
-    }, []);
 
     const handleSaveFolder = useCallback((formEvent) => {
         formEvent.preventDefault();
@@ -150,7 +134,6 @@ export function useGallery() {
                     ...folder,
                     name: folderName,
                     description: folderForm.description.trim(),
-                    coverImage: folderCoverPreview || folder.coverImage || '',
                 };
             }));
             setActiveFolderId(editingFolderId);
@@ -161,7 +144,6 @@ export function useGallery() {
                     id: newFolderId,
                     name: folderName,
                     description: folderForm.description.trim(),
-                    coverImage: folderCoverPreview || '',
                     images: [],
                 },
                 ...currentFolders,
@@ -170,7 +152,8 @@ export function useGallery() {
         }
 
         resetFolderForm();
-    }, [editingFolderId, folderCoverPreview, folderForm.description, folderForm.name, resetFolderForm]);
+        setIsFolderEditorOpen(false);
+    }, [editingFolderId, folderForm.description, folderForm.name, resetFolderForm]);
 
     const handleDeleteFolder = useCallback((folderId) => {
         const folderToDelete = folders.find((folder) => folder.id === folderId);
@@ -209,11 +192,8 @@ export function useGallery() {
         setFolders((currentFolders) => currentFolders.map((folder) => {
             if (folder.id !== targetFolderId) return folder;
 
-            const nextCoverImage = folder.coverImage || uploadedImages[0]?.src || '';
-
             return {
                 ...folder,
-                coverImage: nextCoverImage,
                 images: [...uploadedImages, ...folder.images],
             };
         }));
@@ -231,11 +211,7 @@ export function useGallery() {
         }));
     }, []);
 
-    const handleSetFolderCover = useCallback((folderId, coverImage) => {
-        setFolders((currentFolders) => currentFolders.map((folder) => (
-            folder.id === folderId ? { ...folder, coverImage } : folder
-        )));
-    }, []);
+
 
     const selectedFolder = folders.find((folder) => folder.id === activeFolderId) || null;
 
@@ -245,18 +221,15 @@ export function useGallery() {
         selectedFolder,
         editingFolderId,
         folderForm,
-        folderCoverPreview,
         isFolderEditorOpen,
         openNewFolderForm,
         openEditFolderForm,
         closeFolderForm,
         handleFolderFormChange,
-        handleFolderCoverChange,
         handleSaveFolder,
         handleDeleteFolder,
         handleSelectFolder,
         handleUploadImages,
         handleDeleteImage,
-        handleSetFolderCover,
     };
 }
