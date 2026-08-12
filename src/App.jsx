@@ -30,6 +30,12 @@ import { onAuthStateChanged } from 'firebase/auth';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+function ProtectedRoute({ children, authLoading, user }) {
+  if (authLoading) return <LoadingSpinner />;
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+
 
 const App = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -168,12 +174,6 @@ const App = () => {
     );
   }
 
-  const ProtectedRoute = ({ children }) => {
-    if (authLoading) return <LoadingSpinner />;
-    if (!user) return <Navigate to="/login" replace />;
-    return children;
-  };
-
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
 
   // --- NORMAL SITE RENDER ---
@@ -199,7 +199,8 @@ const App = () => {
           <Route path="/recruitment-success" element={<RecruitmentSuccess />} />
           <Route path="/sponsors" element={<Sponsors />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<ProtectedRoute><DashBoard /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute authLoading={authLoading} user={user}><Navigate to="/dashboard/home" replace /></ProtectedRoute>} />
+          <Route path="/dashboard/*" element={<ProtectedRoute authLoading={authLoading} user={user}><DashBoard /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
