@@ -10,12 +10,12 @@ import { useScrollAndKeyboard } from './Dashboard/hooks/useScrollAndKeyboard.js'
 import Topbar from './Dashboard/components/Topbar.jsx';
 import Sidebar from './Dashboard/components/Sidebar.jsx';
 import HeroSection from './Dashboard/components/HeroSection.jsx';
-import EventFormModal from './Dashboard/components/EventFormModal.jsx';
 
 // Tab views
 import HomeTab from './Dashboard/views/HomeTab.jsx';
 import EventsTab from './Dashboard/views/EventsTab.jsx';
 import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
+import { getStudioUrl } from '../lib/sanity.js';
 
 import './DashBoard.css';
 
@@ -26,28 +26,15 @@ function AdminDashboard() {
     const {
         events,
         eventsLoading,
-        eventImages,
-        isAddEventOpen,
-        editingEventId,
-        newEventForm,
-        newEventImage,
-        openAddEventModal,
-        openEditEventModal,
-        closeAddEventModal,
-        handleCreateEvent,
-        handleDeleteEvent,
-        handleEventImageChange,
-        handleNewEventImageChange,
-        setNewEventForm,
     } = useEvents();
 
     const { regCounts, recentRegistrations, regLoading } = useRegistrations(5);
 
-    const onEscape = useCallback(() => {
-        closeAddEventModal();
-    }, [closeAddEventModal]);
+    const openStudio = useCallback((eventId) => {
+        window.open(getStudioUrl(eventId), '_blank', 'noopener,noreferrer');
+    }, []);
 
-    const { isTopbarHidden } = useScrollAndKeyboard({ onEscape });
+    const { isTopbarHidden } = useScrollAndKeyboard({});
 
     return (
         <main className="admin-dashboard-page">
@@ -65,7 +52,7 @@ function AdminDashboard() {
                             eventsLoading={eventsLoading}
                             regCounts={regCounts}
                             regLoading={regLoading}
-                            onAddEvent={openAddEventModal}
+                            onAddEvent={() => openStudio()}
                         />
                     )}
 
@@ -73,12 +60,9 @@ function AdminDashboard() {
                         <EventsTab
                             events={events}
                             eventsLoading={eventsLoading}
-                            eventImages={eventImages}
                             regCounts={regCounts}
-                            onAddEvent={openAddEventModal}
-                            onEditEvent={openEditEventModal}
-                            onDeleteEvent={handleDeleteEvent}
-                            onImageChange={handleEventImageChange}
+                            onAddEvent={() => openStudio()}
+                            onManageEvent={openStudio}
                         />
                     )}
 
@@ -90,17 +74,6 @@ function AdminDashboard() {
                     )}
                 </section>
             </div>
-
-            <EventFormModal
-                isOpen={isAddEventOpen}
-                editingEventId={editingEventId}
-                form={newEventForm}
-                image={newEventImage}
-                onFormChange={setNewEventForm}
-                onImageChange={handleNewEventImageChange}
-                onSubmit={handleCreateEvent}
-                onClose={closeAddEventModal}
-            />
 
             <Footer />
         </main>
