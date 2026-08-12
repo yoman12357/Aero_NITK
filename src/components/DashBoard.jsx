@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-=======
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
->>>>>>> efc09e39d36315d0c33216eb59c47cc02366f19e
 import Footer from './footer.jsx';
 
 // Hooks
@@ -23,17 +19,14 @@ import GalleryEditorModal from './Dashboard/components/GalleryEditorModal.jsx';
 import HomeTab from './Dashboard/views/HomeTab.jsx';
 import EventsTab from './Dashboard/views/EventsTab.jsx';
 import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
-<<<<<<< HEAD
 
 // Firebase auth import (adjust path if your firebase config resides elsewhere)
 import { auth } from '../firebase';
-=======
 import { getStudioUrl } from '../lib/sanity.js';
 import GalleryTab from './Dashboard/views/GalleryTab.jsx';
 import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
 
 import { useGallery } from './Dashboard/hooks/useGallery.js';
->>>>>>> efc09e39d36315d0c33216eb59c47cc02366f19e
 
 import './DashBoard.css';
 
@@ -279,27 +272,27 @@ function AdminDashboard() {
                 </section>
             </div>
 
-<<<<<<< HEAD
             {/* Local Modal Form */}
-            <EventFormModal
-                isOpen={isModalOpen}
-                editingEventId={editingEventId}
-                form={form}
-                image={imagePreview}
-                onFormChange={setForm}
-                onImageChange={handleImageChange}
-                onSubmit={handleFormSubmit}
-                onClose={() => setIsModalOpen(false)}
-=======
-            <GalleryEditorModal
-                isOpen={isFolderEditorOpen}
-                editingFolderId={editingFolderId}
-                folderForm={folderForm}
-                onFolderFormChange={handleFolderFormChange}
-                onSubmit={handleSaveFolder}
-                onClose={closeFolderForm}
->>>>>>> efc09e39d36315d0c33216eb59c47cc02366f19e
-            />
+            <>
+        <EventFormModal
+            isOpen={isModalOpen}
+            editingEventId={editingEventId}
+            form={form}
+            image={imagePreview}
+            onFormChange={setForm}
+            onImageChange={handleImageChange}
+            onSubmit={handleFormSubmit}
+            onClose={() => setIsModalOpen(false)}
+        />
+        <GalleryEditorModal
+            isOpen={isFolderEditorOpen}
+            editingFolderId={editingFolderId}
+            folderForm={folderForm}
+            onFolderFormChange={handleFolderFormChange}
+            onSubmit={handleSaveFolder}
+            onClose={closeFolderForm}
+        />
+</>
 
             <Footer />
         </main>
