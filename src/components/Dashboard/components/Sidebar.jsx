@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { auth } from '../../../firebase.js';
 import logoImage from '../../../images/Aero_NITK_logo.png';
 
 // Sidebar navigation
-function Sidebar({ activeTab, onTabChange }) {
+function Sidebar({ activeTab }) {
     return (
         <aside className="admin-dashboard-sidebar">
             <div className="admin-dashboard-brand">
@@ -13,11 +13,12 @@ function Sidebar({ activeTab, onTabChange }) {
             </div>
 
             <nav className="admin-dashboard-nav" aria-label="Admin sections">
-                <button type="button" className={activeTab === 'home' ? 'active' : ''} onClick={() => onTabChange('home')}><span className="nav-icon">⌂</span>Home</button>
-                <button type="button" className={activeTab === 'events' ? 'active' : ''} onClick={() => onTabChange('events')}><span className="nav-icon">▣</span>Events</button>
-                <button type="button" className={activeTab === 'registrations' ? 'active' : ''} onClick={() => onTabChange('registrations')}><span className="nav-icon">▤</span>Registrations</button>
-                <button type="button" className={activeTab === 'participants' ? 'active' : ''} onClick={() => onTabChange('participants')}><span className="nav-icon">👥</span>Participants</button>
-                <button type="button" className={activeTab === 'settings' ? 'active' : ''} onClick={() => onTabChange('settings')}><span className="nav-icon">⚙</span>Settings</button>
+                <NavLink to="/dashboard/home" className={({ isActive }) => (isActive || activeTab === 'home' ? 'active' : '')}><span className="nav-icon">⌂</span>Home</NavLink>
+                <NavLink to="/dashboard/events" className={({ isActive }) => (isActive || activeTab === 'events' ? 'active' : '')}><span className="nav-icon">▣</span>Events</NavLink>
+                <NavLink to="/dashboard/registrations" className={({ isActive }) => (isActive || activeTab === 'registrations' ? 'active' : '')}><span className="nav-icon">▤</span>Registrations</NavLink>
+                <NavLink to="/dashboard/gallery" className={({ isActive }) => (isActive || activeTab === 'gallery' ? 'active' : '')}><span className="nav-icon">◫</span>Gallery</NavLink>
+                <NavLink to="/dashboard/participants" className={({ isActive }) => (isActive || activeTab === 'participants' ? 'active' : '')}><span className="nav-icon">👥</span>Participants</NavLink>
+                <NavLink to="/dashboard/settings" className={({ isActive }) => (isActive || activeTab === 'settings' ? 'active' : '')}><span className="nav-icon">⚙</span>Settings</NavLink>
 
                 <Link
                     to="/login"

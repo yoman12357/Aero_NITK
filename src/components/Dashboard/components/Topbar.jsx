@@ -1,10 +1,22 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Top header bar with notifications bell and admin profile avatar.
 function Topbar({ isHidden }) {
+    const navigate = useNavigate();
+
+    const handleBack = () => {
+        if (window.history.length > 1) {
+            navigate(-1);
+            return;
+        }
+
+        navigate('/dashboard/home', { replace: true });
+    };
+
     return (
         <header className={`admin-dashboard-topbar ${isHidden ? 'is-hidden' : ''}`}>
-            <button className="admin-dashboard-back" type="button" aria-label="Go back">
+            <button className="admin-dashboard-back" type="button" aria-label="Go back" onClick={handleBack}>
                 <span />
             </button>
             <h1>DASHBOARD</h1>

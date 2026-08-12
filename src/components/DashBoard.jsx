@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
+=======
+import React, { useCallback } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+>>>>>>> efc09e39d36315d0c33216eb59c47cc02366f19e
 import Footer from './footer.jsx';
 
 // Hooks
@@ -12,18 +17,39 @@ import Sidebar from './Dashboard/components/Sidebar.jsx';
 import HeroSection from './Dashboard/components/HeroSection.jsx';
 import EventFormModal from './Dashboard/components/EventFormModal.jsx';
 
+import GalleryEditorModal from './Dashboard/components/GalleryEditorModal.jsx';
+
 // Tab views
 import HomeTab from './Dashboard/views/HomeTab.jsx';
 import EventsTab from './Dashboard/views/EventsTab.jsx';
 import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
+<<<<<<< HEAD
 
 // Firebase auth import (adjust path if your firebase config resides elsewhere)
 import { auth } from '../firebase';
+=======
+import { getStudioUrl } from '../lib/sanity.js';
+import GalleryTab from './Dashboard/views/GalleryTab.jsx';
+import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
+
+import { useGallery } from './Dashboard/hooks/useGallery.js';
+>>>>>>> efc09e39d36315d0c33216eb59c47cc02366f19e
 
 import './DashBoard.css';
 
+function SectionPlaceholder({ title, description }) {
+    return (
+        <div className="admin-dashboard-section admin-dashboard-placeholder">
+            <h3 className="admin-dashboard-section-title">{title}</h3>
+            <div className="admin-dashboard-reg-empty">{description}</div>
+        </div>
+    );
+}
+
 function AdminDashboard() {
-    const [activeTab, setActiveTab] = useState('home');
+    const location = useLocation();
+    const navigate = useNavigate();
+    const activeTab = location.pathname.split('/')[2] || 'home';
 
     // Modal & Form States
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,6 +73,22 @@ function AdminDashboard() {
     } = useEvents();
 
     const { regCounts, recentRegistrations, regLoading } = useRegistrations(5);
+    const {
+        folders,
+        activeFolderId,
+        editingFolderId,
+        folderForm,
+        isFolderEditorOpen,
+        openNewFolderForm,
+        openEditFolderForm,
+        closeFolderForm,
+        handleFolderFormChange,
+        handleSaveFolder,
+        handleDeleteFolder,
+        handleSelectFolder,
+        handleUploadImages,
+        handleDeleteImage,
+    } = useGallery();
 
     // Open modal to add a new event
     const handleOpenAdd = () => {
@@ -138,14 +180,31 @@ function AdminDashboard() {
         }
     };
 
-    const { isTopbarHidden } = useScrollAndKeyboard({});
+    const onEscape = useCallback(() => {
+        closeFolderForm();
+    }, [closeFolderForm]);
+
+    const { isTopbarHidden } = useScrollAndKeyboard({ onEscape });
+
+    const handleTabChange = useCallback((tab) => {
+        navigate(`/dashboard/${tab}`);
+    }, [navigate]);
+
+    const handleOpenFolder = useCallback((targetFolderId) => {
+        handleSelectFolder(targetFolderId);
+        navigate(`/dashboard/gallery/${targetFolderId}`);
+    }, [handleSelectFolder, navigate]);
+
+    const handleBackToGallery = useCallback(() => {
+        navigate('/dashboard/gallery');
+    }, [navigate]);
 
     return (
         <main className="admin-dashboard-page">
             <Topbar isHidden={isTopbarHidden} />
 
             <div className="admin-dashboard-shell">
-                <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+                <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
 
                 <section className="admin-dashboard-content">
                     <HeroSection />
@@ -176,9 +235,51 @@ function AdminDashboard() {
                             regLoading={regLoading}
                         />
                     )}
+                    {activeTab === 'gallery' && !location.pathname.includes('/gallery/') && (
+                        <GalleryTab
+                            folders={folders}
+                            activeFolderId={activeFolderId}
+                            editingFolderId={editingFolderId}
+                            folderForm={folderForm}
+                            onAddFolder={openNewFolderForm}
+                            onOpenFolder={handleOpenFolder}
+                            onEditFolder={openEditFolderForm}
+                        />
+                    )}
+
+                    <Routes>
+                        <Route
+                            path="gallery/:folderId"
+                            element={(
+                                <GalleryFolderPage
+                                    folders={folders}
+                                    onBack={handleBackToGallery}
+                                    onEditFolder={openEditFolderForm}
+                                    onDeleteFolder={handleDeleteFolder}
+                                    onUploadImages={handleUploadImages}
+                                    onDeleteImage={handleDeleteImage}
+                                />
+                            )}
+                        />
+                    </Routes>
+
+                    {activeTab === 'participants' && (
+                        <SectionPlaceholder
+                            title="Participants"
+                            description="This section is reserved for future participant management tools."
+                        />
+                    )}
+
+                    {activeTab === 'settings' && (
+                        <SectionPlaceholder
+                            title="Settings"
+                            description="This section is reserved for future dashboard settings."
+                        />
+                    )}
                 </section>
             </div>
 
+<<<<<<< HEAD
             {/* Local Modal Form */}
             <EventFormModal
                 isOpen={isModalOpen}
@@ -189,6 +290,15 @@ function AdminDashboard() {
                 onImageChange={handleImageChange}
                 onSubmit={handleFormSubmit}
                 onClose={() => setIsModalOpen(false)}
+=======
+            <GalleryEditorModal
+                isOpen={isFolderEditorOpen}
+                editingFolderId={editingFolderId}
+                folderForm={folderForm}
+                onFolderFormChange={handleFolderFormChange}
+                onSubmit={handleSaveFolder}
+                onClose={closeFolderForm}
+>>>>>>> efc09e39d36315d0c33216eb59c47cc02366f19e
             />
 
             <Footer />
