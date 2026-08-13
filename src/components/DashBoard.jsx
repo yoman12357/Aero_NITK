@@ -22,7 +22,7 @@ import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
 
 // Firebase auth import (adjust path if your firebase config resides elsewhere)
 import { auth } from '../firebase';
-import { getStudioUrl } from '../lib/sanity.js';
+
 import GalleryTab from './Dashboard/views/GalleryTab.jsx';
 import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
 
