@@ -30,9 +30,13 @@ function GalleryEditorModal({
                     </button>
                 </div>
 
-                <form className="admin-dashboard-modal-form" onSubmit={onSubmit}>
-
-
+                <form 
+                    className="admin-dashboard-modal-form" 
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        if (onSubmit) onSubmit(e);
+                    }}
+                >
                     <label className="admin-dashboard-modal-field">
                         <span>Folder Name</span>
                         <input
@@ -52,6 +56,21 @@ function GalleryEditorModal({
                             onChange={(changeEvent) => onFolderFormChange((currentForm) => ({ ...currentForm, description: changeEvent.target.value }))}
                             placeholder="Add a short folder description"
                         />
+                    </label>
+
+                    <label className="admin-dashboard-modal-field">
+                        <span>Cover Image</span>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(changeEvent) => onFolderFormChange((currentForm) => ({ 
+                                ...currentForm, 
+                                coverImage: changeEvent.target.files[0] 
+                            }))}
+                        />
+                        <span style={{ fontSize: '0.8rem', color: '#666', marginTop: '4px', display: 'block' }}>
+                            This image will appear in the background of the folder card in the gallery.
+                        </span>
                     </label>
 
                     <div className="admin-dashboard-modal-actions">

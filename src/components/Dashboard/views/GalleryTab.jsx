@@ -24,9 +24,14 @@ function GalleryTab({ folders, activeFolderId, onAddFolder, onOpenFolder, onEdit
                         >
                             <span
                                 className="admin-dashboard-gallery-folder-cover"
-                                style={folder.coverImage ? { backgroundImage: `url(${folder.coverImage})` } : undefined}
+                                // FIX: Use folder.cover (matching useGallery.js) and ensure it scales correctly
+                                style={folder.cover ? { 
+                                    backgroundImage: `url(${folder.cover})`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center'
+                                } : undefined}
                             >
-                                {!folder.coverImage ? folder.name.slice(0, 1).toUpperCase() : null}
+                                {!folder.cover ? folder.name.slice(0, 1).toUpperCase() : null}
                             </span>
                             <span className="admin-dashboard-gallery-folder-copy">
                                 <strong>{folder.name}</strong>

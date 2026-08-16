@@ -60,13 +60,15 @@ function GalleryFolderPage({
                     <div className="admin-dashboard-gallery-empty admin-dashboard-gallery-empty-inline">
                         No images in this folder yet. Upload one to populate the gallery.
                     </div>
-                ) : folder.images.map((image) => (
-                    <figure key={image.id} className="admin-dashboard-gallery-image-card">
-                        <img src={image.src} alt={image.name} loading="lazy" />
+                ) : folder.images.map((image, index) => (
+                    // FIX 1: Use image._key for the unique React key (fallback to index if needed)
+                    <figure key={image._key || index} className="admin-dashboard-gallery-image-card">
+                        <img src={image.src} alt={image.name || `Image ${index + 1}`} loading="lazy" />
                         <figcaption>
-                            <span>{image.name}</span>
+                            <span>{image.name || `Image ${index + 1}`}</span>
                             <div className="admin-dashboard-gallery-image-actions">
-                                <button type="button" onClick={() => onDeleteImage(folder.id, image.id)}>
+                                {/* FIX 2: Pass image._key instead of image.id to the delete handler */}
+                                <button type="button" onClick={() => onDeleteImage(folder.id, image._key)}>
                                     Remove
                                 </button>
                             </div>

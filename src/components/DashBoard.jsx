@@ -12,21 +12,19 @@ import Topbar from './Dashboard/components/Topbar.jsx';
 import Sidebar from './Dashboard/components/Sidebar.jsx';
 import HeroSection from './Dashboard/components/HeroSection.jsx';
 import EventFormModal from './Dashboard/components/EventFormModal.jsx';
-
 import GalleryEditorModal from './Dashboard/components/GalleryEditorModal.jsx';
 
 // Tab views
 import HomeTab from './Dashboard/views/HomeTab.jsx';
 import EventsTab from './Dashboard/views/EventsTab.jsx';
 import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
-
-// Firebase auth import (adjust path if your firebase config resides elsewhere)
-import { auth } from '../firebase';
-
 import GalleryTab from './Dashboard/views/GalleryTab.jsx';
 import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
 
 import { useGallery } from './Dashboard/hooks/useGallery.js';
+
+// Firebase auth import
+import { auth } from '../firebase';
 
 import './DashBoard.css';
 
@@ -66,6 +64,7 @@ function AdminDashboard() {
     } = useEvents();
 
     const { regCounts, recentRegistrations, regLoading } = useRegistrations(5);
+    
     const {
         folders,
         activeFolderId,
@@ -110,7 +109,8 @@ function AdminDashboard() {
             maxCapacity: event.maxCapacity || '',
             registrationKey: event.registrationKey || 'none',
             startDate: event.startDate ? event.startDate.substring(0, 16) : '',
-            status: event.status || 'soon'
+            status: event.status || 'soon',
+            statusTone: event.status || 'soon'
         });
         setImageFile(null);
         setImagePreview(event.imageUrl || null);
@@ -166,7 +166,7 @@ function AdminDashboard() {
 
             alert('Event saved successfully in the background!');
             setIsModalOpen(false);
-            window.location.reload(); // Refresh to show updated events
+            window.location.reload();
         } catch (error) {
             console.error('Error saving event:', error);
             alert(error.message || 'Error saving event');
@@ -228,6 +228,7 @@ function AdminDashboard() {
                             regLoading={regLoading}
                         />
                     )}
+
                     {activeTab === 'gallery' && !location.pathname.includes('/gallery/') && (
                         <GalleryTab
                             folders={folders}
@@ -272,27 +273,27 @@ function AdminDashboard() {
                 </section>
             </div>
 
-            {/* Local Modal Form */}
+            {/* Modals */}
             <>
-        <EventFormModal
-            isOpen={isModalOpen}
-            editingEventId={editingEventId}
-            form={form}
-            image={imagePreview}
-            onFormChange={setForm}
-            onImageChange={handleImageChange}
-            onSubmit={handleFormSubmit}
-            onClose={() => setIsModalOpen(false)}
-        />
-        <GalleryEditorModal
-            isOpen={isFolderEditorOpen}
-            editingFolderId={editingFolderId}
-            folderForm={folderForm}
-            onFolderFormChange={handleFolderFormChange}
-            onSubmit={handleSaveFolder}
-            onClose={closeFolderForm}
-        />
-</>
+                <EventFormModal
+                    isOpen={isModalOpen}
+                    editingEventId={editingEventId}
+                    form={form}
+                    image={imagePreview}
+                    onFormChange={setForm}
+                    onImageChange={handleImageChange}
+                    onSubmit={handleFormSubmit}
+                    onClose={() => setIsModalOpen(false)}
+                />
+                <GalleryEditorModal
+                    isOpen={isFolderEditorOpen}
+                    editingFolderId={editingFolderId}
+                    folderForm={folderForm}
+                    onFolderFormChange={handleFolderFormChange}
+                    onSubmit={handleSaveFolder}
+                    onClose={closeFolderForm}
+                />
+            </>
 
             <Footer />
         </main>

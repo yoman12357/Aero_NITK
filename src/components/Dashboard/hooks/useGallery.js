@@ -1,33 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-
-const STORAGE_KEY = 'aeronitk-admin-gallery-v1';
+import { auth } from '../../../firebase';
 
 const DEFAULT_FOLDER_FORM = {
     name: '',
     description: '',
+    coverImage: null,
 };
-
-function createId(prefix) {
-    return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function readFileAsDataUrl(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result || ''));
-        reader.onerror = () => reject(reader.error || new Error('Failed to read file'));
-        reader.readAsDataURL(file);
-    });
-}
-
-function normalizeFolder(folder) {
-    return {
-        id: folder.id || createId('folder'),
-        name: folder.name || 'Untitled Folder',
-        description: folder.description || '',
-        images: Array.isArray(folder.images) ? folder.images : [],
-    };
-}
 
 export function useGallery() {
     const [folders, setFolders] = useState([]);
@@ -35,56 +13,39 @@ export function useGallery() {
     const [editingFolderId, setEditingFolderId] = useState(null);
     const [folderForm, setFolderForm] = useState({ ...DEFAULT_FOLDER_FORM });
     const [isFolderEditorOpen, setIsFolderEditorOpen] = useState(false);
-    const [isHydrated, setIsHydrated] = useState(false);
+    const [foldersLoading, setFoldersLoading] = useState(true);
 
-    useEffect(() => {
-        let cancelled = false;
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
-        const loadGallery = async () => {
-            try {
-                const rawValue = localStorage.getItem(STORAGE_KEY);
-                if (!rawValue) {
-                    if (!cancelled) setIsHydrated(true);
-                    return;
-                }
-
-                const parsed = JSON.parse(rawValue);
-                const nextFolders = Array.isArray(parsed.folders)
-                    ? parsed.folders.map(normalizeFolder)
-                    : [];
-
-                if (cancelled) return;
-
-                setFolders(nextFolders);
-                setActiveFolderId(parsed.activeFolderId && nextFolders.some((folder) => folder.id === parsed.activeFolderId)
-                    ? parsed.activeFolderId
-                    : nextFolders[0]?.id || null);
-            } catch (error) {
-                console.error('Error loading gallery folders:', error);
-            } finally {
-                if (!cancelled) setIsHydrated(true);
-            }
-        };
-
-        loadGallery();
-
-        return () => {
-            cancelled = true;
-        };
-    }, []);
-
-    useEffect(() => {
-        if (!isHydrated) return;
-
+    const fetchFolders = useCallback(async () => {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                folders,
-                activeFolderId,
-            }));
+            setFoldersLoading(true);
+            const response = await fetch(`${backendUrl}/api/gallery-folders`);
+            const data = await response.json();
+            
+            if (data.success && Array.isArray(data.folders)) {
+                const mappedFolders = data.folders.map(folder => ({
+                    id: folder._id || folder.id,
+                    name: folder.name || 'Untitled Folder',
+                    description: folder.description || '',
+                    cover: folder.cover || null,
+                    images: Array.isArray(folder.images) ? folder.images : [],
+                }));
+                setFolders(mappedFolders);
+                if (mappedFolders.length > 0 && !activeFolderId) {
+                    setActiveFolderId(mappedFolders[0].id);
+                }
+            }
         } catch (error) {
-            console.error('Error saving gallery folders:', error);
+            console.error('Error fetching gallery folders:', error);
+        } finally {
+            setFoldersLoading(false);
         }
-    }, [folders, activeFolderId, isHydrated]);
+    }, [backendUrl, activeFolderId]);
+
+    useEffect(() => {
+        fetchFolders();
+    }, [fetchFolders]);
 
     const resetFolderForm = useCallback(() => {
         setEditingFolderId(null);
@@ -104,6 +65,7 @@ export function useGallery() {
         setFolderForm({
             name: folderToEdit.name,
             description: folderToEdit.description || '',
+            coverImage: null,
         });
         setActiveFolderId(folderId);
         setIsFolderEditorOpen(true);
@@ -115,63 +77,86 @@ export function useGallery() {
     }, [resetFolderForm]);
 
     const handleFolderFormChange = useCallback((updater) => {
-        setFolderForm((currentForm) => updater(currentForm));
+        setFolderForm((currentForm) => typeof updater === 'function' ? updater(currentForm) : { ...currentForm, ...updater });
     }, []);
 
-
-
-    const handleSaveFolder = useCallback((formEvent) => {
+    const handleSaveFolder = useCallback(async (formEvent) => {
+        console.log('handleSaveFolder was called!', folderForm);
         formEvent.preventDefault();
 
-        const folderName = folderForm.name.trim();
+        const folderName = folderForm.name?.trim();
         if (!folderName) return;
 
-        if (editingFolderId) {
-            setFolders((currentFolders) => currentFolders.map((folder) => {
-                if (folder.id !== editingFolderId) return folder;
+        try {
+            let token = '';
+            if (auth && auth.currentUser) {
+                token = await auth.currentUser.getIdToken();
+            }
 
-                return {
-                    ...folder,
-                    name: folderName,
-                    description: folderForm.description.trim(),
-                };
-            }));
-            setActiveFolderId(editingFolderId);
-        } else {
-            const newFolderId = createId('folder');
-            setFolders((currentFolders) => [
-                {
-                    id: newFolderId,
-                    name: folderName,
-                    description: folderForm.description.trim(),
-                    images: [],
+            const formData = new FormData();
+            if (editingFolderId) formData.append('folderId', editingFolderId);
+            formData.append('name', folderName);
+            formData.append('description', folderForm.description?.trim() || '');
+            
+            if (folderForm.coverImage instanceof File) {
+                formData.append('coverImage', folderForm.coverImage);
+            }
+
+            const response = await fetch(`${backendUrl}/api/save-gallery-folder`, {
+                method: 'POST',
+                headers: {
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
                 },
-                ...currentFolders,
-            ]);
-            setActiveFolderId(newFolderId);
+                body: formData,
+            });
+
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to save folder');
+            }
+
+            alert('Gallery folder saved successfully!');
+            closeFolderForm();
+            fetchFolders();
+        } catch (error) {
+            console.error('Error saving gallery folder:', error);
+            alert(error.message || 'Error saving folder');
         }
+    }, [editingFolderId, folderForm, backendUrl, closeFolderForm, fetchFolders]);
 
-        resetFolderForm();
-        setIsFolderEditorOpen(false);
-    }, [editingFolderId, folderForm.description, folderForm.name, resetFolderForm]);
+    const handleDeleteFolder = useCallback(async (folderId) => {
+        if (!window.confirm('Are you sure you want to delete this folder?')) return;
 
-    const handleDeleteFolder = useCallback((folderId) => {
-        const folderToDelete = folders.find((folder) => folder.id === folderId);
-        if (!folderToDelete) return;
+        try {
+            let token = '';
+            if (auth && auth.currentUser) {
+                token = await auth.currentUser.getIdToken();
+            }
 
-        setFolders((currentFolders) => currentFolders.filter((folder) => folder.id !== folderId));
+            const response = await fetch(`${backendUrl}/api/delete-gallery-folder`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
+                body: JSON.stringify({ folderId }),
+            });
 
-        setActiveFolderId((currentActiveFolderId) => {
-            if (currentActiveFolderId !== folderId) return currentActiveFolderId;
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to delete folder');
+            }
 
-            const remainingFolders = folders.filter((folder) => folder.id !== folderId);
-            return remainingFolders[0]?.id || null;
-        });
-
-        if (editingFolderId === folderId) {
-            resetFolderForm();
+            if (editingFolderId === folderId) {
+                resetFolderForm();
+            }
+            
+            fetchFolders();
+        } catch (error) {
+            console.error('Error deleting folder:', error);
+            alert(error.message || 'Error deleting folder');
         }
-    }, [editingFolderId, folders, resetFolderForm]);
+    }, [backendUrl, editingFolderId, resetFolderForm, fetchFolders]);
 
     const handleSelectFolder = useCallback((folderId) => {
         setActiveFolderId(folderId);
@@ -182,41 +167,71 @@ export function useGallery() {
         const fileList = Array.from(files || []).filter((file) => file.type.startsWith('image/'));
         if (!fileList.length || !targetFolderId) return;
 
-        const uploadedImages = await Promise.all(fileList.map(async (file) => ({
-            id: createId('image'),
-            name: file.name,
-            src: await readFileAsDataUrl(file),
-            uploadedAt: new Date().toISOString(),
-        })));
+        try {
+            let token = '';
+            if (auth && auth.currentUser) {
+                token = await auth.currentUser.getIdToken();
+            }
 
-        setFolders((currentFolders) => currentFolders.map((folder) => {
-            if (folder.id !== targetFolderId) return folder;
+            const formData = new FormData();
+            formData.append('folderId', targetFolderId);
+            fileList.forEach((file) => {
+                formData.append('images', file);
+            });
 
-            return {
-                ...folder,
-                images: [...uploadedImages, ...folder.images],
-            };
-        }));
-        setActiveFolderId(targetFolderId);
-    }, [activeFolderId]);
+            const response = await fetch(`${backendUrl}/api/upload-gallery-images`, {
+                method: 'POST',
+                headers: {
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
+                body: formData,
+            });
 
-    const handleDeleteImage = useCallback((folderId, imageId) => {
-        setFolders((currentFolders) => currentFolders.map((folder) => {
-            if (folder.id !== folderId) return folder;
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to upload images');
+            }
 
-            return {
-                ...folder,
-                images: folder.images.filter((image) => image.id !== imageId),
-            };
-        }));
-    }, []);
+            fetchFolders();
+        } catch (error) {
+            console.error('Error uploading images:', error);
+            alert(error.message || 'Error uploading images');
+        }
+    }, [activeFolderId, backendUrl, fetchFolders]);
 
+    const handleDeleteImage = useCallback(async (folderId, imageId) => {
+        try {
+            let token = '';
+            if (auth && auth.currentUser) {
+                token = await auth.currentUser.getIdToken();
+            }
 
+            const response = await fetch(`${backendUrl}/api/delete-gallery-image`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                },
+                body: JSON.stringify({ folderId, imageId }),
+            });
+
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to delete image');
+            }
+
+            fetchFolders();
+        } catch (error) {
+            console.error('Error deleting image:', error);
+            alert(error.message || 'Error deleting image');
+        }
+    }, [backendUrl, fetchFolders]);
 
     const selectedFolder = folders.find((folder) => folder.id === activeFolderId) || null;
 
     return {
         folders,
+        foldersLoading,
         activeFolderId,
         selectedFolder,
         editingFolderId,
