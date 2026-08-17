@@ -43,7 +43,7 @@ function EventCard({ event, index, regCounts, onManage }) {
                 <span>Participants</span>
             </div>
             <div className="admin-dashboard-event-actions">
-                <button type="button" aria-label={`Manage ${event.title} in Sanity Studio`} title="Manage in Sanity Studio" onClick={() => onManage(event._id)}>
+                <button type="button" aria-label={`Manage ${event.title} in Sanity Studio`} title="Manage in Sanity Studio" onClick={() => onManage(event)}>
                     <svg viewBox="0 0 24 24"><path d="M4 20h4l10-10-4-4L4 16v4Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" /><path d="M13 7l4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
                 </button>
             </div>
