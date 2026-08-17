@@ -14,7 +14,7 @@ aeronitk-698ac-firebase-adminsdk-fbsvc-f8335506d6.json
 *.json.enc
 *-firebase-adminsdk-*.json
 *.gs
-
+.example.env
 node_modules
 .npm-cache
 dist
