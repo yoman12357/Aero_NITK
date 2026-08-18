@@ -24,6 +24,10 @@
       https://apis.google.com
       https://www.gstatic.com;
 
+      worker-src
+        'self'
+        blob:;
+
     style-src
       'self'
       'unsafe-inline'
@@ -31,13 +35,15 @@
 
     font-src
       'self'
+      data:
       https://fonts.gstatic.com;
 
     img-src
       'self'
       data:
       https://www.google-analytics.com
-      https://cdn.sanity.io;
+      https://cdn.sanity.io
+      https://www.googletagmanager.com;
 
     connect-src
       'self'
