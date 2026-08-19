@@ -19,6 +19,7 @@ function Sidebar({ activeTab }) {
                 <NavLink to="/dashboard/gallery" className={({ isActive }) => (isActive || activeTab === 'gallery' ? 'active' : '')}><span className="nav-icon">◫</span>Gallery</NavLink>
                 <NavLink to="/dashboard/participants" className={({ isActive }) => (isActive || activeTab === 'participants' ? 'active' : '')}><span className="nav-icon">👥</span>Participants</NavLink>
                 <NavLink to="/dashboard/settings" className={({ isActive }) => (isActive || activeTab === 'settings' ? 'active' : '')}><span className="nav-icon">⚙</span>Settings</NavLink>
+                <NavLink to="/dashboard/teams" className={({ isActive }) => (isActive || activeTab === 'teams' ? 'active' : '')}><span className="nav-icon">👥</span>Teams</NavLink>
 
                 <Link
                     to="/login"

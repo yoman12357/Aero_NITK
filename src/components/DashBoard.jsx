@@ -20,6 +20,7 @@ import EventsTab from './Dashboard/views/EventsTab.jsx';
 import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
 import GalleryTab from './Dashboard/views/GalleryTab.jsx';
 import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
+import TeamsTab from './Dashboard/views/TeamsTab.jsx';
 
 import { useGallery } from './Dashboard/hooks/useGallery.js';
 
@@ -227,6 +228,9 @@ function AdminDashboard() {
                             recentRegistrations={recentRegistrations}
                             regLoading={regLoading}
                         />
+                    )}
+                    {activeTab === 'teams' && (
+                        <TeamsTab />
                     )}
 
                     {activeTab === 'gallery' && !location.pathname.includes('/gallery/') && (
