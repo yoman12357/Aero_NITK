@@ -1,0 +1,645 @@
+/* =========================================
+   TEAMS PAGE
+========================================= */
+
+.teams-tab {
+    width: 100%;
+    color: #f5f5f5;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.teams-tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 28px;
+}
+
+.teams-tab-header h2 {
+    margin: 0;
+    color: #ffffff !important;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.teams-tab-header p {
+    margin: 7px 0 0;
+    color: #a1a1aa !important;
+    font-size: 14px;
+}
+
+.teams-count {
+    padding: 9px 16px;
+    border-radius: 20px;
+
+    background: #24262b;
+    border: 1px solid #35383e;
+
+    color: #e5e7eb !important;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   TWO COLUMN LAYOUT
+========================================= */
+
+.teams-layout {
+    display: grid;
+    grid-template-columns: 400px minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+}
+
+
+/* =========================================
+   CARDS
+========================================= */
+
+.teams-form-card,
+.teams-members-card {
+
+    background: #111318 !important;
+
+    border: 1px solid #292c33 !important;
+
+    border-radius: 12px;
+
+    padding: 28px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   CARD HEADINGS
+========================================= */
+
+.teams-form-card h3,
+.teams-members-card h3 {
+
+    margin: 0 0 25px;
+
+    color: #f5f5f5 !important;
+
+    font-size: 19px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.teams-form-group {
+    margin-bottom: 20px;
+}
+
+.teams-form-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #e5e7eb !important;
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.teams-form-group input,
+.teams-form-group select {
+
+    width: 100%;
+
+    height: 44px;
+
+    padding: 0 13px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #383b43;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    background: #181a20 !important;
+
+    color: #f5f5f5 !important;
+
+    font-size: 14px;
+
+    transition: border-color 0.2s ease,
+                background 0.2s ease;
+}
+
+
+/* Placeholder */
+
+.teams-form-group input::placeholder {
+
+    color: #777b85 !important;
+
+}
+
+
+/* Focus */
+
+.teams-form-group input:focus,
+.teams-form-group select:focus {
+
+    border-color: #5c8cff;
+
+    background: #1b1d24 !important;
+}
+
+
+/* Select options */
+
+.teams-form-group select option {
+
+    background: #181a20;
+
+    color: #f5f5f5;
+}
+
+
+/* =========================================
+   PHOTO UPLOAD
+========================================= */
+
+.teams-photo-upload {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 170px;
+
+    box-sizing: border-box;
+
+    border: 2px dashed #3a3d45;
+
+    border-radius: 9px;
+
+    overflow: hidden;
+
+    background: #181a20;
+
+    cursor: pointer;
+
+    transition: border-color 0.2s ease,
+                background 0.2s ease;
+}
+
+.teams-photo-upload:hover {
+
+    border-color: #5c8cff;
+
+    background: #1b1d24;
+}
+
+
+/* Actual file input */
+
+.teams-photo-upload input {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+
+    z-index: 5;
+}
+
+
+/* Placeholder */
+
+.teams-photo-placeholder {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #8b8f98 !important;
+
+    pointer-events: none;
+}
+
+.teams-photo-placeholder span {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 42px;
+
+    height: 42px;
+
+    margin-bottom: 8px;
+
+    border-radius: 50%;
+
+    background: #252830;
+
+    color: #c8cbd2;
+
+    font-size: 25px;
+}
+
+.teams-photo-placeholder p {
+
+    margin: 0;
+
+    color: #9296a0 !important;
+
+    font-size: 13px;
+}
+
+
+/* Image preview */
+
+.teams-photo-preview {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    background: #181a20;
+}
+
+
+/* =========================================
+   ADD BUTTON
+========================================= */
+
+.teams-add-button {
+
+    width: 100%;
+
+    height: 44px;
+
+    margin-top: 4px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #f5f5f5;
+
+    color: #111318 !important;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease,
+                transform 0.1s ease;
+}
+
+.teams-add-button:hover {
+
+    background: #ffffff;
+
+}
+
+.teams-add-button:active {
+
+    transform: scale(0.99);
+
+}
+
+
+/* =========================================
+   MEMBERS HEADER
+========================================= */
+
+.teams-members-header {
+
+    padding-bottom: 18px;
+
+    margin-bottom: 0;
+
+    border-bottom: 1px solid #292c33;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.teams-empty {
+
+    padding: 70px 20px;
+
+    text-align: center;
+}
+
+.teams-empty-icon {
+
+    margin-bottom: 12px;
+
+    font-size: 30px;
+
+    opacity: 0.7;
+}
+
+.teams-empty h4 {
+
+    margin: 0 0 6px;
+
+    color: #e5e7eb !important;
+
+    font-size: 15px;
+}
+
+.teams-empty p {
+
+    margin: 0;
+
+    color: #858994 !important;
+
+    font-size: 13px;
+}
+
+
+/* =========================================
+   MEMBER ROW
+========================================= */
+
+.teams-member {
+
+    display: grid;
+
+    grid-template-columns:
+        70px
+        minmax(130px, 1fr)
+        150px
+        150px
+        auto;
+
+    align-items: center;
+
+    gap: 18px;
+
+    min-height: 90px;
+
+    border-bottom: 1px solid #292c33;
+}
+
+.teams-member:last-child {
+
+    border-bottom: none;
+}
+
+
+/* =========================================
+   MEMBER PHOTO
+========================================= */
+
+.teams-member-photo {
+
+    display: block;
+
+    width: 56px;
+
+    height: 56px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 1px solid #454951;
+
+    background: #252830;
+}
+
+
+/* =========================================
+   MEMBER DETAILS
+========================================= */
+
+.teams-member-details {
+
+    min-width: 0;
+}
+
+.teams-member-details h4 {
+
+    margin: 0 0 5px;
+
+    color: #ffffff !important;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+.teams-member-details p {
+
+    margin: 0 0 8px;
+
+    color: #a1a1aa !important;
+
+    font-size: 13px;
+}
+
+
+/* Subsystem badge */
+
+.teams-member-details span {
+
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    background: #18243a;
+
+    color: #8bb5ff !important;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   LINKEDIN
+========================================= */
+
+.teams-member-linkedin a {
+
+    color: #4d9cff !important;
+
+    font-size: 13px;
+
+    text-decoration: none;
+}
+
+.teams-member-linkedin a:hover {
+
+    color: #79b5ff !important;
+
+    text-decoration: underline;
+}
+
+.teams-member-linkedin span {
+
+    color: #686c75 !important;
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   DELETE
+========================================= */
+
+.teams-delete-button {
+
+    padding: 9px 14px;
+
+    border: 1px solid #7f2828;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #ff5b5b !important;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.teams-delete-button:hover {
+
+    background: #35191b;
+
+    border-color: #b33a3a;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+
+    .teams-layout {
+
+        grid-template-columns: 350px minmax(0, 1fr);
+
+    }
+
+    .teams-member {
+
+        grid-template-columns:
+            60px
+            minmax(110px, 1fr)
+            120px
+            auto;
+
+    }
+
+    .teams-member-linkedin {
+
+        display: none;
+
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .teams-layout {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .teams-tab-header {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+    }
+
+    .teams-member {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        padding: 18px 0;
+
+    }
+
+    .teams-member-details {
+
+        flex: 1;
+
+    }
+
+    .teams-member-linkedin {
+
+        display: block;
+
+        width: 100%;
+
+        margin-left: 73px;
+
+    }
+
+    .teams-delete-button {
+
+        margin-left: 73px;
+
+    }
+
+}
