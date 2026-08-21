@@ -50,8 +50,13 @@
 
 .teams-layout {
     display: grid;
-    grid-template-columns: 400px minmax(0, 1fr);
+
+    grid-template-columns:
+        400px
+        minmax(0, 1fr);
+
     gap: 26px;
+
     align-items: start;
 }
 
@@ -141,21 +146,25 @@
 
     font-size: 14px;
 
-    transition: border-color 0.2s ease,
-                background 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
 
 
-/* Placeholder */
+/* =========================================
+   PLACEHOLDER
+========================================= */
 
 .teams-form-group input::placeholder {
 
     color: #777b85 !important;
-
 }
 
 
-/* Focus */
+/* =========================================
+   FOCUS
+========================================= */
 
 .teams-form-group input:focus,
 .teams-form-group select:focus {
@@ -166,7 +175,9 @@
 }
 
 
-/* Select options */
+/* =========================================
+   SELECT OPTIONS
+========================================= */
 
 .teams-form-group select option {
 
@@ -200,8 +211,9 @@
 
     cursor: pointer;
 
-    transition: border-color 0.2s ease,
-                background 0.2s ease;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
 
 .teams-photo-upload:hover {
@@ -212,7 +224,9 @@
 }
 
 
-/* Actual file input */
+/* =========================================
+   FILE INPUT
+========================================= */
 
 .teams-photo-upload input {
 
@@ -232,7 +246,9 @@
 }
 
 
-/* Placeholder */
+/* =========================================
+   PHOTO PLACEHOLDER
+========================================= */
 
 .teams-photo-placeholder {
 
@@ -286,7 +302,9 @@
 }
 
 
-/* Image preview */
+/* =========================================
+   IMAGE PREVIEW
+========================================= */
 
 .teams-photo-preview {
 
@@ -303,7 +321,25 @@
 
 
 /* =========================================
-   ADD BUTTON
+   SMALL PHOTO HELP TEXT
+========================================= */
+
+.teams-form-group small {
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: #777b85;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+}
+
+
+/* =========================================
+   ADD / UPDATE BUTTON
 ========================================= */
 
 .teams-add-button {
@@ -328,20 +364,76 @@
 
     cursor: pointer;
 
-    transition: background 0.2s ease,
-                transform 0.1s ease;
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease,
+        opacity 0.2s ease;
 }
 
 .teams-add-button:hover {
 
     background: #ffffff;
-
 }
 
 .teams-add-button:active {
 
     transform: scale(0.99);
+}
 
+.teams-add-button:disabled {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================
+   CANCEL EDIT BUTTON
+========================================= */
+
+.teams-cancel-button {
+
+    width: 100%;
+
+    height: 44px;
+
+    margin-top: 10px;
+
+    border: 1px solid #383b43;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #a1a1aa !important;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.teams-cancel-button:hover {
+
+    background: #1b1d24;
+
+    border-color: #555963;
+
+    color: #ffffff !important;
+}
+
+.teams-cancel-button:disabled {
+
+    opacity: 0.5;
+
+    cursor: not-allowed;
 }
 
 
@@ -399,6 +491,16 @@
 
 
 /* =========================================
+   MEMBERS LIST
+========================================= */
+
+.teams-members-list {
+
+    width: 100%;
+}
+
+
+/* =========================================
    MEMBER ROW
 ========================================= */
 
@@ -406,18 +508,28 @@
 
     display: grid;
 
+    /*
+        Photo
+        Details
+        LinkedIn
+        Actions
+    */
+
     grid-template-columns:
         70px
         minmax(130px, 1fr)
         150px
-        150px
-        auto;
+        155px;
 
     align-items: center;
 
     gap: 18px;
 
     min-height: 90px;
+
+    padding: 10px 0;
+
+    box-sizing: border-box;
 
     border-bottom: 1px solid #292c33;
 }
@@ -468,6 +580,12 @@
     font-size: 15px;
 
     font-weight: 600;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 .teams-member-details p {
@@ -477,10 +595,18 @@
     color: #a1a1aa !important;
 
     font-size: 13px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
 }
 
 
-/* Subsystem badge */
+/* =========================================
+   SUBSYSTEM BADGE
+========================================= */
 
 .teams-member-details span {
 
@@ -502,6 +628,11 @@
    LINKEDIN
 ========================================= */
 
+.teams-member-linkedin {
+
+    min-width: 0;
+}
+
 .teams-member-linkedin a {
 
     color: #4d9cff !important;
@@ -509,6 +640,8 @@
     font-size: 13px;
 
     text-decoration: none;
+
+    white-space: nowrap;
 }
 
 .teams-member-linkedin a:hover {
@@ -527,7 +660,63 @@
 
 
 /* =========================================
-   DELETE
+   MEMBER ACTIONS
+========================================= */
+
+.teams-member-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    min-width: 0;
+}
+
+
+/* =========================================
+   EDIT BUTTON
+========================================= */
+
+.teams-edit-button {
+
+    padding: 9px 14px;
+
+    border: 1px solid #3b5f99;
+
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: #7fb0ff !important;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.teams-edit-button:hover {
+
+    background: #182a47;
+
+    border-color: #5c8cff;
+
+    color: #a8c7ff !important;
+}
+
+
+/* =========================================
+   DELETE BUTTON
 ========================================= */
 
 .teams-delete-button {
@@ -546,8 +735,11 @@
 
     cursor: pointer;
 
-    transition: background 0.2s ease,
-                border-color 0.2s ease;
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
 }
 
 .teams-delete-button:hover {
@@ -559,15 +751,16 @@
 
 
 /* =========================================
-   RESPONSIVE
+   RESPONSIVE - 1100px
 ========================================= */
 
 @media (max-width: 1100px) {
 
     .teams-layout {
 
-        grid-template-columns: 350px minmax(0, 1fr);
-
+        grid-template-columns:
+            350px
+            minmax(0, 1fr);
     }
 
     .teams-member {
@@ -575,30 +768,62 @@
         grid-template-columns:
             60px
             minmax(110px, 1fr)
-            120px
             auto;
 
+        gap: 14px;
     }
 
     .teams-member-linkedin {
 
         display: none;
-
     }
 
+    .teams-member-actions {
+
+        justify-content: flex-end;
+    }
 }
 
+
+/* =========================================
+   RESPONSIVE - 850px
+========================================= */
 
 @media (max-width: 850px) {
 
     .teams-layout {
 
         grid-template-columns: 1fr;
-
     }
 
+    .teams-form-card {
+
+        width: 100%;
+    }
+
+    .teams-members-card {
+
+        width: 100%;
+    }
+
+    .teams-member {
+
+        grid-template-columns:
+            60px
+            minmax(0, 1fr)
+            auto;
+    }
+
+    .teams-member-linkedin {
+
+        display: none;
+    }
 }
 
+
+/* =========================================
+   RESPONSIVE - 600px
+========================================= */
 
 @media (max-width: 600px) {
 
@@ -607,7 +832,17 @@
         flex-direction: column;
 
         gap: 15px;
+    }
 
+    .teams-layout {
+
+        gap: 18px;
+    }
+
+    .teams-form-card,
+    .teams-members-card {
+
+        padding: 20px;
     }
 
     .teams-member {
@@ -616,14 +851,25 @@
 
         flex-wrap: wrap;
 
-        padding: 18px 0;
+        align-items: center;
 
+        gap: 12px;
+
+        padding: 18px 0;
+    }
+
+    .teams-member-photo {
+
+        width: 56px;
+
+        height: 56px;
     }
 
     .teams-member-details {
 
         flex: 1;
 
+        min-width: 140px;
     }
 
     .teams-member-linkedin {
@@ -632,14 +878,63 @@
 
         width: 100%;
 
-        margin-left: 73px;
-
+        margin-left: 68px;
     }
 
+    .teams-member-actions {
+
+        width: 100%;
+
+        margin-left: 68px;
+
+        justify-content: flex-start;
+
+        gap: 8px;
+    }
+}
+
+.teams-member-photo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #777b85;
+
+    font-size: 22px;
+
+    background: #252830;
+}
+
+
+/* =========================================
+   VERY SMALL SCREENS
+========================================= */
+
+@media (max-width: 400px) {
+
+    .teams-form-card,
+    .teams-members-card {
+
+        padding: 16px;
+    }
+
+    .teams-member-linkedin {
+
+        margin-left: 0;
+    }
+
+    .teams-member-actions {
+
+        margin-left: 0;
+
+        width: 100%;
+    }
+
+    .teams-edit-button,
     .teams-delete-button {
 
-        margin-left: 73px;
+        flex: 1;
 
+        text-align: center;
     }
-
 }
