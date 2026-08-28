@@ -1,0 +1,61 @@
+.profile-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  width: 200px;
+  min-height: 140px;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card-image-wrapper {
+  background-color: #ffffff;
+  width: 100%;
+  height: 220px;
+  margin: 0 auto;   
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-card-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: block;   
+}
+
+.profile-card-default-icon {
+  font-size: 100px;
+  width: 100px;
+  height: 100px;
+  color: #888;
+}
+
+.profile-card-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-card-name {
+  color: #111;   
+  font-weight: 600;
+}
+
+.profile-card-linkedin-icon {
+  color: #0a66c2;
+  font-size: 18px;
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.profile-card-linkedin-icon:hover {
+  transform: scale(1.2);
+}

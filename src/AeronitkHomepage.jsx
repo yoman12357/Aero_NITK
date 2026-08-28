@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import { db, collection, addDoc, serverTimestamp } from './firebase';
 import './AeronitkHomepage.css';
-import { useNavigate } from 'react-router-dom';
 
 import aboutDrone from './images/drone.png';
 import plane1 from './images/plane1.png';
@@ -21,7 +20,6 @@ import { Helmet } from 'react-helmet-async';
 
 
 const AeroNITKHomepage = () => {
-  const navigate = useNavigate();
   // const [showWorkshopPopup, setShowWorkshopPopup] = useState(false); // workshop popup disabled
   const location = useLocation();
   const isHomePage = location.pathname === '/';

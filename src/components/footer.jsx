@@ -6,6 +6,7 @@ import logoImage from '../images/Aero_NITK_logo.png';
 const Footer = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isDashboardPage = location.pathname.startsWith('/dashboard');
 
   const handleSocialClick = (platform) => {
     if (window.gtag) {
@@ -43,8 +44,9 @@ const Footer = () => {
 
             <div className="footer-column contact-col">
               <h3>Contact Us</h3>
-              <p>E-mail: <a href="mailto:bhimudaddimanii@gmail.com">bhimudaddimanii@gmail.com</a></p>
-              <p>Phone No: +91 63637 60236</p>
+              <p>E-mail: <a href="mailto:varshithj.231me359@nitk.edu.in">varshithj.231me359@nitk.edu.in</a></p>
+              <p>Phone No: +91 87620 56779</p>
+              {!isDashboardPage ? <a href="/login">Admin</a> : null}
             </div>
           </div>
         </div>

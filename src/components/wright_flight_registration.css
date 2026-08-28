@@ -1,0 +1,254 @@
+.wright-flight-section {
+    background-color: #000;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 120px 20px 60px 20px;
+    font-family: 'Roboto', 'Arial', sans-serif;
+    box-sizing: border-box;
+}
+
+.wright-flight-title {
+    color: #ffffff;
+    font-size: 2.5rem;
+    letter-spacing: 4px;
+    text-align: center;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.wright-flight-guidelines {
+    background: #111827;
+    border: 1px solid #3494eb;
+    border-left: 4px solid #3494eb;
+    border-radius: 6px;
+    padding: 28px 32px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 20px rgba(52, 148, 235, 0.12);
+}
+
+.wright-flight-card {
+    background: #1a1a1a;
+    border: 1px solid #3494eb;
+    border-radius: 4px;
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.wright-flight-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #bbb;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: 100%;
+}
+
+.wright-flight-card input,
+.wright-flight-card select,
+.wright-flight-card textarea {
+    background: #111111 !important;
+    border: 1.5px solid #1da1f2 !important;
+    border-radius: 4px;
+    padding: 14px;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.wright-flight-card select option {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+.register-btn {
+    background: #4a9bd4;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.register-btn:hover {
+    background: #3a84bc;
+}
+
+.guidelines-heading {
+    color: #3494eb;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 16px 0;
+}
+
+.guidelines-list {
+    color: #cccccc;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    padding-left: 20px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.guidelines-list li {
+    list-style-type: disc;
+}
+
+.guidelines-list li strong {
+    color: #ffffff;
+}
+
+.duplicate-error-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.6);
+    border-left: 4px solid #dc2626;
+    border-radius: 6px;
+    padding: 14px 16px;
+    margin-top: 4px;
+}
+
+.duplicate-error-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.duplicate-error-box p {
+    color: #fca5a5;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.roll-hint {
+    font-size: 0.72rem;
+    color: #3494eb;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    margin-left: 4px;
+}
+
+.readonly-input {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.slots-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px 24px;
+    margin-bottom: 20px;
+    max-width: 560px;
+    width: 100%;
+    backdrop-filter: blur(4px);
+}
+
+.slots-loading {
+    font-size: 0.82rem;
+    color: #6b7280;
+}
+
+.slots-count {
+    font-size: 0.9rem;
+    color: #60a5fa;
+    letter-spacing: 0.3px;
+}
+
+.slots-count strong {
+    font-size: 1.1rem;
+    color: #93c5fd;
+}
+
+.slots-count.slots-low {
+    color: #fb923c;
+}
+
+.slots-count.slots-low strong {
+    color: #f97316;
+}
+
+.slots-bar-track {
+    width: 100%;
+    max-width: 340px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.slots-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3494eb, #60a5fa);
+    border-radius: 99px;
+    transition: width 0.6s ease;
+}
+
+.registration-closed-box {
+    text-align: center;
+    padding: 48px 36px;
+    max-width: 540px;
+    border-color: #ef4444;
+    border-left-color: #ef4444;
+}
+
+.closed-icon {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    color: #ef4444;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.closed-subtext {
+    color: #d1d5db;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin: 10px 0 0 0;
+}
+
+.closed-subtext strong {
+    color: #ffffff;
+}
+
+@media (max-width: 600px) {
+    .wright-flight-card {
+        padding: 30px 20px;
+    }
+}

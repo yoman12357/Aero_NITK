@@ -1,5 +1,5 @@
 ///carousel page on home page 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./UltimateCarousel.css";
 import Achievement1 from '../images/Achievements/Achievements_1.webp'
 import Achievement2 from '../images/Achievements/Achievements_2.webp'
@@ -21,21 +21,21 @@ const UltimateCarousel = () => {
 
   const totalSlides = images.length;
 
-  const startAutoplay = () => {
+  const stopAutoplay = useCallback(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  }, []);
+
+  const startAutoplay = useCallback(() => {
     stopAutoplay();
     intervalRef.current = setInterval(() => {
       setSlideIndex((prev) => (prev === totalSlides - 1 ? 0 : prev + 1));
     }, 4000);
-  };
-
-  const stopAutoplay = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  };
+  }, [stopAutoplay, totalSlides]);
 
   useEffect(() => {
     startAutoplay();
     return () => stopAutoplay();
-  }, []);
+  }, [startAutoplay, stopAutoplay]);
 
   const changeSlide = (direction) => {
     stopAutoplay();

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion as Motion } from 'motion/react';
 import { useEffect, useRef, useState, useMemo } from 'react';
 
 const buildKeyframes = (from, steps) => {
@@ -82,7 +82,7 @@ const BlurText = ({
         spanTransition.ease = easing;
 
         return (
-          <motion.span
+          <Motion.span
             className="inline-block will-change-[transform,filter,opacity]"
             key={index}
             initial={fromSnapshot}
@@ -95,7 +95,7 @@ const BlurText = ({
             {animateBy === 'words' && index < elements.length - 1 && (
               <span className="word-spacer">{"\u00A0"}</span>
             )}
-          </motion.span>
+          </Motion.span>
         );
       })}
     </p>

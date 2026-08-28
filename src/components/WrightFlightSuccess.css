@@ -1,0 +1,59 @@
+.wright-flight-success-card {
+    text-align: center;
+    max-width: 540px;
+    padding: 40px 36px;
+}
+
+.wright-flight-success-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+    background: linear-gradient(135deg, #1a6e35, #25d366);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    animation: wright-flight-pulse 1.8s ease infinite;
+}
+
+@keyframes wright-flight-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+    }
+
+    70% {
+        box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+.wright-flight-success-text {
+    color: #cccccc;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 12px 0 0 0;
+}
+
+.wright-flight-success-text strong {
+    color: #ffffff;
+}
+
+.wright-flight-success-divider {
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #3494eb55, transparent);
+    margin: 24px auto;
+}
+
+@media (max-width: 600px) {
+    .wright-flight-success-card {
+        padding: 28px 20px;
+    }
+}

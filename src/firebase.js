@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where, getCountFromServer } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+// import { GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,9 +13,12 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
+
 const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+export const auth = getAuth(app);
+// export const googleProvider = new GoogleAuthProvider();
 export { collection, addDoc, serverTimestamp };
 
 // Optimized save to collection with better error handling
@@ -70,6 +75,46 @@ export const getRegistrationCount = async () => {
             console.error('Registration count error:', error);
         }
         return null; // null = unknown, don't block form
+    }
+};
+
+// Check for duplicate Wright Flight registration by rollNo, email, or phone
+export const checkDuplicateWrightFlightRegistration = async ({ rollNo, email, phone }) => {
+    try {
+        const col = collection(db, 'wright_flight_registrations');
+        const checks = [
+            { field: 'rollNo', value: rollNo, label: 'Roll Number' },
+            { field: 'email', value: email, label: 'Email ID' },
+            { field: 'phone', value: phone, label: 'Phone Number' },
+        ];
+
+        for (const { field, value, label } of checks) {
+            if (!value) continue;
+            const snap = await getDocs(query(col, where(field, '==', value)));
+            if (!snap.empty) {
+                return { duplicate: true, field: label };
+            }
+        }
+        return { duplicate: false };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Wright Flight duplicate check error:', error);
+        }
+        return { duplicate: false };
+    }
+};
+
+// Returns current number of Wright Flight registrations
+export const getWrightFlightRegistrationCount = async () => {
+    try {
+        const col = collection(db, 'wright_flight_registrations');
+        const snapshot = await getCountFromServer(col);
+        return snapshot.data().count;
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Wright Flight registration count error:', error);
+        }
+        return null;
     }
 };
 

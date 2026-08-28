@@ -1,8 +1,9 @@
-///Team page in header
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Team.css';
 import Footer from './footer.jsx';
 import { Helmet } from 'react-helmet-async';
+
+// Import all your images
 import aadhithya_r_k from '../images/team-members/Aadhithya_R_K.jpg';
 import aaron_rajeev_mathew from '../images/team-members/Aaron_Rajeev_Mathew.jpg';
 import abhhay_s_sharma from '../images/team-members/Abhhay_S_Sharma.jpg';
@@ -13,118 +14,139 @@ import ajay_sharma_sambara from '../images/team-members/Ajay_Sharma_Sambara.jpeg
 import anmol_bohra from '../images/team-members/Anmol_Bohra.jpeg';
 import aryan_bokolia from '../images/team-members/Aryan_Bokolia.jpeg';
 import aryan_gupta from '../images/team-members/Aryan_Gupta.JPG';
-import bharat_patel from '../images/team-members/Bharat_Patel.jpg';
-import bhimu_daddimani from '../images/team-members/Bhimu_Daddimani.jpg';
 import chetan_kumar_sah from '../images/team-members/Chetan_Kumar_Sah.jpg';
 import dhanasree from '../images/team-members/Dhanasree.jpg';
-import g_shifa_khanum_niraj from '../images/team-members/G_Shifa_Khanum.jpg';
 import kenge_madhur_niraj from '../images/team-members/Kenge_Madhur_Niraj.jpeg';
 import om_srivastava from '../images/team-members/Om_Srivastava.jpg';
 import omkar_kharade from '../images/team-members/Omkar_Kharade.png';
 import pratham_p_palankar from '../images/team-members/Pratham_P_Palankar.jpg';
-import rathod_smit_amitkumar from '../images/team-members/Rathod_Smit_Amitkumar.jpeg';
 import ryan_varghese_thomas from '../images/team-members/Ryan_Varghese_Thomas.jpg';
 import sairaj from '../images/team-members/Sairaj.jpeg';
 import Shaarvari from '../images/team-members/Shaarvari_Prashanth.jpg';
 import shubhang_galagali from '../images/team-members/Shubhang_Galagali.jpg';
 import soham_anand_jain from '../images/team-members/Soham_Anand_Jain.png';
-import tanay_praveen_shekokar from '../images/team-members/Tanay_Praveen_Shekokar.jpeg';
 import tejaswini_magani from '../images/team-members/Tejaswini_Magani.jpg';
 import thokare_prithviraj_dilip from '../images/team-members/Thokare_Prithviraj_Dilip.jpg';
 import tirth_vishalkumar_patel from '../images/team-members/Tirth_Vishalkumar_Patel.jpg';
 import varshith_j from '../images/team-members/Varshith_J.jpg';
 import anindith from '../images/team-members/Anindith.jpg';
-import gouthamSunilKumar from '../images/team-members/Goutham_Sunil_Kumar.jpg';
 import gowthambm from '../images/team-members/GowthamBM.JPG';
-import LavnnyaPatil from '../images/team-members/LavnnyaPatil.jpg';
 import Nandeesh_Urmesh_Trivedi from '../images/team-members/Nandeesh_Urmesh_Trivedi.jpg';
 import R_Adithya from '../images/team-members/R_Adithya.jpg';
 import Vedant_Sabnis from '../images/team-members/Vedant_Sabnis.jpg';
-import Darshan from '../images/team-members/darshanupadhaya.jpeg'
+import Darshan from '../images/team-members/darshanupadhaya.jpeg';
 import nitesh_p from '../images/team-members/Nitesh_P.jpg';
 import Shubham_Shah from '../images/team-members/Shubham_Shah.jpeg';
 import Pratham_Rao from '../images/team-members/Pratham_Rao.jpeg';
 import Harihara_Moorthy from '../images/team-members/Harihara_Moorthy.jpeg';
 import linkedInLogo from '../images/linkedIn_logo.png';
 
+const staticTeamHeads = [
+  { name: 'VARSHITH.J', role: 'Convener', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a/?isSelfProfile=false' },
+  { name: 'NANDEESH TRIVEDI', role: 'Captain', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308/?isSelfProfile=false' },
+  { name: 'R.ADITHYA', role: 'Vice Captain', image: R_Adithya, linkedIn: 'https://www.linkedin.com/in/adithyar976/' },
+  { name: 'TIRTH PATEL', role: 'Chairperson', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
+  { name: 'NITESH.P', role: 'Operations Lead', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292/?isSelfProfile=false' },
+  { name: 'ANINDITH B L', role: 'Outreach Lead', image: anindith, linkedIn: 'https://www.linkedin.com/in/anindithbl/?isSelfProfile=false' },
+  { name: 'PRATHAM PALANKAR', role: 'Treasurer', image: pratham_p_palankar, linkedIn: 'https://www.linkedin.com/in/pratham-palankar-277421293' }
+];
+
+const staticStudentMentors = [
+  { name: 'VEDANT SABNIS', role: 'Student Mentor', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
+  { name: 'SHUBHANG GALAGALI', role: 'Student Mentor', image: shubhang_galagali, linkedIn: 'https://www.linkedin.com/in/galavashubhang' },
+  { name: 'SOHAM JAIN', role: 'Student Mentor', image: soham_anand_jain, linkedIn: 'https://www.linkedin.com/in/soham-anand-jain/' },
+  { name: 'CHETAN KUMAR SAH', role: 'Student Mentor', image: chetan_kumar_sah, linkedIn: 'https://www.linkedin.com/in/sahchetan' }
+];
+
+const staticRawMembersData = [
+  { name: 'Aryan Bokolia', role: 'Web Lead', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
+  { name: 'Darshan Upadhye', role: 'UI/UX Designer', subsystem: 'Web Team', image: Darshan, linkedIn: 'https://www.linkedin.com/in/darshan-upadhye-b20374312' },
+  { name: 'Shaarvari Prashanth', role: 'Web Associate', subsystem: 'Web Team', image: Shaarvari, linkedIn: 'https://www.linkedin.com/in/shaarvari-prashanth-5764b6331' },
+  { name: 'Kenge Madhur Niraj', role: 'Structures Lead', subsystem: 'Structures', image: kenge_madhur_niraj, linkedIn: 'https://www.linkedin.com/in/madhur-kenge-354238326' },
+  { name: 'Abir Saha', role: 'IITM Lead', subsystem: 'Structures', image: abir_saha, linkedIn: 'https://www.linkedin.com/in/abir-saha-b90798324' },
+  { name: 'Aaron Mathew', role: 'VTOL Co-Lead', subsystem: 'Structures', image: aaron_rajeev_mathew, linkedIn: 'https://www.linkedin.com/in/aaron-rajeev-mathew-217561317' },
+  { name: 'Harihara Moorthy', role: 'DDC Co-Lead', subsystem: 'Structures', image: Harihara_Moorthy, linkedIn: 'https://www.linkedin.com/in/sri-harihara-moorthy-r-8b5b263a6' },
+  { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'https://www.linkedin.com/in/om-srivastava-2k28' },
+  { name: 'Anmol Bohra', role: 'Member', subsystem: 'Structures', image: anmol_bohra, linkedIn: 'https://www.linkedin.com/in/anmol-bohra1403' },
+  { name: 'Prithviraj Thokare', role: 'Member', subsystem: 'Structures', image: thokare_prithviraj_dilip, linkedIn: 'https://www.linkedin.com/in/prithviraj-thokare-0232a5380/' },
+  { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: 'https://www.linkedin.com/in/abhishek-m-959609318/' },
+  { name: 'Sairaj', role: 'Member', subsystem: 'Media', image: sairaj, linkedIn: 'https://www.linkedin.com/in/sairajpatil6015' },
+  { name: 'Aadhithya RK', role: 'Member', subsystem: 'Aerodynamics', image: aadhithya_r_k, linkedIn: 'https://www.linkedin.com/in/aadhithya-karthik-558b57382' },
+  { name: 'Dhanasree', role: 'Member', subsystem: 'Aerodynamics', image: dhanasree, linkedIn: 'https://www.linkedin.com/in/dhanasree-s-7a1439370' },
+  { name: 'Pratham Rao', role: 'Avionics Lead', subsystem: 'Avionics', image: Pratham_Rao, linkedIn: 'https://www.linkedin.com/in/pratham-rao-pr/?isSelfProfile=false' },
+  { name: 'Ajay Sharma', role: 'NIDAR Lead', subsystem: 'Avionics', image: ajay_sharma_sambara, linkedIn: 'https://www.linkedin.com/in/ajayshaersamb070692' },
+  { name: 'Magani Tejaswini', role: 'ADDC Lead', subsystem: 'Avionics', image: tejaswini_magani, linkedIn: 'https://www.linkedin.com/in/magani-tejaswini-a70a68346' },
+  { name: 'Ryan Thomas', role: 'Member', subsystem: 'Structures', image: ryan_varghese_thomas, linkedIn: 'https://www.linkedin.com/in/ryanthomas2005/' },
+  { name: 'Abhinay P A', role: 'Marketing Lead', subsystem: 'Marketing', image: abhinay_p_a, linkedIn: 'https://www.linkedin.com/in/abhinaypa101' },
+  { name: 'Shubham Shah', role: 'Aerodynamics Lead', subsystem: 'Aerodynamics', image: Shubham_Shah, linkedIn: 'https://www.linkedin.com/in/shubham-shah-445ab9312/?isSelfProfile=false' },
+  { name: 'Omkar Kharade', role: 'DDC Lead', subsystem: 'Aerodynamics', image: omkar_kharade, linkedIn: 'https://www.linkedin.com/in/omkar-kharade-53a05232b' },
+  { name: 'Aryan Gupta', role: 'VTOL Lead', subsystem: 'Aerodynamics', image: aryan_gupta, linkedIn: 'https://www.linkedin.com/in/aryan-g-b27278247' },
+  { name: 'Abhhay Sharma', role: 'IITB Lead', subsystem: 'Aerodynamics', image: abhhay_s_sharma, linkedIn: 'https://www.linkedin.com/in/abhhay-s-sharma-40142225a' },
+  { name: 'GOWTHAM B M', role: 'Media Lead', subsystem: 'Media', image: gowthambm, linkedIn: 'http://www.linkedin.com/in/gowthambm' }
+];
+
 const Team = () => {
   const [activeSubsystem, setActiveSubsystem] = useState('Aerodynamics');
+  const [dynamicMembers, setDynamicMembers] = useState([]);
 
-  const teamHeads = [
-    { name: 'BHIMU DADDIMANI', role: 'Convener', image: bhimu_daddimani, linkedIn: 'https://www.linkedin.com/in/bhimu-d?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
-    { name: 'LAVNNYA', role: 'Captain', image: LavnnyaPatil, linkedIn: 'https://www.linkedin.com/in/lavnnya-patil' },
-    { name: 'RAHUL N C', role: 'President', image: null, linkedIn: '' }
-  ];
+  useEffect(() => {
+    const fetchMembers = async () => {
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/team`);
+        if (response.ok) {
+          const data = await response.json();
+          const formattedData = data.map(m => ({
+            name: m.name,
+            role: m.role,
+            teamType: m.teamType, // <-- Added this vital mapping
+            subsystem: m.subsystem || m.category,
+            image: m.imageUrl || m.image,
+            linkedIn: m.linkedIn || m.linkedin
+          }));
+          setDynamicMembers(formattedData);
+        }
+      } catch (err) {
+        console.error('Failed to fetch dynamic team members from backend:', err);
+      }
+    };
 
-  const operationalLeads = [
-    { name: 'BHARAT PATEL', role: 'Operational Lead', image: bharat_patel, linkedIn: 'https://www.linkedin.com/in/bharatnitk/' },
-    { name: 'TANAY SHEKOKAR', role: 'Mentor', image: tanay_praveen_shekokar, linkedIn: 'https://www.linkedin.com/in/tanay-shekokar-04730829b' },
-    { name: 'GOWTHAM B M', role: 'Media Lead', image: gowthambm, linkedIn: 'http://www.linkedin.com/in/gowthambm' },
-    { name: 'GOUTHAM SUNIL', role: 'Outreach Lead', image: gouthamSunilKumar, linkedIn: 'https://www.linkedin.com/in/goutham-sunil-kumar-a95777253' },
-    { name: 'Rathod Smit Amitkumar', role: 'Web Dev Lead', subsystem: 'Web Team', image: rathod_smit_amitkumar, linkedIn: 'https://www.linkedin.com/in/smit-rathod-a2900b312/' }
-  ];
+    fetchMembers();
+  }, []);
 
-  const rawMembersData = [
-    { name: 'Aryan Bokolia', role: 'Web Developer ', subsystem: 'Web Team', image: aryan_bokolia, linkedIn: 'https://www.linkedin.com/in/aryan-bokolia-365aa4326' },
-    { name: 'Darshan Upadhye', role: 'UI/UX Designer', subsystem: 'Web Team', image: Darshan, linkedIn: 'https://www.linkedin.com/in/darshan-upadhye-b20374312?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
-    { name: 'Shaarvari Prashanth', role: 'Web Associate', subsystem: 'Web Team', image: Shaarvari, linkedIn: 'https://www.linkedin.com/in/shaarvari-prashanth-5764b6331?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app' },
+  // Helper function to merge dynamic and static data without duplicating names
+  const mergeArrays = (staticArr, dynamicArr) => {
+    return [
+      ...staticArr,
+      ...dynamicArr.filter(dm => !staticArr.some(sm => sm.name.toLowerCase() === dm.name.toLowerCase()))
+    ];
+  };
 
-    { name: 'Varshith J', role: 'Structures Lead', subsystem: 'Structures', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a' },
-    { name: 'Tirth Vishalkumar Patel', role: 'Fuselage Lead', subsystem: 'Structures', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
-    { name: 'Prithviraj Thokare', role: 'Member', subsystem: 'Structures', image: thokare_prithviraj_dilip, linkedIn: 'https://www.linkedin.com/in/prithviraj-thokare-0232a5380/' },
-    { name: 'Om Srivastava', role: 'Member', subsystem: 'Structures', image: om_srivastava, linkedIn: 'https://www.linkedin.com/in/om-srivastava-2k28' },
-    { name: 'Abhishek M', role: 'Member', subsystem: 'Media', image: abhishek_m, linkedIn: 'https://www.linkedin.com/in/abhishek-m-959609318/' },
+  // 1. Separate CMS members by their teamType
+  const dynamicHeads = dynamicMembers.filter(m => m.teamType === 'Head');
+  const dynamicMentors = dynamicMembers.filter(m => m.teamType === 'Mentor');
+  // Subsystem members are either strictly 'Member' or have no teamType defined (fallback)
+  const dynamicSubsystemMembers = dynamicMembers.filter(m => m.teamType === 'Member' || !m.teamType);
 
-    { name: 'Aryan Gupta', role: 'Member', subsystem: 'Aerodynamics', image: aryan_gupta, linkedIn: 'https://www.linkedin.com/in/aryan-g-b27278247' },
-    { name: 'Madhur Kenge', role: 'Member', subsystem: 'Structures', image: kenge_madhur_niraj, linkedIn: 'https://www.linkedin.com/in/madhur-kenge-354238326' },
-
-    { name: 'Abhhay S Sharma', role: 'Member', subsystem: 'Aerodynamics', image: abhhay_s_sharma, linkedIn: 'https://www.linkedin.com/in/abhhay-s-sharma-40142225a' },
-    { name: 'Omkar Kharade', role: 'Member', subsystem: 'Aerodynamics', image: omkar_kharade, linkedIn: 'https://www.linkedin.com/in/omkar-kharade-53a05232b' },
-    { name: 'Shifa Khan', role: 'Member', subsystem: 'Marketing', image: g_shifa_khanum_niraj, linkedIn: 'https://www.linkedin.com/in/shifa-khan-dacimus/' },
-    { name: 'Anmol Bohra', role: 'Member', subsystem: 'Structures', image: anmol_bohra, linkedIn: 'https://www.linkedin.com/in/anmol-bohra1403' },
-    { name: 'Ajay Sharma', role: 'Member', subsystem: 'Avionics', image: ajay_sharma_sambara, linkedIn: 'https://www.linkedin.com/in/ajayshaersamb070692' },
-    { name: 'Aaron Mathew', role: 'Member', subsystem: 'Structures', image: aaron_rajeev_mathew, linkedIn: 'https://www.linkedin.com/in/aaron-rajeev-mathew-217561317' },
-    { name: 'Sairaj', role: 'Member', subsystem: 'Media', image: sairaj, linkedIn: 'https://www.linkedin.com/in/sairajpatil6015' },
-    { name: 'Abir Saha', role: 'Member', subsystem: 'Structures', image: abir_saha, linkedIn: 'https://www.linkedin.com/in/abir-saha-b90798324' },
-    { name: 'Dhanasree', role: 'Member', subsystem: 'Aerodynamics', image: dhanasree, linkedIn: 'https://www.linkedin.com/in/dhanasree-s-7a1439370' },
-    { name: 'R Adithya', role: 'Avionics Lead', subsystem: 'Avionics', image: R_Adithya, linkedIn: 'http://linkedin.com/in/adithyar976' },
-    { name: 'Shubhang Galagali', role: 'Simulator Lead', subsystem: 'Avionics', image: shubhang_galagali, linkedIn: 'https://www.linkedin.com/in/galavashubhang' },
-    { name: 'Chetan Kumar Sah', role: 'Drone Lead', subsystem: 'Avionics', image: chetan_kumar_sah, linkedIn: 'https://www.linkedin.com/in/sahchetan' },
-    { name: 'Soham Jain', role: 'Drone Co-Lead', subsystem: 'Avionics', image: soham_anand_jain, linkedIn: 'https://www.linkedin.com/in/soham-anand-jain/' },
-    { name: 'Ryan Thomas', role: 'Member', subsystem: 'Structures', image: ryan_varghese_thomas, linkedIn: 'https://www.linkedin.com/in/ryanthomas2005/' },
-    { name: 'Abhinay P A', role: 'Marketing Lead', subsystem: 'Marketing', image: abhinay_p_a, linkedIn: 'https://www.linkedin.com/in/abhinaypa101' },
-    { name: 'Tejaswini Magani', role: 'Member', subsystem: 'Avionics', image: tejaswini_magani, linkedIn: 'https://www.linkedin.com/in/magani-tejaswini-a70a68346' },
-    { name: 'Aadhithya RK', role: 'Member', subsystem: 'Aerodynamics', image: aadhithya_r_k, linkedIn: 'https://www.linkedin.com/in/aadhithya-karthik-558b57382' },
-    { name: 'Nandeesh Trivedi', role: 'Aerodynamics Lead', subsystem: 'Aerodynamics', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308' },
-    { name: 'Vedant Sabnis', role: 'CFD Lead', subsystem: 'Aerodynamics', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
-    { name: 'Pratham P Palankar', role: 'Aerodynamics Design Lead', subsystem: 'Aerodynamics', image: pratham_p_palankar, linkedIn: 'https://www.linkedin.com/in/pratham-palankar-277421293' },
-    { name: 'Nitesh ', role: 'LG Lead', subsystem: 'Structures', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
-    { name: 'Anindith B L', role: 'Manufacturing Lead', subsystem: 'Structures', image: anindith, linkedIn: 'https://www.linkedin.com/in/anindithbl' },
-    { name: 'Shubham Shah', role: 'Member', subsystem: 'Aerodynamics', image: Shubham_Shah, linkedIn: 'https://www.linkedin.com/in/shubham-shah-445ab9312?utm_source=share_via&utm_content=profile&utm_medium=member_android' },
-    { name: 'Harihara Moorthy', role: 'Member', subsystem: 'Structures', image: Harihara_Moorthy, linkedIn: 'https://www.linkedin.com/in/sri-harihara-moorthy-r-8b5b263a6?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app' },
-    { name: 'Pratham Rao', role: 'Member', subsystem: 'Avionics', image: Pratham_Rao, linkedIn: 'https://www.linkedin.com/in/pratham-rao-pr' },
-
-  ];
+  // 2. Merge them properly with their respective static sections
+  const allHeads = mergeArrays(staticTeamHeads, dynamicHeads);
+  const allMentors = mergeArrays(staticStudentMentors, dynamicMentors);
+  const allSubsystemMembers = mergeArrays(staticRawMembersData, dynamicSubsystemMembers);
 
   const categories = ['Aerodynamics', 'Structures', 'Avionics', 'Marketing', 'Media', 'Web Team'];
 
+  // 3. Filter only the merged subsystem array for the active category tabs
   const getFilteredData = (sub) => {
-    const subsystemMembers = rawMembersData.filter(m => m.subsystem === sub);
+    const subsystemMembers = allSubsystemMembers.filter(m => m.subsystem === sub);
 
     const leads = subsystemMembers.filter(m => {
-      const isLeadByRole = m.role.toLowerCase().includes('lead') || m.role.toLowerCase().includes('head');
-      // Add Darshan and Aryan manually to the leads category via their names
-      const isManualLead = m.name === 'Darshan Upadhye' || m.name === 'Aryan Bokolia';
-
-      return isLeadByRole || isManualLead;
+      const roleLower = (m.role || '').toLowerCase();
+      return roleLower.includes('lead') || roleLower.includes('head');
     });
 
     const members = subsystemMembers.filter(m => {
-      const isLeadByRole = m.role.toLowerCase().includes('lead') || m.role.toLowerCase().includes('head');
-      const isManualLead = m.name === 'Aryan Bokolia' || m.name === 'Darshan Upadhye';
-
-      // Exclude them from the "members" list so they aren't duplicated
-      return !isLeadByRole && !isManualLead;
+      const roleLower = (m.role || '').toLowerCase();
+      return !roleLower.includes('lead') && !roleLower.includes('head');
     });
 
     return { leads, members };
@@ -159,10 +181,13 @@ const Team = () => {
         <section className="section-group">
           <h2 className="section-label">TEAM HEADS</h2>
           <div className="row heads-row">
-            {teamHeads.map((m, i) => <MemberCard key={i} m={m} />)}
+            {/* Map over the newly merged allHeads array */}
+            {allHeads.map((m, i) => <MemberCard key={`head-${i}`} m={m} />)}
           </div>
-          <div className="row leads-row">
-            {operationalLeads.map((m, i) => <MemberCard key={i} m={m} />)}
+          <h3 className="subsection-label">STUDENT MENTORS</h3>
+          <div className="row mentors-row">
+            {/* Map over the newly merged allMentors array */}
+            {allMentors.map((m, i) => <MemberCard key={`mentor-${i}`} m={m} />)}
           </div>
         </section>
 
@@ -183,13 +208,13 @@ const Team = () => {
           </div>
 
           <div className="row leads-above">
-            {leads.map((m, i) => <MemberCard key={i} m={m} />)}
+            {leads.map((m, i) => <MemberCard key={`lead-${i}`} m={m} />)}
           </div>
 
           <div className="figma-divider"></div>
 
           <div className="row members-below">
-            {members.map((m, i) => <MemberCard key={i} m={m} />)}
+            {members.map((m, i) => <MemberCard key={`member-${i}`} m={m} />)}
           </div>
         </section>
       </div>
