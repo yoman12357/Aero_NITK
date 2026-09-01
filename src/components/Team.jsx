@@ -44,6 +44,7 @@ import linkedInLogo from '../images/linkedIn_logo.png';
 const staticTeamHeads = [
   { name: 'VARSHITH.J', role: 'Convener', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a/?isSelfProfile=false' },
   { name: 'NANDEESH TRIVEDI', role: 'Captain', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308/?isSelfProfile=false' },
+  { name: 'VEDANT SABNIS', role: 'Joint Convener', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
   { name: 'R.ADITHYA', role: 'Vice Captain', image: R_Adithya, linkedIn: 'https://www.linkedin.com/in/adithyar976/' },
   { name: 'TIRTH PATEL', role: 'Chairperson', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
   { name: 'NITESH.P', role: 'Operations Lead', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292/?isSelfProfile=false' },
@@ -52,7 +53,6 @@ const staticTeamHeads = [
 ];
 
 const staticStudentMentors = [
-  { name: 'VEDANT SABNIS', role: 'Student Mentor', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
   { name: 'SHUBHANG GALAGALI', role: 'Student Mentor', image: shubhang_galagali, linkedIn: 'https://www.linkedin.com/in/galavashubhang' },
   { name: 'SOHAM JAIN', role: 'Student Mentor', image: soham_anand_jain, linkedIn: 'https://www.linkedin.com/in/soham-anand-jain/' },
   { name: 'CHETAN KUMAR SAH', role: 'Student Mentor', image: chetan_kumar_sah, linkedIn: 'https://www.linkedin.com/in/sahchetan' }

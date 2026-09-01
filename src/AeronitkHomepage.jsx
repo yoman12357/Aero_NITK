@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import { db, collection, addDoc, serverTimestamp } from './firebase';
 import './AeronitkHomepage.css';
 
-import aboutDrone from './images/drone.png';
 import plane1 from './images/plane1.png';
 import plane2 from './images/plane2.png';
 import plane3 from './images/plane3.png';
@@ -173,7 +172,7 @@ const AeroNITKHomepage = () => {
       </Popup>
       */}
 
-      <section className="about-section" id="about">
+      {/* <section className="about-section" id="about">
         <div className="about-content">
           <div className="about-text">
             <h2>ABOUT</h2>
@@ -184,7 +183,7 @@ const AeroNITKHomepage = () => {
             <img src={aboutDrone} alt="Aero NITK Drone" />
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className="carousel-section">
         <UltimateCarousel />
