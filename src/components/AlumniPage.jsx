@@ -42,21 +42,53 @@
 
 // export default AlumniPage;
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './AlumniPage.css';
 import Footer from './footer.jsx';
 import { Helmet } from 'react-helmet-async';
-import alumniImg1 from '../images/alumni/alumni1.png';
-import alumniImg2 from '../images/alumni/alumni2.jpeg';
-
+import { getStoredAlumni, getStoredBatches, initialBatchCovers, ALUMNI_UPDATED_EVENT } from '../data/alumniData.js';
 
 const AlumniPage = () => {
+    const [alumniData, setAlumniData] = useState(getStoredAlumni);
+    const [batches, setBatches] = useState(getStoredBatches);
 
-    const alumniBatches = [
-        { id: '2024', title: '2024', img: alumniImg1 },
-        { id: '2025', title: '2025', img: alumniImg2 },
-    ];
+    useEffect(() => {
+        const handleUpdate = () => {
+            setAlumniData(getStoredAlumni());
+            setBatches(getStoredBatches());
+        };
+        window.addEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
+        window.addEventListener('storage', handleUpdate);
+        return () => {
+            window.removeEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
+            window.removeEventListener('storage', handleUpdate);
+        };
+    }, []);
+
+    // Combine batch folders with any additional batches present in alumni data
+    const batchMap = new Map();
+    batches.forEach(b => {
+        batchMap.set(b.id || b.year, {
+            id: b.id || b.year,
+            title: b.year || b.name || b.id,
+            img: b.cover || initialBatchCovers[b.id] || initialBatchCovers['2025'],
+            count: (alumniData[b.id] || alumniData[b.year] || []).length
+        });
+    });
+
+    Object.keys(alumniData).forEach(key => {
+        if (!batchMap.has(key)) {
+            batchMap.set(key, {
+                id: key,
+                title: key,
+                img: initialBatchCovers[key] || initialBatchCovers['2025'],
+                count: (alumniData[key] || []).length
+            });
+        }
+    });
+
+    const alumniBatches = Array.from(batchMap.values()).sort((a, b) => b.id.localeCompare(a.id));
 
     return (
         <div className="alumni-page-wrapper">

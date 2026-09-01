@@ -487,7 +487,7 @@
 
 .admin-dashboard-add-btn {
 	background-color: #5af12c;
-	color: #000;
+	color: #000 !important;
 	border: none;
 	padding: 8px 16px;
 	border-radius: 6px;
@@ -495,6 +495,12 @@
 	font-size: 0.95rem;
 	cursor: pointer;
 	transition: opacity 0.2s;
+	display: inline-flex;
+	align-items: center;
+}
+
+.admin-dashboard-add-btn svg {
+	color: #000 !important;
 }
 
 .admin-dashboard-add-btn:hover {
@@ -1349,3 +1355,843 @@
 		margin: 0 auto 36px;
 	}
 }
+
+/* ==========================================================================
+   ALUMNI DASHBOARD & HOME SPOTLIGHT STYLING
+   ========================================================================== */
+
+.admin-dashboard-home-alumni-section,
+.admin-dashboard-alumni-section {
+	margin-top: 40px;
+	width: 100%;
+}
+
+.admin-dashboard-home-alumni-section .admin-dashboard-section-header,
+.admin-dashboard-alumni-section .admin-dashboard-section-header {
+	max-width: 100%;
+}
+
+.admin-dashboard-alumni-count-pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 12px;
+	border-radius: 999px;
+	background: rgba(143, 198, 255, 0.12);
+	border: 1px solid rgba(143, 198, 255, 0.28);
+	color: #8fc6ff;
+	font-size: 0.8rem;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+.admin-dashboard-alumni-link-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 14px;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	color: #fff;
+	font-size: 0.85rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.admin-dashboard-alumni-link-btn:hover {
+	background: rgba(255, 255, 255, 0.16);
+	border-color: rgba(255, 255, 255, 0.35);
+	transform: translateY(-1px);
+}
+
+.admin-dashboard-alumni-secondary-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 14px;
+	border-radius: 8px;
+	background: rgba(77, 124, 255, 0.15);
+	border: 1px solid rgba(77, 124, 255, 0.35);
+	color: #8fc6ff;
+	font-size: 0.85rem;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background 0.2s, transform 0.2s;
+}
+
+.admin-dashboard-alumni-secondary-btn:hover {
+	background: rgba(77, 124, 255, 0.28);
+	transform: translateY(-1px);
+}
+
+/* Home Tab - Batch Cards */
+.admin-dashboard-home-batch-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 20px;
+	margin: 20px 0 28px;
+}
+
+.admin-dashboard-home-batch-card {
+	border-radius: 20px;
+	overflow: hidden;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: #111;
+	cursor: pointer;
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+	transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.admin-dashboard-home-batch-card:hover {
+	transform: translateY(-3px);
+	border-color: rgba(77, 124, 255, 0.6);
+	box-shadow: 0 14px 32px rgba(42, 119, 255, 0.2);
+}
+
+.admin-dashboard-home-batch-bg {
+	height: 170px;
+	background-size: cover;
+	background-position: center;
+	position: relative;
+}
+
+.admin-dashboard-home-batch-overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.85) 100%);
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+.admin-dashboard-home-batch-tag {
+	font-size: 0.7rem;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #8fc6ff;
+	font-weight: 700;
+	margin-bottom: 2px;
+}
+
+.admin-dashboard-home-batch-overlay h4 {
+	margin: 0;
+	font-size: 1.4rem;
+	font-weight: 800;
+	color: #fff;
+}
+
+.admin-dashboard-home-batch-overlay p {
+	margin: 2px 0 10px;
+	font-size: 0.82rem;
+	color: rgba(255, 255, 255, 0.75);
+}
+
+.admin-dashboard-home-batch-actions {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.admin-dashboard-home-batch-btn {
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: #5af12c;
+}
+
+.admin-dashboard-home-batch-public-link {
+	font-size: 0.78rem;
+	color: rgba(255, 255, 255, 0.8);
+	text-decoration: none;
+	padding: 3px 8px;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.12);
+	backdrop-filter: blur(4px);
+	transition: background 0.2s, color 0.2s;
+}
+
+.admin-dashboard-home-batch-public-link:hover {
+	background: rgba(255, 255, 255, 0.25);
+	color: #fff;
+}
+
+/* Home Tab - Featured Alumni Grid */
+.admin-dashboard-home-featured-wrap {
+	background: linear-gradient(180deg, rgba(20, 20, 20, 0.96), rgba(11, 11, 11, 0.92));
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	border-radius: 20px;
+	padding: 20px;
+}
+
+.admin-dashboard-home-featured-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-dashboard-home-featured-header h4 {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: #fff;
+}
+
+.admin-dashboard-home-view-more {
+	color: #78bcff;
+	font-size: 0.84rem;
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.admin-dashboard-home-view-more:hover {
+	color: #a6d2ff;
+	text-decoration: underline;
+}
+
+.admin-dashboard-home-alumni-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+	gap: 14px;
+}
+
+.admin-dashboard-home-alumni-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 14px;
+	background: rgba(255, 255, 255, 0.03);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 14px;
+	transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.admin-dashboard-home-alumni-item:hover {
+	background: rgba(255, 255, 255, 0.07);
+	border-color: rgba(255, 255, 255, 0.2);
+	transform: translateY(-2px);
+}
+
+.admin-dashboard-home-alumni-avatar {
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	overflow: hidden;
+	flex-shrink: 0;
+	background: #1e2430;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-dashboard-home-alumni-avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.admin-dashboard-home-alumni-info {
+	min-width: 0;
+	flex: 1;
+}
+
+.admin-dashboard-home-alumni-name {
+	display: block;
+	font-size: 0.88rem;
+	font-weight: 700;
+	color: #fff;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.admin-dashboard-home-alumni-meta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 4px;
+}
+
+.admin-dashboard-home-alumni-badge {
+	font-size: 0.72rem;
+	color: #8fc6ff;
+	background: rgba(143, 198, 255, 0.12);
+	padding: 1px 6px;
+	border-radius: 4px;
+}
+
+.admin-dashboard-home-alumni-linkedin {
+	color: #0a66c2;
+	font-size: 0.95rem;
+	display: inline-flex;
+	align-items: center;
+	transition: transform 0.2s;
+}
+
+.admin-dashboard-home-alumni-linkedin:hover {
+	transform: scale(1.25);
+}
+
+/* Alumni Batch Folders (Gallery-like) */
+.admin-dashboard-alumni-folder-card .admin-dashboard-gallery-folder-cover {
+	border-radius: 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.25rem;
+	font-weight: 800;
+	color: #fff;
+	background: linear-gradient(135deg, rgba(77, 124, 255, 0.4), rgba(168, 85, 247, 0.3));
+	border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.admin-dashboard-alumni-hero-cover {
+	width: 80px;
+	height: 80px;
+	border-radius: 16px;
+	background-size: cover;
+	background-position: center;
+	border: 2px solid rgba(77, 124, 255, 0.4);
+	box-shadow: 0 0 16px rgba(77, 124, 255, 0.2);
+	flex-shrink: 0;
+}
+
+.admin-dashboard-alumni-hero-add-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 7px;
+	padding: 9px 18px;
+	border-radius: 10px;
+	background-color: #5af12c;
+	border: none;
+	color: #000 !important;
+	font: inherit;
+	font-size: 0.9rem;
+	font-weight: 700 !important;
+	cursor: pointer;
+	line-height: 1;
+	transition: background-color 0.2s, transform 0.15s, opacity 0.2s;
+	white-space: nowrap;
+}
+
+.admin-dashboard-alumni-hero-add-btn span {
+	color: #000 !important;
+	font-weight: 700 !important;
+	letter-spacing: -0.01em;
+	line-height: 1;
+}
+
+.admin-dashboard-alumni-hero-add-btn svg {
+	color: #000 !important;
+	display: inline-block;
+	vertical-align: middle;
+	flex-shrink: 0;
+}
+
+.admin-dashboard-alumni-hero-add-btn:hover {
+	background-color: #4ce61f;
+	transform: translateY(-1px);
+	opacity: 0.95;
+}
+
+.admin-dashboard-alumni-hero-add-btn:active {
+	transform: translateY(0);
+}
+
+.admin-dashboard-alumni-batch-card:hover {
+	border-color: rgba(77, 124, 255, 0.5);
+	transform: translateY(-2px);
+}
+
+.admin-dashboard-alumni-batch-card.is-selected {
+	border-color: rgba(90, 241, 44, 0.8);
+	background: linear-gradient(180deg, rgba(25, 36, 26, 0.96), rgba(14, 20, 14, 0.92));
+	box-shadow: 0 0 0 1px rgba(90, 241, 44, 0.3);
+}
+
+.admin-dashboard-alumni-batch-thumb {
+	width: 68px;
+	height: 68px;
+	border-radius: 14px;
+	background-size: cover;
+	background-position: center;
+	flex-shrink: 0;
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+}
+
+.admin-dashboard-alumni-batch-thumb-text {
+	position: absolute;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.45);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.72rem;
+	font-weight: 800;
+	color: #fff;
+	text-align: center;
+}
+
+.admin-dashboard-alumni-batch-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.admin-dashboard-alumni-batch-info h4 {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 800;
+	color: #fff;
+}
+
+.admin-dashboard-alumni-batch-info p {
+	margin: 2px 0 6px;
+	font-size: 0.78rem;
+	color: rgba(255, 255, 255, 0.65);
+}
+
+.admin-dashboard-alumni-batch-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.admin-dashboard-alumni-batch-filter-tag {
+	font-size: 0.72rem;
+	font-weight: 700;
+	color: #78bcff;
+}
+
+.admin-dashboard-alumni-batch-view-link {
+	font-size: 0.72rem;
+	color: rgba(255, 255, 255, 0.7);
+	text-decoration: none;
+	padding: 2px 6px;
+	border-radius: 4px;
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-dashboard-alumni-batch-view-link:hover {
+	color: #fff;
+	background: rgba(255, 255, 255, 0.18);
+}
+
+/* Toolbar: Search and Filter Pills */
+.admin-dashboard-alumni-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+	width: 100%;
+}
+
+.admin-dashboard-alumni-search {
+	position: relative;
+	flex: 1;
+	min-width: 280px;
+	max-width: 480px;
+}
+
+.admin-dashboard-alumni-search-icon {
+	position: absolute;
+	left: 14px;
+	top: 50%;
+	transform: translateY(-50%);
+	color: rgba(255, 255, 255, 0.45);
+	font-size: 0.9rem;
+	pointer-events: none;
+}
+
+.admin-dashboard-alumni-search input {
+	width: 100%;
+	padding: 11px 38px 11px 40px;
+	border-radius: 14px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.05);
+	color: #fff;
+	font: inherit;
+	font-size: 0.92rem;
+	outline: none;
+	transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.admin-dashboard-alumni-search input:focus {
+	border-color: #4d7cff;
+	background: rgba(255, 255, 255, 0.09);
+	box-shadow: 0 0 0 3px rgba(77, 124, 255, 0.18);
+}
+
+.admin-dashboard-alumni-clear-search {
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 1.3rem;
+	line-height: 1;
+	cursor: pointer;
+	padding: 2px 6px;
+	border-radius: 50%;
+	transition: color 0.2s;
+}
+
+.admin-dashboard-alumni-clear-search:hover {
+	color: #fff;
+}
+
+.admin-dashboard-alumni-pills {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.admin-dashboard-alumni-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	background: rgba(255, 255, 255, 0.04);
+	color: rgba(255, 255, 255, 0.85);
+	font: inherit;
+	font-size: 0.86rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-dashboard-alumni-pill:hover {
+	background: rgba(255, 255, 255, 0.12);
+	border-color: rgba(255, 255, 255, 0.3);
+	color: #fff;
+	transform: translateY(-1px);
+}
+
+.admin-dashboard-alumni-pill.is-active {
+	background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+	border-color: #60a5fa;
+	color: #fff;
+	font-weight: 700;
+	box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4), 0 0 10px rgba(96, 165, 250, 0.25);
+}
+
+.admin-dashboard-alumni-pill-count {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1px 7px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.15);
+	font-size: 0.74rem;
+	font-weight: 700;
+	color: inherit;
+}
+
+.admin-dashboard-alumni-pill.is-active .admin-dashboard-alumni-pill-count {
+	background: rgba(255, 255, 255, 0.28);
+}
+
+/* Cards Grid */
+.admin-dashboard-alumni-cards-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+	gap: 20px;
+	width: 100%;
+}
+
+.admin-dashboard-alumni-card {
+	border-radius: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.13);
+	background: linear-gradient(180deg, rgba(22, 27, 38, 0.98), rgba(12, 16, 24, 0.98));
+	padding: 18px;
+	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 16px;
+	transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
+}
+
+.admin-dashboard-alumni-card:hover {
+	border-color: rgba(77, 124, 255, 0.45);
+	transform: translateY(-3px);
+	box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45), 0 0 20px rgba(77, 124, 255, 0.14);
+}
+
+.admin-dashboard-alumni-card-top {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+}
+
+.admin-dashboard-alumni-avatar {
+	width: 58px;
+	height: 58px;
+	border-radius: 50%;
+	overflow: hidden;
+	flex-shrink: 0;
+	background: #1a2233;
+	border: 2px solid rgba(77, 124, 255, 0.35);
+	box-shadow: 0 0 12px rgba(77, 124, 255, 0.15);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.admin-dashboard-alumni-avatar img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.admin-dashboard-alumni-avatar-fallback {
+	width: 100%;
+	height: 100%;
+	color: rgba(255, 255, 255, 0.35);
+}
+
+.admin-dashboard-alumni-card-details {
+	flex: 1;
+	min-width: 0;
+}
+
+.admin-dashboard-alumni-card-name-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 4px;
+}
+
+.admin-dashboard-alumni-name {
+	margin: 0;
+	font-size: 1.06rem;
+	font-weight: 700;
+	color: #fff;
+	line-height: 1.3;
+	letter-spacing: -0.01em;
+}
+
+.admin-dashboard-alumni-batch-badge {
+	font-size: 0.74rem;
+	font-weight: 700;
+	color: #8fc6ff;
+	background: rgba(77, 124, 255, 0.14);
+	border: 1px solid rgba(77, 124, 255, 0.28);
+	padding: 2px 9px;
+	border-radius: 999px;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.admin-dashboard-alumni-batch-badge.batch-2025 {
+	background: rgba(59, 130, 246, 0.16);
+	border-color: rgba(59, 130, 246, 0.35);
+	color: #60a5fa;
+}
+
+.admin-dashboard-alumni-batch-badge.batch-2024 {
+	background: rgba(168, 85, 247, 0.16);
+	border-color: rgba(168, 85, 247, 0.35);
+	color: #c084fc;
+}
+
+.admin-dashboard-alumni-role {
+	margin: 2px 0 8px;
+	font-size: 0.82rem;
+	color: rgba(255, 255, 255, 0.72);
+	line-height: 1.35;
+}
+
+.admin-dashboard-alumni-role.placeholder-role {
+	color: rgba(255, 255, 255, 0.45);
+	font-style: italic;
+}
+
+.admin-dashboard-alumni-linkedin-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: rgba(10, 102, 194, 0.14);
+	border: 1px solid rgba(10, 102, 194, 0.32);
+	color: #60a5fa;
+	padding: 4px 10px;
+	border-radius: 7px;
+	text-decoration: none;
+	font-size: 0.78rem;
+	font-weight: 600;
+	margin-top: 4px;
+	transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.admin-dashboard-alumni-linkedin-link:hover {
+	background: rgba(10, 102, 194, 0.3);
+	border-color: rgba(10, 102, 194, 0.55);
+	color: #fff;
+	transform: translateY(-1px);
+}
+
+.admin-dashboard-alumni-no-linkedin {
+	display: inline-block;
+	font-size: 0.75rem;
+	color: rgba(255, 255, 255, 0.35);
+	font-style: italic;
+	margin-top: 4px;
+}
+
+/* Card Bottom Actions: Edit & Delete */
+.admin-dashboard-alumni-card-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	padding-top: 12px;
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-dashboard-alumni-card-action-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	border-radius: 9px;
+	font: inherit;
+	font-size: 0.8rem;
+	font-weight: 600;
+	cursor: pointer;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	background: rgba(255, 255, 255, 0.05);
+	color: rgba(255, 255, 255, 0.85);
+	transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-dashboard-alumni-card-action-btn.edit-btn {
+	background: rgba(77, 124, 255, 0.09);
+	border-color: rgba(77, 124, 255, 0.24);
+	color: #8fc6ff;
+}
+
+.admin-dashboard-alumni-card-action-btn.edit-btn:hover {
+	background: rgba(77, 124, 255, 0.24);
+	border-color: rgba(77, 124, 255, 0.45);
+	color: #fff;
+	transform: translateY(-1px);
+}
+
+.admin-dashboard-alumni-card-action-btn.delete-btn {
+	background: rgba(255, 67, 54, 0.08);
+	border-color: rgba(255, 67, 54, 0.22);
+	color: #ff867c;
+}
+
+.admin-dashboard-alumni-card-action-btn.delete-btn:hover {
+	background: rgba(255, 67, 54, 0.24);
+	border-color: rgba(255, 67, 54, 0.45);
+	color: #fff;
+	transform: translateY(-1px);
+}
+
+/* Modal Upload Specifics */
+.admin-dashboard-alumni-upload-row {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.admin-dashboard-alumni-avatar-preview {
+	width: 54px;
+	height: 54px;
+	border-radius: 50%;
+	overflow: hidden;
+	background: #182030;
+	border: 2px solid rgba(255, 255, 255, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.admin-dashboard-alumni-avatar-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.admin-dashboard-alumni-placeholder-icon {
+	width: 100%;
+	height: 100%;
+	color: rgba(255, 255, 255, 0.3);
+}
+
+.admin-dashboard-alumni-remove-photo {
+	background: none;
+	border: none;
+	color: #ff6b6b;
+	font-size: 0.82rem;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.admin-dashboard-modal-kicker {
+	margin: 0 0 4px;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: #8fc6ff;
+}
+
+.admin-dashboard-modal-close {
+	background: none;
+	border: none;
+	color: rgba(255, 255, 255, 0.6);
+	font-size: 1.2rem;
+	cursor: pointer;
+	padding: 6px;
+	border-radius: 8px;
+	transition: color 0.2s, background 0.2s;
+}
+
+.admin-dashboard-modal-close:hover {
+	color: #fff;
+	background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+	.admin-dashboard-home-batch-cards {
+		grid-template-columns: 1fr;
+	}
+
+	.admin-dashboard-home-alumni-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.admin-dashboard-alumni-cards-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.admin-dashboard-alumni-toolbar {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.admin-dashboard-alumni-search {
+		max-width: 100%;
+	}
+}

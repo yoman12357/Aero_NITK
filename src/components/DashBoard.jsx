@@ -21,8 +21,11 @@ import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
 import GalleryTab from './Dashboard/views/GalleryTab.jsx';
 import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
 import TeamsTab from './Dashboard/views/TeamsTab.jsx';
+import AlumniTab from './Dashboard/views/AlumniTab.jsx';
+import AlumniFolderPage from './Dashboard/views/AlumniFolderPage.jsx';
 
 import { useGallery } from './Dashboard/hooks/useGallery.js';
+import { useAlumni } from './Dashboard/hooks/useAlumni.js';
 
 // Firebase auth import
 import { auth } from '../firebase';
@@ -82,6 +85,17 @@ function AdminDashboard() {
         handleUploadImages,
         handleDeleteImage,
     } = useGallery();
+
+    const {
+        batches: alumniBatches,
+        alumniData,
+        handleAddBatch: handleAddAlumniBatch,
+        handleEditBatch: handleEditAlumniBatch,
+        handleDeleteBatch: handleDeleteAlumniBatch,
+        handleAddMember: handleAddAlumniMember,
+        handleEditMember: handleEditAlumniMember,
+        handleDeleteMember: handleDeleteAlumniMember
+    } = useAlumni();
 
     // Open modal to add a new event
     const handleOpenAdd = () => {
@@ -233,6 +247,17 @@ function AdminDashboard() {
                         <TeamsTab />
                     )}
 
+                    {activeTab === 'alumni' && !location.pathname.includes('/alumni/') && (
+                        <AlumniTab
+                            batches={alumniBatches}
+                            alumniData={alumniData}
+                            onAddBatch={handleAddAlumniBatch}
+                            onOpenBatch={(batchId) => navigate(`/dashboard/alumni/${batchId}`)}
+                            onEditBatch={handleEditAlumniBatch}
+                            onDeleteBatch={handleDeleteAlumniBatch}
+                        />
+                    )}
+
                     {activeTab === 'gallery' && !location.pathname.includes('/gallery/') && (
                         <GalleryTab
                             folders={folders}
@@ -256,6 +281,21 @@ function AdminDashboard() {
                                     onDeleteFolder={handleDeleteFolder}
                                     onUploadImages={handleUploadImages}
                                     onDeleteImage={handleDeleteImage}
+                                />
+                            )}
+                        />
+                        <Route
+                            path="alumni/:batchId"
+                            element={(
+                                <AlumniFolderPage
+                                    batches={alumniBatches}
+                                    alumniData={alumniData}
+                                    onBack={() => navigate('/dashboard/alumni')}
+                                    onEditBatch={handleEditAlumniBatch}
+                                    onDeleteBatch={handleDeleteAlumniBatch}
+                                    onAddAlumni={handleAddAlumniMember}
+                                    onEditAlumni={handleEditAlumniMember}
+                                    onDeleteAlumni={handleDeleteAlumniMember}
                                 />
                             )}
                         />
