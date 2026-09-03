@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaTimes, FaFolder, FaImage } from 'react-icons/fa';
+import { FaTimes, FaImage } from 'react-icons/fa';
 
 function BatchFolderModal({
     isOpen,
@@ -11,6 +11,7 @@ function BatchFolderModal({
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [coverPreview, setCoverPreview] = useState(null);
+    const [coverFile, setCoverFile] = useState(null);
     const [coverError, setCoverError] = useState(false);
 
     useEffect(() => {
@@ -25,6 +26,7 @@ function BatchFolderModal({
             setDescription('');
             setCoverPreview(null);
         }
+        setCoverFile(null);
         setCoverError(false);
     }, [editingBatch, isOpen]);
 
@@ -33,6 +35,7 @@ function BatchFolderModal({
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
+            setCoverFile(file);
             const reader = new FileReader();
             reader.onload = () => {
                 setCoverPreview(reader.result);
@@ -60,7 +63,8 @@ function BatchFolderModal({
             year: year.trim(),
             name: name.trim() || `Batch ${year.trim()}`,
             description: description.trim(),
-            cover: coverPreview
+            cover: coverPreview,
+            coverFile: coverFile
         });
 
         onClose();
@@ -90,7 +94,6 @@ function BatchFolderModal({
                 </div>
 
                 <form className="admin-dashboard-modal-form" onSubmit={handleSubmit}>
-                    {/* Cover Image Upload & Preview */}
                     <div className="admin-dashboard-modal-field">
                         <span>Batch Cover Image</span>
                         <div
@@ -129,6 +132,7 @@ function BatchFolderModal({
                                     style={{ padding: '0 16px', borderRadius: '14px' }}
                                     onClick={() => {
                                         setCoverPreview(null);
+                                        setCoverFile(null);
                                         setCoverError(false);
                                     }}
                                 >
@@ -138,7 +142,6 @@ function BatchFolderModal({
                         </div>
                     </div>
 
-                    {/* Batch Year */}
                     <div className="admin-dashboard-modal-row">
                         <label className="admin-dashboard-modal-field">
                             <span>Graduation Year *</span>
@@ -163,7 +166,6 @@ function BatchFolderModal({
                         </label>
                     </div>
 
-                    {/* Description */}
                     <label className="admin-dashboard-modal-field">
                         <span>Description</span>
                         <textarea
@@ -174,7 +176,6 @@ function BatchFolderModal({
                         />
                     </label>
 
-                    {/* Modal Actions */}
                     <div className="admin-dashboard-modal-actions">
                         <button
                             type="button"

@@ -1,15 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaLinkedin, FaUserCircle, FaPlus, FaExternalLinkAlt, FaGraduationCap } from 'react-icons/fa';
 import Icon from '../components/Icon.jsx';
 import { statDefinitions, quickActions } from '../../dashboardData.js';
-import {
-    getStoredAlumni,
-    addAlumni,
-    ALUMNI_UPDATED_EVENT,
-    initialBatchCovers
-} from '../../../data/alumniData.js';
 import AlumniModal from '../components/AlumniModal.jsx';
+
+const DEFAULT_BATCH_COVER = 'https://via.placeholder.com/604x342?text=Batch';
 
 /**
  * Home tab — stat cards grid, quick actions grid, and Alumni Spotlight section.
@@ -20,51 +16,52 @@ import AlumniModal from '../components/AlumniModal.jsx';
  *   regCounts: Object|null,
  *   regLoading: boolean,
  *   onAddEvent: () => void,
+ *   alumniBatches: Array,
+ *   alumniData: Object,
+ *   onAddAlumniMember: (batchId: string, memberData: Object) => void,
  * }} props
  */
-function HomeTab({ events, eventsLoading, regCounts, regLoading, onAddEvent }) {
+function HomeTab({
+    events,
+    eventsLoading,
+    regCounts,
+    regLoading,
+    onAddEvent,
+    alumniBatches = [],
+    alumniData = {},
+    onAddAlumniMember
+}) {
     const navigate = useNavigate();
-    const [alumniData, setAlumniData] = useState(getStoredAlumni);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-    useEffect(() => {
-        const handleUpdate = () => {
-            setAlumniData(getStoredAlumni());
-        };
-        window.addEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
-        window.addEventListener('storage', handleUpdate);
-        return () => {
-            window.removeEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
-            window.removeEventListener('storage', handleUpdate);
-        };
-    }, []);
-
     const batches = useMemo(() => {
-        return Object.keys(alumniData).sort((a, b) => b.localeCompare(a));
-    }, [alumniData]);
+        return [...alumniBatches].sort((a, b) => (b.year || b.id || '').localeCompare(a.year || a.id || ''));
+    }, [alumniBatches]);
 
     const totalAlumniCount = useMemo(() => {
-        let count = 0;
-        batches.forEach(b => {
-            count += (alumniData[b] || []).length;
-        });
-        return count;
+        return batches.reduce((sum, b) => sum + (b.count || (alumniData[b.id] || alumniData[b.year] || []).length), 0);
     }, [alumniData, batches]);
 
     // Get 6 featured alumni across batches
     const featuredAlumni = useMemo(() => {
         const list = [];
         batches.forEach(b => {
-            (alumniData[b] || []).forEach(m => {
-                list.push({ ...m, batch: b });
+            const members = alumniData[b.id] || alumniData[b.year] || [];
+            members.forEach(m => {
+                list.push({ ...m, batch: b.year || b.id });
             });
         });
         return list.slice(0, 6);
     }, [alumniData, batches]);
 
+    const availableBatchYears = useMemo(
+        () => batches.map(b => b.year || b.id),
+        [batches]
+    );
+
     const handleSaveAlumni = (memberData) => {
-        addAlumni(memberData);
-        setAlumniData(getStoredAlumni());
+        if (!onAddAlumniMember) return;
+        onAddAlumniMember(memberData.batch, memberData);
     };
 
     return (
@@ -178,12 +175,13 @@ function HomeTab({ events, eventsLoading, regCounts, regLoading, onAddEvent }) {
 
                 {/* Batch Showcase Cards */}
                 <div className="admin-dashboard-home-batch-cards">
-                    {batches.map(batchKey => {
-                        const count = (alumniData[batchKey] || []).length;
-                        const cover = initialBatchCovers[batchKey] || initialBatchCovers['2025'];
+                    {batches.map(batch => {
+                        const batchKey = batch.year || batch.id;
+                        const count = batch.count || (alumniData[batch.id] || alumniData[batch.year] || []).length;
+                        const cover = batch.cover || DEFAULT_BATCH_COVER;
                         return (
                             <div
-                                key={batchKey}
+                                key={batch.id}
                                 className="admin-dashboard-home-batch-card"
                                 onClick={() => navigate('/dashboard/alumni')}
                             >
@@ -274,7 +272,7 @@ function HomeTab({ events, eventsLoading, regCounts, regLoading, onAddEvent }) {
                 isOpen={isAddModalOpen}
                 onClose={() => setIsAddModalOpen(false)}
                 onSubmit={handleSaveAlumni}
-                availableBatches={batches}
+                availableBatches={availableBatchYears}
             />
         </>
     );

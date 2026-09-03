@@ -217,15 +217,18 @@ function AdminDashboard() {
                 <section className="admin-dashboard-content">
                     <HeroSection />
 
-                    {activeTab === 'home' && (
-                        <HomeTab
-                            events={events}
-                            eventsLoading={eventsLoading}
-                            regCounts={regCounts}
-                            regLoading={regLoading}
-                            onAddEvent={handleOpenAdd}
-                        />
-                    )}
+                     {activeTab === 'home' && (
+                <HomeTab
+                    events={events}
+                    eventsLoading={eventsLoading}
+                    regCounts={regCounts}
+                    regLoading={regLoading}
+                    onAddEvent={handleOpenAdd}
+                    alumniBatches={alumniBatches}
+                    alumniData={alumniData}
+                    onAddAlumniMember={handleAddAlumniMember}
+                />
+            )}
 
                     {activeTab === 'events' && (
                         <EventsTab

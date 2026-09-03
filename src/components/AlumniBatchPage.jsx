@@ -4,25 +4,33 @@ import Footer from "./footer.jsx";
 import "./AlumniPage.css";
 import { Helmet } from 'react-helmet-async';
 import ProfileCard from "./ui/ProfileCard.jsx";
-import { getStoredAlumni, ALUMNI_UPDATED_EVENT } from "../data/alumniData.js";
+import { fetchAlumniBatchDetail } from "../data/alumniData.js";
 
 const AlumniBatchPage = () => {
   const { batchId } = useParams();
-  const [alumniData, setAlumniData] = useState(getStoredAlumni);
+  const [batch, setBatch] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const handleUpdate = () => {
-      setAlumniData(getStoredAlumni());
-    };
-    window.addEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
-    window.addEventListener('storage', handleUpdate);
-    return () => {
-      window.removeEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
-      window.removeEventListener('storage', handleUpdate);
-    };
-  }, []);
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
+    (async () => {
+      try {
+        const data = await fetchAlumniBatchDetail(batchId);
+        if (isMounted) setBatch(data);
+      } catch (err) {
+        console.error('Error loading batch details:', err);
+        if (isMounted) setError('Could not load this batch. Please try again later.');
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    })();
+    return () => { isMounted = false; };
+  }, [batchId]);
 
-  const alumniList = alumniData[batchId] || [];
+  const alumniList = batch?.members || [];
 
   return (
     <div className="alumni-page-wrapper">
@@ -32,9 +40,17 @@ const AlumniBatchPage = () => {
         <link rel="canonical" href={`https://aeronitk.in/alumni/${batchId}`} />
       </Helmet>
       <main className="alumni-container">
-        <h1 className="alumni-header-text">Batch {batchId}</h1>
+        <h1 className="alumni-header-text">Batch {batch?.year || batchId}</h1>
 
-        {alumniList.length === 0 ? (
+        {loading ? (
+          <div style={{ color: '#aaa', textAlign: 'center', margin: '40px 0', fontSize: '1.1rem' }}>
+            Loading alumni...
+          </div>
+        ) : error ? (
+          <div style={{ color: '#ff6b6b', textAlign: 'center', margin: '40px 0', fontSize: '1.1rem' }}>
+            {error}
+          </div>
+        ) : alumniList.length === 0 ? (
           <div style={{ color: '#aaa', textAlign: 'center', margin: '40px 0', fontSize: '1.1rem' }}>
             No alumni records found for Batch {batchId}.
           </div>
@@ -61,4 +77,3 @@ const AlumniBatchPage = () => {
 };
 
 export default AlumniBatchPage;
-

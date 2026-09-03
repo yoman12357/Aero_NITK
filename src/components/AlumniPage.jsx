@@ -1,94 +1,35 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
-// import './AlumniPage.css';
-// import Footer from './footer.jsx';
-
-// import alumniImg1 from '../images/alumni/alumni1.png';
-// // import alumniImg2 from '../images/alumini/alumni2.png';
-
-// const AlumniPage = () => {
-//     const alumniBatches = [
-//         { id: '2024', title: '2024', img: alumniImg1 },
-//         // { id: 'BATCH', title: 'BATCH', img: alumniImg2 },
-//     ];
-
-//     return (
-//         <div className="alumni-page-wrapper">
-//             <main className="alumni-container">
-//                 <h1 className="alumni-header-text">ALUMNI</h1>
-
-//                 <div className="alumni-grid">
-//                     {alumniBatches.map((batch) => (
-//                         <Link to={`/alumni/${batch.id}`} key={batch.id} className="alumni-card-link">
-//                             <div className="alumni-card">
-//                                 <div className="alumni-card-overlay">
-//                                     <img
-//                                         src={batch.img}
-//                                         alt={`Batch ${batch.title}`}
-//                                         className="alumni-img"
-//                                         onError={(e) => { e.target.src = 'https://via.placeholder.com/604x342?text=Image+Not+Found'; }}
-//                                     />
-//                                     <div className="batch-overlay-text">{batch.title}</div>
-//                                 </div>
-//                             </div>
-//                         </Link>
-//                     ))}
-//                 </div>
-//             </main>
-//             <Footer />
-//         </div>
-//     );
-// };
-
-// export default AlumniPage;
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './AlumniPage.css';
 import Footer from './footer.jsx';
 import { Helmet } from 'react-helmet-async';
-import { getStoredAlumni, getStoredBatches, initialBatchCovers, ALUMNI_UPDATED_EVENT } from '../data/alumniData.js';
+import { fetchAlumniBatches } from '../data/alumniData.js';
+import defaultBatchCover from '../images/alumni/alumni1.png';
 
 const AlumniPage = () => {
-    const [alumniData, setAlumniData] = useState(getStoredAlumni);
-    const [batches, setBatches] = useState(getStoredBatches);
+    const [alumniBatches, setAlumniBatches] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const handleUpdate = () => {
-            setAlumniData(getStoredAlumni());
-            setBatches(getStoredBatches());
-        };
-        window.addEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
-        window.addEventListener('storage', handleUpdate);
-        return () => {
-            window.removeEventListener(ALUMNI_UPDATED_EVENT, handleUpdate);
-            window.removeEventListener('storage', handleUpdate);
-        };
+        let isMounted = true;
+        (async () => {
+            try {
+                const batches = await fetchAlumniBatches();
+                if (isMounted) {
+                    setAlumniBatches(
+                        [...batches].sort((a, b) => (b.year || '').localeCompare(a.year || ''))
+                    );
+                }
+            } catch (err) {
+                console.error('Error loading alumni batches:', err);
+                if (isMounted) setError('Could not load alumni batches. Please try again later.');
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        })();
+        return () => { isMounted = false; };
     }, []);
-
-    // Combine batch folders with any additional batches present in alumni data
-    const batchMap = new Map();
-    batches.forEach(b => {
-        batchMap.set(b.id || b.year, {
-            id: b.id || b.year,
-            title: b.year || b.name || b.id,
-            img: b.cover || initialBatchCovers[b.id] || initialBatchCovers['2025'],
-            count: (alumniData[b.id] || alumniData[b.year] || []).length
-        });
-    });
-
-    Object.keys(alumniData).forEach(key => {
-        if (!batchMap.has(key)) {
-            batchMap.set(key, {
-                id: key,
-                title: key,
-                img: initialBatchCovers[key] || initialBatchCovers['2025'],
-                count: (alumniData[key] || []).length
-            });
-        }
-    });
-
-    const alumniBatches = Array.from(batchMap.values()).sort((a, b) => b.id.localeCompare(a.id));
 
     return (
         <div className="alumni-page-wrapper">
@@ -100,27 +41,42 @@ const AlumniPage = () => {
             <main className="alumni-container">
                 <h1 className="alumni-header-text">ALUMNI</h1>
 
-                <div className="alumni-grid">
-                    {alumniBatches.map((batch) => (
-                        <Link
-                            to={`/alumni/${batch.id}`}
-                            key={batch.id}
-                            className="alumni-card-link"
-                        >
-                            <div className="alumni-card">
-                                <img
-                                    src={batch.img}
-                                    alt={`Batch ${batch.title}`}
-                                    className="alumni-img"
-                                    loading="lazy"
-                                />
-                                <div className="batch-overlay-text">
-                                    {batch.title}
+                {loading ? (
+                    <div style={{ color: '#aaa', textAlign: 'center', margin: '40px 0' }}>
+                        Loading alumni batches...
+                    </div>
+                ) : error ? (
+                    <div style={{ color: '#ff6b6b', textAlign: 'center', margin: '40px 0' }}>
+                        {error}
+                    </div>
+                ) : alumniBatches.length === 0 ? (
+                    <div style={{ color: '#aaa', textAlign: 'center', margin: '40px 0' }}>
+                        No alumni batches published yet.
+                    </div>
+                ) : (
+                    <div className="alumni-grid">
+                        {alumniBatches.map((batch) => (
+                            <Link
+                                to={`/alumni/${batch.year || batch.id}`}
+                                key={batch.id}
+                                className="alumni-card-link"
+                            >
+                                <div className="alumni-card">
+                                    <img
+                                        src={batch.cover || defaultBatchCover}
+                                        alt={`Batch ${batch.name || batch.year}`}
+                                        className="alumni-img"
+                                        loading="lazy"
+                                        onError={(e) => { e.target.src = defaultBatchCover; }}
+                                    />
+                                    <div className="batch-overlay-text">
+                                        {batch.name || batch.year}
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                            </Link>
+                        ))}
+                    </div>
+                )}
             </main>
             <Footer />
         </div>

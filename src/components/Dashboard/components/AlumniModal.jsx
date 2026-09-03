@@ -15,9 +15,25 @@ function AlumniModal({
     const [company, setCompany] = useState('');
     const [linkedin, setLinkedin] = useState('');
     const [imagePreview, setImagePreview] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
     const [imageError, setImageError] = useState(false);
 
+    // IMPORTANT: only reset the form when the modal actually OPENS or when
+    // the editing target changes — never on every re-render.
+    //
+    // Previously this depended on `editingMember`, `isOpen`, `defaultBatch`,
+    // and `availableBatches` directly. `availableBatches` has a default
+    // parameter value (`['2025', '2024']`) — when the caller doesn't pass
+    // this prop, JS creates a BRAND NEW array on every single render of
+    // this component. Typing a character calls setName(), which re-renders
+    // AlumniModal, which re-evaluates the default array, which changes
+    // reference, which re-triggers this effect, which calls setName('')
+    // and wipes out what you just typed. Depending on `editingMember?.id`
+    // (a primitive) instead of the whole object avoids the same problem
+    // for callers that pass a fresh object each render too.
     useEffect(() => {
+        if (!isOpen) return; // don't touch form state while closed
+
         if (editingMember) {
             setName(editingMember.name || '');
             setBatch(editingMember.batch || defaultBatch || '2025');
@@ -33,14 +49,17 @@ function AlumniModal({
             setLinkedin('');
             setImagePreview(null);
         }
+        setImageFile(null);
         setImageError(false);
-    }, [editingMember, isOpen, defaultBatch, availableBatches]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen, editingMember?.id]);
 
     if (!isOpen) return null;
 
     const handleFileChange = (e) => {
         const file = e.target.files?.[0];
         if (file) {
+            setImageFile(file);
             const reader = new FileReader();
             reader.onload = () => {
                 setImagePreview(reader.result);
@@ -61,7 +80,8 @@ function AlumniModal({
             role: role.trim(),
             company: company.trim(),
             linkedin: linkedin.trim(),
-            image: imagePreview
+            image: imagePreview,
+            imageFile: imageFile
         });
 
         onClose();
@@ -93,7 +113,6 @@ function AlumniModal({
                 </div>
 
                 <form className="admin-dashboard-modal-form" onSubmit={handleSubmit}>
-                    {/* Photo Upload & Preview */}
                     <div className="admin-dashboard-modal-field">
                         <span>Profile Photo</span>
                         <div className="admin-dashboard-alumni-upload-row">
@@ -123,6 +142,7 @@ function AlumniModal({
                                     className="admin-dashboard-alumni-remove-photo"
                                     onClick={() => {
                                         setImagePreview(null);
+                                        setImageFile(null);
                                         setImageError(false);
                                     }}
                                 >
@@ -132,7 +152,6 @@ function AlumniModal({
                         </div>
                     </div>
 
-                    {/* Name */}
                     <label className="admin-dashboard-modal-field">
                         <span>Full Name *</span>
                         <input
@@ -144,7 +163,6 @@ function AlumniModal({
                         />
                     </label>
 
-                    {/* Batch Selection (only if not in a specific folder) */}
                     {!defaultBatch && (
                         <label className="admin-dashboard-modal-field">
                             <span>Graduation Batch *</span>
@@ -158,7 +176,6 @@ function AlumniModal({
                         </label>
                     )}
 
-                    {/* LinkedIn URL */}
                     <label className="admin-dashboard-modal-field">
                         <span>
                             <FaLinkedin style={{ color: '#0a66c2', marginRight: '6px', verticalAlign: '-2px' }} />
@@ -172,7 +189,6 @@ function AlumniModal({
                         />
                     </label>
 
-                    {/* Role / Subsystem (Optional) */}
                     <label className="admin-dashboard-modal-field">
                         <span>Club Role / Subsystem (Optional)</span>
                         <input
@@ -183,7 +199,6 @@ function AlumniModal({
                         />
                     </label>
 
-                    {/* Actions */}
                     <div className="admin-dashboard-modal-actions">
                         <button
                             type="button"
