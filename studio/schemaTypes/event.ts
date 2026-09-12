@@ -1,84 +1,89 @@
-import { CalendarIcon } from '@sanity/icons'
-import { defineField, defineType } from 'sanity'
-
-export const event = defineType({
+export default {
   name: 'event',
-  title: 'Events',
+  title: 'Events & Registrations',
   type: 'document',
-  icon: CalendarIcon,
   fields: [
-    defineField({
+    {
       name: 'title',
-      title: 'Title',
+      title: 'Event Title',
       type: 'string',
-      validation: (rule) => rule.required().max(100),
-    }),
-    defineField({
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'subtitle',
+      title: 'Subtitle',
+      type: 'string',
+      initialValue: 'Aero NITK Registration',
+    },
+    {
       name: 'description',
       title: 'Description',
       type: 'text',
-      rows: 4,
-      validation: (rule) => rule.required().max(300),
-    }),
-    defineField({ name: 'image', title: 'Card image', type: 'image', options: { hotspot: true } }),
-    defineField({
-      name: 'registrationKey',
-      title: 'Registration source',
-      description: 'Links this event to its Firebase registration count when applicable.',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Skyverse workshop', value: 'workshop' },
-          { title: 'Wright Flight', value: 'wrightFlight' },
-          { title: 'No live registration source', value: 'none' },
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'none',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'manualParticipantCount',
-      title: 'Manual participant count',
-      description: 'Shown when no live registration source is selected.',
-      type: 'number',
-      initialValue: 0,
-      validation: (rule) => rule.min(0).integer(),
-    }),
-    defineField({
-      name: 'maxCapacity',
-      title: 'Maximum capacity',
-      type: 'number',
-      validation: (rule) => rule.min(0).integer(),
-    }),
-    defineField({
+      validation: (Rule) => Rule.required(),
+    },
+    {
       name: 'status',
-      title: 'Status',
+      title: 'Event Status',
       type: 'string',
       options: {
         list: [
-          { title: 'Open', value: 'open' },
-          { title: 'Closed', value: 'closed' },
-          { title: 'Opens soon', value: 'soon' },
-          { title: 'No badge', value: 'none' },
+          { title: 'Open (Ongoing)', value: 'open' },
+          { title: 'Opens Soon (Upcoming)', value: 'soon' },
+          { title: 'Closed (Past)', value: 'closed' },
+          { title: 'Hidden', value: 'none' },
         ],
-        layout: 'radio',
       },
       initialValue: 'soon',
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
+    },
+    {
+      name: 'registrationKey',
+      title: 'Registration Form Key',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'No Registration Form', value: 'none' },
+          { title: 'Skyverse Workshop', value: 'workshop' },
+          { title: 'Wright Flight', value: 'wrightFlight' },
+        ],
+      },
+      initialValue: 'none',
+    },
+    {
+      name: 'ctaLink',
+      title: 'Custom CTA Link (Optional)',
+      type: 'string',
+      description: 'Custom path or external URL (e.g. /workshop_registration)',
+    },
+    {
+      name: 'ctaLabel',
+      title: 'CTA Button Label',
+      type: 'string',
+      initialValue: 'Open Registration Form',
+    },
+    {
+      name: 'manualParticipantCount',
+      title: 'Manual Participant Count',
+      type: 'number',
+      initialValue: 0,
+    },
+    {
+      name: 'maxCapacity',
+      title: 'Max Capacity',
+      type: 'number',
+      initialValue: 0,
+    },
+    {
       name: 'startDate',
-      title: 'Start date',
+      title: 'Start Date & Time',
       type: 'datetime',
-    }),
+    },
+    {
+      name: 'image',
+      title: 'Event Cover Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+    },
   ],
-  preview: {
-    select: { title: 'title', subtitle: 'status', media: 'image' },
-    prepare: ({ title, subtitle, media }) => ({
-      title,
-      subtitle: subtitle === 'none' ? 'No status' : subtitle,
-      media,
-    }),
-  },
-})
+};
