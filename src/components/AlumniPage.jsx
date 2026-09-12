@@ -6,9 +6,35 @@ import { Helmet } from 'react-helmet-async';
 import { fetchAlumniBatches } from '../data/alumniData.js';
 import defaultBatchCover from '../images/alumni/alumni1.png';
 
+const CACHE_KEY = 'alumni-batches-cache-v1';
+
+function readCache() {
+    try {
+        const raw = sessionStorage.getItem(CACHE_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+}
+
+function writeCache(value) {
+    try {
+        sessionStorage.setItem(CACHE_KEY, JSON.stringify(value));
+    } catch {
+        // sessionStorage full or unavailable — silently skip caching
+    }
+}
+
+function sortBatches(batches) {
+    return [...batches].sort((a, b) => (b.year || '').localeCompare(a.year || ''));
+}
+
 const AlumniPage = () => {
-    const [alumniBatches, setAlumniBatches] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [alumniBatches, setAlumniBatches] = useState(() => {
+        const cached = readCache();
+        return cached ? sortBatches(cached) : [];
+    });
+    const [hasLoadedOnce, setHasLoadedOnce] = useState(() => !!readCache());
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -17,18 +43,22 @@ const AlumniPage = () => {
             try {
                 const batches = await fetchAlumniBatches();
                 if (isMounted) {
-                    setAlumniBatches(
-                        [...batches].sort((a, b) => (b.year || '').localeCompare(a.year || ''))
-                    );
+                    setAlumniBatches(sortBatches(batches));
+                    writeCache(batches);
+                    setError(null);
                 }
             } catch (err) {
                 console.error('Error loading alumni batches:', err);
-                if (isMounted) setError('Could not load alumni batches. Please try again later.');
+                // Only surface the error if we have nothing cached to show instead
+                if (isMounted && alumniBatches.length === 0) {
+                    setError('Could not load alumni batches. Please try again later.');
+                }
             } finally {
-                if (isMounted) setLoading(false);
+                if (isMounted) setHasLoadedOnce(true);
             }
         })();
         return () => { isMounted = false; };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -41,15 +71,11 @@ const AlumniPage = () => {
             <main className="alumni-container">
                 <h1 className="alumni-header-text">ALUMNI</h1>
 
-                {loading ? (
-                    <div style={{ color: '#aaa', textAlign: 'center', margin: '40px 0' }}>
-                        Loading alumni batches...
-                    </div>
-                ) : error ? (
+                {error && alumniBatches.length === 0 ? (
                     <div style={{ color: '#ff6b6b', textAlign: 'center', margin: '40px 0' }}>
                         {error}
                     </div>
-                ) : alumniBatches.length === 0 ? (
+                ) : hasLoadedOnce && alumniBatches.length === 0 ? (
                     <div style={{ color: '#aaa', textAlign: 'center', margin: '40px 0' }}>
                         No alumni batches published yet.
                     </div>
@@ -67,6 +93,7 @@ const AlumniPage = () => {
                                         alt={`Batch ${batch.name || batch.year}`}
                                         className="alumni-img"
                                         loading="lazy"
+                                        decoding="async"
                                         onError={(e) => { e.target.src = defaultBatchCover; }}
                                     />
                                     <div className="batch-overlay-text">
