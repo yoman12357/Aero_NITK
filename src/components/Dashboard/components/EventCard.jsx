@@ -57,4 +57,4 @@ function EventCard({ event, index, regCounts, onManage, onDelete }) {
     );
 }
 
-export default EventCard;
+export default EventCard; 

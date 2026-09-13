@@ -1,162 +1,77 @@
+// NOTE: I don't have your original registrationService.js, so this is a
+// rebuild based on what useRegistrations.js and firebase.js expose. If your
+// original file did anything extra (e.g. also merged in `applicants` from
+// the recruitment page), let me know and I'll fold that back in.
+//
+// Adjust this import path if it doesn't match your actual folder depth —
+// this assumes: src/components/Dashboard/services/registrationService.js
+// and firebase.js at src/firebase.js.
+import { getEventRegistrationCount, getRecentRegistrations } from '../../../firebase.js';
+
 /**
- * registrationService.js
+ * Live registration count per event, keyed by registrationKey.
+ * e.g. { workshop: 42, wrightFlight: 7, aeroModellingWorkshop2026: 3 }
  *
- * Centralised Firebase read layer for the admin Dashboard.
- * Fetches registration data from the two existing Firestore collections
- * (workshop_registrations, wright_flight_registrations) and exposes
- * helpers the Dashboard can call on mount.
- *
- * Reuses the shared `db` instance from firebase.js — no duplicate config.
+ * @param {string[]} registrationKeys — keys pulled from the events already
+ *   loaded from Sanity (see useEvents). Events with no registrationKey
+ *   ("none"/empty) should be filtered out before calling this.
  */
+export async function fetchRegistrationCounts(registrationKeys = []) {
+    const uniqueKeys = [...new Set(registrationKeys.filter(Boolean))];
+    const entries = await Promise.all(
+        uniqueKeys.map(async (key) => [key, await getEventRegistrationCount(key)])
+    );
+    return Object.fromEntries(entries);
+}
 
-import { db } from '../../../firebase.js';
-import {
-    collection,
-    getDocs,
-    query,
-    orderBy,
-    limit,
-} from 'firebase/firestore';
+/**
+ * Most recent registrations across all given events, newest first,
+ * capped at `limit` total.
+ *
+ * @param {string[]} registrationKeys
+ * @param {number} limit
+ */
+export async function fetchRecentRegistrations(registrationKeys = [], limit = 5) {
+    const uniqueKeys = [...new Set(registrationKeys.filter(Boolean))];
 
-// ─── Collection metadata ───────────────────────────────────────────
-// Maps internal keys to Firestore collection names and display labels.
-export const REGISTRATION_COLLECTIONS = [
-    {
-        key: 'workshop',
-        collection: 'workshop_registrations',
-        label: 'Skyverse Workshop',
-    },
-    {
-        key: 'wright_flight',
-        collection: 'wright_flight_registrations',
-        label: 'Wright Flight',
-    },
-];
+    // Pull up to `limit` from each collection, then merge + re-sort +
+    // trim — cheaper than one big cross-collection query, which Firestore
+    // doesn't support natively anyway.
+    const perEventResults = await Promise.all(
+        uniqueKeys.map((key) => getRecentRegistrations(key, limit))
+    );
 
-// ─── fetchRegistrationCounts ───────────────────────────────────────
-// Returns { workshop: number, wrightFlight: number, total: number }
-// Uses getDocs + snap.size to count documents.
-export const fetchRegistrationCounts = async () => {
-    const counts = { workshop: 0, wrightFlight: 0, total: 0 };
+    const merged = perEventResults.flat();
 
-    try {
-        const [workshopSnap, wrightFlightSnap] = await Promise.all([
-            getDocs(collection(db, 'workshop_registrations')),
-            getDocs(collection(db, 'wright_flight_registrations')),
-        ]);
-
-        counts.workshop = workshopSnap.size;
-        counts.wrightFlight = wrightFlightSnap.size;
-        counts.total = counts.workshop + counts.wrightFlight;
-    } catch (error) {
-        if (import.meta.env.MODE === 'development') {
-            console.error('fetchRegistrationCounts error:', error);
-        }
-    }
-
-    return counts;
-};
-
-// ─── fetchRecentRegistrations ──────────────────────────────────────
-// Downloads the N most-recent docs from each collection, merges and
-// sorts them, then returns the top `maxResults`.
-// Falls back to an unordered query + client-side sort if the
-// Firestore index for orderBy('submittedAt') does not exist yet.
-export const fetchRecentRegistrations = async (maxResults = 5) => {
-    try {
-        const promises = REGISTRATION_COLLECTIONS.map(async (meta) => {
-            let snap;
-            try {
-                // Preferred: server-side ordering (requires a Firestore index)
-                const q = query(
-                    collection(db, meta.collection),
-                    orderBy('submittedAt', 'desc'),
-                    limit(maxResults),
-                );
-                snap = await getDocs(q);
-            } catch {
-                // Fallback: fetch all docs, sort client-side
-                snap = await getDocs(collection(db, meta.collection));
-            }
-            return snap.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-                registrationType: meta.key,
-                registrationLabel: meta.label,
-            }));
-        });
-
-        const results = await Promise.all(promises);
-        const merged = results.flat();
-
-        // Sort by submittedAt descending (handle null/missing gracefully)
-        merged.sort((a, b) => {
-            const aTime = a.submittedAt?.toMillis?.() ?? 0;
-            const bTime = b.submittedAt?.toMillis?.() ?? 0;
-            return bTime - aTime;
-        });
-
-        return merged.slice(0, maxResults);
-    } catch (error) {
-        if (import.meta.env.MODE === 'development') {
-            console.error('fetchRecentRegistrations error:', error);
-        }
-        return [];
-    }
-};
-
-// ─── fetchBranchBreakdown ──────────────────────────────────────────
-// Downloads all docs to tally registrations by branch.
-// Returns an object like { "Computer Science and Engineering": 14, ... }
-export const fetchBranchBreakdown = async () => {
-    const breakdown = {};
-
-    try {
-        const promises = REGISTRATION_COLLECTIONS.map(async (meta) => {
-            const snap = await getDocs(collection(db, meta.collection));
-            snap.docs.forEach((doc) => {
-                const branch = doc.data().branch || 'Unknown';
-                breakdown[branch] = (breakdown[branch] || 0) + 1;
-            });
-        });
-
-        await Promise.all(promises);
-    } catch (error) {
-        if (import.meta.env.MODE === 'development') {
-            console.error('fetchBranchBreakdown error:', error);
-        }
-    }
-
-    return breakdown;
-};
-
-// ─── Timestamp formatting helper ───────────────────────────────────
-// Converts a Firestore Timestamp to a human-readable relative string.
-export const formatRelativeTime = (timestamp) => {
-    if (!timestamp || !timestamp.toDate) return '—';
-
-    const now = Date.now();
-    const then = timestamp.toDate().getTime();
-    const diffSeconds = Math.floor((now - then) / 1000);
-
-    if (diffSeconds < 60) return 'Just now';
-    if (diffSeconds < 3600) {
-        const mins = Math.floor(diffSeconds / 60);
-        return `${mins}m ago`;
-    }
-    if (diffSeconds < 86400) {
-        const hrs = Math.floor(diffSeconds / 3600);
-        return `${hrs}h ago`;
-    }
-    if (diffSeconds < 2592000) {
-        const days = Math.floor(diffSeconds / 86400);
-        return `${days}d ago`;
-    }
-
-    // Older than ~30 days → show a date
-    return timestamp.toDate().toLocaleDateString('en-IN', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric',
+    merged.sort((a, b) => {
+        const aTime = a.submittedAt?.toMillis ? a.submittedAt.toMillis() : 0;
+        const bTime = b.submittedAt?.toMillis ? b.submittedAt.toMillis() : 0;
+        return bTime - aTime;
     });
-};
+
+    return merged.slice(0, limit);
+}
+
+/**
+ * Formats a given timestamp into a human-readable relative time (e.g., "5m ago").
+ * Safely handles Firebase Timestamps and standard JS Dates.
+ *
+ * @param {Object|Date|number} timestamp
+ * @returns {string}
+ */
+export function formatRelativeTime(timestamp) {
+    if (!timestamp) return 'Just now';
+
+    // Safely parse Firebase Timestamps (which have a .toDate method) or fallback to standard Date
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    const now = new Date();
+    const secondsPast = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    if (secondsPast < 60) return 'Just now';
+    if (secondsPast < 3600) return `${Math.floor(secondsPast / 60)}m ago`;
+    if (secondsPast < 86400) return `${Math.floor(secondsPast / 3600)}h ago`;
+    if (secondsPast < 604800) return `${Math.floor(secondsPast / 86400)}d ago`;
+    
+    // Fallback to a standard date string for anything older than a week
+    return date.toLocaleDateString();
+}

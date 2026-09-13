@@ -57,7 +57,7 @@ export function useAlumni() {
     }, [refreshData]);
 
     const resolveBatchDocId = useCallback((batchId) => {
-        const existing = batches.find((b) => b.id === batchId || b.year === batchId);
+        const existing =  batches.find((b) => b.id === batchId || b.year === batchId);
         return existing ? existing.id : batchId;
     }, [batches]);
 

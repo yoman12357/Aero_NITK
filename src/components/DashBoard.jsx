@@ -67,8 +67,11 @@ function AdminDashboard() {
         eventsLoading,
     } = useEvents();
 
-    const { regCounts, recentRegistrations, regLoading } = useRegistrations(5);
-    
+    // Pass `events` through so registration counts/recent-list are derived
+    // from whatever registrationKeys exist in Sanity right now, instead of
+    // a hardcoded pair of event names.
+    const { regCounts, recentRegistrations, regLoading } = useRegistrations(events, 5);
+
     const {
         folders,
         activeFolderId,

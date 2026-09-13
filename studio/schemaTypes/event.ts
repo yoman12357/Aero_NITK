@@ -39,13 +39,6 @@ export default {
       name: 'registrationKey',
       title: 'Registration Form Key',
       type: 'string',
-      options: {
-        list: [
-          { title: 'No Registration Form', value: 'none' },
-          { title: 'Skyverse Workshop', value: 'workshop' },
-          { title: 'Wright Flight', value: 'wrightFlight' },
-        ],
-      },
       initialValue: 'none',
     },
     {

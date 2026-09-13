@@ -6,13 +6,6 @@ import './RegistrationsPage.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
-// Maps a Sanity event's registrationKey to its dedicated registration
-// form route, used only when the event doesn't set a custom ctaLink.
-const REGISTRATION_KEY_ROUTES = {
-    workshop: '/workshop_registration',
-    wrightFlight: '/wright_flight_registration'
-};
-
 // Maps the Sanity `status` field to which Registrations tab an event
 // appears under, and what its badge says.
 const STATUS_META = {
@@ -27,9 +20,15 @@ function normalizeEvent(event) {
     const meta = STATUS_META[event.status];
     if (!meta) return null; // status 'none' (Hidden), or unrecognized — skip entirely
 
+    // Every event gets a registration link "for free" from its
+    // registrationKey — pointing at the one generic form component.
+    // A custom ctaLink (e.g. an external Unstop/Google Form link) still
+    // takes priority when set on the event.
     const resolvedLink = event.ctaLink?.trim()
         ? event.ctaLink.trim()
-        : REGISTRATION_KEY_ROUTES[event.registrationKey] || null;
+        : event.registrationKey
+            ? `/register/${event.registrationKey}`
+            : null;
 
     // Only show a live, clickable CTA for events that are actually open —
     // upcoming/past events display the label as text, not a link, even if
