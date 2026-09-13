@@ -1,4 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+
+// Turns "Aero Modelling Workshop 2026" into "aeroModellingWorkshop2026" —
+// a safe key to use both as the /register/:registrationKey route and as
+// the Firestore collection name (`${key}_registrations`).
+function slugifyToKey(title) {
+    return (title || '')
+        .trim()
+        .split(/\s+/)
+        .map((word, idx) => {
+            const clean = word.replace(/[^a-zA-Z0-9]/g, '');
+            if (!clean) return '';
+            return idx === 0
+                ? clean.charAt(0).toLowerCase() + clean.slice(1)
+                : clean.charAt(0).toUpperCase() + clean.slice(1);
+        })
+        .join('');
+}
 
 /**
  * Modal dialog for adding or editing an event.
@@ -13,7 +30,37 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
         };
     }, [isOpen]);
 
+    // Only auto-fill the key from the title while the admin hasn't typed
+    // their own key yet — once they touch the field directly, stop overwriting it.
+    // Re-evaluated every time the modal opens (not just on first mount), since
+    // the component stays mounted between opens.
+    const keyManuallyEdited = useRef(Boolean(form.registrationKey && form.registrationKey !== 'none'));
+
+    useEffect(() => {
+        if (isOpen) {
+            keyManuallyEdited.current = Boolean(form.registrationKey && form.registrationKey !== 'none');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpen]);
+
     if (!isOpen) return null;
+
+    const handleTitleChange = (value) => {
+        onFormChange((currentForm) => {
+            const next = { ...currentForm, title: value };
+            if (!keyManuallyEdited.current) {
+                next.registrationKey = slugifyToKey(value);
+            }
+            return next;
+        });
+    };
+
+    const handleKeyChange = (value) => {
+        keyManuallyEdited.current = true;
+        // Keep it URL/collection-name safe: letters and numbers only.
+        const cleaned = value.replace(/[^a-zA-Z0-9]/g, '');
+        onFormChange((currentForm) => ({ ...currentForm, registrationKey: cleaned }));
+    };
 
     return (
         <div className="admin-dashboard-modal-backdrop" onClick={onClose} role="presentation">
@@ -44,7 +91,7 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                         <input
                             type="text"
                             value={form.title || ''}
-                            onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, title: changeEvent.target.value }))}
+                            onChange={(changeEvent) => handleTitleChange(changeEvent.target.value)}
                             placeholder="Enter event name"
                             required
                         />
@@ -87,15 +134,18 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
 
                     <div className="admin-dashboard-modal-row">
                         <label className="admin-dashboard-modal-field">
-                            <span>Registration Source</span>
-                            <select
-                                value={form.registrationKey || 'none'}
-                                onChange={(changeEvent) => onFormChange((currentForm) => ({ ...currentForm, registrationKey: changeEvent.target.value }))}
-                            >
-                                <option value="none">No live registration source</option>
-                                <option value="workshop">Skyverse workshop</option>
-                                <option value="wrightFlight">Wright Flight</option>
-                            </select>
+                            <span>Registration Key</span>
+                            <input
+                                type="text"
+                                value={form.registrationKey && form.registrationKey !== 'none' ? form.registrationKey : ''}
+                                onChange={(changeEvent) => handleKeyChange(changeEvent.target.value)}
+                                placeholder="auto-filled from title, e.g. aeroModellingWorkshop2026"
+                            />
+                            <small style={{ display: 'block', marginTop: '4px', color: 'rgba(255,255,255,0.55)', fontSize: '0.78rem' }}>
+                                Leave blank for no live registration form. This becomes the registration link
+                                (/register/{form.registrationKey || '...'}) and its own Firestore collection —
+                                no code changes needed per event.
+                            </small>
                         </label>
 
                         <label className="admin-dashboard-modal-field">

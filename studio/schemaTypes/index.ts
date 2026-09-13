@@ -1,4 +1,4 @@
-import { event } from './event'
+import event from './event'
 import galleryFolder from './galleryFolder'
 import teamMember from './teamMember'
 import alumni from './alumni'

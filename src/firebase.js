@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where, getCountFromServer } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where, orderBy, limit as fsLimit, getCountFromServer } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 // import { GoogleAuthProvider } from "firebase/auth";
 
@@ -37,10 +37,10 @@ export const saveToCollection = async (collectionName, data) => {
     }
 };
 
-// Check for duplicate workshop registration by rollNo, email, or phone
-export const checkDuplicateRegistration = async ({ rollNo, email, phone }) => {
+// Generic duplicate check by rollNo/email/phone against any collection
+const checkDuplicateInCollection = async (collectionName, { rollNo, email, phone }) => {
     try {
-        const col = collection(db, 'workshop_registrations');
+        const col = collection(db, collectionName);
         const checks = [
             { field: 'rollNo', value: rollNo, label: 'Roll Number' },
             { field: 'email', value: email, label: 'Email ID' },
@@ -57,66 +57,96 @@ export const checkDuplicateRegistration = async ({ rollNo, email, phone }) => {
         return { duplicate: false };
     } catch (error) {
         if (import.meta.env.MODE === 'development') {
-            console.error('Duplicate check error:', error);
+            console.error(`Duplicate check error (${collectionName}):`, error);
         }
         // On error, let the submission through (fail open)
         return { duplicate: false };
     }
 };
 
-// Returns current number of workshop registrations (efficient — no document download)
-export const getRegistrationCount = async () => {
+// Generic registration count for any collection
+const getCollectionCount = async (collectionName) => {
     try {
-        const col = collection(db, 'workshop_registrations');
+        const col = collection(db, collectionName);
         const snapshot = await getCountFromServer(col);
         return snapshot.data().count;
     } catch (error) {
         if (import.meta.env.MODE === 'development') {
-            console.error('Registration count error:', error);
+            console.error(`Count error (${collectionName}):`, error);
         }
         return null; // null = unknown, don't block form
     }
 };
 
-// Check for duplicate Wright Flight registration by rollNo, email, or phone
-export const checkDuplicateWrightFlightRegistration = async ({ rollNo, email, phone }) => {
-    try {
-        const col = collection(db, 'wright_flight_registrations');
-        const checks = [
-            { field: 'rollNo', value: rollNo, label: 'Roll Number' },
-            { field: 'email', value: email, label: 'Email ID' },
-            { field: 'phone', value: phone, label: 'Phone Number' },
-        ];
+// ---------------------------------------------------------------------------
+// Generic, per-event registrations
+// ---------------------------------------------------------------------------
+// Every Sanity event has a `registrationKey` (e.g. "workshop", "aeroModelling2026").
+// New events automatically get their own Firestore collection named
+// `${registrationKey}_registrations` — no new code needed per event.
+//
+// A couple of collections predate this convention and use a different name;
+// list them here so old data keeps being written to the same place.
+const LEGACY_COLLECTION_OVERRIDES = {
+    wrightFlight: 'wright_flight_registrations',
+};
 
-        for (const { field, value, label } of checks) {
-            if (!value) continue;
-            const snap = await getDocs(query(col, where(field, '==', value)));
-            if (!snap.empty) {
-                return { duplicate: true, field: label };
-            }
-        }
-        return { duplicate: false };
+const collectionForEvent = (registrationKey) => {
+    if (!registrationKey) {
+        throw new Error('registrationKey is required to resolve a Firestore collection');
+    }
+    return LEGACY_COLLECTION_OVERRIDES[registrationKey] || `${registrationKey}_registrations`;
+};
+
+// Save a registration document for a given event.
+// data fields become the 3rd-level "fields" shown in the Firestore console
+// (name, email, rollNo, phone, branch, year, ...).
+export const saveEventRegistration = (registrationKey, data) =>
+    saveToCollection(collectionForEvent(registrationKey), data);
+
+export const checkDuplicateEventRegistration = (registrationKey, { rollNo, email, phone }) =>
+    checkDuplicateInCollection(collectionForEvent(registrationKey), { rollNo, email, phone });
+
+export const getEventRegistrationCount = (registrationKey) =>
+    getCollectionCount(collectionForEvent(registrationKey));
+
+// Most recent N registration documents for one event, newest first.
+// Used to build a merged "recent registrations" feed across all events.
+export const getRecentRegistrations = async (registrationKey, count = 5) => {
+    try {
+        const col = collection(db, collectionForEvent(registrationKey));
+        const snap = await getDocs(query(col, orderBy('submittedAt', 'desc'), fsLimit(count)));
+        return snap.docs.map((d) => {
+            const data = d.data();
+            return {
+                id: d.id,
+                registrationKey,
+                // registrationType/registrationLabel feed the admin dashboard's
+                // Event column + badge styling (RegistrationsTab.jsx).
+                // eventTitle is saved on the doc at submission time by
+                // EventRegistrationForm.jsx — falls back to the raw key
+                // for any pre-existing docs that predate that field.
+                registrationType: registrationKey,
+                registrationLabel: data.eventTitle || registrationKey,
+                ...data
+            };
+        });
     } catch (error) {
         if (import.meta.env.MODE === 'development') {
-            console.error('Wright Flight duplicate check error:', error);
+            console.error(`Recent registrations error (${registrationKey}):`, error);
         }
-        return { duplicate: false };
+        return [];
     }
 };
 
-// Returns current number of Wright Flight registrations
-export const getWrightFlightRegistrationCount = async () => {
-    try {
-        const col = collection(db, 'wright_flight_registrations');
-        const snapshot = await getCountFromServer(col);
-        return snapshot.data().count;
-    } catch (error) {
-        if (import.meta.env.MODE === 'development') {
-            console.error('Wright Flight registration count error:', error);
-        }
-        return null;
-    }
-};
+// ---------------------------------------------------------------------------
+// Legacy wrappers (kept so existing workshop / Wright Flight components,
+// if still imported anywhere, keep working unchanged)
+// ---------------------------------------------------------------------------
+export const checkDuplicateRegistration = (args) => checkDuplicateEventRegistration('workshop', args);
+export const getRegistrationCount = () => getEventRegistrationCount('workshop');
+export const checkDuplicateWrightFlightRegistration = (args) => checkDuplicateEventRegistration('wrightFlight', args);
+export const getWrightFlightRegistrationCount = () => getEventRegistrationCount('wrightFlight');
 
 // Internal visitor tracking — writes to:
 //   metadata/siteStats         → total_visits (all-time counter)
@@ -158,42 +188,7 @@ export const incrementVisitorCount = async (retries = 3) => {
 export const saveApplicant = (data) => saveToCollection("applicants", data);
 
 // Check for duplicate recruitment application by rollNo, email, or phone
-export const checkDuplicateApplication = async ({ rollNo, email, phone }) => {
-    try {
-        const col = collection(db, 'applicants');
-        const checks = [
-            { field: 'rollNo', value: rollNo, label: 'Roll Number' },
-            { field: 'email', value: email, label: 'Email ID' },
-            { field: 'phone', value: phone, label: 'Phone Number' },
-        ];
-
-        for (const { field, value, label } of checks) {
-            if (!value) continue;
-            const snap = await getDocs(query(col, where(field, '==', value)));
-            if (!snap.empty) {
-                return { duplicate: true, field: label };
-            }
-        }
-        return { duplicate: false };
-    } catch (error) {
-        if (import.meta.env.MODE === 'development') {
-            console.error('Duplicate check error:', error);
-        }
-        // On error, let the submission through (fail open)
-        return { duplicate: false };
-    }
-};
+export const checkDuplicateApplication = (args) => checkDuplicateInCollection('applicants', args);
 
 // Returns current number of recruitment applications (efficient — no document download)
-export const getApplicationCount = async () => {
-    try {
-        const col = collection(db, 'applicants');
-        const snapshot = await getCountFromServer(col);
-        return snapshot.data().count;
-    } catch (error) {
-        if (import.meta.env.MODE === 'development') {
-            console.error('Application count error:', error);
-        }
-        return null; // null = unknown, don't block form
-    }
-};
+export const getApplicationCount = () => getCollectionCount('applicants');

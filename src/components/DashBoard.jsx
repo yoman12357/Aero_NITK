@@ -67,8 +67,11 @@ function AdminDashboard() {
         eventsLoading,
     } = useEvents();
 
-    const { regCounts, recentRegistrations, regLoading } = useRegistrations(5);
-    
+    // Pass `events` through so registration counts/recent-list are derived
+    // from whatever registrationKeys exist in Sanity right now, instead of
+    // a hardcoded pair of event names.
+    const { regCounts, recentRegistrations, regLoading } = useRegistrations(events, 5);
+
     const {
         folders,
         activeFolderId,
@@ -142,51 +145,90 @@ function AdminDashboard() {
 
     // Submit form to your backend server in the background
     const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            let token = '';
-            if (auth && auth.currentUser) {
-                token = await auth.currentUser.getIdToken();
-            }
-
-            const formData = new FormData();
-            if (editingEventId) {
-                formData.append('eventId', editingEventId);
-            }
-            formData.append('title', form.title);
-            formData.append('description', form.description);
-            formData.append('registrationKey', form.registrationKey);
-            formData.append('manualParticipantCount', form.currentParticipants);
-            if (form.maxCapacity) formData.append('maxCapacity', form.maxCapacity);
-            formData.append('status', form.status);
-            if (form.startDate) formData.append('startDate', form.startDate);
-            if (imageFile) {
-                formData.append('image', imageFile);
-            }
-
-            const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
-
-            const response = await fetch(`${backendUrl}/api/save-event`, {
-                method: 'POST',
-                headers: {
-                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                },
-                body: formData
-            });
-
-            const result = await response.json();
-            if (!result.success) {
-                throw new Error(result.error || 'Failed to save event');
-            }
-
-            alert('Event saved successfully in the background!');
-            setIsModalOpen(false);
-            window.location.reload();
-        } catch (error) {
-            console.error('Error saving event:', error);
-            alert(error.message || 'Error saving event');
+    e.preventDefault();
+    try {
+        // 1. Strict Auth Check: Prevent execution if user is not loaded/logged in
+        if (!auth || !auth.currentUser) {
+            alert('Authentication loading or you are not logged in. Please try again.');
+            return; 
         }
-    };
+
+        // 2. Force a token refresh (pass true) to guarantee it hasn't expired
+        const token = await auth.currentUser.getIdToken(true);
+
+        const formData = new FormData();
+        if (editingEventId) {
+            formData.append('eventId', editingEventId);
+        }
+        formData.append('title', form.title);
+        formData.append('description', form.description);
+        formData.append('registrationKey', form.registrationKey);
+        formData.append('manualParticipantCount', form.currentParticipants);
+        if (form.maxCapacity) formData.append('maxCapacity', form.maxCapacity);
+        formData.append('status', form.status);
+        if (form.startDate) formData.append('startDate', form.startDate);
+        if (imageFile) {
+            formData.append('image', imageFile);
+        }
+
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
+        // 3. Request configuration
+        const response = await fetch(`${backendUrl}/api/save-event`, {
+            method: 'POST',
+            headers: {
+                // Since we guarantee a token exists above, we can set this directly
+                'Authorization': `Bearer ${token}` 
+            },
+            body: formData
+        });
+
+        const result = await response.json();
+        
+        // 4. Handle backend errors gracefully
+        if (!response.ok || !result.success) {
+            throw new Error(result.error || 'Failed to save event');
+        }
+
+        alert('Event saved successfully in the background!');
+        setIsModalOpen(false);
+        window.location.reload();
+        
+    } catch (error) {
+        console.error('Error saving event:', error);
+        alert(error.message || 'Error saving event');
+    }
+};
+    // Delete an event after confirmation
+const handleDeleteEvent = async (eventId) => {
+    if (!window.confirm('Delete this event? This cannot be undone.')) return;
+
+    try {
+        let token = '';
+        if (auth && auth.currentUser) {
+            token = await auth.currentUser.getIdToken();
+        }
+
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
+        const response = await fetch(`${backendUrl}/api/events/${eventId}`, {
+            method: 'DELETE',
+            headers: {
+                ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+            }
+        });
+
+        const result = await response.json();
+        if (!result.success) {
+            throw new Error(result.error || 'Failed to delete event');
+        }
+
+        window.location.reload();
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        alert(error.message || 'Error deleting event');
+    }
+};
 
     const onEscape = useCallback(() => {
         closeFolderForm();
@@ -237,6 +279,7 @@ function AdminDashboard() {
                             regCounts={regCounts}
                             onAddEvent={handleOpenAdd}
                             onManageEvent={handleOpenEdit}
+                            onDeleteEvent={handleDeleteEvent}
                         />
                     )}
 

@@ -11,6 +11,7 @@ const WorkshopSuccess = lazy(() => import('./components/WorkshopSuccess.jsx'));
 const WrightFlightRegistration = lazy(() => import('./components/wright_flight_registration.jsx'));
 const WrightFlightSuccess = lazy(() => import('./components/WrightFlightSuccess.jsx'));
 const RegistrationsPage = lazy(() => import('./components/RegistrationsPage.jsx'));
+const EventRegistrationForm = lazy(() => import('./components/EventRegistrationForm.jsx'));
 const AboutPage = lazy(() => import('./components/aboutpage.jsx'));
 const Gallery = lazy(() => import('./components/Gallery.jsx'));
 const Team = lazy(() => import('./components/Team.jsx'));
@@ -189,6 +190,10 @@ const App = () => {
           <Route path="/registrations" element={<RegistrationsPage />} />
           <Route path="/wright_flight_registration" element={<WrightFlightRegistration />} />
           <Route path="/wright_flight_success" element={<WrightFlightSuccess />} />
+          {/* Generic per-event form — any new Sanity event with a registrationKey
+              automatically gets a working registration link at /register/<key>,
+              with no new route or component needed. */}
+          <Route path="/register/:registrationKey" element={<EventRegistrationForm />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/team" element={<Team />} />
