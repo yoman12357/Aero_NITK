@@ -52,8 +52,63 @@
     margin: 24px auto;
 }
 
+.wright-flight-whatsapp-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.wright-flight-whatsapp-heading {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.wright-flight-whatsapp-text {
+    color: #cccccc;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin: 0 0 4px;
+}
+
+.wright-flight-whatsapp-btn {
+    align-items: center;
+    background: linear-gradient(135deg, #1a6e35, #25d366);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 0.95rem;
+    font-weight: 700;
+    justify-content: center;
+    max-width: 300px;
+    padding: 15px 28px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%;
+}
+
+.wright-flight-whatsapp-btn:hover {
+    box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5);
+    transform: translateY(-2px);
+}
+
+.wright-flight-whatsapp-btn:focus-visible {
+    outline: 3px solid rgba(37, 211, 102, 0.45);
+    outline-offset: 3px;
+}
+
 @media (max-width: 600px) {
     .wright-flight-success-card {
         padding: 28px 20px;
+    }
+
+    .wright-flight-whatsapp-btn {
+        box-sizing: border-box;
+        padding: 14px 20px;
     }
 }

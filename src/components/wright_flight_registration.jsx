@@ -19,13 +19,7 @@ import {
 //    - total number of registrations allowed for this event
 export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'upcoming';
 export const WRIGHT_FLIGHT_MAX_SLOTS = 100;
-
-const branches = [
-    "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
-    "Electronics and Communication Engineering", "Electrical and Electronics Engineering",
-    "Computational and Data Science", "Mechanical Engineering", "Mathematical and Computational Sciences",
-    "Civil Engineering", "Chemical Engineering", "Metallurgical and Materials Engineering", "Mining Engineering"
-];
+const MAX_TEAM_SIZE = 4;
 
 // These helper flags are derived from the status above.
 // Usually there is no need to edit them.
@@ -39,7 +33,7 @@ const WrightFlightClosedPage = ({ maxSlots }) => (
             Registrations are Closed
         </h3>
         <p className="closed-subtext">
-            We have reached the maximum capacity of <strong>{maxSlots} participants</strong> for
+            We have reached the maximum capacity of <strong>{maxSlots} team registrations</strong> for
             <strong> Wright Flight</strong>. Thank you for your interest.
         </p>
     </div>
@@ -63,13 +57,15 @@ const WrightFlightRegistration = () => {
     const [duplicateError, setDuplicateError] = useState('');
     const [slotsLeft, setSlotsLeft] = useState(isWrightFlightOngoing ? null : WRIGHT_FLIGHT_MAX_SLOTS);
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        rollNo: '',
+        captainName: '',
         phone: '',
-        branch: '',
-        year: '1',
-        expectations: '',
+        email: '',
+        teamName: '',
+        collegeName: '',
+        participantCount: '1',
+        teamMember1: '',
+        teamMember2: '',
+        teamMember3: '',
         hp_field: ''
     });
 
@@ -109,18 +105,44 @@ const WrightFlightRegistration = () => {
             alert('Please enter a valid email address.');
             return;
         }
-        if (formData.name.trim().length < 3) {
-            alert('Please enter your full name (min 3 characters).');
+        if (formData.captainName.trim().length < 3) {
+            alert("Please enter the team captain's full name (min 3 characters).");
             return;
         }
-
-        const rollNoTrimmed = formData.rollNo.trim();
-        if (!rollNoTrimmed.startsWith('251') || rollNoTrimmed.length < 8) {
-            alert('Roll Number must start with 251 (e.g., 251CS001). Please check and try again.');
+        if (formData.teamName.trim().length < 2) {
+            alert('Please enter your team name.');
+            return;
+        }
+        if (formData.collegeName.trim().length < 2) {
+            alert('Please enter your college name.');
             return;
         }
         if (!/^[0-9]{10}$/.test(formData.phone)) {
             alert('Phone number must be exactly 10 digits.');
+            return;
+        }
+
+        const participantCount = Number(formData.participantCount);
+        if (!Number.isInteger(participantCount) || participantCount < 1 || participantCount > MAX_TEAM_SIZE) {
+            alert(`A team can have between 1 and ${MAX_TEAM_SIZE} participants.`);
+            return;
+        }
+
+        const requiredMemberNames = [
+            formData.teamMember1,
+            formData.teamMember2,
+            formData.teamMember3
+        ].slice(0, participantCount - 1);
+
+        if (requiredMemberNames.some((memberName) => memberName.trim().length < 3)) {
+            alert(`Please enter the full name of every team member (${participantCount - 1} required).`);
+            return;
+        }
+
+        const normalizedParticipantNames = [formData.captainName, ...requiredMemberNames]
+            .map((participantName) => participantName.trim().toLowerCase());
+        if (new Set(normalizedParticipantNames).size !== normalizedParticipantNames.length) {
+            alert('Each participant must have a different name.');
             return;
         }
 
@@ -131,7 +153,7 @@ const WrightFlightRegistration = () => {
         const currentCount = await getWrightFlightRegistrationCount();
         if (currentCount !== null && currentCount >= WRIGHT_FLIGHT_MAX_SLOTS) {
             setDuplicateError(
-                `Registrations are now closed - we've reached the maximum of ${WRIGHT_FLIGHT_MAX_SLOTS} participants for Wright Flight.`
+                `Registrations are now closed - we've reached the maximum of ${WRIGHT_FLIGHT_MAX_SLOTS} teams for Wright Flight.`
             );
             setSlotsLeft(0);
             setIsSubmitting(false);
@@ -140,7 +162,6 @@ const WrightFlightRegistration = () => {
 
         // Prevent the same person from registering more than once.
         const dupCheck = await checkDuplicateWrightFlightRegistration({
-            rollNo: formData.rollNo.trim(),
             email: formData.email.trim().toLowerCase(),
             phone: formData.phone.trim(),
         });
@@ -155,7 +176,15 @@ const WrightFlightRegistration = () => {
 
         // Save the response in Firestore if all checks pass.
         const result = await saveToCollection('wright_flight_registrations', {
-            ...formData,
+            captainName: formData.captainName.trim(),
+            // Keep `name` for compatibility with the existing registrations dashboard.
+            name: formData.captainName.trim(),
+            phone: formData.phone.trim(),
+            email: formData.email.trim().toLowerCase(),
+            teamName: formData.teamName.trim(),
+            collegeName: formData.collegeName.trim(),
+            participantCount,
+            teamMembers: requiredMemberNames.map((memberName) => memberName.trim()),
             event: 'Wright Flight'
         });
 
@@ -168,13 +197,15 @@ const WrightFlightRegistration = () => {
             }
 
             setFormData({
-                name: '',
-                email: '',
-                rollNo: '',
+                captainName: '',
                 phone: '',
-                branch: '',
-                year: '1',
-                expectations: '',
+                email: '',
+                teamName: '',
+                collegeName: '',
+                participantCount: '1',
+                teamMember1: '',
+                teamMember2: '',
+                teamMember3: '',
                 hp_field: ''
             });
             navigate('/wright_flight_success');
@@ -206,7 +237,7 @@ const WrightFlightRegistration = () => {
                         ) : (
                             <>
                                 <span className={`slots-count ${slotsLeft <= 3 ? 'slots-low' : ''}`}>
-                                    <strong>{slotsLeft}</strong> of {WRIGHT_FLIGHT_MAX_SLOTS} slots remaining
+                                    <strong>{slotsLeft}</strong> of {WRIGHT_FLIGHT_MAX_SLOTS} team slots remaining
                                 </span>
                                 <div className="slots-bar-track">
                                     <div
@@ -228,10 +259,10 @@ const WrightFlightRegistration = () => {
                         <div className="wright-flight-guidelines">
                             <h3 className="guidelines-heading">Guidelines</h3>
                             <ul className="guidelines-list">
-                                <li>Each participant should register individually.</li>
-                                <li>Selection is on a first-come, first-served basis.</li>
-                                <li>Only <strong>{WRIGHT_FLIGHT_MAX_SLOTS} total registrations</strong> are accepted.</li>
-                                <li>Please enter valid contact details so we can reach you.</li>
+                                <li>One registration must be submitted per team by the team captain.</li>
+                                <li>Teams from <strong>all colleges</strong> are welcome to participate.</li>
+                                <li>Each team may have a maximum of <strong>{MAX_TEAM_SIZE} participants</strong>, including the captain.</li>
+                                <li>Please enter valid captain contact details so we can reach your team.</li>
                             </ul>
                         </div>
 
@@ -247,37 +278,14 @@ const WrightFlightRegistration = () => {
                                 />
                             </div>
 
-                            <label>NAME
+                            <label>TEAM CAPTAIN NAME
                                 <input
                                     type="text"
-                                    name="name"
-                                    value={formData.name}
+                                    name="captainName"
+                                    value={formData.captainName}
                                     onChange={handleInputChange}
                                     required
-                                    placeholder="Your Full Name"
-                                />
-                            </label>
-
-                            <label>E-MAIL
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    required
-                                    placeholder="E-mail"
-                                />
-                            </label>
-
-                            <label>
-                                ROLL NUMBER <span className="roll-hint">(e.g., 251CS001)</span>
-                                <input
-                                    type="text"
-                                    name="rollNo"
-                                    value={formData.rollNo}
-                                    onChange={handleInputChange}
-                                    required
-                                    placeholder="251XXXXXX"
+                                    placeholder="Captain's Full Name"
                                 />
                             </label>
 
@@ -290,32 +298,71 @@ const WrightFlightRegistration = () => {
                                     required
                                     placeholder="10-Digit Number"
                                     pattern="[0-9]{10}"
+                                    inputMode="numeric"
+                                    maxLength="10"
                                 />
                             </label>
 
-                            <label>BRANCH
-                                <select name="branch" value={formData.branch} onChange={handleInputChange} required>
-                                    <option value="" disabled hidden>Select Here</option>
-                                    {branches.map((branch, idx) => (
-                                        <option key={idx} value={branch}>{branch}</option>
+                            <label>E-MAIL
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Captain's E-mail"
+                                />
+                            </label>
+
+                            <label>TEAM NAME
+                                <input
+                                    type="text"
+                                    name="teamName"
+                                    value={formData.teamName}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Your Team Name"
+                                />
+                            </label>
+
+                            <label>COLLEGE NAME
+                                <input
+                                    type="text"
+                                    name="collegeName"
+                                    value={formData.collegeName}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Full College Name"
+                                />
+                            </label>
+
+                            <label>
+                                NUMBER OF PARTICIPANTS
+                                <span className="participant-hint">Maximum {MAX_TEAM_SIZE}, including the captain</span>
+                                <select
+                                    name="participantCount"
+                                    value={formData.participantCount}
+                                    onChange={handleInputChange}
+                                    required
+                                >
+                                    {[1, 2, 3, 4].map((count) => (
+                                        <option key={count} value={count}>{count}</option>
                                     ))}
                                 </select>
                             </label>
 
-                            <label>YEAR OF STUDY
-                                <input type="text" value="1st Year" readOnly className="readonly-input" />
-                            </label>
-
-                            <label>WHAT DO YOU EXPECT FROM WRIGHT FLIGHT?
-                                <textarea
-                                    name="expectations"
-                                    value={formData.expectations}
-                                    onChange={handleInputChange}
-                                    required
-                                    placeholder="Tell us what you'd like to learn..."
-                                    rows="4"
-                                />
-                            </label>
+                            {Array.from({ length: Number(formData.participantCount) - 1 }, (_, index) => (
+                                <label key={index}>TEAM MEMBER {index + 1} NAME
+                                    <input
+                                        type="text"
+                                        name={`teamMember${index + 1}`}
+                                        value={formData[`teamMember${index + 1}`]}
+                                        onChange={handleInputChange}
+                                        required
+                                        placeholder={`Team Member ${index + 1} Full Name`}
+                                    />
+                                </label>
+                            ))}
 
                             <button className="register-btn" type="submit" disabled={isSubmitting}>
                                 {isSubmitting ? 'CHECKING & REGISTERING...' : 'REGISTER NOW'}

@@ -4,6 +4,8 @@ import Footer from './footer.jsx';
 import './wright_flight_registration.css';
 import './WrightFlightSuccess.css';
 
+const WRIGHT_FLIGHT_WHATSAPP_LINK = 'https://chat.whatsapp.com/LNll34Lz6kR9653s0MsiXo';
+
 const WrightFlightSuccess = () => {
     return (
         <>
@@ -26,8 +28,23 @@ const WrightFlightSuccess = () => {
                     </p>
                     <div className="wright-flight-success-divider" />
                     <p className="wright-flight-success-text">
-                        We will contact selected participants through the details you submitted.
+                        We will contact your team through the captain details you submitted.
                     </p>
+                    <div className="wright-flight-success-divider" />
+                    <div className="wright-flight-whatsapp-section">
+                        <h3 className="wright-flight-whatsapp-heading">WhatsApp Group</h3>
+                        <p className="wright-flight-whatsapp-text">
+                            Join the official group for Wright Flight updates, schedules, and announcements.
+                        </p>
+                        <a
+                            href={WRIGHT_FLIGHT_WHATSAPP_LINK}
+                            className="wright-flight-whatsapp-btn"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Join WhatsApp Group
+                        </a>
+                    </div>
                 </div>
             </section>
 

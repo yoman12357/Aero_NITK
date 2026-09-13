@@ -151,18 +151,13 @@
     margin: 0;
 }
 
-.roll-hint {
+.participant-hint {
     font-size: 0.72rem;
     color: #3494eb;
     font-weight: 400;
     letter-spacing: 0;
     text-transform: none;
-    margin-left: 4px;
-}
-
-.readonly-input {
-    cursor: not-allowed;
-    opacity: 0.65;
+    margin-top: -6px;
 }
 
 .slots-banner {
