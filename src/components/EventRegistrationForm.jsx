@@ -17,7 +17,118 @@ const branches = [
     "Computational and Data Science", "Mechanical Engineering", "Mathematical and Computational Sciences",
     "Civil Engineering", "Chemical Engineering", "Metallurgical and Materials Engineering", "Mining Engineering"
 ];
+
 const years = ["1st Year", "2nd Year", "3rd Year", "4th Year"];
+
+/*
+ * Renders the event description while automatically converting
+ * URLs into clickable "Click here" links.
+ *
+ * Admins do NOT need to use Markdown or HTML.
+ *
+ * Example description entered in the admin dashboard:
+ *
+ * Join the mandatory Whatsapp group :-
+ * https://chat.whatsapp.com/XXXXX
+ *
+ * The frontend will display:
+ *
+ * Join the mandatory Whatsapp group :-
+ * Click here
+ *
+ * where "Click here" opens the URL.
+ */
+function renderDescription(description) {
+    if (!description) return null;
+
+    // Matches normal http:// and https:// URLs.
+    const urlRegex = /https?:\/\/[^\s<>"']+/g;
+
+    const elements = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = urlRegex.exec(description)) !== null) {
+        // Add the normal text before the URL.
+        if (match.index > lastIndex) {
+            elements.push(
+                description.slice(lastIndex, match.index)
+            );
+        }
+
+        let url = match[0];
+
+        // Remove common punctuation that may have been typed immediately
+        // after the URL in the description.
+        let trailingPunctuation = '';
+
+        while (/[.,!?;:]$/.test(url)) {
+            trailingPunctuation = url.slice(-1) + trailingPunctuation;
+            url = url.slice(0, -1);
+        }
+
+        // Handle closing brackets/parentheses if they are not part of the URL.
+        const openingParentheses = (url.match(/\(/g) || []).length;
+        const closingParentheses = (url.match(/\)/g) || []).length;
+
+        if (closingParentheses > openingParentheses) {
+            trailingPunctuation = ')' + trailingPunctuation;
+            url = url.slice(0, -1);
+        }
+
+        const openingBrackets = (url.match(/\[/g) || []).length;
+        const closingBrackets = (url.match(/\]/g) || []).length;
+
+        if (closingBrackets > openingBrackets) {
+            trailingPunctuation = ']' + trailingPunctuation;
+            url = url.slice(0, -1);
+        }
+
+        // Add the clickable link.
+        elements.push(
+            <a
+                key={`link-${match.index}`}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                    color: '#4da6ff',
+                    textDecoration: 'underline',
+                    cursor: 'pointer'
+                }}
+            >
+                JOIN GROUP
+            </a>
+        );
+
+        // Add punctuation that was removed from the URL.
+        if (trailingPunctuation) {
+            elements.push(trailingPunctuation);
+        }
+
+        lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text after the final URL.
+    if (lastIndex < description.length) {
+        elements.push(
+            description.slice(lastIndex)
+        );
+    }
+
+    /*
+     * Preserve line breaks entered in the admin dashboard textarea.
+     *
+     * Because the description is split into React elements, CSS
+     * white-space handling is more reliable than inserting <br>
+     * elements manually.
+     */
+    return (
+        <span style={{ whiteSpace: 'pre-line' }}>
+            {elements}
+        </span>
+    );
+}
 
 const EventRegistrationForm = () => {
     const { registrationKey } = useParams();
@@ -45,39 +156,74 @@ const EventRegistrationForm = () => {
     // per-event backend route.
     useEffect(() => {
         let isMounted = true;
+
         (async () => {
             try {
                 const res = await fetch(`${BACKEND_URL}/api/events`);
                 const data = await res.json();
-                if (!data.success) throw new Error(data.error || 'Failed to load event');
-                const match = (data.events || []).find((e) => e.registrationKey === registrationKey);
+
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to load event');
+                }
+
+                const match = (data.events || []).find(
+                    (e) => e.registrationKey === registrationKey
+                );
+
                 if (isMounted) {
                     setEvent(match || null);
-                    if (!match) setEventError('This registration link is no longer active.');
+
+                    if (!match) {
+                        setEventError(
+                            'This registration link is no longer active.'
+                        );
+                    }
                 }
             } catch (err) {
                 console.error('Error loading event:', err);
-                if (isMounted) setEventError('Could not load this registration form. Please try again later.');
+
+                if (isMounted) {
+                    setEventError(
+                        'Could not load this registration form. Please try again later.'
+                    );
+                }
             } finally {
-                if (isMounted) setEventLoading(false);
+                if (isMounted) {
+                    setEventLoading(false);
+                }
             }
         })();
-        return () => { isMounted = false; };
+
+        return () => {
+            isMounted = false;
+        };
     }, [registrationKey]);
 
     useEffect(() => {
         if (!registrationKey) return;
+
         let isMounted = true;
+
         (async () => {
             const count = await getEventRegistrationCount(registrationKey);
-            if (isMounted) setApplicationCount(count);
+
+            if (isMounted) {
+                setApplicationCount(count);
+            }
         })();
-        return () => { isMounted = false; };
+
+        return () => {
+            isMounted = false;
+        };
     }, [registrationKey]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -91,26 +237,32 @@ const EventRegistrationForm = () => {
 
         // Validation — same rules as the recruitment form
         const emailRegex = /^[^\s@]+@nitk\.edu\.in$/;
+
         if (!emailRegex.test(formData.email)) {
             alert("Please enter a valid NITK email address (@nitk.edu.in).");
             return;
         }
+
         if (formData.name.trim().length < 3) {
             alert("Name must be at least 3 characters.");
             return;
         }
-        if (!/^(251|241)/.test(formData.rollNo)) {
-            alert("Roll number must start with 251 or 241.");
+
+        if (formData.name.trim().length < 3) {
+            alert("Name must be at least 3 characters.");
             return;
         }
+
         if (!/^[0-9]{10}$/.test(formData.phone)) {
             alert("Phone number must be exactly 10 digits.");
             return;
         }
+
         if (!formData.branch) {
             alert("Please select your branch.");
             return;
         }
+
         if (!formData.year) {
             alert("Please select your year.");
             return;
@@ -118,20 +270,31 @@ const EventRegistrationForm = () => {
 
         setIsSubmitting(true);
 
-        const duplicateCheck = await checkDuplicateEventRegistration(registrationKey, {
-            rollNo: formData.rollNo,
-            email: formData.email,
-            phone: formData.phone
-        });
+        const duplicateCheck = await checkDuplicateEventRegistration(
+            registrationKey,
+            {
+                rollNo: formData.rollNo,
+                email: formData.email,
+                phone: formData.phone
+            }
+        );
 
         if (duplicateCheck.duplicate) {
-            alert(`An application with this ${duplicateCheck.field} already exists. Each user can only submit one registration.`);
+            alert(
+                `An application with this ${duplicateCheck.field} already exists. Each user can only submit one registration.`
+            );
+
             setIsSubmitting(false);
             return;
         }
 
         const { hp_field, ...submissionData } = formData;
-        const result = await saveEventRegistration(registrationKey, submissionData);
+
+        const result = await saveEventRegistration(
+            registrationKey,
+            submissionData
+        );
+
         setIsSubmitting(false);
 
         if (result.success) {
@@ -141,16 +304,27 @@ const EventRegistrationForm = () => {
                     'event_label': registrationKey
                 });
             }
+
             setSubmitted(true);
         } else {
-            alert('Something went wrong submitting your registration. Please try again.');
+            alert(
+                'Something went wrong submitting your registration. Please try again.'
+            );
         }
     };
 
     if (eventLoading) {
         return (
             <section className="recruitment-section">
-                <p style={{ color: '#aaa', textAlign: 'center' }}>Loading...</p>
+                <p
+                    style={{
+                        color: '#aaa',
+                        textAlign: 'center'
+                    }}
+                >
+                    Loading...
+                </p>
+
                 <Footer />
             </section>
         );
@@ -159,11 +333,32 @@ const EventRegistrationForm = () => {
     if (eventError || !event) {
         return (
             <section className="recruitment-section">
-                <h2 className="recruitment-title">Registration Unavailable</h2>
-                <p style={{ color: '#ff6b6b', textAlign: 'center' }}>{eventError}</p>
-                <Link to="/registrations" className="apply-btn" style={{ display: 'inline-block', textAlign: 'center', textDecoration: 'none', marginTop: '20px' }}>
+                <h2 className="recruitment-title">
+                    Registration Unavailable
+                </h2>
+
+                <p
+                    style={{
+                        color: '#ff6b6b',
+                        textAlign: 'center'
+                    }}
+                >
+                    {eventError}
+                </p>
+
+                <Link
+                    to="/registrations"
+                    className="apply-btn"
+                    style={{
+                        display: 'inline-block',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        marginTop: '20px'
+                    }}
+                >
                     Back to Registrations
                 </Link>
+
                 <Footer />
             </section>
         );
@@ -172,13 +367,32 @@ const EventRegistrationForm = () => {
     if (event.status !== 'open') {
         return (
             <section className="recruitment-section">
-                <h2 className="recruitment-title">{event.title}</h2>
-                <p style={{ color: '#aaa', textAlign: 'center' }}>
+                <h2 className="recruitment-title">
+                    {event.title}
+                </h2>
+
+                <p
+                    style={{
+                        color: '#aaa',
+                        textAlign: 'center'
+                    }}
+                >
                     Registrations for this event are not currently open.
                 </p>
-                <Link to="/registrations" className="apply-btn" style={{ display: 'inline-block', textAlign: 'center', textDecoration: 'none', marginTop: '20px' }}>
+
+                <Link
+                    to="/registrations"
+                    className="apply-btn"
+                    style={{
+                        display: 'inline-block',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        marginTop: '20px'
+                    }}
+                >
                     Back to Registrations
                 </Link>
+
                 <Footer />
             </section>
         );
@@ -187,14 +401,36 @@ const EventRegistrationForm = () => {
     if (submitted) {
         return (
             <section className="recruitment-section">
-                <h2 className="recruitment-title">Thank You!</h2>
-                <p style={{ color: '#ddd', textAlign: 'center', maxWidth: '480px', margin: '0 auto' }}>
-                    Your registration for <strong>{event.title}</strong> has been submitted successfully.
+                <h2 className="recruitment-title">
+                    Thank You!
+                </h2>
+
+                <p
+                    style={{
+                        color: '#ddd',
+                        textAlign: 'center',
+                        maxWidth: '480px',
+                        margin: '0 auto'
+                    }}
+                >
+                    Your registration for <strong>{event.title}</strong> has
+                    been submitted successfully.
                     We'll be in touch with further details soon.
                 </p>
-                <Link to="/registrations" className="apply-btn" style={{ display: 'inline-block', textAlign: 'center', textDecoration: 'none', marginTop: '20px' }}>
+
+                <Link
+                    to="/registrations"
+                    className="apply-btn"
+                    style={{
+                        display: 'inline-block',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        marginTop: '20px'
+                    }}
+                >
                     Back to Registrations
                 </Link>
+
                 <Footer />
             </section>
         );
@@ -203,64 +439,189 @@ const EventRegistrationForm = () => {
     return (
         <>
             <Helmet>
-                <title>{event.title} Registration | Aero NITK</title>
-                <meta name="description" content={event.description || `Register for ${event.title} at Aero NITK.`} />
-                <link rel="canonical" href={`https://aeronitk.in/register/${registrationKey}`} />
+                <title>
+                    {event.title} Registration | Aero NITK
+                </title>
+
+                <meta
+                    name="description"
+                    content={
+                        event.description ||
+                        `Register for ${event.title} at Aero NITK.`
+                    }
+                />
+
+                <link
+                    rel="canonical"
+                    href={`https://aeronitk.in/register/${registrationKey}`}
+                />
             </Helmet>
+
             <section className="recruitment-section">
+
                 {applicationCount !== null && (
                     <div className="application-counter">
-                        <span className="counter-label">Total Registrations:</span>
-                        <span className="counter-number">{applicationCount}</span>
+                        <span className="counter-label">
+                            Total Registrations:
+                        </span>
+
+                        <span className="counter-number">
+                            {applicationCount}
+                        </span>
                     </div>
                 )}
 
-                <h2 className="recruitment-title">{event.title}</h2>
+                <h2 className="recruitment-title">
+                    {event.title}
+                </h2>
+
                 {event.description && (
-                    <p style={{ color: '#aaa', textAlign: 'center', maxWidth: '480px', margin: '0 auto 20px' }}>
-                        {event.description}
+                    <p
+                        style={{
+                            color: '#aaa',
+                            textAlign: 'center',
+                            maxWidth: '480px',
+                            margin: '0 auto 20px'
+                        }}
+                    >
+                        {renderDescription(event.description)}
                     </p>
                 )}
 
-                <form className="recruitment-card" onSubmit={handleSubmit}>
-                    <div style={{ display: 'none' }} aria-hidden="true">
-                        <input type="text" name="hp_field" value={formData.hp_field} onChange={handleInputChange} tabIndex="-1" autoComplete="off" />
+                <form
+                    className="recruitment-card"
+                    onSubmit={handleSubmit}
+                >
+                    <div
+                        style={{ display: 'none' }}
+                        aria-hidden="true"
+                    >
+                        <input
+                            type="text"
+                            name="hp_field"
+                            value={formData.hp_field}
+                            onChange={handleInputChange}
+                            tabIndex="-1"
+                            autoComplete="off"
+                        />
                     </div>
 
-                    <label>NAME
-                        <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder="Your Full Name" />
+                    <label>
+                        NAME
+                        <input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Your Full Name"
+                        />
                     </label>
-                    <label>E-Mail
-                        <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="you@nitk.edu.in" />
+
+                    <label>
+                        E-Mail
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="you@nitk.edu.in"
+                        />
                     </label>
-                    <label>ROLL NUMBER
-                        <input type="text" name="rollNo" value={formData.rollNo} onChange={handleInputChange} required placeholder="Your Roll Number" />
+
+                    <label>
+                        ROLL NUMBER
+                        <input
+                            type="text"
+                            name="rollNo"
+                            value={formData.rollNo}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Your Roll Number"
+                        />
                     </label>
-                    <label>PHONE NUMBER
-                        <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="10-Digit Number" pattern="[0-9]{10}" />
+
+                    <label>
+                        PHONE NUMBER
+                        <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="10-Digit Number"
+                            pattern="[0-9]{10}"
+                        />
                     </label>
-                    <label>BRANCH
-                        <select name="branch" value={formData.branch} onChange={handleInputChange} required>
-                            <option value="" disabled hidden>Select Here</option>
+
+                    <label>
+                        BRANCH
+                        <select
+                            name="branch"
+                            value={formData.branch}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option
+                                value=""
+                                disabled
+                                hidden
+                            >
+                                Select Here
+                            </option>
+
                             {branches.map((br, idx) => (
-                                <option key={idx} value={br}>{br}</option>
-                            ))}
-                        </select>
-                    </label>
-                    <label>YEAR
-                        <select name="year" value={formData.year} onChange={handleInputChange} required>
-                            <option value="" disabled hidden>Select Here</option>
-                            {years.map((yr, idx) => (
-                                <option key={idx} value={yr}>{yr}</option>
+                                <option
+                                    key={idx}
+                                    value={br}
+                                >
+                                    {br}
+                                </option>
                             ))}
                         </select>
                     </label>
 
-                    <button className="apply-btn" type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? "SUBMITTING..." : "REGISTER NOW"}
+                    <label>
+                        YEAR
+                        <select
+                            name="year"
+                            value={formData.year}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option
+                                value=""
+                                disabled
+                                hidden
+                            >
+                                Select Here
+                            </option>
+
+                            {years.map((yr, idx) => (
+                                <option
+                                    key={idx}
+                                    value={yr}
+                                >
+                                    {yr}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+
+                    <button
+                        className="apply-btn"
+                        type="submit"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? "SUBMITTING..."
+                            : "REGISTER NOW"}
                     </button>
                 </form>
+
             </section>
+
             <Footer />
         </>
     );
