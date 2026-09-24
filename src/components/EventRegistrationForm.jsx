@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
@@ -8,8 +8,68 @@ import {
     checkDuplicateEventRegistration,
     getEventRegistrationCount
 } from '../firebase.js';
+import wrightFlightQr from '../images/wright_flight_qr.jpeg';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
+// ---------------------------------------------------------------------------
+// Payment screenshot handling
+// ---------------------------------------------------------------------------
+// Screenshots are stored directly on the Firestore registration document
+// (no Firebase Storage), so they're kept small: resized + re-encoded as a
+// JPEG data URL that comfortably fits inside Firestore's 1 MiB per-document
+// limit alongside the rest of the form fields.
+const MAX_SCREENSHOT_DIMENSION = 1000; // px, longest side
+const TARGET_DATA_URL_BYTES = 700 * 1024; // ~700KB, safely under the 1MB doc cap
+const MAX_UPLOAD_FILE_BYTES = 10 * 1024 * 1024; // 10MB — reject before we even try to process it
+
+function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Could not read file'));
+        reader.readAsDataURL(file);
+    });
+}
+
+function loadImageElement(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('Could not load image'));
+        img.src = src;
+    });
+}
+
+// Resizes + compresses an uploaded screenshot into a small JPEG data URL.
+async function compressScreenshotToDataURL(file) {
+    const originalDataUrl = await readFileAsDataURL(file);
+    const img = await loadImageElement(originalDataUrl);
+
+    let { width, height } = img;
+    if (width > MAX_SCREENSHOT_DIMENSION || height > MAX_SCREENSHOT_DIMENSION) {
+        const scale = MAX_SCREENSHOT_DIMENSION / Math.max(width, height);
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, width, height);
+
+    let quality = 0.82;
+    let dataUrl = canvas.toDataURL('image/jpeg', quality);
+
+    // Step quality down until it comfortably fits, or we hit a floor.
+    while (dataUrl.length > TARGET_DATA_URL_BYTES && quality > 0.35) {
+        quality -= 0.1;
+        dataUrl = canvas.toDataURL('image/jpeg', quality);
+    }
+
+    return dataUrl;
+}
 
 const branches = [
     "Computer Science and Engineering", "Artificial Intelligence", "Information Technology",
@@ -148,8 +208,15 @@ const EventRegistrationForm = () => {
         phone: "",
         branch: "",
         year: "",
+        paymentScreenshot: "",
         hp_field: ""
     });
+
+    const [screenshotFileName, setScreenshotFileName] = useState('');
+    const [screenshotProcessing, setScreenshotProcessing] = useState(false);
+    const [screenshotError, setScreenshotError] = useState('');
+    const [qrImageFailed, setQrImageFailed] = useState(false);
+    const screenshotInputRef = useRef(null);
 
     // Look up this event's details from the backend by its registrationKey,
     // so the form shows the right title/description without any new
@@ -226,6 +293,55 @@ const EventRegistrationForm = () => {
         }));
     };
 
+    const handleScreenshotChange = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setScreenshotError('');
+
+        if (!file.type.startsWith('image/')) {
+            setScreenshotError('Please upload an image file (JPG, PNG, etc.).');
+            e.target.value = '';
+            return;
+        }
+
+        if (file.size > MAX_UPLOAD_FILE_BYTES) {
+            setScreenshotError('That image is too large. Please upload a screenshot under 10MB.');
+            e.target.value = '';
+            return;
+        }
+
+        setScreenshotProcessing(true);
+
+        try {
+            const compressed = await compressScreenshotToDataURL(file);
+
+            if (compressed.length > TARGET_DATA_URL_BYTES * 1.3) {
+                setScreenshotError('Could not compress this image enough to upload. Please try a smaller screenshot.');
+                e.target.value = '';
+                return;
+            }
+
+            setFormData((prev) => ({ ...prev, paymentScreenshot: compressed }));
+            setScreenshotFileName(file.name);
+        } catch (err) {
+            console.error('Error processing screenshot:', err);
+            setScreenshotError('Could not process that image. Please try a different file.');
+            e.target.value = '';
+        } finally {
+            setScreenshotProcessing(false);
+        }
+    };
+
+    const handleRemoveScreenshot = () => {
+        setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
+        setScreenshotFileName('');
+        setScreenshotError('');
+        if (screenshotInputRef.current) {
+            screenshotInputRef.current.value = '';
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -265,6 +381,11 @@ const EventRegistrationForm = () => {
 
         if (!formData.year) {
             alert("Please select your year.");
+            return;
+        }
+
+        if (!formData.paymentScreenshot) {
+            alert("Please upload a screenshot of your payment before submitting.");
             return;
         }
 
@@ -609,10 +730,74 @@ const EventRegistrationForm = () => {
                         </select>
                     </label>
 
+                    <div className="payment-qr-section">
+    <span className="payment-qr-label">
+        Scan &amp; Pay
+    </span>
+
+    <img
+        src={
+            registrationKey === 'wright-flight'
+                ? wrightFlightQr
+                : !qrImageFailed
+                ? `/qr-codes/${registrationKey}.png`
+                : wrightFlightQr
+        }
+        alt={`Payment QR code for ${event.title}`}
+        className="payment-qr-image"
+        onError={() => setQrImageFailed(true)}
+    />
+</div>
+
+                    <label>
+                        PAYMENT SCREENSHOT
+                        <input
+                            ref={screenshotInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleScreenshotChange}
+                        />
+                    </label>
+
+                    {screenshotProcessing && (
+                        <p className="payment-upload-status">
+                            Processing image…
+                        </p>
+                    )}
+
+                    {screenshotError && (
+                        <p className="payment-upload-error">
+                            {screenshotError}
+                        </p>
+                    )}
+
+                    {formData.paymentScreenshot && !screenshotProcessing && (
+                        <div className="payment-upload-preview">
+                            <img
+                                src={formData.paymentScreenshot}
+                                alt="Payment screenshot preview"
+                            />
+
+                            <div className="payment-upload-preview-info">
+                                <span>
+                                    {screenshotFileName || 'Screenshot attached'}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    onClick={handleRemoveScreenshot}
+                                    className="remove-screenshot-btn"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     <button
                         className="apply-btn"
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || screenshotProcessing}
                     >
                         {isSubmitting
                             ? "SUBMITTING..."

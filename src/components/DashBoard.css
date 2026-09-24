@@ -597,6 +597,50 @@
 	font-size: 0.82rem;
 }
 
+/* Payment screenshot "View" button + modal (RegistrationsTab.jsx) —
+   kept as a click-to-open button rather than an inline thumbnail so the
+   table stays clean once there are many registrations. */
+.admin-dashboard-reg-view-btn {
+	background: rgba(120, 188, 255, 0.12);
+	border: 1px solid rgba(120, 188, 255, 0.5);
+	color: #78bcff;
+	border-radius: 999px;
+	padding: 4px 14px;
+	font-size: 0.78rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.2s, border-color 0.2s;
+}
+
+.admin-dashboard-reg-view-btn:hover {
+	background: rgba(120, 188, 255, 0.22);
+	border-color: #78bcff;
+}
+
+.admin-dashboard-screenshot-modal {
+	width: min(100%, 520px);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.admin-dashboard-screenshot-image {
+	width: 100%;
+	max-height: 65vh;
+	object-fit: contain;
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-dashboard-screenshot-download {
+	text-decoration: none;
+	text-align: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .admin-dashboard-gallery-strip {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

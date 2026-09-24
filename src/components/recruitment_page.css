@@ -175,3 +175,104 @@
 .apply-btn:hover {
   background: #3a84bc;
 }
+
+/* Payment QR code + screenshot upload (EventRegistrationForm.jsx) */
+
+.payment-qr-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  background: #111111;
+  border: 1.5px solid #1da1f2;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.payment-qr-label {
+  color: #bbb;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.payment-qr-image {
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.payment-qr-fallback {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.payment-upload-status {
+  color: #1da1f2;
+  font-size: 0.85rem;
+  margin: -10px 0 0;
+}
+
+.payment-upload-error {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  margin: -10px 0 0;
+}
+
+.payment-upload-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #111111;
+  border: 1.5px solid #1da1f2;
+  border-radius: 4px;
+  padding: 10px 14px;
+}
+
+.payment-upload-preview img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.payment-upload-preview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.payment-upload-preview-info span {
+  color: #ddd;
+  font-size: 0.82rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-screenshot-btn {
+  align-self: flex-start;
+  background: transparent;
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+
+.remove-screenshot-btn:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
