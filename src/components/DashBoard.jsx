@@ -70,7 +70,7 @@ function AdminDashboard() {
     // Pass `events` through so registration counts/recent-list are derived
     // from whatever registrationKeys exist in Sanity right now, instead of
     // a hardcoded pair of event names.
-    const { regCounts, recentRegistrations, regLoading } = useRegistrations(events, 5);
+    const { regCounts, regLoading } = useRegistrations(events);
 
     const {
         folders,
@@ -285,7 +285,9 @@ const handleDeleteEvent = async (eventId) => {
 
                     {activeTab === 'registrations' && (
                         <RegistrationsTab
-                            recentRegistrations={recentRegistrations}
+                            events={events}
+                            eventsLoading={eventsLoading}
+                            regCounts={regCounts}
                             regLoading={regLoading}
                         />
                     )}

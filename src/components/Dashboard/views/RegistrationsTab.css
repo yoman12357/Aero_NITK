@@ -1,0 +1,252 @@
+.admin-dashboard-registration-heading,
+.admin-dashboard-registration-detail-header {
+    max-width: 1080px;
+    margin-bottom: 24px;
+}
+
+.admin-dashboard-registration-heading .admin-dashboard-section-title {
+    margin-bottom: 8px;
+}
+
+.admin-dashboard-registration-kicker {
+    margin: 0 0 8px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #78bcff;
+}
+
+.admin-dashboard-registration-subtitle {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.64);
+    line-height: 1.6;
+}
+
+.admin-dashboard-registration-events {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    max-width: 1080px;
+}
+
+.admin-dashboard-registration-event-card {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(22, 27, 36, 0.98), rgba(10, 12, 18, 0.98));
+    color: #fff;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-dashboard-registration-event-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(120, 188, 255, 0.6);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+}
+
+.admin-dashboard-registration-event-image {
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(47, 108, 248, 0.75), rgba(90, 241, 44, 0.35));
+    background-position: center;
+    background-size: cover;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.admin-dashboard-registration-event-copy {
+    display: grid;
+    min-width: 0;
+    gap: 5px;
+}
+
+.admin-dashboard-registration-event-copy strong {
+    overflow: hidden;
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-dashboard-registration-event-copy small {
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.48);
+    font-family: 'Courier New', Courier, monospace;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-dashboard-registration-status {
+    width: fit-content;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.admin-dashboard-registration-status.status-open {
+    background: rgba(90, 241, 44, 0.12);
+    color: #78f050;
+}
+
+.admin-dashboard-registration-status.status-soon {
+    background: rgba(255, 183, 77, 0.14);
+    color: #ffbf61;
+}
+
+.admin-dashboard-registration-status.status-closed {
+    background: rgba(255, 77, 77, 0.13);
+    color: #ff8585;
+}
+
+.admin-dashboard-registration-event-count {
+    display: grid;
+    justify-items: end;
+    gap: 2px;
+}
+
+.admin-dashboard-registration-event-count strong {
+    font-size: 1.4rem;
+    color: #78bcff;
+}
+
+.admin-dashboard-registration-event-count small {
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.72rem;
+}
+
+.admin-dashboard-registration-event-arrow {
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.38);
+}
+
+.admin-dashboard-registration-detail-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.admin-dashboard-registration-detail-header h3 {
+    margin: 0;
+    font-size: clamp(1.55rem, 3vw, 2.2rem);
+}
+
+.admin-dashboard-registration-back {
+    margin: 0 0 18px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-dashboard-registration-back:hover {
+    color: #fff;
+}
+
+.admin-dashboard-registration-detail-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.88rem;
+}
+
+.admin-dashboard-live-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #78f050;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.admin-dashboard-live-indicator::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #5af12c;
+    box-shadow: 0 0 10px rgba(90, 241, 44, 0.7);
+}
+
+.admin-dashboard-export-btn {
+    padding: 10px 18px;
+    border: 1px solid rgba(90, 241, 44, 0.55);
+    border-radius: 10px;
+    background: rgba(90, 241, 44, 0.13);
+    color: #78f050;
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.admin-dashboard-export-btn:hover:not(:disabled) {
+    background: rgba(90, 241, 44, 0.22);
+}
+
+.admin-dashboard-export-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.admin-dashboard-reg-table td strong {
+    display: block;
+}
+
+.admin-dashboard-reg-secondary {
+    display: block;
+    margin-top: 3px;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 0.76rem;
+}
+
+@media (max-width: 700px) {
+    .admin-dashboard-registration-events {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-dashboard-registration-event-card {
+        grid-template-columns: 58px minmax(0, 1fr) auto;
+        gap: 12px;
+    }
+
+    .admin-dashboard-registration-event-image {
+        width: 58px;
+        height: 58px;
+    }
+
+    .admin-dashboard-registration-event-arrow,
+    .admin-dashboard-registration-event-count small {
+        display: none;
+    }
+
+    .admin-dashboard-registration-detail-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-dashboard-export-btn {
+        width: 100%;
+    }
+}

@@ -1,23 +1,21 @@
 import { useEffect, useState } from 'react';
 import {
     fetchRegistrationCounts,
-    fetchRecentRegistrations,
 } from '../services/registrationService.js';
 
 /**
- * Custom hook that fetches registration counts and recent registrations
- * from Firebase on mount, and whenever the set of events changes.
+ * Fetches registration counts on mount and whenever the events change.
+ * Full documents (including screenshots) are intentionally fetched only
+ * after an admin opens a specific event in the Registrations tab.
  *
  * @param {Array} events — events from useEvents(); each event's
  *   `registrationKey` (when present and not "none") determines which
  *   Firestore collection to read. New events need no code changes here —
  *   they just need a registrationKey set in the dashboard.
- * @param {number} recentLimit — max recent registrations to fetch (default 5)
- * @returns {{ regCounts, recentRegistrations, regLoading }}
+ * @returns {{ regCounts, regLoading }}
  */
-export function useRegistrations(events = [], recentLimit = 5) {
+export function useRegistrations(events = []) {
     const [regCounts, setRegCounts] = useState(null);
-    const [recentRegistrations, setRecentRegistrations] = useState([]);
     const [regLoading, setRegLoading] = useState(true);
 
     // Derive a stable, deduped list of registration keys from the events
@@ -31,7 +29,6 @@ export function useRegistrations(events = [], recentLimit = 5) {
     useEffect(() => {
         if (!registrationKeys) {
             setRegCounts({});
-            setRecentRegistrations([]);
             setRegLoading(false);
             return;
         }
@@ -42,13 +39,9 @@ export function useRegistrations(events = [], recentLimit = 5) {
         const fetchData = async () => {
             setRegLoading(true);
             try {
-                const [counts, recent] = await Promise.all([
-                    fetchRegistrationCounts(keys),
-                    fetchRecentRegistrations(keys, recentLimit),
-                ]);
+                const counts = await fetchRegistrationCounts(keys);
                 if (cancelled) return;
                 setRegCounts(counts);
-                setRecentRegistrations(recent);
             } catch (error) {
                 console.error('Error fetching registration data:', error);
             } finally {
@@ -59,7 +52,7 @@ export function useRegistrations(events = [], recentLimit = 5) {
         fetchData();
 
         return () => { cancelled = true; };
-    }, [registrationKeys, recentLimit]);
+    }, [registrationKeys]);
 
-    return { regCounts, recentRegistrations, regLoading };
+    return { regCounts, regLoading };
 }

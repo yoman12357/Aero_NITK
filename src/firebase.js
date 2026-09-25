@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where, orderBy, limit as fsLimit, getCountFromServer } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where, orderBy, limit as fsLimit, getCountFromServer, onSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 // import { GoogleAuthProvider } from "firebase/auth";
 
@@ -137,6 +137,39 @@ export const getRecentRegistrations = async (registrationKey, count = 5) => {
         }
         return [];
     }
+};
+
+// Subscribe to every registration for one event. This deliberately uses the
+// collection directly (rather than orderBy) so older documents that do not
+// have submittedAt are still included. Sorting happens safely in the browser.
+export const subscribeToEventRegistrations = (registrationKey, onData, onError) => {
+    const col = collection(db, collectionForEvent(registrationKey));
+
+    return onSnapshot(
+        col,
+        (snapshot) => {
+            const registrations = snapshot.docs.map((registrationDoc) => ({
+                ...registrationDoc.data(),
+                id: registrationDoc.id,
+                documentId: registrationDoc.id,
+                registrationKey,
+            }));
+
+            registrations.sort((a, b) => {
+                const getMillis = (value) => {
+                    if (value?.toMillis) return value.toMillis();
+                    if (value?.seconds) return value.seconds * 1000;
+                    const parsed = value ? new Date(value).getTime() : 0;
+                    return Number.isNaN(parsed) ? 0 : parsed;
+                };
+
+                return getMillis(b.submittedAt) - getMillis(a.submittedAt);
+            });
+
+            onData(registrations);
+        },
+        onError
+    );
 };
 
 // ---------------------------------------------------------------------------

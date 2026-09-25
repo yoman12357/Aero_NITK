@@ -6,7 +6,11 @@
 // Adjust this import path if it doesn't match your actual folder depth —
 // this assumes: src/components/Dashboard/services/registrationService.js
 // and firebase.js at src/firebase.js.
-import { getEventRegistrationCount, getRecentRegistrations } from '../../../firebase.js';
+import {
+    getEventRegistrationCount,
+    getRecentRegistrations,
+    subscribeToEventRegistrations as subscribeToEventRegistrationsSnapshot,
+} from '../../../firebase.js';
 
 /**
  * Live registration count per event, keyed by registrationKey.
@@ -74,4 +78,12 @@ export function formatRelativeTime(timestamp) {
     
     // Fallback to a standard date string for anything older than a week
     return date.toLocaleDateString();
+}
+
+/**
+ * Live subscription for all registrations belonging to one event.
+ * Returns Firestore's unsubscribe function.
+ */
+export function subscribeToEventRegistrations(registrationKey, onData, onError) {
+    return subscribeToEventRegistrationsSnapshot(registrationKey, onData, onError);
 }

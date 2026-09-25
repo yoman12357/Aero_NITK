@@ -20,15 +20,18 @@ function normalizeEvent(event) {
     const meta = STATUS_META[event.status];
     if (!meta) return null; // status 'none' (Hidden), or unrecognized — skip entirely
 
-    // Every event gets a registration link "for free" from its
-    // registrationKey — pointing at the one generic form component.
-    // A custom ctaLink (e.g. an external Unstop/Google Form link) still
-    // takes priority when set on the event.
-    const resolvedLink = event.ctaLink?.trim()
-        ? event.ctaLink.trim()
+    // Most events use the generic form generated from registrationKey.
+    // Wright Flight keeps its dedicated team-registration form. A custom
+    // ctaLink (e.g. an external Unstop/Google Form link) still takes priority.
+    const builtInRegistrationLink = ['wrightFlight', 'wright-flight'].includes(event.registrationKey)
+        ? '/wright_flight_registration'
         : event.registrationKey
             ? `/register/${event.registrationKey}`
             : null;
+
+    const resolvedLink = event.ctaLink?.trim()
+        ? event.ctaLink.trim()
+        : builtInRegistrationLink;
 
     // Only show a live, clickable CTA for events that are actually open —
     // upcoming/past events display the label as text, not a link, even if

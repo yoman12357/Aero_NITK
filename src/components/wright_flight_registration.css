@@ -242,6 +242,100 @@
     color: #ffffff;
 }
 
+.wright-payment-qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 22px;
+    background: #111111;
+    border: 1.5px solid #1da1f2;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.wright-payment-qr-label {
+    color: #bbb;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.wright-payment-qr-image {
+    width: 220px;
+    height: 220px;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 8px;
+    background: #ffffff;
+    border-radius: 6px;
+}
+
+.wright-payment-upload-status,
+.wright-payment-upload-error {
+    margin: -10px 0 0;
+    font-size: 0.85rem;
+}
+
+.wright-payment-upload-status {
+    color: #1da1f2;
+}
+
+.wright-payment-upload-error {
+    color: #ff6b6b;
+}
+
+.wright-payment-upload-preview {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 14px;
+    background: #111111;
+    border: 1.5px solid #1da1f2;
+    border-radius: 6px;
+}
+
+.wright-payment-upload-preview > img {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.wright-payment-upload-preview-info {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.wright-payment-upload-preview-info span {
+    overflow: hidden;
+    color: #ddd;
+    font-size: 0.82rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.wright-payment-upload-preview-info button {
+    align-self: flex-start;
+    padding: 5px 11px;
+    border: 1px solid #ff6b6b;
+    border-radius: 4px;
+    background: transparent;
+    color: #ff6b6b;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.wright-payment-upload-preview-info button:hover {
+    background: rgba(255, 107, 107, 0.1);
+}
+
 @media (max-width: 600px) {
     .wright-flight-card {
         padding: 30px 20px;

@@ -190,6 +190,8 @@ const App = () => {
           <Route path="/registrations" element={<RegistrationsPage />} />
           <Route path="/wright_flight_registration" element={<WrightFlightRegistration />} />
           <Route path="/wright_flight_success" element={<WrightFlightSuccess />} />
+          <Route path="/register/wrightFlight" element={<Navigate to="/wright_flight_registration" replace />} />
+          <Route path="/register/wright-flight" element={<Navigate to="/wright_flight_registration" replace />} />
           {/* Generic per-event form — any new Sanity event with a registrationKey
               automatically gets a working registration link at /register/<key>,
               with no new route or component needed. */}

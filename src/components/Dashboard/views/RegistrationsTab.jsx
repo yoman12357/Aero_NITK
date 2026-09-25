@@ -1,72 +1,328 @@
-import React, { useState } from 'react';
-import { formatRelativeTime } from '../services/registrationService.js';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+    formatRelativeTime,
+    subscribeToEventRegistrations,
+} from '../services/registrationService.js';
+import './RegistrationsTab.css';
 
-/**
- * Registrations tab — displays recent registrations in a table.
- *
- * @param {{
- *   recentRegistrations: Array,
- *   regLoading: boolean,
- * }} props
- */
-function RegistrationsTab({ recentRegistrations, regLoading }) {
-    // The payment screenshot (stored as a base64 data URL directly on the
-    // Firestore registration document — no Firebase Storage) is only opened
-    // in a modal on click, rather than shown inline in every row, so the
-    // table stays readable once there are many registrations.
-    const [activeScreenshot, setActiveScreenshot] = useState(null); // { name, url } | null
+const PREFERRED_EXPORT_FIELDS = [
+    'documentId',
+    'name',
+    'captainName',
+    'email',
+    'phone',
+    'rollNo',
+    'branch',
+    'year',
+    'teamName',
+    'collegeName',
+    'participantCount',
+    'teamMembers',
+    'submittedAt',
+    'paymentScreenshot',
+];
+
+function timestampToIso(value) {
+    if (!value) return '';
+    const date = value.toDate ? value.toDate() : new Date(value);
+    return Number.isNaN(date.getTime()) ? String(value) : date.toISOString();
+}
+
+function normalizeNestedValue(value) {
+    if (value?.toDate) return value.toDate().toISOString();
+    if (Array.isArray(value)) return value.map(normalizeNestedValue);
+    if (value && typeof value === 'object') {
+        return Object.fromEntries(
+            Object.entries(value).map(([key, nestedValue]) => [key, normalizeNestedValue(nestedValue)])
+        );
+    }
+    return value;
+}
+
+function valueForExport(fieldName, value) {
+    if (value === null || value === undefined) return '';
+    if (fieldName === 'submittedAt') return timestampToIso(value);
+    if (fieldName === 'paymentScreenshot') {
+        if (typeof value === 'string' && /^https?:\/\//i.test(value)) return value;
+        return value ? 'Attached - view in admin dashboard' : '';
+    }
+    if (Array.isArray(value) || typeof value === 'object') {
+        return JSON.stringify(normalizeNestedValue(value));
+    }
+    return String(value);
+}
+
+function escapeCsvCell(value) {
+    let text = String(value ?? '');
+    // Prevent spreadsheet formula injection from user-entered fields.
+    if (/^[=+\-@]/.test(text)) text = `'${text}`;
+    return `"${text.replace(/"/g, '""')}"`;
+}
+
+function downloadExcelCsv(event, registrations) {
+    if (!registrations.length) return;
+
+    const allFields = new Set(['documentId']);
+    registrations.forEach((registration) => {
+        Object.keys(registration).forEach((fieldName) => {
+            if (!['id', 'registrationKey', 'registrationType', 'registrationLabel'].includes(fieldName)) {
+                allFields.add(fieldName);
+            }
+        });
+    });
+
+    const headers = [
+        ...PREFERRED_EXPORT_FIELDS.filter((fieldName) => allFields.has(fieldName)),
+        ...[...allFields]
+            .filter((fieldName) => !PREFERRED_EXPORT_FIELDS.includes(fieldName))
+            .sort(),
+    ];
+
+    const csvRows = [
+        headers.map(escapeCsvCell).join(','),
+        ...registrations.map((registration) => (
+            headers.map((fieldName) => {
+                const rawValue = fieldName === 'documentId'
+                    ? registration.documentId || registration.id
+                    : registration[fieldName];
+                return escapeCsvCell(valueForExport(fieldName, rawValue));
+            }).join(',')
+        )),
+    ];
+
+    const blob = new Blob([`\uFEFF${csvRows.join('\r\n')}`], {
+        type: 'text/csv;charset=utf-8;',
+    });
+    const downloadUrl = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    const safeEventName = (event.title || event.registrationKey || 'event')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+
+    anchor.href = downloadUrl;
+    anchor.download = `${safeEventName || 'event'}-registrations.csv`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(downloadUrl);
+}
+
+function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading }) {
+    const [selectedEventKey, setSelectedEventKey] = useState(null);
+    const [registrations, setRegistrations] = useState([]);
+    const [registrationsLoading, setRegistrationsLoading] = useState(false);
+    const [registrationsError, setRegistrationsError] = useState('');
+    const [activeScreenshot, setActiveScreenshot] = useState(null);
+    const [liveCountOverrides, setLiveCountOverrides] = useState({});
+
+    const registrationEvents = useMemo(
+        () => events
+            .filter((event) => event.registrationKey && event.registrationKey !== 'none')
+            .sort((a, b) => (a.title || '').localeCompare(b.title || '')),
+        [events]
+    );
+
+    const selectedEvent = registrationEvents.find(
+        (event) => event.registrationKey === selectedEventKey
+    );
+
+    useEffect(() => {
+        if (!selectedEventKey) return undefined;
+
+        return subscribeToEventRegistrations(
+            selectedEventKey,
+            (nextRegistrations) => {
+                setRegistrations(nextRegistrations);
+                setLiveCountOverrides((currentCounts) => ({
+                    ...currentCounts,
+                    [selectedEventKey]: nextRegistrations.length,
+                }));
+                setRegistrationsLoading(false);
+            },
+            (error) => {
+                console.error(`Registration subscription failed (${selectedEventKey}):`, error);
+                setRegistrationsError('Could not load registrations for this event. Please try again.');
+                setRegistrationsLoading(false);
+            }
+        );
+    }, [selectedEventKey]);
+
+    const handleSelectEvent = (registrationKey) => {
+        setRegistrations([]);
+        setRegistrationsError('');
+        setRegistrationsLoading(true);
+        setSelectedEventKey(registrationKey);
+    };
+
+    const handleBackToEvents = () => {
+        setSelectedEventKey(null);
+        setRegistrations([]);
+        setRegistrationsError('');
+        setRegistrationsLoading(false);
+        setActiveScreenshot(null);
+    };
+
+    if (!selectedEventKey) {
+        return (
+            <div className="admin-dashboard-section">
+                <div className="admin-dashboard-registration-heading">
+                    <div>
+                        <p className="admin-dashboard-registration-kicker">Registration Manager</p>
+                        <h3 className="admin-dashboard-section-title">Select an Event</h3>
+                        <p className="admin-dashboard-registration-subtitle">
+                            Open an event to view all of its registrations and export them for Excel.
+                        </p>
+                    </div>
+                </div>
+
+                {eventsLoading || regLoading ? (
+                    <div className="admin-dashboard-reg-loading">Loading events...</div>
+                ) : registrationEvents.length === 0 ? (
+                    <div className="admin-dashboard-reg-empty">
+                        No events with a registration key were found.
+                    </div>
+                ) : (
+                    <div className="admin-dashboard-registration-events">
+                        {registrationEvents.map((event) => {
+                            const registrationCount = liveCountOverrides[event.registrationKey]
+                                ?? regCounts?.[event.registrationKey]
+                                ?? 0;
+                            return (
+                                <button
+                                    type="button"
+                                    className="admin-dashboard-registration-event-card"
+                                    key={event._id || event.registrationKey}
+                                    onClick={() => handleSelectEvent(event.registrationKey)}
+                                >
+                                    <span
+                                        className="admin-dashboard-registration-event-image"
+                                        style={event.imageUrl ? { backgroundImage: `url(${event.imageUrl})` } : undefined}
+                                        aria-hidden="true"
+                                    >
+                                        {!event.imageUrl ? (event.title || 'E').charAt(0).toUpperCase() : null}
+                                    </span>
+                                    <span className="admin-dashboard-registration-event-copy">
+                                        <span className={`admin-dashboard-registration-status status-${event.status || 'none'}`}>
+                                            {event.status === 'open'
+                                                ? 'Open'
+                                                : event.status === 'soon'
+                                                    ? 'Upcoming'
+                                                    : event.status === 'closed'
+                                                        ? 'Closed'
+                                                        : 'Event'}
+                                        </span>
+                                        <strong>{event.title || event.registrationKey}</strong>
+                                        <small>{event.registrationKey}</small>
+                                    </span>
+                                    <span className="admin-dashboard-registration-event-count">
+                                        <strong>{registrationCount ?? 0}</strong>
+                                        <small>registrations</small>
+                                    </span>
+                                    <span className="admin-dashboard-registration-event-arrow" aria-hidden="true">›</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
+        );
+    }
 
     return (
         <div className="admin-dashboard-section">
-            <h3 className="admin-dashboard-section-title">All Registrations</h3>
+            <div className="admin-dashboard-registration-detail-header">
+                <div>
+                    <button
+                        type="button"
+                        className="admin-dashboard-registration-back"
+                        onClick={handleBackToEvents}
+                    >
+                        ← All events
+                    </button>
+                    <p className="admin-dashboard-registration-kicker">Event Registrations</p>
+                    <h3>{selectedEvent?.title || selectedEventKey}</h3>
+                    <div className="admin-dashboard-registration-detail-meta">
+                        <span className="admin-dashboard-live-indicator">Live</span>
+                        <span>{registrations.length} registrations</span>
+                    </div>
+                </div>
 
-            {regLoading ? (
-                <div className="admin-dashboard-reg-loading">Loading registrations…</div>
-            ) : recentRegistrations.length === 0 ? (
-                <div className="admin-dashboard-reg-empty">No registrations found yet.</div>
+                <button
+                    type="button"
+                    className="admin-dashboard-export-btn"
+                    onClick={() => downloadExcelCsv(selectedEvent || { registrationKey: selectedEventKey }, registrations)}
+                    disabled={registrationsLoading || registrations.length === 0}
+                >
+                    Export for Excel
+                </button>
+            </div>
+
+            {registrationsLoading ? (
+                <div className="admin-dashboard-reg-loading">Loading all registrations...</div>
+            ) : registrationsError ? (
+                <div className="admin-dashboard-reg-empty">{registrationsError}</div>
+            ) : registrations.length === 0 ? (
+                <div className="admin-dashboard-reg-empty">No registrations found for this event yet.</div>
             ) : (
                 <div className="admin-dashboard-reg-table-wrap">
                     <table className="admin-dashboard-reg-table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Event</th>
-                                <th>Branch</th>
+                                <th>Name / Leader</th>
+                                <th>Email</th>
+                                <th>Phone</th>
                                 <th>Roll No</th>
+                                <th>Branch / College</th>
+                                <th>Year / Team</th>
                                 <th>Screenshot</th>
                                 <th>Registered</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {recentRegistrations.map((reg) => (
-                                <tr key={reg.id}>
-                                    <td>{reg.name || '—'}</td>
-                                    <td>
-                                        <span className={`admin-dashboard-reg-badge ${reg.registrationType === 'workshop' ? 'badge-workshop' : 'badge-wright'}`}>
-                                            {reg.registrationLabel || '—'}
-                                        </span>
-                                    </td>
-                                    <td>{reg.branch || '—'}</td>
-                                    <td className="admin-dashboard-reg-mono">{reg.rollNo || '—'}</td>
-                                    <td>
-                                        {reg.paymentScreenshot ? (
-                                            <button
-                                                type="button"
-                                                className="admin-dashboard-reg-view-btn"
-                                                onClick={() => setActiveScreenshot({
-                                                    name: reg.name || 'Registration',
-                                                    url: reg.paymentScreenshot
-                                                })}
-                                            >
-                                                View
-                                            </button>
-                                        ) : (
-                                            '—'
-                                        )}
-                                    </td>
-                                    <td className="admin-dashboard-reg-time">{formatRelativeTime(reg.submittedAt)}</td>
-                                </tr>
-                            ))}
+                            {registrations.map((registration) => {
+                                const displayName = registration.name || registration.captainName || '—';
+                                const secondaryName = registration.teamName || '';
+                                const branchOrCollege = registration.branch || registration.collegeName || '—';
+                                const yearOrTeam = registration.year
+                                    || (registration.participantCount
+                                        ? `${registration.participantCount} participant${Number(registration.participantCount) === 1 ? '' : 's'}`
+                                        : '—');
+
+                                return (
+                                    <tr key={registration.id}>
+                                        <td>
+                                            <strong>{displayName}</strong>
+                                            {secondaryName ? <small className="admin-dashboard-reg-secondary">{secondaryName}</small> : null}
+                                        </td>
+                                        <td>{registration.email || '—'}</td>
+                                        <td>{registration.phone || '—'}</td>
+                                        <td className="admin-dashboard-reg-mono">{registration.rollNo || '—'}</td>
+                                        <td>{branchOrCollege}</td>
+                                        <td>{yearOrTeam}</td>
+                                        <td>
+                                            {registration.paymentScreenshot ? (
+                                                <button
+                                                    type="button"
+                                                    className="admin-dashboard-reg-view-btn"
+                                                    onClick={() => setActiveScreenshot({
+                                                        name: displayName,
+                                                        rollNo: registration.rollNo || '',
+                                                        url: registration.paymentScreenshot,
+                                                    })}
+                                                >
+                                                    View
+                                                </button>
+                                            ) : (
+                                                '—'
+                                            )}
+                                        </td>
+                                        <td className="admin-dashboard-reg-time">
+                                            {formatRelativeTime(registration.submittedAt)}
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>
@@ -82,7 +338,7 @@ function RegistrationsTab({ recentRegistrations, regLoading }) {
                         className="admin-dashboard-modal admin-dashboard-screenshot-modal"
                         role="dialog"
                         aria-modal="true"
-                        aria-label={`Payment screenshot — ${activeScreenshot.name}`}
+                        aria-label={`Payment screenshot - ${activeScreenshot.name}`}
                         onClick={(modalEvent) => modalEvent.stopPropagation()}
                     >
                         <div className="admin-dashboard-modal-header">
@@ -90,7 +346,6 @@ function RegistrationsTab({ recentRegistrations, regLoading }) {
                                 <p className="admin-dashboard-modal-kicker">Payment Proof</p>
                                 <h3>{activeScreenshot.name}</h3>
                             </div>
-
                             <button
                                 type="button"
                                 className="admin-dashboard-modal-close"
@@ -110,12 +365,11 @@ function RegistrationsTab({ recentRegistrations, regLoading }) {
                         <div className="admin-dashboard-modal-actions">
                             <a
                                 href={activeScreenshot.url}
-                                download={`${activeScreenshot.name.replace(/\s+/g, '_')}_payment_screenshot.jpg`}
+                                download={`${activeScreenshot.rollNo || activeScreenshot.name.replace(/\s+/g, '_')}_payment_screenshot.jpg`}
                                 className="admin-dashboard-modal-secondary admin-dashboard-screenshot-download"
                             >
                                 Download
                             </a>
-
                             <button
                                 type="button"
                                 className="admin-dashboard-modal-primary"

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
 import './wright_flight_registration.css';
+import wrightFlightQr from '../images/wright_flight_qr.jpeg';
 import {
     saveToCollection,
     checkDuplicateWrightFlightRegistration,
@@ -17,9 +18,57 @@ import {
 //    - 'closed'   -> shows inside the Past tab and blocks submissions
 // 2. WRIGHT_FLIGHT_MAX_SLOTS:
 //    - total number of registrations allowed for this event
-export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'upcoming';
+export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'ongoing';
 export const WRIGHT_FLIGHT_MAX_SLOTS = 100;
 const MAX_TEAM_SIZE = 4;
+const MAX_SCREENSHOT_DIMENSION = 1000;
+const TARGET_DATA_URL_BYTES = 700 * 1024;
+const MAX_UPLOAD_FILE_BYTES = 10 * 1024 * 1024;
+
+function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Could not read file'));
+        reader.readAsDataURL(file);
+    });
+}
+
+function loadImageElement(src) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('Could not load image'));
+        img.src = src;
+    });
+}
+
+async function compressScreenshotToDataURL(file) {
+    const originalDataUrl = await readFileAsDataURL(file);
+    const img = await loadImageElement(originalDataUrl);
+    let { width, height } = img;
+
+    if (width > MAX_SCREENSHOT_DIMENSION || height > MAX_SCREENSHOT_DIMENSION) {
+        const scale = MAX_SCREENSHOT_DIMENSION / Math.max(width, height);
+        width = Math.round(width * scale);
+        height = Math.round(height * scale);
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const context = canvas.getContext('2d');
+    context.drawImage(img, 0, 0, width, height);
+
+    let quality = 0.82;
+    let dataUrl = canvas.toDataURL('image/jpeg', quality);
+    while (dataUrl.length > TARGET_DATA_URL_BYTES && quality > 0.35) {
+        quality -= 0.1;
+        dataUrl = canvas.toDataURL('image/jpeg', quality);
+    }
+
+    return dataUrl;
+}
 
 // These helper flags are derived from the status above.
 // Usually there is no need to edit them.
@@ -56,8 +105,13 @@ const WrightFlightRegistration = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [duplicateError, setDuplicateError] = useState('');
     const [slotsLeft, setSlotsLeft] = useState(isWrightFlightOngoing ? null : WRIGHT_FLIGHT_MAX_SLOTS);
+    const [screenshotFileName, setScreenshotFileName] = useState('');
+    const [screenshotProcessing, setScreenshotProcessing] = useState(false);
+    const [screenshotError, setScreenshotError] = useState('');
+    const screenshotInputRef = useRef(null);
     const [formData, setFormData] = useState({
         captainName: '',
+        rollNo: '',
         phone: '',
         email: '',
         teamName: '',
@@ -66,6 +120,7 @@ const WrightFlightRegistration = () => {
         teamMember1: '',
         teamMember2: '',
         teamMember3: '',
+        paymentScreenshot: '',
         hp_field: ''
     });
 
@@ -82,6 +137,50 @@ const WrightFlightRegistration = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleScreenshotChange = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setScreenshotError('');
+        setScreenshotFileName('');
+        setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
+        if (!file.type.startsWith('image/')) {
+            setScreenshotError('Please upload an image file (JPG, PNG, etc.).');
+            e.target.value = '';
+            return;
+        }
+        if (file.size > MAX_UPLOAD_FILE_BYTES) {
+            setScreenshotError('That image is too large. Please upload a screenshot under 10MB.');
+            e.target.value = '';
+            return;
+        }
+
+        setScreenshotProcessing(true);
+        try {
+            const compressed = await compressScreenshotToDataURL(file);
+            if (compressed.length > TARGET_DATA_URL_BYTES * 1.3) {
+                setScreenshotError('Could not compress this image enough. Please try a smaller screenshot.');
+                e.target.value = '';
+                return;
+            }
+            setFormData((prev) => ({ ...prev, paymentScreenshot: compressed }));
+            setScreenshotFileName(file.name);
+        } catch (error) {
+            console.error('Error processing payment screenshot:', error);
+            setScreenshotError('Could not process that image. Please try a different file.');
+            e.target.value = '';
+        } finally {
+            setScreenshotProcessing(false);
+        }
+    };
+
+    const handleRemoveScreenshot = () => {
+        setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
+        setScreenshotFileName('');
+        setScreenshotError('');
+        if (screenshotInputRef.current) screenshotInputRef.current.value = '';
     };
 
     const handleSubmit = async (e) => {
@@ -107,6 +206,10 @@ const WrightFlightRegistration = () => {
         }
         if (formData.captainName.trim().length < 3) {
             alert("Please enter the team captain's full name (min 3 characters).");
+            return;
+        }
+        if (formData.rollNo.trim().length < 3) {
+            alert("Please enter the team captain's roll number or student ID.");
             return;
         }
         if (formData.teamName.trim().length < 2) {
@@ -145,6 +248,10 @@ const WrightFlightRegistration = () => {
             alert('Each participant must have a different name.');
             return;
         }
+        if (!formData.paymentScreenshot) {
+            alert('Please upload a screenshot of your payment before submitting.');
+            return;
+        }
 
         setIsSubmitting(true);
         setDuplicateError('');
@@ -162,6 +269,7 @@ const WrightFlightRegistration = () => {
 
         // Prevent the same person from registering more than once.
         const dupCheck = await checkDuplicateWrightFlightRegistration({
+            rollNo: formData.rollNo.trim(),
             email: formData.email.trim().toLowerCase(),
             phone: formData.phone.trim(),
         });
@@ -179,12 +287,14 @@ const WrightFlightRegistration = () => {
             captainName: formData.captainName.trim(),
             // Keep `name` for compatibility with the existing registrations dashboard.
             name: formData.captainName.trim(),
+            rollNo: formData.rollNo.trim(),
             phone: formData.phone.trim(),
             email: formData.email.trim().toLowerCase(),
             teamName: formData.teamName.trim(),
             collegeName: formData.collegeName.trim(),
             participantCount,
             teamMembers: requiredMemberNames.map((memberName) => memberName.trim()),
+            paymentScreenshot: formData.paymentScreenshot,
             event: 'Wright Flight'
         });
 
@@ -198,6 +308,7 @@ const WrightFlightRegistration = () => {
 
             setFormData({
                 captainName: '',
+                rollNo: '',
                 phone: '',
                 email: '',
                 teamName: '',
@@ -206,8 +317,12 @@ const WrightFlightRegistration = () => {
                 teamMember1: '',
                 teamMember2: '',
                 teamMember3: '',
+                paymentScreenshot: '',
                 hp_field: ''
             });
+            setScreenshotFileName('');
+            setScreenshotError('');
+            if (screenshotInputRef.current) screenshotInputRef.current.value = '';
             navigate('/wright_flight_success');
         } else {
             alert('Submission failed. Please try again.');
@@ -263,6 +378,7 @@ const WrightFlightRegistration = () => {
                                 <li>Teams from <strong>all colleges</strong> are welcome to participate.</li>
                                 <li>Each team may have a maximum of <strong>{MAX_TEAM_SIZE} participants</strong>, including the captain.</li>
                                 <li>Please enter valid captain contact details so we can reach your team.</li>
+                                <li>Scan the payment QR and upload a clear screenshot of the completed payment.</li>
                             </ul>
                         </div>
 
@@ -300,6 +416,17 @@ const WrightFlightRegistration = () => {
                                     pattern="[0-9]{10}"
                                     inputMode="numeric"
                                     maxLength="10"
+                                />
+                            </label>
+
+                            <label>TEAM CAPTAIN ROLL NUMBER / STUDENT ID
+                                <input
+                                    type="text"
+                                    name="rollNo"
+                                    value={formData.rollNo}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Captain's Roll Number"
                                 />
                             </label>
 
@@ -364,7 +491,46 @@ const WrightFlightRegistration = () => {
                                 </label>
                             ))}
 
-                            <button className="register-btn" type="submit" disabled={isSubmitting}>
+                            <div className="wright-payment-qr-section">
+                                <span className="wright-payment-qr-label">Scan &amp; Pay</span>
+                                <img
+                                    src={wrightFlightQr}
+                                    alt="Wright Flight payment QR code"
+                                    className="wright-payment-qr-image"
+                                />
+                            </div>
+
+                            <label>PAYMENT SCREENSHOT
+                                <input
+                                    ref={screenshotInputRef}
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleScreenshotChange}
+                                    required
+                                />
+                            </label>
+
+                            {screenshotProcessing && (
+                                <p className="wright-payment-upload-status">Processing image...</p>
+                            )}
+
+                            {screenshotError && (
+                                <p className="wright-payment-upload-error" role="alert">{screenshotError}</p>
+                            )}
+
+                            {formData.paymentScreenshot && !screenshotProcessing && (
+                                <div className="wright-payment-upload-preview">
+                                    <img src={formData.paymentScreenshot} alt="Payment screenshot preview" />
+                                    <div className="wright-payment-upload-preview-info">
+                                        <span>{screenshotFileName || 'Screenshot attached'}</span>
+                                        <button type="button" onClick={handleRemoveScreenshot}>
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            <button className="register-btn" type="submit" disabled={isSubmitting || screenshotProcessing}>
                                 {isSubmitting ? 'CHECKING & REGISTERING...' : 'REGISTER NOW'}
                             </button>
 

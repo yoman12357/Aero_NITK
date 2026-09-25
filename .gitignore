@@ -7,6 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 aeronitk-698ac-firebase-adminsdk-fbsvc-f8335506d6.json
+/aeronitk-698ac-firebase-adminsdk-fbsvc-f8335506d6.json
+/firebase_export/
+/export.py
 # Sensitive files - NEVER push these
 .env
 .env.local
