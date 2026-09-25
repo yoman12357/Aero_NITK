@@ -344,6 +344,7 @@ const WrightFlightRegistration = () => {
 
             <section className="wright-flight-section">
                 <h2 className="wright-flight-title">WRIGHT FLIGHT REGISTRATION</h2>
+                <p className="wright-flight-fee"><strong>Registration Fee: ₹500 per team</strong></p>
 
                 {isWrightFlightOngoing && slotsLeft !== 0 && (
                     <div className="slots-banner">
