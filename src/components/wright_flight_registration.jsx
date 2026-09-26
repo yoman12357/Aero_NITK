@@ -21,8 +21,8 @@ import {
 export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'ongoing';
 export const WRIGHT_FLIGHT_MAX_SLOTS = 100;
 const MAX_TEAM_SIZE = 4;
-const MAX_SCREENSHOT_DIMENSION = 1000;
-const TARGET_DATA_URL_BYTES = 700 * 1024;
+const MAX_SCREENSHOT_DIMENSION = 900;
+const TARGET_DATA_URL_BYTES = 450 * 1024;
 const MAX_UPLOAD_FILE_BYTES = 10 * 1024 * 1024;
 
 function readFileAsDataURL(file) {
@@ -125,6 +125,14 @@ const WrightFlightRegistration = () => {
     });
 
     useEffect(() => {
+        // Warm the lazy-loaded success-page chunk while the user fills out the
+        // form so navigation after a successful write is effectively instant.
+        import('./WrightFlightSuccess.jsx').catch((error) => {
+            if (import.meta.env.MODE === 'development') {
+                console.warn('Could not preload Wright Flight success page:', error);
+            }
+        });
+
         // Only load live slot data from Firebase when the form is open.
         // For upcoming/closed states, this page stays static.
         if (!isWrightFlightOngoing) return;
@@ -256,8 +264,17 @@ const WrightFlightRegistration = () => {
         setIsSubmitting(true);
         setDuplicateError('');
 
-        // so we do not accept responses above the slot limit.
-        const currentCount = await getWrightFlightRegistrationCount();
+        // These checks are independent, so run them together instead of
+        // making the participant wait for two sequential network round trips.
+        const [currentCount, dupCheck] = await Promise.all([
+            getWrightFlightRegistrationCount(),
+            checkDuplicateWrightFlightRegistration({
+                rollNo: formData.rollNo.trim(),
+                email: formData.email.trim().toLowerCase(),
+                phone: formData.phone.trim(),
+            }),
+        ]);
+
         if (currentCount !== null && currentCount >= WRIGHT_FLIGHT_MAX_SLOTS) {
             setDuplicateError(
                 `Registrations are now closed - we've reached the maximum of ${WRIGHT_FLIGHT_MAX_SLOTS} teams for Wright Flight.`
@@ -266,13 +283,6 @@ const WrightFlightRegistration = () => {
             setIsSubmitting(false);
             return;
         }
-
-        // Prevent the same person from registering more than once.
-        const dupCheck = await checkDuplicateWrightFlightRegistration({
-            rollNo: formData.rollNo.trim(),
-            email: formData.email.trim().toLowerCase(),
-            phone: formData.phone.trim(),
-        });
 
         if (dupCheck.duplicate) {
             setDuplicateError(
@@ -344,7 +354,19 @@ const WrightFlightRegistration = () => {
 
             <section className="wright-flight-section">
                 <h2 className="wright-flight-title">WRIGHT FLIGHT REGISTRATION</h2>
-                <p className="wright-flight-fee"><strong>Registration Fee: ₹500 per team</strong></p>
+                <div className="wright-flight-registration-meta">
+                    <p className="wright-flight-fee">
+                        <strong>Registration Fee: ₹500 per team</strong>
+                    </p>
+                    <a
+                        className="wright-flight-rulebook-btn"
+                        href="https://drive.google.com/file/d/1YAVtAMpws1qcgr_AZrWUNmN81KkMZF85/view?usp=sharing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        View Rulebook
+                    </a>
+                </div>
 
                 {isWrightFlightOngoing && slotsLeft !== 0 && (
                     <div className="slots-banner">
@@ -376,17 +398,6 @@ const WrightFlightRegistration = () => {
                             <h3 className="guidelines-heading">Guidelines</h3>
                             <ul className="guidelines-list">
                                 <li>One registration must be submitted per team by the team captain.</li>
-                                <li>
-                                    Read the{' '}
-                                    <a
-                                        href="https://drive.google.com/file/d/1YAVtAMpws1qcgr_AZrWUNmN81KkMZF85/view?usp=sharing"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <strong>Rulebook</strong>
-                                    </a>{' '}
-                                    before registering.
-                                </li>
                                 <li>Teams from <strong>all colleges</strong> are welcome to participate.</li>
                                 <li>Each team may have a maximum of <strong>{MAX_TEAM_SIZE} participants</strong>, including the captain.</li>
                                 <li>Please enter valid captain contact details so we can reach your team.</li>

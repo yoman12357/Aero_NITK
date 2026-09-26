@@ -20,11 +20,25 @@
     font-weight: 700;
 }
 
-.wright-flight-fee {
+.wright-flight-registration-meta {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    max-width: 600px;
     margin: -12px 0 28px;
+}
+
+.wright-flight-fee {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
     padding: 10px 18px;
     border: 1px solid rgba(52, 148, 235, 0.7);
-    border-radius: 999px;
+    border-radius: 8px;
     background: rgba(52, 148, 235, 0.12);
     color: #ffffff;
     font-size: 1.05rem;
@@ -34,6 +48,34 @@
 
 .wright-flight-fee strong {
     font-weight: 800;
+}
+
+.wright-flight-rulebook-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 22px;
+    border: 1px solid #60a5fa;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #3494eb, #2563eb);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.28);
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.wright-flight-rulebook-btn:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #60a5fa, #2563eb);
+    box-shadow: 0 9px 22px rgba(37, 99, 235, 0.4);
+}
+
+.wright-flight-rulebook-btn:focus-visible {
+    outline: 3px solid rgba(96, 165, 250, 0.45);
+    outline-offset: 3px;
 }
 
 .wright-flight-guidelines {
@@ -353,6 +395,15 @@
 }
 
 @media (max-width: 600px) {
+    .wright-flight-registration-meta {
+        flex-direction: column;
+    }
+
+    .wright-flight-rulebook-btn {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
     .wright-flight-card {
         padding: 30px 20px;
     }

@@ -47,14 +47,18 @@ const checkDuplicateInCollection = async (collectionName, { rollNo, email, phone
             { field: 'phone', value: phone, label: 'Phone Number' },
         ];
 
-        for (const { field, value, label } of checks) {
-            if (!value) continue;
-            const snap = await getDocs(query(col, where(field, '==', value)));
-            if (!snap.empty) {
-                return { duplicate: true, field: label };
-            }
-        }
-        return { duplicate: false };
+        // Each field check is independent. Running them concurrently removes
+        // two avoidable network round trips from the registration flow while
+        // preserving the same roll-number, email, then phone priority.
+        const results = await Promise.all(
+            checks
+                .filter(({ value }) => Boolean(value))
+                .map(async ({ field, value, label }) => {
+                    const snap = await getDocs(query(col, where(field, '==', value)));
+                    return { duplicate: !snap.empty, field: label };
+                })
+        );
+        return results.find((result) => result.duplicate) || { duplicate: false };
     } catch (error) {
         if (import.meta.env.MODE === 'development') {
             console.error(`Duplicate check error (${collectionName}):`, error);
