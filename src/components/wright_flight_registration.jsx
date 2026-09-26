@@ -376,6 +376,17 @@ const WrightFlightRegistration = () => {
                             <h3 className="guidelines-heading">Guidelines</h3>
                             <ul className="guidelines-list">
                                 <li>One registration must be submitted per team by the team captain.</li>
+                                <li>
+                                    Read the{' '}
+                                    <a
+                                        href="https://drive.google.com/file/d/1YAVtAMpws1qcgr_AZrWUNmN81KkMZF85/view?usp=sharing"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <strong>Rulebook</strong>
+                                    </a>{' '}
+                                    before registering.
+                                </li>
                                 <li>Teams from <strong>all colleges</strong> are welcome to participate.</li>
                                 <li>Each team may have a maximum of <strong>{MAX_TEAM_SIZE} participants</strong>, including the captain.</li>
                                 <li>Please enter valid captain contact details so we can reach your team.</li>
