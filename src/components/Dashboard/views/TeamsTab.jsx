@@ -528,16 +528,20 @@ function TeamsTab() {
                                     Avionics
                                 </option>
 
-                                <option value="Propulsion">
-                                    Propulsion
+                                <option value="Web Team">
+                                    Web Team
+                                </option>
+                                
+                                <option value="Marketing">
+                                    Marketing
                                 </option>
 
-                                <option value="Structures">
+                                <option value="Media">
+                                    Media
+                                </option>
+
+                               <option value="Structures">
                                     Structures
-                                </option>
-
-                                <option value="Recovery">
-                                    Recovery
                                 </option>
 
                                 <option value="Other">
