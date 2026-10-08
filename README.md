@@ -74,7 +74,7 @@ The workshop component and Wright Flight configuration expose status variables:
 
 ```js
 export const WORKSHOP_REGISTRATION_STATUS = 'closed';
-export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'ongoing';
+export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'upcoming';
 ```
 
 Supported values:
@@ -116,7 +116,7 @@ These values control:
 
 The registration fee is ₹450 per team excluding taxes. At 18% GST (₹81), the total payable is ₹531 per team. The same configuration supplies the amounts displayed at the top of the page, above the SAC payment QR, and saved with each registration.
 
-Wright Flight is currently `ongoing`: its form displays the payment QR and accepts submissions. Set its status back to `upcoming` to block submissions and hide the form and QR. The shared status also overrides the CMS status on the registrations hub. Hidden CMS events remain hidden.
+Wright Flight remains `upcoming`: its form does not accept submissions or display the payment QR until registrations open. This also overrides any stale `open` status or CTA in the CMS on the registrations hub. Hidden CMS events remain hidden.
 
 ### Registration Features
 
