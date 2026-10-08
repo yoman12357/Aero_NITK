@@ -1,6 +1,6 @@
 // Set to 'ongoing' only when registrations are ready to open.
 // 'upcoming' blocks submissions; 'closed' marks the event as past.
-export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'upcoming';
+export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'ongoing';
 export const WRIGHT_FLIGHT_MAX_SLOTS = 100;
 
 export const WRIGHT_FLIGHT_REGISTRATION_FEE = 450;
