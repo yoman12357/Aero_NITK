@@ -32,6 +32,8 @@
 
 .wright-flight-fee {
     display: flex;
+    flex-direction: column;
+    gap: 6px;
     flex: 1;
     align-items: center;
     justify-content: center;
@@ -48,6 +50,11 @@
 
 .wright-flight-fee strong {
     font-weight: 800;
+}
+
+.wright-flight-fee span {
+    font-size: 0.9rem;
+    color: #d1d5db;
 }
 
 .wright-flight-rulebook-btn {
@@ -318,6 +325,11 @@
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+.wright-payment-total {
+    color: #ffffff;
+    font-size: 1.1rem;
 }
 
 .wright-payment-qr-image {

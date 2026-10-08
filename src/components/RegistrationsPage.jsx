@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
+import { WRIGHT_FLIGHT_REGISTRATION_STATUS } from '../data/wrightFlightRegistration.js';
 import './RegistrationsPage.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
@@ -17,13 +18,23 @@ const STATUS_META = {
 };
 
 function normalizeEvent(event) {
-    const meta = STATUS_META[event.status];
+    // Keep the listing in sync with the dedicated form even if the CMS
+    // still marks Wright Flight as open or points to an external form.
+    const isWrightFlight = ['wrightFlight', 'wright-flight'].includes(event.registrationKey)
+        || event.ctaLink?.trim() === '/wright_flight_registration'
+        || event.title?.trim().toLowerCase() === 'wright flight';
+    const wrightFlightStatus = {
+        upcoming: 'soon',
+        ongoing: 'open',
+        closed: 'closed'
+    }[WRIGHT_FLIGHT_REGISTRATION_STATUS];
+    const meta = STATUS_META[isWrightFlight && event.status !== 'none' ? wrightFlightStatus : event.status];
     if (!meta) return null; // status 'none' (Hidden), or unrecognized — skip entirely
 
     // Most events use the generic form generated from registrationKey.
     // Wright Flight keeps its dedicated team-registration form. A custom
     // ctaLink (e.g. an external Unstop/Google Form link) still takes priority.
-    const builtInRegistrationLink = ['wrightFlight', 'wright-flight'].includes(event.registrationKey)
+    const builtInRegistrationLink = isWrightFlight
         ? '/wright_flight_registration'
         : event.registrationKey
             ? `/register/${event.registrationKey}`
@@ -38,7 +49,9 @@ function normalizeEvent(event) {
     // a link technically exists (mirrors the previous hardcoded behavior).
     const ctaLink = meta.tab === 'ongoing' ? resolvedLink : null;
 
-    const ctaLabel = event.ctaLabel?.trim()
+    const ctaLabel = isWrightFlight && meta.tab !== 'ongoing'
+        ? meta.tab === 'upcoming' ? 'Opens Soon' : 'Registration Closed'
+        : event.ctaLabel?.trim()
         ? event.ctaLabel.trim()
         : meta.tab === 'ongoing'
             ? 'Open Registration Form'

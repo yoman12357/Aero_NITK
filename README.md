@@ -60,20 +60,21 @@ The site now uses a central registrations page at `/registrations`. Each event a
 - `Upcoming`
 - `Past`
 
-Each registration event controls its own state directly inside its own file.
+The workshop controls its state in its component. Wright Flight uses the shared configuration in `src/data/wrightFlightRegistration.js`, which keeps its dedicated form and registrations hub in sync.
 
 ### Current Registration Files
 
 - `src/components/workshop_registration.jsx`
 - `src/components/wright_flight_registration.jsx`
+- `src/data/wrightFlightRegistration.js` - Wright Flight status, capacity, and payment amounts
 
 ### Status Variables
 
-Each registration file exposes a status variable near the top:
+The workshop component and Wright Flight configuration expose status variables:
 
 ```js
 export const WORKSHOP_REGISTRATION_STATUS = 'closed';
-export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'ongoing';
+export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'upcoming';
 ```
 
 Supported values:
@@ -97,7 +98,7 @@ Meaning:
 
 ### Slot Limit Variables
 
-Each registration file also exposes a slot-count variable:
+The same files also expose slot-count variables:
 
 ```js
 export const WORKSHOP_MAX_SLOTS = 111;
@@ -110,6 +111,12 @@ These values control:
 - the progress bar
 - the closed-state message
 - the Firestore capacity check before submit
+
+### Wright Flight Payment
+
+The registration fee is ₹450 per team excluding taxes. At 18% GST (₹81), the total payable is ₹531 per team. The same configuration supplies the amounts displayed at the top of the page, above the SAC payment QR, and saved with each registration.
+
+Wright Flight remains `upcoming`: its form does not accept submissions or display the payment QR until registrations open. This also overrides any stale `open` status or CTA in the CMS on the registrations hub. Hidden CMS events remain hidden.
 
 ### Registration Features
 

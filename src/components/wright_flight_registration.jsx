@@ -5,21 +5,21 @@ import Footer from './footer.jsx';
 import './wright_flight_registration.css';
 import wrightFlightQr from '../images/wright_flight_qr.jpeg';
 import {
+    WRIGHT_FLIGHT_REGISTRATION_STATUS,
+    WRIGHT_FLIGHT_MAX_SLOTS,
+    WRIGHT_FLIGHT_REGISTRATION_FEE,
+    WRIGHT_FLIGHT_GST_RATE,
+    WRIGHT_FLIGHT_GST_AMOUNT,
+    WRIGHT_FLIGHT_TOTAL_AMOUNT
+} from '../data/wrightFlightRegistration.js';
+import {
     saveToCollection,
     checkDuplicateWrightFlightRegistration,
     getWrightFlightRegistrationCount
 } from '../firebase.js';
 
-// Registration control panel for this event.
-// Change only these 2 values when you want to manage this form:
-// 1. WRIGHT_FLIGHT_REGISTRATION_STATUS:
-//    - 'upcoming' -> shows inside the Upcoming tab
-//    - 'ongoing'  -> shows inside the Ongoing tab and enables the form
-//    - 'closed'   -> shows inside the Past tab and blocks submissions
-// 2. WRIGHT_FLIGHT_MAX_SLOTS:
-//    - total number of registrations allowed for this event
-export const WRIGHT_FLIGHT_REGISTRATION_STATUS = 'ongoing';
-export const WRIGHT_FLIGHT_MAX_SLOTS = 100;
+// Registration status, capacity, and payment amounts are managed in
+// src/data/wrightFlightRegistration.js and shared with the registrations hub.
 const MAX_TEAM_SIZE = 4;
 const MAX_SCREENSHOT_DIMENSION = 900;
 const TARGET_DATA_URL_BYTES = 450 * 1024;
@@ -93,9 +93,8 @@ const WrightFlightUpcomingPage = () => (
         <div className="closed-icon">SOON</div>
         <h3 className="guidelines-heading">Registrations Opening Soon</h3>
         <p className="closed-subtext">
-            <strong>Wright Flight</strong> is currently marked as upcoming. Once you set
-            <strong> WRIGHT_FLIGHT_REGISTRATION_STATUS</strong> to <strong>'ongoing'</strong> in this file,
-            it will move to the ongoing tab and this form will become active.
+            Registrations for <strong>Wright Flight</strong> will open soon.
+            Please check back for updates before making any payment.
         </p>
     </div>
 );
@@ -305,6 +304,10 @@ const WrightFlightRegistration = () => {
             participantCount,
             teamMembers: requiredMemberNames.map((memberName) => memberName.trim()),
             paymentScreenshot: formData.paymentScreenshot,
+            registrationFee: WRIGHT_FLIGHT_REGISTRATION_FEE,
+            gstRate: WRIGHT_FLIGHT_GST_RATE,
+            gstAmount: WRIGHT_FLIGHT_GST_AMOUNT,
+            totalAmount: WRIGHT_FLIGHT_TOTAL_AMOUNT,
             event: 'Wright Flight'
         });
 
@@ -355,9 +358,11 @@ const WrightFlightRegistration = () => {
             <section className="wright-flight-section">
                 <h2 className="wright-flight-title">WRIGHT FLIGHT REGISTRATION</h2>
                 <div className="wright-flight-registration-meta">
-                    <p className="wright-flight-fee">
-                        <strong>Registration Fee: ₹500 per team</strong>
-                    </p>
+                    <div className="wright-flight-fee">
+                        <strong>Registration Fee: ₹{WRIGHT_FLIGHT_REGISTRATION_FEE} per team (excluding taxes)</strong>
+                        <span>GST ({WRIGHT_FLIGHT_GST_RATE}%): ₹{WRIGHT_FLIGHT_GST_AMOUNT}</span>
+                        <strong>Total payable: ₹{WRIGHT_FLIGHT_TOTAL_AMOUNT} per team (including GST)</strong>
+                    </div>
                     <a
                         className="wright-flight-rulebook-btn"
                         href="https://drive.google.com/file/d/1YAVtAMpws1qcgr_AZrWUNmN81KkMZF85/view?usp=sharing"
@@ -401,7 +406,7 @@ const WrightFlightRegistration = () => {
                                 <li>Teams from <strong>all colleges</strong> are welcome to participate.</li>
                                 <li>Each team may have a maximum of <strong>{MAX_TEAM_SIZE} participants</strong>, including the captain.</li>
                                 <li>Please enter valid captain contact details so we can reach your team.</li>
-                                <li>Scan the payment QR and upload a clear screenshot of the completed payment.</li>
+                                <li>Pay <strong>₹{WRIGHT_FLIGHT_TOTAL_AMOUNT} per team, including {WRIGHT_FLIGHT_GST_RATE}% GST</strong>, using the payment QR and upload a clear screenshot of the completed payment.</li>
                             </ul>
                         </div>
 
@@ -515,6 +520,10 @@ const WrightFlightRegistration = () => {
                             ))}
 
                             <div className="wright-payment-qr-section">
+                                <strong className="wright-payment-total">Total payable: ₹{WRIGHT_FLIGHT_TOTAL_AMOUNT} per team</strong>
+                                <span className="wright-payment-qr-label">
+                                    ₹{WRIGHT_FLIGHT_REGISTRATION_FEE} registration fee (excluding taxes) + ₹{WRIGHT_FLIGHT_GST_AMOUNT} GST ({WRIGHT_FLIGHT_GST_RATE}%)
+                                </span>
                                 <span className="wright-payment-qr-label">Scan &amp; Pay</span>
                                 <img
                                     src={wrightFlightQr}
