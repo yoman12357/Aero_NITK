@@ -10,7 +10,12 @@ export const CUSTOM_REGISTRATIONS = [
         aliases: [
             'droneCompetition',
             'droneCompetetion',
-            'drone-competition'
+            'drone-competition',
+            'drone-competetion',
+            'drone_competition',
+            'drone_competetion',
+            'dronecompetition',
+            'dronecompetetion'
         ],
         path: '/drone_competition_registration',
         legacyPaths: [

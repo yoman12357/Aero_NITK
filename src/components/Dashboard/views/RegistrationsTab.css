@@ -221,6 +221,29 @@
     font-size: 0.76rem;
 }
 
+.admin-dashboard-reg-delete-btn {
+    background: rgba(255, 77, 77, 0.12);
+    border: 1px solid rgba(255, 77, 77, 0.45);
+    color: #ff8585;
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.admin-dashboard-reg-delete-btn:hover {
+    background: rgba(255, 77, 77, 0.25);
+    border-color: #ff4d4d;
+    color: #ffffff;
+}
+
+.admin-dashboard-reg-delete-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 @media (max-width: 700px) {
     .admin-dashboard-registration-events {
         grid-template-columns: 1fr;

@@ -4,6 +4,10 @@
 export const EVENT_TO_REGISTRATION_KEY = {
     'skyverse-aeromodelling-workshop': 'workshop',
     'wright-flight': 'wrightFlight',
+    'drone-competition': 'droneCompetition',
+    'drone-competetion': 'droneCompetition',
+    'droneCompetition': 'droneCompetition',
+    'droneCompetetion': 'droneCompetition',
 };
 
 // Default shape for the add/edit event form

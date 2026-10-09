@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, increment, getDocs, query, where, orderBy, limit as fsLimit, getCountFromServer, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, deleteDoc, increment, getDocs, query, where, orderBy, limit as fsLimit, getCountFromServer, onSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 // import { GoogleAuthProvider } from "firebase/auth";
 
@@ -91,15 +91,43 @@ const getCollectionCount = async (collectionName) => {
 //
 // A couple of collections predate this convention and use a different name;
 // list them here so old data keeps being written to the same place.
+const normalizeEventKey = (key = '') =>
+    String(key)
+        .trim()
+        .toLowerCase()
+        .replace(/[-_\s]/g, '');
+
 const LEGACY_COLLECTION_OVERRIDES = {
     wrightFlight: 'wright_flight_registrations',
+    'wright-flight': 'wright_flight_registrations',
+    wright_flight: 'wright_flight_registrations',
+    wrightflight: 'wright_flight_registrations',
+    droneCompetition: 'droneCompetition_registrations',
+    droneCompetetion: 'droneCompetition_registrations',
+    'drone-competition': 'droneCompetition_registrations',
+    'drone-competetion': 'droneCompetition_registrations',
+    drone_competition: 'droneCompetition_registrations',
+    drone_competetion: 'droneCompetition_registrations',
+    dronecompetition: 'droneCompetition_registrations',
+    dronecompetetion: 'droneCompetition_registrations',
 };
 
 const collectionForEvent = (registrationKey) => {
     if (!registrationKey) {
         throw new Error('registrationKey is required to resolve a Firestore collection');
     }
-    return LEGACY_COLLECTION_OVERRIDES[registrationKey] || `${registrationKey}_registrations`;
+    const cleanKey = String(registrationKey).trim();
+    if (LEGACY_COLLECTION_OVERRIDES[cleanKey]) {
+        return LEGACY_COLLECTION_OVERRIDES[cleanKey];
+    }
+    const normalized = normalizeEventKey(cleanKey);
+    if (normalized === 'wrightflight') {
+        return 'wright_flight_registrations';
+    }
+    if (normalized === 'dronecompetition' || normalized === 'dronecompetetion') {
+        return 'droneCompetition_registrations';
+    }
+    return `${cleanKey}_registrations`;
 };
 
 // Save a registration document for a given event.
@@ -113,6 +141,20 @@ export const checkDuplicateEventRegistration = (registrationKey, { rollNo, email
 
 export const getEventRegistrationCount = (registrationKey) =>
     getCollectionCount(collectionForEvent(registrationKey));
+
+export const deleteEventRegistration = async (registrationKey, documentId) => {
+    try {
+        const colName = collectionForEvent(registrationKey);
+        const docRef = doc(db, colName, documentId);
+        await deleteDoc(docRef);
+        return { success: true };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error(`Error deleting registration (${registrationKey}/${documentId}):`, error);
+        }
+        return { success: false, error };
+    }
+};
 
 // Most recent N registration documents for one event, newest first.
 // Used to build a merged "recent registrations" feed across all events.

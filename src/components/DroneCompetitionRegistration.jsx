@@ -5,7 +5,7 @@ import Footer from './footer.jsx';
 import './DroneCompetitionRegistration.css';
 import wrightFlightQr from '../images/wright_flight_qr.jpeg';
 import {
-    saveToCollection,
+    saveEventRegistration,
     checkDuplicateEventRegistration
 } from '../firebase.js';
 
@@ -145,7 +145,9 @@ const DroneCompetitionRegistration = () => {
                         .replace(/[^a-z0-9]/g, '');
 
                     return key === 'dronecompetition' ||
-                        title === 'dronecompetition';
+                        key === 'dronecompetetion' ||
+                        title === 'dronecompetition' ||
+                        title === 'dronecompetetion';
                 });
 
                 // Fallback: find the event whose description contains
@@ -371,8 +373,8 @@ const DroneCompetitionRegistration = () => {
                 return;
             }
 
-            const result = await saveToCollection(
-                'droneCompetition_registrations',
+            const result = await saveEventRegistration(
+                'droneCompetition',
                 {
                     teamName: formData.teamName.trim(),
                     captainName: formData.captainName.trim(),

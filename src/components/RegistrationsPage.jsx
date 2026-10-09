@@ -36,7 +36,7 @@ function normalizeEvent(event) {
 
     const customRegistration =
         getCustomRegistration(event.registrationKey) ||
-        (eventTitle === 'dronecompetition'
+        (eventTitle === 'dronecompetition' || eventTitle === 'dronecompetetion'
             ? getCustomRegistration('droneCompetition')
             : null);
 
