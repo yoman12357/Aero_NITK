@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
 import './DroneCompetitionRegistration.css';
+import wrightFlightQr from '../images/wright_flight_qr.jpeg';
+
+
+
+const REGISTRATION_FEE = 300;
+const GST_RATE = 18;
+const GST_AMOUNT = REGISTRATION_FEE * GST_RATE / 100;
+const TOTAL_AMOUNT = REGISTRATION_FEE + GST_AMOUNT;
+
 
 const DroneCompetitionRegistration = () => {
     const [formData, setFormData] = useState({
@@ -51,11 +60,42 @@ const DroneCompetitionRegistration = () => {
                     <p>
                         Please wait for the registration form to officially open.
                     </p>
+
+                </div>
+
+                <div className="drone-registration-payment">
+                    <h2>Registration Fee</h2>
+
+                    <div className="drone-registration-fee-row">
+                        <span>Registration fee</span>
+                        <span>₹{REGISTRATION_FEE}</span>
+                    </div>
+
+                    <div className="drone-registration-fee-row">
+                        <span>GST ({GST_RATE}%)</span>
+                        <span>₹{GST_AMOUNT}</span>
+                    </div>
+
+                    <div className="drone-registration-fee-row drone-registration-fee-total">
+                        <strong>Total payable</strong>
+                        <strong>₹{TOTAL_AMOUNT}</strong>
+                    </div>
+
+                    <p className="drone-registration-payment-hint">
+                        Please do not make payment until registrations officially open.
+                    </p>
+
+                    <img
+                        src={wrightFlightQr}
+                        alt="Aero NITK payment QR code"
+                        className="drone-registration-qr"
+                    />
                 </div>
 
                 <form
                     className="drone-registration-card"
                     onSubmit={handleSubmit}
+
                 >
                     <h2>Team Information</h2>
 

@@ -143,3 +143,55 @@
         padding: 20px;
     }
 }
+
+
+.drone-registration-payment {
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    padding: 28px;
+    margin-bottom: 28px;
+    background: #1a1a1a;
+    border: 1px solid #3494eb;
+    border-radius: 8px;
+    color: #d1d5db;
+}
+
+.drone-registration-payment h2 {
+    color: #60a5fa;
+    margin: 0 0 20px;
+    font-size: 1.2rem;
+}
+
+.drone-registration-fee-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+}
+
+.drone-registration-fee-total {
+    color: #fff;
+    font-size: 1.05rem;
+    border-bottom: none;
+}
+
+.drone-registration-payment-hint {
+    margin: 20px 0 12px;
+    text-align: center;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.drone-registration-qr {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    margin: 16px auto 0;
+    background: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 6px;
+}
