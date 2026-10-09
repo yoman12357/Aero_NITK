@@ -9,6 +9,9 @@ const AeroNITKHomepage = lazy(() => import('./AeronitkHomepage.jsx'));
 const WorkshopRegistration = lazy(() => import('./components/workshop_registration.jsx'));
 const WorkshopSuccess = lazy(() => import('./components/WorkshopSuccess.jsx'));
 const WrightFlightRegistration = lazy(() => import('./components/wright_flight_registration.jsx'));
+const DroneCompetitionRegistration = lazy(
+  () => import('./components/DroneCompetitionRegistration.jsx')
+);
 const WrightFlightSuccess = lazy(() => import('./components/WrightFlightSuccess.jsx'));
 const RegistrationsPage = lazy(() => import('./components/RegistrationsPage.jsx'));
 const EventRegistrationForm = lazy(() => import('./components/EventRegistrationForm.jsx'));
@@ -184,6 +187,7 @@ const App = () => {
       {!isDashboardRoute && <Header isScrolled={isScrolled} />}
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
+          <Route path="/drone_competition_registration" element={<DroneCompetitionRegistration />} />
           <Route path="/" element={<AeroNITKHomepage />} />
           <Route path="/workshop_registration" element={<WorkshopRegistration />} />
           <Route path="/workshop_success" element={<WorkshopSuccess />} />

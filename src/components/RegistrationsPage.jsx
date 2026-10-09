@@ -23,6 +23,11 @@ function normalizeEvent(event) {
     const isWrightFlight = ['wrightFlight', 'wright-flight'].includes(event.registrationKey)
         || event.ctaLink?.trim() === '/wright_flight_registration'
         || event.title?.trim().toLowerCase() === 'wright flight';
+
+    const isDroneCompetition = ['droneCompetition', 'drone-competition'].includes(event.registrationKey)
+    || event.ctaLink?.trim() === '/drone_competition_registration'
+    || event.title?.trim().toLowerCase() === 'drone competition';
+
     const wrightFlightStatus = {
         upcoming: 'soon',
         ongoing: 'open',
@@ -35,7 +40,9 @@ function normalizeEvent(event) {
     // Wright Flight keeps its dedicated team-registration form. A custom
     // ctaLink (e.g. an external Unstop/Google Form link) still takes priority.
     const builtInRegistrationLink = isWrightFlight
-        ? '/wright_flight_registration'
+    ? '/wright_flight_registration'
+    : isDroneCompetition
+        ? '/drone_competition_registration'
         : event.registrationKey
             ? `/register/${event.registrationKey}`
             : null;
