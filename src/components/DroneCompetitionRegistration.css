@@ -233,8 +233,52 @@
         font-size: 0.88rem;
     }
 
+
     .drone-registration-fee-row {
         gap: 10px;
         font-size: 0.92rem;
     }
 }
+
+
+
+.drone-registration-description {
+    width: 100%;
+    max-width: 750px;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    padding: 24px;
+    background: #151515;
+    border: 1px solid #303b49;
+    border-radius: 12px;
+    color: #d1d5db;
+    font-size: 1rem;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.drone-registration-description h2 {
+    margin: 0 0 12px;
+    color: #60a5fa;
+    font-size: 1.2rem;
+}
+
+.drone-description-link {
+    display: inline-block;
+    margin: 0 4px;
+    color: #60a5fa;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.drone-description-link:hover {
+    color: #93c5fd;
+}
+
+@media (max-width: 600px) {
+    .drone-registration-description {
+        padding: 20px;
+        font-size: 0.95rem;
+    }
+}
+

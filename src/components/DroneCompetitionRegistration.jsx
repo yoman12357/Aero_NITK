@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
 import './DroneCompetitionRegistration.css';
@@ -23,12 +23,95 @@ const initialFormData = {
     hp_field: ''
 };
 
+function renderDescription(description) {
+    if (!description) return null;
+
+    const urlRegex = /https?:\/\/[^\s<>"']+/g;
+    const elements = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = urlRegex.exec(description)) !== null) {
+        if (match.index > lastIndex) {
+            elements.push(description.slice(lastIndex, match.index));
+        }
+
+        let url = match[0];
+        let punctuation = '';
+
+        while (/[.,!?;:]$/.test(url)) {
+            punctuation = url.slice(-1) + punctuation;
+            url = url.slice(0, -1);
+        }
+
+        elements.push(
+            <a
+                key={match.index}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="drone-description-link"
+            >
+                JOIN GROUP
+            </a>
+        );
+
+        if (punctuation) elements.push(punctuation);
+
+        lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < description.length) {
+        elements.push(description.slice(lastIndex));
+    }
+
+    return <span style={{ whiteSpace: 'pre-line' }}>{elements}</span>;
+}
+
 const DroneCompetitionRegistration = () => {
     const [formData, setFormData] = useState(initialFormData);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitMessage, setSubmitMessage] = useState('');
     const [paymentScreenshot, setPaymentScreenshot] = useState('');
     const [screenshotFileName, setScreenshotFileName] = useState('');
+    const [eventDescription, setEventDescription] = useState('');
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadDescription = async () => {
+            try {
+                const backendUrl =
+                    import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
+                const response = await fetch(`${backendUrl}/api/events`);
+                const data = await response.json();
+
+                if (!data.success) return;
+
+                const event = (data.events || []).find((item) => {
+                    const key = (item.registrationKey || '')
+                        .toLowerCase()
+                        .replace(/[-_\s]/g, '');
+
+                    return key === 'dronecompetition' ||
+                        item.title?.trim().toLowerCase() === 'drone competition';
+                });
+
+                if (isMounted && event) {
+                    setEventDescription(event.description || '');
+                }
+            } catch (error) {
+                console.error('Could not load event description:', error);
+            }
+        };
+
+        loadDescription();
+
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -232,6 +315,13 @@ const DroneCompetitionRegistration = () => {
                     DRONE COMPETITION
                     <span>REGISTRATION</span>
                 </h1>
+
+                {eventDescription && (
+                    <div className="drone-registration-description">
+                        <h2>Event Details</h2>
+                        <div>{renderDescription(eventDescription)}</div>
+                    </div>
+                )}
 
                 <div className="drone-registration-notice">
                     <h2>Team Registration</h2>
