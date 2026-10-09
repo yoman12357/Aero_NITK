@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
@@ -5,25 +6,25 @@ import './DroneCompetitionRegistration.css';
 import wrightFlightQr from '../images/wright_flight_qr.jpeg';
 import { saveToCollection, checkDuplicateEventRegistration } from '../firebase.js';
 
-
-
 const REGISTRATION_FEE = 300;
 const GST_RATE = 18;
 const GST_AMOUNT = REGISTRATION_FEE * GST_RATE / 100;
 const TOTAL_AMOUNT = REGISTRATION_FEE + GST_AMOUNT;
 
+const initialFormData = {
+    teamName: '',
+    captainName: '',
+    rollNo: '',
+    email: '',
+    phone: '',
+    collegeName: '',
+    year: '',
+    teamMembers: '',
+    hp_field: ''
+};
 
 const DroneCompetitionRegistration = () => {
-    const [formData, setFormData] = useState({
-        teamName: '',
-        captainName: '',
-        email: '',
-        phone: '',
-        collegeName: '',
-        teamMembers: '',
-        hp_field: ''
-    });
-
+    const [formData, setFormData] = useState(initialFormData);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitMessage, setSubmitMessage] = useState('');
     const [paymentScreenshot, setPaymentScreenshot] = useState('');
@@ -31,17 +32,11 @@ const DroneCompetitionRegistration = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value
-        }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
-
-
 
     const handleScreenshotChange = async (e) => {
         const file = e.target.files?.[0];
-
         if (!file) return;
 
         setSubmitMessage('');
@@ -114,14 +109,10 @@ const DroneCompetitionRegistration = () => {
             setPaymentScreenshot(compressedUrl);
             setScreenshotFileName(file.name);
         } catch {
-            setSubmitMessage(
-                'Could not process that screenshot. Please try another image.'
-            );
+            setSubmitMessage('Could not process that screenshot. Please try another image.');
             e.target.value = '';
         }
     };
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -134,7 +125,7 @@ const DroneCompetitionRegistration = () => {
         }
 
         if (formData.captainName.trim().length < 3) {
-            setSubmitMessage('Please enter the captain’s full name.');
+            setSubmitMessage("Please enter the captain's full name.");
             return;
         }
 
@@ -150,6 +141,16 @@ const DroneCompetitionRegistration = () => {
 
         if (formData.teamName.trim().length < 2) {
             setSubmitMessage('Please enter a valid team name.');
+            return;
+        }
+
+        if (formData.rollNo.trim().length < 1) {
+            setSubmitMessage("Please enter the captain's roll number.");
+            return;
+        }
+
+        if (!formData.year) {
+            setSubmitMessage("Please select the captain's year of study.");
             return;
         }
 
@@ -177,26 +178,25 @@ const DroneCompetitionRegistration = () => {
                 return;
             }
 
-            const result = await saveToCollection(
-                'droneCompetition_registrations',
-                {
-                    teamName: formData.teamName.trim(),
-                    captainName: formData.captainName.trim(),
-                    name: formData.captainName.trim(),
-                    email,
-                    phone,
-                    collegeName: formData.collegeName.trim(),
-                    teamMembers: formData.teamMembers.trim(),
-                    paymentScreenshot,
-                    registrationFee: REGISTRATION_FEE,
-                    gstRate: GST_RATE,
-                    gstAmount: GST_AMOUNT,
-                    totalAmount: TOTAL_AMOUNT,
-                    eventTitle: 'Drone Competition',
-                    event: 'Drone Competition',
-                    paymentStatus: 'pending_verification'
-                }
-            );
+            const result = await saveToCollection('droneCompetition_registrations', {
+                teamName: formData.teamName.trim(),
+                captainName: formData.captainName.trim(),
+                name: formData.captainName.trim(),
+                rollNo: formData.rollNo.trim(),
+                email,
+                phone,
+                collegeName: formData.collegeName.trim(),
+                year: formData.year,
+                teamMembers: formData.teamMembers.trim(),
+                paymentScreenshot,
+                registrationFee: REGISTRATION_FEE,
+                gstRate: GST_RATE,
+                gstAmount: GST_AMOUNT,
+                totalAmount: TOTAL_AMOUNT,
+                eventTitle: 'Drone Competition',
+                event: 'Drone Competition',
+                paymentStatus: 'pending_verification'
+            });
 
             if (!result.success) {
                 throw new Error('Could not save registration');
@@ -205,30 +205,17 @@ const DroneCompetitionRegistration = () => {
             setSubmitMessage(
                 'Registration submitted successfully. Your payment is pending verification.'
             );
-
-            setFormData({
-                teamName: '',
-                captainName: '',
-                email: '',
-                phone: '',
-                collegeName: '',
-                teamMembers: '',
-                hp_field: ''
-            });
-
+            setFormData(initialFormData);
             setPaymentScreenshot('');
             setScreenshotFileName('');
             e.target.reset();
         } catch (error) {
             console.error('Drone Competition registration error:', error);
-            setSubmitMessage(
-                'Registration failed. Please check your connection and try again.'
-            );
+            setSubmitMessage('Registration failed. Please check your connection and try again.');
         } finally {
             setIsSubmitting(false);
         }
     };
-
 
     return (
         <>
@@ -247,15 +234,9 @@ const DroneCompetitionRegistration = () => {
                 </h1>
 
                 <div className="drone-registration-notice">
-                    <h2>Registration Form</h2>
-                    <p>
-                        Register your team for the Aero NITK Drone Competition.
-                    </p>
-                    <p>
-                        Complete the form and upload your payment screenshot.
-                        Payments will be verified by the organizing team.
-                    </p>
-
+                    <h2>Team Registration</h2>
+                    <p>Register your team for the Aero NITK Drone Competition.</p>
+                    <p>Enter the captain's details and team information carefully.</p>
                 </div>
 
                 <div className="drone-registration-payment">
@@ -277,7 +258,8 @@ const DroneCompetitionRegistration = () => {
                     </div>
 
                     <p className="drone-registration-payment-hint">
-                        Please do not make payment until registrations officially open.
+                        Confirm the official registration opening and payment details
+                        with the organizers before paying.
                     </p>
 
                     <img
@@ -287,71 +269,99 @@ const DroneCompetitionRegistration = () => {
                     />
                 </div>
 
-                <form
-                    className="drone-registration-card"
-                    onSubmit={handleSubmit}
-
-                >
+                <form className="drone-registration-card" onSubmit={handleSubmit}>
                     <h2>Team Information</h2>
 
                     <label>
-                        TEAM NAME
+                        TEAM NAME *
                         <input
                             type="text"
                             name="teamName"
                             value={formData.teamName}
                             onChange={handleInputChange}
                             placeholder="Enter your team name"
-
+                            required
                         />
                     </label>
 
                     <label>
-                        TEAM CAPTAIN NAME
+                        TEAM CAPTAIN NAME *
                         <input
                             type="text"
                             name="captainName"
                             value={formData.captainName}
                             onChange={handleInputChange}
                             placeholder="Enter captain's full name"
-
+                            required
                         />
                     </label>
 
                     <label>
-                        EMAIL ADDRESS
+                        CAPTAIN'S ROLL NUMBER *
+                        <input
+                            type="text"
+                            name="rollNo"
+                            value={formData.rollNo}
+                            onChange={handleInputChange}
+                            placeholder="Enter college roll number"
+                            required
+                        />
+                    </label>
+
+                    <label>
+                        EMAIL ADDRESS *
                         <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleInputChange}
                             placeholder="Enter email address"
-
+                            required
                         />
                     </label>
 
                     <label>
-                        PHONE NUMBER
+                        PHONE NUMBER *
                         <input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            placeholder="Enter phone number"
-
+                            placeholder="10-digit phone number"
+                            pattern="[0-9]{10}"
+                            maxLength={10}
+                            required
                         />
                     </label>
 
                     <label>
-                        COLLEGE / INSTITUTION
+                        COLLEGE / INSTITUTION *
                         <input
                             type="text"
                             name="collegeName"
                             value={formData.collegeName}
                             onChange={handleInputChange}
                             placeholder="Enter college name"
-
+                            required
                         />
+                    </label>
+
+                    <label>
+                        CAPTAIN'S YEAR OF STUDY *
+                        <select
+                            name="year"
+                            value={formData.year}
+                            onChange={handleInputChange}
+                            required
+                        >
+                            <option value="">Select year</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                            <option value="5th Year">5th Year</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </label>
 
                     <label>
@@ -360,15 +370,13 @@ const DroneCompetitionRegistration = () => {
                             name="teamMembers"
                             value={formData.teamMembers}
                             onChange={handleInputChange}
-                            placeholder="Team member names will be collected here"
+                            placeholder="Enter team member names and roll numbers"
                             rows={4}
-
                         />
                     </label>
 
-
                     <label>
-                        PAYMENT SCREENSHOT
+                        PAYMENT SCREENSHOT *
                         <input
                             type="file"
                             accept="image/*"
@@ -376,26 +384,29 @@ const DroneCompetitionRegistration = () => {
                             required
                         />
                         {screenshotFileName && (
-                            <span>{screenshotFileName}</span>
+                            <span className="drone-registration-file-name">
+                                Selected: {screenshotFileName}
+                            </span>
                         )}
                     </label>
-
-
-
 
                     <button type="submit" disabled={isSubmitting}>
                         {isSubmitting ? 'SUBMITTING...' : 'REGISTER NOW'}
                     </button>
 
                     {submitMessage && (
-                        <p role="status" aria-live="polite">{submitMessage}</p>
+                        <p
+                            className="drone-registration-status"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            {submitMessage}
+                        </p>
                     )}
 
-
-
                     <p className="drone-registration-footnote">
-                        Final fields and eligibility requirements will be
-                        updated after the official details are received.
+                        All fields marked with * are required. Payment verification
+                        will be completed by the organizing team.
                     </p>
                 </form>
             </section>
