@@ -4,12 +4,18 @@ import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
 import './DroneCompetitionRegistration.css';
 import wrightFlightQr from '../images/wright_flight_qr.jpeg';
-import { saveToCollection, checkDuplicateEventRegistration } from '../firebase.js';
+import {
+    saveToCollection,
+    checkDuplicateEventRegistration
+} from '../firebase.js';
 
 const REGISTRATION_FEE = 300;
 const GST_RATE = 18;
-const GST_AMOUNT = REGISTRATION_FEE * GST_RATE / 100;
+const GST_AMOUNT = (REGISTRATION_FEE * GST_RATE) / 100;
 const TOTAL_AMOUNT = REGISTRATION_FEE + GST_AMOUNT;
+
+const BACKEND_URL =
+    import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
 const initialFormData = {
     teamName: '',
@@ -22,6 +28,13 @@ const initialFormData = {
     teamMembers: '',
     hp_field: ''
 };
+
+const normalizeText = (value = '') =>
+    String(value)
+        .normalize('NFKC')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '');
+
 
 function renderDescription(description) {
     if (!description) return null;
@@ -39,9 +52,31 @@ function renderDescription(description) {
         let url = match[0];
         let punctuation = '';
 
-        while (/[.,!?;:]$/.test(url)) {
+        while (/[.,!?;:) \]]$/.test(url)) {
             punctuation = url.slice(-1) + punctuation;
             url = url.slice(0, -1);
+        }
+
+        let label = url;
+
+        try {
+            const hostname = new URL(url).hostname.toLowerCase();
+
+            if (
+                hostname === 'chat.whatsapp.com' ||
+                hostname === 'wa.me' ||
+                hostname === 'whatsapp.com' ||
+                hostname.endsWith('.whatsapp.com')
+            ) {
+                label = 'JOIN GROUP';
+            } else if (
+                hostname === 'drive.google.com' ||
+                hostname === 'docs.google.com'
+            ) {
+                label = 'VIEW RULEBOOK';
+            }
+        } catch {
+            label = url;
         }
 
         elements.push(
@@ -52,7 +87,7 @@ function renderDescription(description) {
                 rel="noopener noreferrer"
                 className="drone-description-link"
             >
-                JOIN GROUP
+                {label}
             </a>
         );
 
@@ -77,49 +112,91 @@ const DroneCompetitionRegistration = () => {
     const [eventDescription, setEventDescription] = useState('');
 
     useEffect(() => {
-        let isMounted = true;
+        const controller = new AbortController();
 
         const loadDescription = async () => {
             try {
-                const backendUrl =
-                    import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
-
-                const response = await fetch(`${backendUrl}/api/events`);
-                const data = await response.json();
-
-                if (!data.success) return;
-
-                const event = (data.events || []).find((item) => {
-                    const key = (item.registrationKey || '')
-                        .toLowerCase()
-                        .replace(/[-_\s]/g, '');
-
-                    return key === 'dronecompetition' ||
-                        item.title?.trim().toLowerCase() === 'drone competition';
+                const response = await fetch(`${BACKEND_URL}/api/events`, {
+                    signal: controller.signal
                 });
 
-                if (isMounted && event) {
-                    setEventDescription(event.description || '');
+                if (!response.ok) {
+                    throw new Error(`Events API failed: ${response.status}`);
                 }
+
+                const data = await response.json();
+
+                if (!data.success || !Array.isArray(data.events)) {
+                    throw new Error('Invalid events API response');
+                }
+
+                const events = data.events;
+
+                // First try the registration key or event title.
+                let event = events.find((item) => {
+                    const key = String(item.registrationKey || '')
+                        .trim()
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, '');
+
+                    const title = String(item.title || '')
+                        .trim()
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, '');
+
+                    return key === 'dronecompetition' ||
+                        title === 'dronecompetition';
+                });
+
+                // Fallback: find the event whose description contains
+                // the WhatsApp invitation URL.
+                if (!event) {
+                    event = events.find((item) =>
+                        /https?:\/\/chat\.whatsapp\.com\//i.test(
+                            item.description || ''
+                        )
+                    );
+                }
+
+                if (controller.signal.aborted) return;
+
+                if (!event) {
+                    console.error(
+                        'No event with a WhatsApp invitation was found.',
+                        events.map(({ title, registrationKey }) => ({
+                            title,
+                            registrationKey
+                        }))
+                    );
+                    setEventDescription('');
+                    return;
+                }
+
+                setEventDescription(event.description || '');
             } catch (error) {
-                console.error('Could not load event description:', error);
+                if (error.name !== 'AbortError') {
+                    console.error('Could not load event description:', error);
+                }
             }
         };
 
         loadDescription();
 
-        return () => {
-            isMounted = false;
-        };
+        return () => controller.abort();
     }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     const handleScreenshotChange = async (e) => {
         const file = e.target.files?.[0];
+
         if (!file) return;
 
         setSubmitMessage('');
@@ -127,13 +204,17 @@ const DroneCompetitionRegistration = () => {
         setScreenshotFileName('');
 
         if (!file.type.startsWith('image/')) {
-            setSubmitMessage('Please upload a payment screenshot as an image.');
+            setSubmitMessage(
+                'Please upload a payment screenshot as an image.'
+            );
             e.target.value = '';
             return;
         }
 
         if (file.size > 10 * 1024 * 1024) {
-            setSubmitMessage('Please upload an image smaller than 10 MB.');
+            setSubmitMessage(
+                'Please upload an image smaller than 10 MB.'
+            );
             e.target.value = '';
             return;
         }
@@ -141,8 +222,11 @@ const DroneCompetitionRegistration = () => {
         try {
             const dataUrl = await new Promise((resolve, reject) => {
                 const reader = new FileReader();
+
                 reader.onload = () => resolve(reader.result);
-                reader.onerror = () => reject(new Error('Could not read image'));
+                reader.onerror = () =>
+                    reject(new Error('Could not read image'));
+
                 reader.readAsDataURL(file);
             });
 
@@ -151,12 +235,14 @@ const DroneCompetitionRegistration = () => {
 
                 img.onload = () => {
                     const maxDimension = 900;
+
                     const scale = Math.min(
                         1,
                         maxDimension / Math.max(img.width, img.height)
                     );
 
                     const canvas = document.createElement('canvas');
+
                     canvas.width = Math.round(img.width * scale);
                     canvas.height = Math.round(img.height * scale);
 
@@ -167,32 +253,47 @@ const DroneCompetitionRegistration = () => {
                         return;
                     }
 
-                    context.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    context.drawImage(
+                        img,
+                        0,
+                        0,
+                        canvas.width,
+                        canvas.height
+                    );
 
                     let quality = 0.8;
                     let result = canvas.toDataURL('image/jpeg', quality);
 
-                    while (result.length > 450 * 1024 && quality > 0.3) {
+                    while (
+                        result.length > 450 * 1024 &&
+                        quality > 0.3
+                    ) {
                         quality -= 0.1;
                         result = canvas.toDataURL('image/jpeg', quality);
                     }
 
                     if (result.length > 450 * 1024) {
-                        reject(new Error('Image is too large after compression'));
+                        reject(
+                            new Error('Image is too large after compression')
+                        );
                         return;
                     }
 
                     resolve(result);
                 };
 
-                img.onerror = () => reject(new Error('Could not load image'));
+                img.onerror = () =>
+                    reject(new Error('Could not load image'));
+
                 img.src = dataUrl;
             });
 
             setPaymentScreenshot(compressedUrl);
             setScreenshotFileName(file.name);
         } catch {
-            setSubmitMessage('Could not process that screenshot. Please try another image.');
+            setSubmitMessage(
+                'Could not process that screenshot. Please try another image.'
+            );
             e.target.value = '';
         }
     };
@@ -212,13 +313,19 @@ const DroneCompetitionRegistration = () => {
             return;
         }
 
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+        if (
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                formData.email.trim()
+            )
+        ) {
             setSubmitMessage('Please enter a valid email address.');
             return;
         }
 
         if (!/^[0-9]{10}$/.test(formData.phone.trim())) {
-            setSubmitMessage('Phone number must contain exactly 10 digits.');
+            setSubmitMessage(
+                'Phone number must contain exactly 10 digits.'
+            );
             return;
         }
 
@@ -233,7 +340,9 @@ const DroneCompetitionRegistration = () => {
         }
 
         if (!formData.year) {
-            setSubmitMessage("Please select the captain's year of study.");
+            setSubmitMessage(
+                "Please select the captain's year of study."
+            );
             return;
         }
 
@@ -249,10 +358,11 @@ const DroneCompetitionRegistration = () => {
             const email = formData.email.trim().toLowerCase();
             const phone = formData.phone.trim();
 
-            const duplicateCheck = await checkDuplicateEventRegistration(
-                'droneCompetition',
-                { email, phone }
-            );
+            const duplicateCheck =
+                await checkDuplicateEventRegistration(
+                    'droneCompetition',
+                    { email, phone }
+                );
 
             if (duplicateCheck.duplicate) {
                 setSubmitMessage(
@@ -261,25 +371,28 @@ const DroneCompetitionRegistration = () => {
                 return;
             }
 
-            const result = await saveToCollection('droneCompetition_registrations', {
-                teamName: formData.teamName.trim(),
-                captainName: formData.captainName.trim(),
-                name: formData.captainName.trim(),
-                rollNo: formData.rollNo.trim(),
-                email,
-                phone,
-                collegeName: formData.collegeName.trim(),
-                year: formData.year,
-                teamMembers: formData.teamMembers.trim(),
-                paymentScreenshot,
-                registrationFee: REGISTRATION_FEE,
-                gstRate: GST_RATE,
-                gstAmount: GST_AMOUNT,
-                totalAmount: TOTAL_AMOUNT,
-                eventTitle: 'Drone Competition',
-                event: 'Drone Competition',
-                paymentStatus: 'pending_verification'
-            });
+            const result = await saveToCollection(
+                'droneCompetition_registrations',
+                {
+                    teamName: formData.teamName.trim(),
+                    captainName: formData.captainName.trim(),
+                    name: formData.captainName.trim(),
+                    rollNo: formData.rollNo.trim(),
+                    email,
+                    phone,
+                    collegeName: formData.collegeName.trim(),
+                    year: formData.year,
+                    teamMembers: formData.teamMembers.trim(),
+                    paymentScreenshot,
+                    registrationFee: REGISTRATION_FEE,
+                    gstRate: GST_RATE,
+                    gstAmount: GST_AMOUNT,
+                    totalAmount: TOTAL_AMOUNT,
+                    eventTitle: 'Drone Competition',
+                    event: 'Drone Competition',
+                    paymentStatus: 'pending_verification'
+                }
+            );
 
             if (!result.success) {
                 throw new Error('Could not save registration');
@@ -288,13 +401,20 @@ const DroneCompetitionRegistration = () => {
             setSubmitMessage(
                 'Registration submitted successfully. Your payment is pending verification.'
             );
+
             setFormData(initialFormData);
             setPaymentScreenshot('');
             setScreenshotFileName('');
             e.target.reset();
         } catch (error) {
-            console.error('Drone Competition registration error:', error);
-            setSubmitMessage('Registration failed. Please check your connection and try again.');
+            console.error(
+                'Drone Competition registration error:',
+                error
+            );
+
+            setSubmitMessage(
+                'Registration failed. Please check your connection and try again.'
+            );
         } finally {
             setIsSubmitting(false);
         }
@@ -319,14 +439,20 @@ const DroneCompetitionRegistration = () => {
                 {eventDescription && (
                     <div className="drone-registration-description">
                         <h2>Event Details</h2>
-                        <div>{renderDescription(eventDescription)}</div>
+                        <div>
+                            {renderDescription(eventDescription)}
+                        </div>
                     </div>
                 )}
 
                 <div className="drone-registration-notice">
                     <h2>Team Registration</h2>
-                    <p>Register your team for the Aero NITK Drone Competition.</p>
-                    <p>Enter the captain's details and team information carefully.</p>
+                    <p>
+                        Register your team for the Aero NITK Drone Competition.
+                    </p>
+                    <p>
+                        Enter the captain's details and team information carefully.
+                    </p>
                 </div>
 
                 <div className="drone-registration-payment">
@@ -348,8 +474,8 @@ const DroneCompetitionRegistration = () => {
                     </div>
 
                     <p className="drone-registration-payment-hint">
-                        Confirm the official registration opening and payment details
-                        with the organizers before paying.
+                        Confirm the official registration opening and payment
+                        details with the organizers before paying.
                     </p>
 
                     <img
@@ -359,7 +485,10 @@ const DroneCompetitionRegistration = () => {
                     />
                 </div>
 
-                <form className="drone-registration-card" onSubmit={handleSubmit}>
+                <form
+                    className="drone-registration-card"
+                    onSubmit={handleSubmit}
+                >
                     <h2>Team Information</h2>
 
                     <label>
@@ -480,7 +609,10 @@ const DroneCompetitionRegistration = () => {
                         )}
                     </label>
 
-                    <button type="submit" disabled={isSubmitting}>
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                    >
                         {isSubmitting ? 'SUBMITTING...' : 'REGISTER NOW'}
                     </button>
 
@@ -495,8 +627,8 @@ const DroneCompetitionRegistration = () => {
                     )}
 
                     <p className="drone-registration-footnote">
-                        All fields marked with * are required. Payment verification
-                        will be completed by the organizing team.
+                        All fields marked with * are required. Payment
+                        verification will be completed by the organizing team.
                     </p>
                 </form>
             </section>

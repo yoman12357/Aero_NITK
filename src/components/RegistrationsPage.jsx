@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
-import { WRIGHT_FLIGHT_REGISTRATION_STATUS } from '../data/wrightFlightRegistration.js';
+
 import {
     getCustomRegistration
 } from '../data/customRegistrationRoutes.js';
@@ -17,32 +17,31 @@ const STATUS_META = {
     closed: { tab: 'past', badge: 'Closed' }
 };
 
+
 function normalizeEvent(event) {
-    const eventTitle = (event.title || '').trim().toLowerCase();
+    const normalizeKey = (value) =>
+        String(value || '')
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '');
+
+    const eventTitle = normalizeKey(event.title);
+    const eventKey = normalizeKey(event.registrationKey);
     const eventCtaLink = (event.ctaLink || '').trim();
 
     const isWrightFlight =
-        ['wrightflight', 'wright-flight'].includes(event.registrationKey) ||
-        eventCtaLink === '/wright_flight_registration' ||
-        eventTitle === 'wright flight';
+        eventKey === 'wrightflight' ||
+        eventTitle === 'wrightflight' ||
+        eventCtaLink === '/wright_flight_registration';
 
     const customRegistration =
         getCustomRegistration(event.registrationKey) ||
-        (eventTitle === 'drone competition'
+        (eventTitle === 'dronecompetition'
             ? getCustomRegistration('droneCompetition')
             : null);
 
-    const wrightFlightStatus = {
-        upcoming: 'soon',
-        ongoing: 'open',
-        closed: 'closed'
-    }[WRIGHT_FLIGHT_REGISTRATION_STATUS];
-
-    const meta = STATUS_META[
-        isWrightFlight && event.status !== 'none'
-            ? wrightFlightStatus
-            : event.status
-    ];
+    // Use the status saved by the admin dashboard.
+    const meta = STATUS_META[event.status];
 
     if (!meta) return null;
 
@@ -54,8 +53,6 @@ function normalizeEvent(event) {
                 ? `/register/${event.registrationKey}`
                 : null;
 
-    // Dedicated custom forms take priority over stale CMS links.
-    // External CMS links continue to work for other events.
     const resolvedLink = isWrightFlight || customRegistration
         ? builtInRegistrationLink
         : eventCtaLink || builtInRegistrationLink;
@@ -83,6 +80,64 @@ function normalizeEvent(event) {
         ctaLink: meta.tab === 'ongoing' ? resolvedLink : null
     };
 }
+
+
+
+
+const renderEventDescription = (description) => {
+    const parts = String(description || '').split(
+        /(https?:\/\/[^\s]+)/gi
+    );
+
+    return parts.map((part, index) => {
+        if (!/^https?:\/\//i.test(part)) {
+            return part;
+        }
+
+        const punctuation = part.match(/[.,!?;:)\]]+$/)?.[0] || '';
+        const url = punctuation
+            ? part.slice(0, -punctuation.length)
+            : part;
+
+        let label = '';
+
+        try {
+            const hostname = new URL(url).hostname.toLowerCase();
+
+            if (
+                hostname === 'wa.me' ||
+                hostname === 'whatsapp.com' ||
+                hostname.endsWith('.whatsapp.com')
+            ) {
+                label = 'Join Group';
+            } else if (
+                hostname === 'drive.google.com' ||
+                hostname === 'docs.google.com'
+            ) {
+                label = 'View Rulebook';
+            }
+        } catch {
+            return part;
+        }
+
+        if (!label) {
+            return part;
+        }
+
+        return (
+            <React.Fragment key={`description-link-${index}`}>
+                <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {label}
+                </a>
+                {punctuation}
+            </React.Fragment>
+        );
+    });
+};
 
 const RegistrationsPage = () => {
     const [rawEvents, setRawEvents] = useState([]);
@@ -229,9 +284,8 @@ const RegistrationsPage = () => {
                                 type="button"
                                 role="tab"
                                 aria-selected={activeTab === tab.key}
-                                className={`registrations-tab ${
-                                    activeTab === tab.key ? 'active' : ''
-                                }`}
+                                className={`registrations-tab ${activeTab === tab.key ? 'active' : ''
+                                    }`}
                                 onClick={() => setActiveTab(tab.key)}
                             >
                                 {tab.label}
@@ -263,7 +317,7 @@ const RegistrationsPage = () => {
                                     <h2>{event.title}</h2>
 
                                     <p className="registration-card-description">
-                                        {event.description}
+                                        {renderEventDescription(event.description)}
                                     </p>
 
                                     {renderCardAction(event)}
