@@ -9,6 +9,7 @@
 import {
     getEventRegistrationCount,
     getRecentRegistrations,
+    deleteEventRegistration,
     subscribeToEventRegistrations as subscribeToEventRegistrationsSnapshot,
 } from '../../../firebase.js';
 
@@ -25,7 +26,12 @@ export async function fetchRegistrationCounts(registrationKeys = []) {
     const entries = await Promise.all(
         uniqueKeys.map(async (key) => [key, await getEventRegistrationCount(key)])
     );
-    return Object.fromEntries(entries);
+    const counts = Object.fromEntries(entries);
+    const total = Object.values(counts).reduce(
+        (sum, count) => sum + (typeof count === 'number' ? count : 0),
+        0
+    );
+    return { ...counts, total };
 }
 
 /**
@@ -86,4 +92,11 @@ export function formatRelativeTime(timestamp) {
  */
 export function subscribeToEventRegistrations(registrationKey, onData, onError) {
     return subscribeToEventRegistrationsSnapshot(registrationKey, onData, onError);
+}
+
+/**
+ * Deletes a single registration document for an event.
+ */
+export async function deleteRegistration(registrationKey, documentId) {
+    return deleteEventRegistration(registrationKey, documentId);
 }

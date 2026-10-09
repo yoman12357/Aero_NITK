@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+    deleteRegistration,
     formatRelativeTime,
     subscribeToEventRegistrations,
 } from '../services/registrationService.js';
@@ -115,6 +116,8 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
     const [registrationsError, setRegistrationsError] = useState('');
     const [activeScreenshot, setActiveScreenshot] = useState(null);
     const [liveCountOverrides, setLiveCountOverrides] = useState({});
+    const [deleteTarget, setDeleteTarget] = useState(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const registrationEvents = useMemo(
         () => events
@@ -152,6 +155,7 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
         setRegistrations([]);
         setRegistrationsError('');
         setRegistrationsLoading(true);
+        setDeleteTarget(null);
         setSelectedEventKey(registrationKey);
     };
 
@@ -161,6 +165,25 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
         setRegistrationsError('');
         setRegistrationsLoading(false);
         setActiveScreenshot(null);
+        setDeleteTarget(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deleteTarget || !selectedEventKey) return;
+        setIsDeleting(true);
+        try {
+            const docId = deleteTarget.documentId || deleteTarget.id;
+            const res = await deleteRegistration(selectedEventKey, docId);
+            if (!res.success) {
+                throw new Error(res.error?.message || 'Failed to delete registration');
+            }
+            setDeleteTarget(null);
+        } catch (error) {
+            console.error('Error deleting registration:', error);
+            alert('Failed to delete registration. Please try again.');
+        } finally {
+            setIsDeleting(false);
+        }
     };
 
     if (!selectedEventKey) {
@@ -277,6 +300,7 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
                                 <th>Year / Team</th>
                                 <th>Screenshot</th>
                                 <th>Registered</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -294,6 +318,11 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
                                         <td>
                                             <strong>{displayName}</strong>
                                             {secondaryName ? <small className="admin-dashboard-reg-secondary">{secondaryName}</small> : null}
+                                            {registration.teamMembers ? (
+                                                <small className="admin-dashboard-reg-secondary" title={registration.teamMembers}>
+                                                    Members: {registration.teamMembers}
+                                                </small>
+                                            ) : null}
                                         </td>
                                         <td>{registration.email || '—'}</td>
                                         <td>{registration.phone || '—'}</td>
@@ -319,6 +348,16 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
                                         </td>
                                         <td className="admin-dashboard-reg-time">
                                             {formatRelativeTime(registration.submittedAt)}
+                                        </td>
+                                        <td>
+                                            <button
+                                                type="button"
+                                                className="admin-dashboard-reg-delete-btn"
+                                                title={`Delete registration for ${displayName}`}
+                                                onClick={() => setDeleteTarget(registration)}
+                                            >
+                                                Delete
+                                            </button>
                                         </td>
                                     </tr>
                                 );
@@ -376,6 +415,69 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
                                 onClick={() => setActiveScreenshot(null)}
                             >
                                 Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {deleteTarget && (
+                <div
+                    className="admin-dashboard-modal-backdrop"
+                    onClick={() => !isDeleting && setDeleteTarget(null)}
+                    role="presentation"
+                >
+                    <div
+                        className="admin-dashboard-modal"
+                        style={{ maxWidth: '450px' }}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="delete-reg-modal-title"
+                        onClick={(modalEvent) => modalEvent.stopPropagation()}
+                    >
+                        <div className="admin-dashboard-modal-header">
+                            <div>
+                                <p className="admin-dashboard-modal-kicker" style={{ color: '#ff6b6b' }}>Confirm Deletion</p>
+                                <h3 id="delete-reg-modal-title">Delete Registration?</h3>
+                            </div>
+                            <button
+                                type="button"
+                                className="admin-dashboard-modal-close"
+                                onClick={() => !isDeleting && setDeleteTarget(null)}
+                                aria-label="Close modal"
+                                disabled={isDeleting}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        <p style={{ color: 'rgba(255,255,255,0.85)', margin: '14px 0 20px', fontSize: '0.95rem', lineHeight: '1.5' }}>
+                            Are you sure you want to delete the registration for{' '}
+                            <strong>
+                                {deleteTarget.teamName
+                                    ? `${deleteTarget.teamName} (${deleteTarget.captainName || deleteTarget.name})`
+                                    : (deleteTarget.name || deleteTarget.captainName || 'this registrant')}
+                            </strong>?
+                            This action will remove the record from Firestore.
+                        </p>
+
+                        <div className="admin-dashboard-modal-actions">
+                            <button
+                                type="button"
+                                className="admin-dashboard-modal-secondary"
+                                onClick={() => setDeleteTarget(null)}
+                                disabled={isDeleting}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                className="admin-dashboard-modal-primary"
+                                style={{ background: 'linear-gradient(180deg, #ff4336 0%, #b81409 100%)' }}
+                                onClick={handleConfirmDelete}
+                                disabled={isDeleting}
+                            >
+                                {isDeleting ? 'Deleting...' : 'Yes, Delete'}
                             </button>
                         </div>
                     </div>
