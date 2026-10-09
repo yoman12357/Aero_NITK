@@ -12,6 +12,8 @@ import {
     WRIGHT_FLIGHT_GST_AMOUNT,
     WRIGHT_FLIGHT_TOTAL_AMOUNT
 } from '../data/wrightFlightRegistration.js';
+
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 import {
     saveToCollection,
     checkDuplicateWrightFlightRegistration,
@@ -70,10 +72,7 @@ async function compressScreenshotToDataURL(file) {
     return dataUrl;
 }
 
-// These helper flags are derived from the status above.
-// Usually there is no need to edit them.
-const isWrightFlightOngoing = WRIGHT_FLIGHT_REGISTRATION_STATUS === 'ongoing';
-const isWrightFlightUpcoming = WRIGHT_FLIGHT_REGISTRATION_STATUS === 'upcoming';
+
 
 const WrightFlightClosedPage = ({ maxSlots }) => (
     <div className="wright-flight-guidelines registration-closed-box">
@@ -100,10 +99,17 @@ const WrightFlightUpcomingPage = () => (
 );
 
 const WrightFlightRegistration = () => {
+
     const navigate = useNavigate();
+
+    const [registrationStatus, setRegistrationStatus] = useState(null);
+    const [registrationStatusError, setRegistrationStatusError] = useState('');
+    const [slotsLeft, setSlotsLeft] = useState(null);
+
+    const isWrightFlightOngoing = registrationStatus === 'open';
+    const isWrightFlightUpcoming = registrationStatus === 'soon';
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [duplicateError, setDuplicateError] = useState('');
-    const [slotsLeft, setSlotsLeft] = useState(isWrightFlightOngoing ? null : WRIGHT_FLIGHT_MAX_SLOTS);
     const [screenshotFileName, setScreenshotFileName] = useState('');
     const [screenshotProcessing, setScreenshotProcessing] = useState(false);
     const [screenshotError, setScreenshotError] = useState('');
@@ -123,65 +129,148 @@ const WrightFlightRegistration = () => {
         hp_field: ''
     });
 
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleScreenshotChange = async (e) => {
+        const file = e.target.files?.[0];
+
+        if (!file) return;
+
+        setScreenshotError('');
+        setScreenshotFileName(file.name);
+        setScreenshotProcessing(true);
+
+        try {
+            if (!file.type.startsWith('image/')) {
+                throw new Error('Please select an image file.');
+            }
+
+            if (file.size > MAX_UPLOAD_FILE_BYTES) {
+                throw new Error('Screenshot must be 10 MB or smaller.');
+            }
+
+            const dataUrl = await compressScreenshotToDataURL(file);
+
+            setFormData((prev) => ({
+                ...prev,
+                paymentScreenshot: dataUrl
+            }));
+        } catch (error) {
+            setFormData((prev) => ({
+                ...prev,
+                paymentScreenshot: ''
+            }));
+
+            setScreenshotFileName('');
+            setScreenshotError(
+                error.message || 'Could not process the screenshot. Please try again.'
+            );
+
+            if (screenshotInputRef.current) {
+                screenshotInputRef.current.value = '';
+            }
+        } finally {
+            setScreenshotProcessing(false);
+        }
+    };
+
+
     useEffect(() => {
-        // Warm the lazy-loaded success-page chunk while the user fills out the
-        // form so navigation after a successful write is effectively instant.
         import('./WrightFlightSuccess.jsx').catch((error) => {
             if (import.meta.env.MODE === 'development') {
                 console.warn('Could not preload Wright Flight success page:', error);
             }
         });
-
-        // Only load live slot data from Firebase when the form is open.
-        // For upcoming/closed states, this page stays static.
-        if (!isWrightFlightOngoing) return;
-
-        getWrightFlightRegistrationCount().then((count) => {
-            if (count !== null) setSlotsLeft(Math.max(0, WRIGHT_FLIGHT_MAX_SLOTS - count));
-        });
     }, []);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+    useEffect(() => {
+        const controller = new AbortController();
 
-    const handleScreenshotChange = async (e) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
+        async function loadRegistrationStatus() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/events`, {
+                    signal: controller.signal
+                });
 
-        setScreenshotError('');
-        setScreenshotFileName('');
-        setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
-        if (!file.type.startsWith('image/')) {
-            setScreenshotError('Please upload an image file (JPG, PNG, etc.).');
-            e.target.value = '';
-            return;
-        }
-        if (file.size > MAX_UPLOAD_FILE_BYTES) {
-            setScreenshotError('That image is too large. Please upload a screenshot under 10MB.');
-            e.target.value = '';
-            return;
-        }
+                if (!response.ok) {
+                    throw new Error(`Events API failed: ${response.status}`);
+                }
 
-        setScreenshotProcessing(true);
-        try {
-            const compressed = await compressScreenshotToDataURL(file);
-            if (compressed.length > TARGET_DATA_URL_BYTES * 1.3) {
-                setScreenshotError('Could not compress this image enough. Please try a smaller screenshot.');
-                e.target.value = '';
-                return;
+                const data = await response.json();
+
+                if (!data.success || !Array.isArray(data.events)) {
+                    throw new Error('Invalid events API response');
+                }
+
+                const normalize = (value) =>
+                    String(value || '')
+                        .trim()
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, '');
+
+                const event = data.events.find((item) =>
+                    normalize(item.registrationKey) === 'wrightflight' ||
+                    normalize(item.title) === 'wrightflight' ||
+                    item.ctaLink === '/wright_flight_registration'
+                );
+
+                if (!event) {
+                    throw new Error('Wright Flight event was not found in the events API');
+                }
+
+                const status = String(event.status || '').toLowerCase();
+                const validStatuses = ['open', 'soon', 'closed'];
+
+                if (!controller.signal.aborted) {
+                    setRegistrationStatus(
+                        validStatuses.includes(status) ? status : 'closed'
+                    );
+                    setRegistrationStatusError('');
+                }
+            } catch (error) {
+                if (error.name !== 'AbortError' && !controller.signal.aborted) {
+                    console.error('Could not load Wright Flight status:', error);
+                    setRegistrationStatusError(
+                        'Could not load registration status. Please refresh the page.'
+                    );
+                }
             }
-            setFormData((prev) => ({ ...prev, paymentScreenshot: compressed }));
-            setScreenshotFileName(file.name);
-        } catch (error) {
-            console.error('Error processing payment screenshot:', error);
-            setScreenshotError('Could not process that image. Please try a different file.');
-            e.target.value = '';
-        } finally {
-            setScreenshotProcessing(false);
         }
-    };
+
+        loadRegistrationStatus();
+
+        return () => controller.abort();
+    }, []);
+
+    useEffect(() => {
+        if (!isWrightFlightOngoing) return;
+
+        let cancelled = false;
+
+        getWrightFlightRegistrationCount()
+            .then((count) => {
+                if (!cancelled && count !== null) {
+                    setSlotsLeft(
+                        Math.max(0, WRIGHT_FLIGHT_MAX_SLOTS - count)
+                    );
+                }
+            })
+            .catch((error) => {
+                console.error('Could not load remaining Wright Flight slots:', error);
+            });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [isWrightFlightOngoing]);
 
     const handleRemoveScreenshot = () => {
         setFormData((prev) => ({ ...prev, paymentScreenshot: '' }));
@@ -393,7 +482,18 @@ const WrightFlightRegistration = () => {
                     </div>
                 )}
 
-                {isWrightFlightUpcoming ? (
+                {registrationStatusError ? (
+                    <div className="wright-flight-guidelines">
+                        <h3 className="guidelines-heading">Status Unavailable</h3>
+                        <p className="closed-subtext">{registrationStatusError}</p>
+                    </div>
+                ) : registrationStatus === null ? (
+                    <div className="wright-flight-guidelines">
+                        <h3 className="guidelines-heading">
+                            Loading registration status...
+                        </h3>
+                    </div>
+                ) : isWrightFlightUpcoming ? (
                     <WrightFlightUpcomingPage />
                 ) : slotsLeft === 0 || !isWrightFlightOngoing ? (
                     <WrightFlightClosedPage maxSlots={WRIGHT_FLIGHT_MAX_SLOTS} />

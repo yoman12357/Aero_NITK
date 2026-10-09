@@ -1,0 +1,284 @@
+
+.drone-registration-section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 120px 20px 60px;
+    background: #000;
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+.drone-registration-title {
+    margin: 0 0 28px;
+    color: #fff;
+    font-size: 2.3rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.drone-registration-title span {
+    display: block;
+    margin-top: 8px;
+    color: #60a5fa;
+}
+
+.drone-registration-notice,
+.drone-registration-payment,
+.drone-registration-card {
+    width: 100%;
+    max-width: 750px;
+    box-sizing: border-box;
+    color: #d1d5db;
+    background: #151515;
+    border: 1px solid #303b49;
+    border-radius: 12px;
+}
+
+.drone-registration-notice {
+    margin-bottom: 24px;
+    padding: 24px;
+    border-left: 4px solid #3494eb;
+    line-height: 1.7;
+}
+
+.drone-registration-notice h2,
+.drone-registration-payment h2,
+.drone-registration-card h2 {
+    margin: 0 0 14px;
+    color: #60a5fa;
+    font-size: 1.2rem;
+}
+
+.drone-registration-notice p {
+    margin: 8px 0;
+}
+
+.drone-registration-payment {
+    margin-bottom: 24px;
+    padding: 28px;
+}
+
+.drone-registration-fee-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+}
+
+.drone-registration-fee-total {
+    border-bottom: none;
+    color: #fff;
+    font-size: 1.05rem;
+}
+
+.drone-registration-payment-hint {
+    margin: 18px 0 12px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.drone-registration-qr {
+    display: block;
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    margin: 16px auto 0;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 8px;
+}
+
+.drone-registration-card {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 32px;
+}
+
+.drone-registration-card h2 {
+    margin-bottom: 2px;
+}
+
+.drone-registration-card label {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    color: #e5e7eb;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+.drone-registration-card input,
+.drone-registration-card textarea,
+.drone-registration-card select {
+    width: 100%;
+    min-height: 50px;
+    padding: 14px 15px;
+    box-sizing: border-box;
+    background: #0b0b0b;
+    border: 1px solid #3d4b5c;
+    border-radius: 7px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    letter-spacing: normal;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.drone-registration-card textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.drone-registration-card input::placeholder,
+.drone-registration-card textarea::placeholder {
+    color: #858585;
+    opacity: 1;
+}
+
+.drone-registration-card select {
+    cursor: pointer;
+}
+
+.drone-registration-card input:focus,
+.drone-registration-card textarea:focus,
+.drone-registration-card select:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+}
+
+.drone-registration-card input[type="file"] {
+    min-height: auto;
+    padding: 12px;
+    cursor: pointer;
+}
+
+.drone-registration-file-name {
+    color: #93c5fd;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.drone-registration-card button {
+    width: 100%;
+    min-height: 52px;
+    padding: 14px;
+    box-sizing: border-box;
+    background: #2584d8;
+    border: none;
+    border-radius: 7px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.drone-registration-card button:hover:not(:disabled) {
+    background: #176bb5;
+}
+
+.drone-registration-card button:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+.drone-registration-status {
+    margin: 0;
+    color: #d1d5db;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.drone-registration-footnote {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .drone-registration-section {
+        padding: 100px 14px 40px;
+    }
+
+    .drone-registration-title {
+        font-size: 1.65rem;
+        letter-spacing: 2px;
+    }
+
+    .drone-registration-notice,
+    .drone-registration-payment {
+        padding: 20px;
+    }
+
+    .drone-registration-card {
+        gap: 20px;
+        padding: 22px 18px;
+    }
+
+    .drone-registration-card label {
+        font-size: 0.88rem;
+    }
+
+
+    .drone-registration-fee-row {
+        gap: 10px;
+        font-size: 0.92rem;
+    }
+}
+
+
+
+.drone-registration-description {
+    width: 100%;
+    max-width: 750px;
+    box-sizing: border-box;
+    margin-bottom: 24px;
+    padding: 24px;
+    background: #151515;
+    border: 1px solid #303b49;
+    border-radius: 12px;
+    color: #d1d5db;
+    font-size: 1rem;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+.drone-registration-description h2 {
+    margin: 0 0 12px;
+    color: #60a5fa;
+    font-size: 1.2rem;
+}
+
+.drone-description-link {
+    display: inline-block;
+    margin: 0 4px;
+    color: #60a5fa;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.drone-description-link:hover {
+    color: #93c5fd;
+}
+
+@media (max-width: 600px) {
+    .drone-registration-description {
+        padding: 20px;
+        font-size: 0.95rem;
+    }
+}
+

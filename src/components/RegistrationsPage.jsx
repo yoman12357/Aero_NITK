@@ -1,63 +1,73 @@
+
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Footer from './footer.jsx';
-import { WRIGHT_FLIGHT_REGISTRATION_STATUS } from '../data/wrightFlightRegistration.js';
+
+import {
+    getCustomRegistration
+} from '../data/customRegistrationRoutes.js';
 import './RegistrationsPage.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
-// Maps the Sanity `status` field to which Registrations tab an event
-// appears under, and what its badge says.
 const STATUS_META = {
     open: { tab: 'ongoing', badge: 'Open Now' },
     soon: { tab: 'upcoming', badge: 'Opens Soon' },
     closed: { tab: 'past', badge: 'Closed' }
-    // 'none' status is intentionally omitted — those events are Hidden
-    // and never shown on this page, matching the Sanity schema's label.
 };
 
-function normalizeEvent(event) {
-    // Keep the listing in sync with the dedicated form even if the CMS
-    // still marks Wright Flight as open or points to an external form.
-    const isWrightFlight = ['wrightFlight', 'wright-flight'].includes(event.registrationKey)
-        || event.ctaLink?.trim() === '/wright_flight_registration'
-        || event.title?.trim().toLowerCase() === 'wright flight';
-    const wrightFlightStatus = {
-        upcoming: 'soon',
-        ongoing: 'open',
-        closed: 'closed'
-    }[WRIGHT_FLIGHT_REGISTRATION_STATUS];
-    const meta = STATUS_META[isWrightFlight && event.status !== 'none' ? wrightFlightStatus : event.status];
-    if (!meta) return null; // status 'none' (Hidden), or unrecognized — skip entirely
 
-    // Most events use the generic form generated from registrationKey.
-    // Wright Flight keeps its dedicated team-registration form. A custom
-    // ctaLink (e.g. an external Unstop/Google Form link) still takes priority.
+function normalizeEvent(event) {
+    const normalizeKey = (value) =>
+        String(value || '')
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, '');
+
+    const eventTitle = normalizeKey(event.title);
+    const eventKey = normalizeKey(event.registrationKey);
+    const eventCtaLink = (event.ctaLink || '').trim();
+
+    const isWrightFlight =
+        eventKey === 'wrightflight' ||
+        eventTitle === 'wrightflight' ||
+        eventCtaLink === '/wright_flight_registration';
+
+    const customRegistration =
+        getCustomRegistration(event.registrationKey) ||
+        (eventTitle === 'dronecompetition'
+            ? getCustomRegistration('droneCompetition')
+            : null);
+
+    // Use the status saved by the admin dashboard.
+    const meta = STATUS_META[event.status];
+
+    if (!meta) return null;
+
     const builtInRegistrationLink = isWrightFlight
         ? '/wright_flight_registration'
-        : event.registrationKey
-            ? `/register/${event.registrationKey}`
-            : null;
+        : customRegistration
+            ? customRegistration.path
+            : event.registrationKey
+                ? `/register/${event.registrationKey}`
+                : null;
 
-    const resolvedLink = event.ctaLink?.trim()
-        ? event.ctaLink.trim()
-        : builtInRegistrationLink;
-
-    // Only show a live, clickable CTA for events that are actually open —
-    // upcoming/past events display the label as text, not a link, even if
-    // a link technically exists (mirrors the previous hardcoded behavior).
-    const ctaLink = meta.tab === 'ongoing' ? resolvedLink : null;
+    const resolvedLink = isWrightFlight || customRegistration
+        ? builtInRegistrationLink
+        : eventCtaLink || builtInRegistrationLink;
 
     const ctaLabel = isWrightFlight && meta.tab !== 'ongoing'
-        ? meta.tab === 'upcoming' ? 'Opens Soon' : 'Registration Closed'
+        ? meta.tab === 'upcoming'
+            ? 'Opens Soon'
+            : 'Registration Closed'
         : event.ctaLabel?.trim()
-        ? event.ctaLabel.trim()
-        : meta.tab === 'ongoing'
-            ? 'Open Registration Form'
-            : meta.tab === 'upcoming'
-                ? 'Opens Soon'
-                : 'Registration Closed';
+            ? event.ctaLabel.trim()
+            : meta.tab === 'ongoing'
+                ? 'Open Registration Form'
+                : meta.tab === 'upcoming'
+                    ? 'Opens Soon'
+                    : 'Registration Closed';
 
     return {
         id: event._id,
@@ -67,9 +77,67 @@ function normalizeEvent(event) {
         badge: meta.badge,
         description: event.description || '',
         ctaLabel,
-        ctaLink
+        ctaLink: meta.tab === 'ongoing' ? resolvedLink : null
     };
 }
+
+
+
+
+const renderEventDescription = (description) => {
+    const parts = String(description || '').split(
+        /(https?:\/\/[^\s]+)/gi
+    );
+
+    return parts.map((part, index) => {
+        if (!/^https?:\/\//i.test(part)) {
+            return part;
+        }
+
+        const punctuation = part.match(/[.,!?;:)\]]+$/)?.[0] || '';
+        const url = punctuation
+            ? part.slice(0, -punctuation.length)
+            : part;
+
+        let label = '';
+
+        try {
+            const hostname = new URL(url).hostname.toLowerCase();
+
+            if (
+                hostname === 'wa.me' ||
+                hostname === 'whatsapp.com' ||
+                hostname.endsWith('.whatsapp.com')
+            ) {
+                label = 'Join Group';
+            } else if (
+                hostname === 'drive.google.com' ||
+                hostname === 'docs.google.com'
+            ) {
+                label = 'View Rulebook';
+            }
+        } catch {
+            return part;
+        }
+
+        if (!label) {
+            return part;
+        }
+
+        return (
+            <React.Fragment key={`description-link-${index}`}>
+                <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {label}
+                </a>
+                {punctuation}
+            </React.Fragment>
+        );
+    });
+};
 
 const RegistrationsPage = () => {
     const [rawEvents, setRawEvents] = useState([]);
@@ -79,23 +147,38 @@ const RegistrationsPage = () => {
 
     useEffect(() => {
         let isMounted = true;
-        (async () => {
+
+        const loadEvents = async () => {
             try {
-                const res = await fetch(`${BACKEND_URL}/api/events`);
-                const data = await res.json();
-                if (!data.success) throw new Error(data.error || 'Failed to fetch events');
+                const response = await fetch(`${BACKEND_URL}/api/events`);
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.error || 'Failed to fetch events');
+                }
+
                 if (isMounted) {
                     setRawEvents(data.events || []);
                     setError(null);
                 }
             } catch (err) {
-                console.error('Error loading events:', err);
-                if (isMounted) setError('Could not load registrations. Please try again later.');
+                console.error('Error loading registrations:', err);
+
+                if (isMounted) {
+                    setError(
+                        'Could not load registrations. Please try again later.'
+                    );
+                }
             } finally {
                 if (isMounted) setLoading(false);
             }
-        })();
-        return () => { isMounted = false; };
+        };
+
+        loadEvents();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     const events = useMemo(
@@ -103,27 +186,50 @@ const RegistrationsPage = () => {
         [rawEvents]
     );
 
-    // If there's nothing in the tab the page defaulted to, land on the
-    // first tab that actually has events, so the page isn't misleadingly
-    // empty on first load.
     useEffect(() => {
         if (loading || events.length === 0) return;
-        const hasActiveTabEvents = events.some((e) => e.status === activeTab);
+
+        const hasActiveTabEvents = events.some(
+            (event) => event.status === activeTab
+        );
+
         if (!hasActiveTabEvents) {
             const firstNonEmptyTab = ['ongoing', 'upcoming', 'past'].find(
-                (tab) => events.some((e) => e.status === tab)
+                (tab) => events.some((event) => event.status === tab)
             );
+
             if (firstNonEmptyTab) setActiveTab(firstNonEmptyTab);
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, events]);
 
-    const filteredEvents = events.filter((event) => event.status === activeTab);
+    const filteredEvents = events.filter(
+        (event) => event.status === activeTab
+    );
 
     const renderCardAction = (event) => {
         if (event.ctaLink) {
+            const isExternalLink = /^https?:\/\//i.test(event.ctaLink);
+
+            if (isExternalLink) {
+                return (
+                    <a
+                        href={event.ctaLink}
+                        className="registration-card-button"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {event.ctaLabel}
+                    </a>
+                );
+            }
+
             return (
-                <Link to={event.ctaLink} className="registration-card-button">
+                <Link
+                    to={event.ctaLink}
+                    className="registration-card-button"
+                >
                     {event.ctaLabel}
                 </Link>
             );
@@ -144,7 +250,10 @@ const RegistrationsPage = () => {
                     name="description"
                     content="Track Aero NITK registrations across ongoing, upcoming, and past events."
                 />
-                <link rel="canonical" href="https://aeronitk.in/registrations" />
+                <link
+                    rel="canonical"
+                    href="https://aeronitk.in/registrations"
+                />
             </Helmet>
 
             <section className="registrations-page">
@@ -153,12 +262,18 @@ const RegistrationsPage = () => {
                         <p className="registrations-kicker">Event Portal</p>
                         <h1>Registrations</h1>
                         <p className="registrations-intro">
-                            Browse current Aero NITK registration windows. Ongoing events accept responses,
-                            upcoming events are announced here in advance, and past registrations are shown as closed.
+                            Browse current Aero NITK registration windows.
+                            Ongoing events accept responses, upcoming events
+                            are announced here in advance, and past
+                            registrations are shown as closed.
                         </p>
                     </div>
 
-                    <div className="registrations-tabs" role="tablist" aria-label="Registration categories">
+                    <div
+                        className="registrations-tabs"
+                        role="tablist"
+                        aria-label="Registration categories"
+                    >
                         {[
                             { key: 'ongoing', label: 'Ongoing' },
                             { key: 'upcoming', label: 'Upcoming' },
@@ -169,7 +284,8 @@ const RegistrationsPage = () => {
                                 type="button"
                                 role="tab"
                                 aria-selected={activeTab === tab.key}
-                                className={`registrations-tab ${activeTab === tab.key ? 'active' : ''}`}
+                                className={`registrations-tab ${activeTab === tab.key ? 'active' : ''
+                                    }`}
                                 onClick={() => setActiveTab(tab.key)}
                             >
                                 {tab.label}
@@ -185,13 +301,25 @@ const RegistrationsPage = () => {
                             </div>
                         ) : filteredEvents.length > 0 ? (
                             filteredEvents.map((event) => (
-                                <article key={event.id} className={`registration-card ${event.status}`}>
+                                <article
+                                    key={event.id}
+                                    className={`registration-card ${event.status}`}
+                                >
                                     <div className="registration-card-top">
-                                        <span className={`registration-status ${event.status}`}>{event.badge}</span>
+                                        <span
+                                            className={`registration-status ${event.status}`}
+                                        >
+                                            {event.badge}
+                                        </span>
                                         <p>{event.subtitle}</p>
                                     </div>
+
                                     <h2>{event.title}</h2>
-                                    <p className="registration-card-description">{event.description}</p>
+
+                                    <p className="registration-card-description">
+                                        {renderEventDescription(event.description)}
+                                    </p>
+
                                     {renderCardAction(event)}
                                 </article>
                             ))
@@ -199,7 +327,9 @@ const RegistrationsPage = () => {
                             <div className="registrations-empty">
                                 <h2>No events here right now</h2>
                                 <p>
-                                    There are no {activeTab} registrations at the moment. Check the other tabs for updates.
+                                    There are no {activeTab} registrations
+                                    at the moment. Check the other tabs
+                                    for updates.
                                 </p>
                             </div>
                         )}
