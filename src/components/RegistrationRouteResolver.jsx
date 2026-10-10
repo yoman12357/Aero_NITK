@@ -9,6 +9,15 @@ const EventRegistrationForm = lazy(
 
 const RegistrationRouteResolver = () => {
     const { registrationKey } = useParams();
+    const cleanKey = String(registrationKey || '').toLowerCase().replace(/[-_\s]/g, '');
+
+    if (cleanKey === 'wrightflight') {
+        return <Navigate to="/wright_flight_registration" replace />;
+    }
+
+    if (cleanKey === 'dronecompetition' || cleanKey === 'dronecompetetion') {
+        return <Navigate to="/drone_competition_registration" replace />;
+    }
 
     const customRegistration = getCustomRegistration(registrationKey);
 

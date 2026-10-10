@@ -21,14 +21,15 @@ import RegistrationsTab from './Dashboard/views/RegistrationsTab.jsx';
 import GalleryTab from './Dashboard/views/GalleryTab.jsx';
 import GalleryFolderPage from './Dashboard/views/GalleryFolderPage.jsx';
 import TeamsTab from './Dashboard/views/TeamsTab.jsx';
+import TemplatesTab from './Dashboard/views/TemplatesTab.jsx';
 import AlumniTab from './Dashboard/views/AlumniTab.jsx';
 import AlumniFolderPage from './Dashboard/views/AlumniFolderPage.jsx';
 
 import { useGallery } from './Dashboard/hooks/useGallery.js';
 import { useAlumni } from './Dashboard/hooks/useAlumni.js';
 
-// Firebase auth import
-import { auth } from '../firebase';
+// Firebase auth and template mapping import
+import { auth, setEventTemplateMapping } from '../firebase';
 
 import './DashBoard.css';
 
@@ -109,6 +110,7 @@ function AdminDashboard() {
             currentParticipants: 0,
             maxCapacity: '',
             registrationKey: 'none',
+            registrationTemplate: 'standard',
             startDate: '',
             status: 'soon'
         });
@@ -120,12 +122,22 @@ function AdminDashboard() {
     // Open modal to edit an existing event
     const handleOpenEdit = (event) => {
         setEditingEventId(event._id);
+        const resolvedTemplate = event.registrationTemplate || (
+            event.registrationKey === 'wrightFlight'
+                ? 'wrightFlight'
+                : event.registrationKey?.toLowerCase().includes('drone')
+                    ? 'droneCompetition'
+                    : event.registrationKey && event.registrationKey !== 'none'
+                        ? 'standard'
+                        : 'none'
+        );
         setForm({
             title: event.title || '',
             description: event.description || '',
             currentParticipants: event.manualParticipantCount || 0,
             maxCapacity: event.maxCapacity || '',
             registrationKey: event.registrationKey || 'none',
+            registrationTemplate: resolvedTemplate,
             startDate: event.startDate ? event.startDate.substring(0, 16) : '',
             status: event.status || 'soon',
             statusTone: event.status || 'soon'
@@ -163,12 +175,24 @@ function AdminDashboard() {
         formData.append('title', form.title);
         formData.append('description', form.description);
         formData.append('registrationKey', form.registrationKey);
+        if (form.registrationTemplate) {
+            formData.append('registrationTemplate', form.registrationTemplate);
+        }
         formData.append('manualParticipantCount', form.currentParticipants);
         if (form.maxCapacity) formData.append('maxCapacity', form.maxCapacity);
         formData.append('status', form.status);
         if (form.startDate) formData.append('startDate', form.startDate);
         if (imageFile) {
             formData.append('image', imageFile);
+        }
+
+        // Save event template mapping in Firestore so dynamic forms immediately know their template
+        if (form.registrationKey && form.registrationKey !== 'none') {
+            await setEventTemplateMapping(form.registrationKey, {
+                templateId: form.registrationTemplate || 'standard',
+                eventTitle: form.title,
+                eventId: editingEventId || null
+            });
         }
 
         const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
@@ -283,6 +307,18 @@ const handleDeleteEvent = async (eventId) => {
                         />
                     )}
 
+                    {activeTab === 'templates' && (
+                        <TemplatesTab
+                            onSelectTemplateForEvent={(template) => {
+                                handleOpenAdd();
+                                setForm((prev) => ({
+                                    ...prev,
+                                    registrationTemplate: template.id
+                                }));
+                            }}
+                        />
+                    )}
+
                     {activeTab === 'registrations' && (
                         <RegistrationsTab
                             events={events}
@@ -376,6 +412,10 @@ const handleDeleteEvent = async (eventId) => {
                     onImageChange={handleImageChange}
                     onSubmit={handleFormSubmit}
                     onClose={() => setIsModalOpen(false)}
+                    onNavigateToTemplates={() => {
+                        setIsModalOpen(false);
+                        navigate('/dashboard/templates');
+                    }}
                 />
                 <GalleryEditorModal
                     isOpen={isFolderEditorOpen}

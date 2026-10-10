@@ -38,6 +38,11 @@ function EventCard({ event, index, regCounts, onManage, onDelete }) {
                 {event.status && event.status !== 'none' ? <span className={`admin-dashboard-status status-${event.status}`}>{event.status === 'soon' ? 'OPENS SOON' : event.status.toUpperCase()}</span> : null}
                 <h3>{event.title}</h3>
                 <p>{event.description}</p>
+                {regKey && regKey !== 'none' && (
+                    <div style={{ fontSize: '0.75rem', color: '#60a5fa', marginTop: '6px' }}>
+                        🔗 /register/{regKey}
+                    </div>
+                )}
             </div>
             <div className="admin-dashboard-event-meta">
                 <strong>{displayParticipants}</strong>

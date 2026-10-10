@@ -6,8 +6,12 @@ import './recruitment_page.css';
 import {
     saveEventRegistration,
     checkDuplicateEventRegistration,
-    getEventRegistrationCount
+    getEventRegistrationCount,
+    getEventTemplateMapping,
+    getRegistrationTemplates
 } from '../firebase.js';
+import { client as sanityClient, EVENTS_QUERY } from '../lib/sanity.js';
+import { findTemplateById } from '../data/registrationTemplates.js';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
@@ -134,6 +138,7 @@ const EventRegistrationForm = () => {
     const { registrationKey } = useParams();
 
     const [event, setEvent] = useState(null);
+    const [template, setTemplate] = useState(null);
     const [eventLoading, setEventLoading] = useState(true);
     const [eventError, setEventError] = useState(null);
 
@@ -151,22 +156,28 @@ const EventRegistrationForm = () => {
         hp_field: ""
     });
 
-    // Look up this event's details from the backend by its registrationKey,
-    // so the form shows the right title/description without any new
-    // per-event backend route.
+    // Look up this event's details from backend or Sanity, and load its assigned template
     useEffect(() => {
         let isMounted = true;
 
         (async () => {
             try {
-                const res = await fetch(`${BACKEND_URL}/api/events`);
-                const data = await res.json();
-
-                if (!data.success) {
-                    throw new Error(data.error || 'Failed to load event');
+                let eventsData = null;
+                try {
+                    const res = await fetch(`${BACKEND_URL}/api/events`);
+                    const data = await res.json();
+                    if (data.success && Array.isArray(data.events)) {
+                        eventsData = data.events;
+                    }
+                } catch {
+                    // Backend server unavailable
                 }
 
-                const match = (data.events || []).find(
+                if (!eventsData) {
+                    eventsData = await sanityClient.fetch(EVENTS_QUERY);
+                }
+
+                const match = (eventsData || []).find(
                     (e) => e.registrationKey === registrationKey
                 );
 
@@ -177,6 +188,24 @@ const EventRegistrationForm = () => {
                         setEventError(
                             'This registration link is no longer active.'
                         );
+                    } else {
+                        // Load template for this event
+                        const mapping = await getEventTemplateMapping(registrationKey);
+                        const templateId = mapping?.templateId || match.registrationTemplate || (
+                            match.registrationKey === 'wrightFlight' ? 'wrightFlight' :
+                            match.registrationKey?.toLowerCase().includes('drone') ? 'droneCompetition' : 'standard'
+                        );
+
+                        const customList = await getRegistrationTemplates();
+                        const foundTemplate = findTemplateById(templateId, customList);
+                        if (foundTemplate && Array.isArray(foundTemplate.fields) && foundTemplate.fields.length > 0) {
+                            setTemplate(foundTemplate);
+                            const initial = { hp_field: '' };
+                            foundTemplate.fields.forEach((f) => {
+                                initial[f.id] = '';
+                            });
+                            setFormData((prev) => ({ ...initial, ...prev }));
+                        }
                     }
                 }
             } catch (err) {
@@ -226,6 +255,18 @@ const EventRegistrationForm = () => {
         }));
     };
 
+    const handleFileChange = (name, file) => {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: reader.result
+            }));
+        };
+        reader.readAsDataURL(file);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -235,62 +276,95 @@ const EventRegistrationForm = () => {
             return;
         }
 
-        // Validation — same rules as the recruitment form
-        const emailRegex = /^[^\s@]+@nitk\.edu\.in$/;
+        // Custom template validation
+        if (template && Array.isArray(template.fields) && template.fields.length > 0) {
+            for (const field of template.fields) {
+                const val = formData[field.id];
+                if (field.required && (val === undefined || val === null || val === '')) {
+                    alert(`Please fill in required field: ${field.label}`);
+                    return;
+                }
 
-        if (!emailRegex.test(formData.email)) {
-            alert("Please enter a valid NITK email address (@nitk.edu.in).");
-            return;
-        }
+                if (field.type === 'email' && val) {
+                    const requiresNitk = field.helpText?.includes('@nitk.edu.in') || field.label?.includes('@nitk.edu.in') || field.placeholder?.includes('@nitk.edu.in');
+                    if (requiresNitk) {
+                        if (!/^[^\s@]+@nitk\.edu\.in$/.test(val)) {
+                            alert(`Please enter a valid NITK email address (@nitk.edu.in) for ${field.label}.`);
+                            return;
+                        }
+                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+                        alert(`Please enter a valid email address for ${field.label}.`);
+                        return;
+                    }
+                }
 
-        if (formData.name.trim().length < 3) {
-            alert("Name must be at least 3 characters.");
-            return;
-        }
+                if (field.type === 'tel' && val) {
+                    if (!/^[0-9]{10}$/.test(val)) {
+                        alert(`Please enter a valid 10-digit phone number for ${field.label}.`);
+                        return;
+                    }
+                }
+            }
+        } else {
+            // Default 6 fields validation
+            const emailRegex = /^[^\s@]+@nitk\.edu\.in$/;
 
-        if (formData.name.trim().length < 3) {
-            alert("Name must be at least 3 characters.");
-            return;
-        }
+            if (!emailRegex.test(formData.email)) {
+                alert("Please enter a valid NITK email address (@nitk.edu.in).");
+                return;
+            }
 
-        if (!/^[0-9]{10}$/.test(formData.phone)) {
-            alert("Phone number must be exactly 10 digits.");
-            return;
-        }
+            if (formData.name.trim().length < 3) {
+                alert("Name must be at least 3 characters.");
+                return;
+            }
 
-        if (!formData.branch) {
-            alert("Please select your branch.");
-            return;
-        }
+            if (!/^[0-9]{10}$/.test(formData.phone)) {
+                alert("Phone number must be exactly 10 digits.");
+                return;
+            }
 
-        if (!formData.year) {
-            alert("Please select your year.");
-            return;
+            if (!formData.branch) {
+                alert("Please select your branch.");
+                return;
+            }
+
+            if (!formData.year) {
+                alert("Please select your year.");
+                return;
+            }
         }
 
         setIsSubmitting(true);
 
-        const duplicateCheck = await checkDuplicateEventRegistration(
-            registrationKey,
-            {
-                rollNo: formData.rollNo,
-                email: formData.email,
-                phone: formData.phone
-            }
-        );
-
-        if (duplicateCheck.duplicate) {
-            alert(
-                `An application with this ${duplicateCheck.field} already exists. Each user can only submit one registration.`
+        // Check duplicate if rollNo, email, or phone are provided
+        if (formData.rollNo || formData.email || formData.phone) {
+            const duplicateCheck = await checkDuplicateEventRegistration(
+                registrationKey,
+                {
+                    rollNo: formData.rollNo || '',
+                    email: formData.email || '',
+                    phone: formData.phone || ''
+                }
             );
 
-            setIsSubmitting(false);
-            return;
+            if (duplicateCheck.duplicate) {
+                alert(
+                    `An application with this ${duplicateCheck.field} already exists. Each user can only submit one registration.`
+                );
+
+                setIsSubmitting(false);
+                return;
+            }
         }
 
         const submissionData = Object.fromEntries(
             Object.entries(formData).filter(([fieldName]) => fieldName !== 'hp_field')
         );
+
+        if (event?.title) {
+            submissionData.eventTitle = event.title;
+        }
 
         const result = await saveEventRegistration(
             registrationKey,
@@ -508,108 +582,224 @@ const EventRegistrationForm = () => {
                         />
                     </div>
 
-                    <label>
-                        NAME
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            required
-                            placeholder="Your Full Name"
-                        />
-                    </label>
+                    {template && Array.isArray(template.fields) && template.fields.length > 0 ? (
+                        template.fields.map((field) => (
+                            <label key={field.id} style={{ display: 'block', marginBottom: '16px' }}>
+                                <span>
+                                    {field.label.toUpperCase()} {field.required && <span style={{ color: '#ef4444' }}>*</span>}
+                                </span>
 
-                    <label>
-                        E-Mail
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            required
-                            placeholder="you@nitk.edu.in"
-                        />
-                    </label>
+                                {field.type === 'select' ? (
+                                    <select
+                                        name={field.id}
+                                        value={formData[field.id] || ''}
+                                        onChange={handleInputChange}
+                                        required={field.required}
+                                    >
+                                        <option value="" disabled hidden>
+                                            Select {field.label}
+                                        </option>
+                                        {field.options?.map((opt, oi) => (
+                                            <option key={oi} value={opt}>
+                                                {opt}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : field.type === 'textarea' ? (
+                                    <textarea
+                                        name={field.id}
+                                        rows="3"
+                                        value={formData[field.id] || ''}
+                                        onChange={handleInputChange}
+                                        placeholder={field.placeholder || `Enter ${field.label}`}
+                                        required={field.required}
+                                    />
+                                ) : field.type === 'file' ? (
+                                    <div style={{ marginTop: '6px' }}>
+                                        {/* Render QR code section directly above screenshot upload if template has one */}
+                                        {template.qrCodeImage && (
+                                            <div className="payment-qr-section" style={{ marginBottom: '16px' }}>
+                                                {template.paymentAmount && (
+                                                    <strong style={{ color: '#fff', fontSize: '1rem' }}>
+                                                        Total payable: {template.paymentAmount}
+                                                    </strong>
+                                                )}
+                                                {template.paymentInstructions ? (
+                                                    <span className="payment-qr-label">{template.paymentInstructions}</span>
+                                                ) : (
+                                                    <span className="payment-qr-label">Scan &amp; Pay</span>
+                                                )}
+                                                <img
+                                                    src={template.qrCodeImage}
+                                                    alt="Payment QR code"
+                                                    className="payment-qr-image"
+                                                />
+                                            </div>
+                                        )}
+                                        <input
+                                            type="file"
+                                            accept="image/*,application/pdf"
+                                            onChange={(e) => handleFileChange(field.id, e.target.files?.[0])}
+                                            required={field.required && !formData[field.id]}
+                                        />
+                                        {formData[field.id] && (
+                                            <small style={{ color: '#4ade80', display: 'block', marginTop: '4px' }}>
+                                                ✓ File attached successfully
+                                            </small>
+                                        )}
+                                    </div>
+                                ) : field.type === 'radio' ? (
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '8px 0' }}>
+                                        {field.options?.map((opt, oi) => (
+                                            <label key={oi} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'normal', cursor: 'pointer', margin: 0 }}>
+                                                <input
+                                                    type="radio"
+                                                    name={field.id}
+                                                    value={opt}
+                                                    checked={formData[field.id] === opt}
+                                                    onChange={handleInputChange}
+                                                    required={field.required}
+                                                />
+                                                {opt}
+                                            </label>
+                                        ))}
+                                    </div>
+                                ) : field.type === 'checkbox' ? (
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', margin: '8px 0' }}>
+                                        <input
+                                            type="checkbox"
+                                            name={field.id}
+                                            checked={Boolean(formData[field.id])}
+                                            onChange={(e) => setFormData({ ...formData, [field.id]: e.target.checked })}
+                                            required={field.required}
+                                        />
+                                        <span>I confirm / agree</span>
+                                    </label>
+                                ) : (
+                                    <input
+                                        type={field.type || 'text'}
+                                        name={field.id}
+                                        value={formData[field.id] || ''}
+                                        onChange={handleInputChange}
+                                        placeholder={field.placeholder || `Enter ${field.label}`}
+                                        required={field.required}
+                                        pattern={field.type === 'tel' ? '[0-9]{10}' : undefined}
+                                    />
+                                )}
 
-                    <label>
-                        ROLL NUMBER
-                        <input
-                            type="text"
-                            name="rollNo"
-                            value={formData.rollNo}
-                            onChange={handleInputChange}
-                            required
-                            placeholder="Your Roll Number"
-                        />
-                    </label>
+                                {field.helpText && (
+                                    <small style={{ color: '#888', display: 'block', marginTop: '4px', fontSize: '0.8rem' }}>
+                                        {field.helpText}
+                                    </small>
+                                )}
+                            </label>
+                        ))
+                    ) : (
+                        <>
+                            <label>
+                                NAME
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Your Full Name"
+                                />
+                            </label>
 
-                    <label>
-                        PHONE NUMBER
-                        <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleInputChange}
-                            required
-                            placeholder="10-Digit Number"
-                            pattern="[0-9]{10}"
-                        />
-                    </label>
+                            <label>
+                                E-Mail
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="you@nitk.edu.in"
+                                />
+                            </label>
 
-                    <label>
-                        BRANCH
-                        <select
-                            name="branch"
-                            value={formData.branch}
-                            onChange={handleInputChange}
-                            required
-                        >
-                            <option
-                                value=""
-                                disabled
-                                hidden
-                            >
-                                Select Here
-                            </option>
+                            <label>
+                                ROLL NUMBER
+                                <input
+                                    type="text"
+                                    name="rollNo"
+                                    value={formData.rollNo}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Your Roll Number"
+                                />
+                            </label>
 
-                            {branches.map((br, idx) => (
-                                <option
-                                    key={idx}
-                                    value={br}
+                            <label>
+                                PHONE NUMBER
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="10-Digit Number"
+                                    pattern="[0-9]{10}"
+                                />
+                            </label>
+
+                            <label>
+                                BRANCH
+                                <select
+                                    name="branch"
+                                    value={formData.branch}
+                                    onChange={handleInputChange}
+                                    required
                                 >
-                                    {br}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
+                                    <option
+                                        value=""
+                                        disabled
+                                        hidden
+                                    >
+                                        Select Here
+                                    </option>
 
-                    <label>
-                        YEAR
-                        <select
-                            name="year"
-                            value={formData.year}
-                            onChange={handleInputChange}
-                            required
-                        >
-                            <option
-                                value=""
-                                disabled
-                                hidden
-                            >
-                                Select Here
-                            </option>
+                                    {branches.map((br, idx) => (
+                                        <option
+                                            key={idx}
+                                            value={br}
+                                        >
+                                            {br}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
 
-                            {years.map((yr, idx) => (
-                                <option
-                                    key={idx}
-                                    value={yr}
+                            <label>
+                                YEAR
+                                <select
+                                    name="year"
+                                    value={formData.year}
+                                    onChange={handleInputChange}
+                                    required
                                 >
-                                    {yr}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
+                                    <option
+                                        value=""
+                                        disabled
+                                        hidden
+                                    >
+                                        Select Here
+                                    </option>
+
+                                    {years.map((yr, idx) => (
+                                        <option
+                                            key={idx}
+                                            value={yr}
+                                        >
+                                            {yr}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                        </>
+                    )}
 
                     <button
                         className="apply-btn"

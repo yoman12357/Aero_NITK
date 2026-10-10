@@ -115,6 +115,7 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
     const [registrationsLoading, setRegistrationsLoading] = useState(false);
     const [registrationsError, setRegistrationsError] = useState('');
     const [activeScreenshot, setActiveScreenshot] = useState(null);
+    const [activeDetailRegistration, setActiveDetailRegistration] = useState(null);
     const [liveCountOverrides, setLiveCountOverrides] = useState({});
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
@@ -350,14 +351,24 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
                                             {formatRelativeTime(registration.submittedAt)}
                                         </td>
                                         <td>
-                                            <button
-                                                type="button"
-                                                className="admin-dashboard-reg-delete-btn"
-                                                title={`Delete registration for ${displayName}`}
-                                                onClick={() => setDeleteTarget(registration)}
-                                            >
-                                                Delete
-                                            </button>
+                                            <div style={{ display: 'flex', gap: '6px' }}>
+                                                <button
+                                                    type="button"
+                                                    className="admin-dashboard-reg-view-btn"
+                                                    title={`View full details for ${displayName}`}
+                                                    onClick={() => setActiveDetailRegistration(registration)}
+                                                >
+                                                    Details
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="admin-dashboard-reg-delete-btn"
+                                                    title={`Delete registration for ${displayName}`}
+                                                    onClick={() => setDeleteTarget(registration)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 );
@@ -413,6 +424,80 @@ function RegistrationsTab({ events = [], eventsLoading, regCounts, regLoading })
                                 type="button"
                                 className="admin-dashboard-modal-primary"
                                 onClick={() => setActiveScreenshot(null)}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {activeDetailRegistration && (
+                <div
+                    className="admin-dashboard-modal-backdrop"
+                    onClick={() => setActiveDetailRegistration(null)}
+                    role="presentation"
+                >
+                    <div
+                        className="admin-dashboard-modal"
+                        style={{ maxWidth: '620px', maxHeight: '85vh', display: 'flex', flexDirection: 'column' }}
+                        role="dialog"
+                        aria-modal="true"
+                        onClick={(modalEvent) => modalEvent.stopPropagation()}
+                    >
+                        <div className="admin-dashboard-modal-header">
+                            <div>
+                                <p className="admin-dashboard-modal-kicker">Submitted Registration</p>
+                                <h3>{activeDetailRegistration.name || activeDetailRegistration.captainName || 'Participant Details'}</h3>
+                            </div>
+                            <button
+                                type="button"
+                                className="admin-dashboard-modal-close"
+                                onClick={() => setActiveDetailRegistration(null)}
+                            >
+                                ×
+                            </button>
+                        </div>
+
+                        <div style={{ padding: '20px 24px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                            {Object.entries(activeDetailRegistration)
+                                .filter(([k]) => !['id', 'hp_field', 'documentId', 'registrationKey', 'registrationType', 'registrationLabel'].includes(k))
+                                .map(([key, val]) => {
+                                    if (key === 'paymentScreenshot' && typeof val === 'string' && (val.startsWith('data:') || val.startsWith('http'))) {
+                                        return (
+                                            <div key={key} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px' }}>
+                                                <strong style={{ color: '#93c5fd', fontSize: '0.82rem', textTransform: 'uppercase' }}>
+                                                    Payment Proof Screenshot
+                                                </strong>
+                                                <div style={{ marginTop: '8px' }}>
+                                                    <img
+                                                        src={val}
+                                                        alt="Proof"
+                                                        style={{ maxWidth: '100%', maxHeight: '220px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)' }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        );
+                                    }
+
+                                    return (
+                                        <div key={key} style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '10px' }}>
+                                            <strong style={{ color: '#93c5fd', fontSize: '0.82rem', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                                                {key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())}
+                                            </strong>
+                                            <div style={{ color: '#f3f4f6', fontSize: '0.92rem', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                                                {key === 'submittedAt' ? timestampToIso(val) : typeof val === 'object' ? JSON.stringify(val) : String(val || '—')}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                        </div>
+
+                        <div className="admin-dashboard-modal-actions" style={{ padding: '16px 24px' }}>
+                            <button
+                                type="button"
+                                className="admin-dashboard-modal-primary"
+                                onClick={() => setActiveDetailRegistration(null)}
                             >
                                 Close
                             </button>

@@ -1,21 +1,29 @@
 .team-main-container {
   max-width: 1400px;
+  width: 100%;
   margin: 0 auto;
   padding: 147px 20px 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 48px;
+  box-sizing: border-box;
 }
 
 .team-page-bg {
   background-color: #000;
   color: #fff;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .section-group {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .section-label {
@@ -46,35 +54,48 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 32px;
+  gap: 24px;
   margin-bottom: 32px;
   width: 100%;
 }
 
 .team-card {
-  width: 280px;
-  height: 400px;
-  background: #606060;
-  border-radius: 15px;
-  padding: 45px 20px 24px;
+  width: 250px;
+  height: auto;
+  background: linear-gradient(155deg, #1e222a 0%, #13151a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 28px 16px 22px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s ease;
+  justify-content: flex-start;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .team-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  border-color: rgba(52, 144, 235, 0.5);
+  box-shadow: 0 16px 32px -4px rgba(0, 0, 0, 0.65), 0 0 20px rgba(52, 144, 235, 0.18);
 }
 
 .profile-circle {
-  width: 140px;
-  height: 140px;
-  background: #D9D9D9;
+  width: 110px;
+  height: 110px;
+  background: #252830;
+  border: 2.5px solid rgba(52, 144, 235, 0.5);
   border-radius: 50%;
-  margin-bottom: 28px;
+  margin-bottom: 14px;
   overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: border-color 0.3s ease;
+}
+
+.team-card:hover .profile-circle {
+  border-color: #4da6ff;
 }
 
 .profile-circle img {
@@ -86,39 +107,66 @@
 .placeholder-circle {
   width: 100%;
   height: 100%;
-  background: #444;
+  background: #252830;
 }
 
 .name {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin: 0 0 6px 0;
   text-align: center;
+  color: #ffffff;
+  line-height: 1.25;
+  letter-spacing: 0.3px;
+  overflow-wrap: break-word;
 }
 
 .role {
-  font-size: 15px;
-  color: #d1d1d1;
-  margin-bottom: auto;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #7cb8ff;
+  background: rgba(52, 144, 235, 0.12);
+  border: 1px solid rgba(52, 144, 235, 0.28);
+  padding: 3px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
   text-align: center;
-  font-weight: 500;
+  line-height: 1.25;
+  margin: 0 0 12px 0;
+  max-width: 90%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.linkedin-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.linkedin-link:hover {
+  transform: scale(1.12);
 }
 
 .large-linkedin {
-  width: 40px;
-  height: 40px;
-  margin-top: 10px;
-  filter: brightness(0.8);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  filter: brightness(0.92);
   transition: filter 0.2s;
+  margin-top: 0;
 }
 
 .large-linkedin:hover {
-  filter: brightness(1);
+  filter: brightness(1.1);
 }
 
 .figma-divider {
-  width: 618px;
+  width: 100%;
+  max-width: 618px;
   height: 2px;
   background: #333;
   margin: 40px auto;
@@ -150,23 +198,281 @@
 
 @media (max-width: 1150px) {
   .team-card {
-    width: 240px;
+    width: 220px;
+    padding: 24px 14px 20px;
+  }
+
+  .profile-circle {
+    width: 98px;
+    height: 98px;
+    margin-bottom: 12px;
+  }
+
+  .name {
+    font-size: 15px;
   }
 }
 
 @media (max-width: 768px) {
+  .team-main-container {
+    padding: 105px 16px 60px;
+    gap: 32px;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .section-label {
+    font-size: 26px;
+    letter-spacing: 0.5px;
+  }
+
+  .subsection-label {
+    font-size: 19px;
+    margin: 28px 0 18px;
+  }
+
   .figma-divider {
-    width: 80%;
+    width: 85%;
+    max-width: 500px;
+    margin: 28px auto;
+  }
+
+  .sub-nav-pill {
+    gap: 10px;
+    margin-bottom: 26px;
+    padding: 0 4px;
+  }
+
+  .sub-nav-item {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  /* 2-Column Responsive Grid from 768px down */
+  .row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Odd orphan card in 2-column grid spans cleanly and centers */
+  .row > .team-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc(50% - 7px);
+    max-width: 220px;
+    justify-self: center;
   }
 
   .team-card {
-    width: 260px;
-    height: 350px;
-    padding-top: 35px;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: 100%;
+    padding: 20px 10px 18px;
+    border-radius: 14px;
+    background: linear-gradient(155deg, #1b1e26 0%, #111317 100%);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 
   .profile-circle {
-    width: 120px;
-    height: 120px;
+    width: 86px;
+    height: 86px;
+    margin-bottom: 12px;
+    border-width: 2.5px;
+  }
+
+  .name {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 5px;
+    letter-spacing: 0.2px;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .role {
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.25;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #60a5fa;
+    margin-bottom: 10px;
+    max-width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .linkedin-link {
+    margin-top: auto;
+  }
+
+  .large-linkedin {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .team-main-container {
+    padding: 95px 12px 50px;
+    gap: 28px;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  .section-label {
+    font-size: 22px;
+    letter-spacing: 0.4px;
+  }
+
+  .subsection-label {
+    font-size: 16px;
+    margin: 24px 0 16px;
+  }
+
+  .figma-divider {
+    width: 90%;
+    margin: 24px auto;
+  }
+
+  .sub-nav-pill {
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+
+  .sub-nav-item {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+
+  /* 2-Column Responsive Grid on Mobile */
+  .row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Odd orphan card in 2-column grid spans cleanly and centers */
+  .row > .team-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc(50% - 6px);
+    max-width: 200px;
+    justify-self: center;
+  }
+
+  .team-card {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: 100%;
+    padding: 18px 8px 16px;
+    border-radius: 14px;
+    background: linear-gradient(155deg, #1b1e26 0%, #111317 100%);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .profile-circle {
+    width: 76px;
+    height: 76px;
+    margin-bottom: 10px;
+    border-width: 2px;
+  }
+
+  .name {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 5px;
+    letter-spacing: 0.2px;
+    text-align: center;
+    word-break: break-word;
+  }
+
+  /* Natural, uncompressed role text without tight badge borders */
+  .role {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.25;
+    color: #60a5fa;
+    background: none;
+    border: none;
+    padding: 0;
+    margin-bottom: 10px;
+    max-width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .linkedin-link {
+    margin-top: auto;
+  }
+
+  .large-linkedin {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 360px) {
+  .team-main-container {
+    padding: 90px 8px 40px;
+    gap: 22px;
+  }
+
+  .section-label {
+    font-size: 20px;
+  }
+
+  .subsection-label {
+    font-size: 15px;
+  }
+
+  .row {
+    gap: 8px;
+  }
+
+  .team-card {
+    padding: 14px 6px 12px;
+    border-radius: 12px;
+  }
+
+  .profile-circle {
+    width: 66px;
+    height: 66px;
+    margin-bottom: 8px;
+  }
+
+  .name {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .role {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+
+  .large-linkedin {
+    width: 22px;
+    height: 22px;
   }
 }

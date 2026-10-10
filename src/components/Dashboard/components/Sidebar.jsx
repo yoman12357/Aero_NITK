@@ -15,6 +15,7 @@ function Sidebar({ activeTab }) {
             <nav className="admin-dashboard-nav" aria-label="Admin sections">
                 <NavLink to="/dashboard/home" className={({ isActive }) => (isActive || activeTab === 'home' ? 'active' : '')}><span className="nav-icon">⌂</span>Home</NavLink>
                 <NavLink to="/dashboard/events" className={({ isActive }) => (isActive || activeTab === 'events' ? 'active' : '')}><span className="nav-icon">▣</span>Events</NavLink>
+                <NavLink to="/dashboard/templates" className={({ isActive }) => (isActive || activeTab === 'templates' ? 'active' : '')}><span className="nav-icon">📋</span>Templates</NavLink>
                 <NavLink to="/dashboard/registrations" className={({ isActive }) => (isActive || activeTab === 'registrations' ? 'active' : '')}><span className="nav-icon">▤</span>Registrations</NavLink>
                 <NavLink to="/dashboard/gallery" className={({ isActive }) => (isActive || activeTab === 'gallery' ? 'active' : '')}><span className="nav-icon">◫</span>Gallery</NavLink>
                 <NavLink to="/dashboard/participants" className={({ isActive }) => (isActive || activeTab === 'participants' ? 'active' : '')}><span className="nav-icon">👥</span>Participants</NavLink>

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { getCombinedTemplates, findTemplateById } from '../../../data/registrationTemplates.js';
 
 // Turns "Aero Modelling Workshop 2026" into "aeroModellingWorkshop2026" —
 // a safe key to use both as the /register/:registrationKey route and as
@@ -21,7 +22,7 @@ function slugifyToKey(title) {
  * Modal dialog for adding or editing an event.
  * Manages body overflow lock via its own useEffect.
  */
-function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onImageChange, onSubmit, onClose }) {
+function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onImageChange, onSubmit, onClose, customTemplates = [], onNavigateToTemplates }) {
     // Lock body scroll while modal is open
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : '';
@@ -29,6 +30,11 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
             document.body.style.overflow = '';
         };
     }, [isOpen]);
+
+    const allTemplates = getCombinedTemplates(customTemplates);
+    const availableCustomTemplates = allTemplates.filter((t) => !t.isBuiltin);
+    const currentTemplateId = form.registrationTemplate || (form.registrationKey === 'wrightFlight' ? 'wrightFlight' : form.registrationKey?.toLowerCase().includes('drone') ? 'droneCompetition' : form.registrationKey && form.registrationKey !== 'none' ? 'standard' : 'none');
+    const selectedTemplateInfo = findTemplateById(currentTemplateId, customTemplates);
 
     // Only auto-fill the key from the title while the admin hasn't typed
     // their own key yet — once they touch the field directly, stop overwriting it.
@@ -132,19 +138,86 @@ function EventFormModal({ isOpen, editingEventId, form, image, onFormChange, onI
                         </label>
                     </div>
 
+                    {/* Registration Form Template Selector */}
+                    <div className="admin-dashboard-modal-row" style={{ gridColumn: "1 / -1" }}>
+                        <label className="admin-dashboard-modal-field" style={{ gridColumn: "1 / -1" }}>
+                            <span>Registration Form Template</span>
+                            <select
+                                value={form.registrationTemplate || (form.registrationKey === 'wrightFlight' ? 'wrightFlight' : form.registrationKey?.toLowerCase().includes('drone') ? 'droneCompetition' : form.registrationKey && form.registrationKey !== 'none' ? 'standard' : 'none')}
+                                onChange={(e) => {
+                                    const selectedTemplateId = e.target.value;
+                                    onFormChange((currentForm) => {
+                                        const next = { ...currentForm, registrationTemplate: selectedTemplateId };
+                                        if (selectedTemplateId === 'none') {
+                                            next.registrationKey = 'none';
+                                        } else if (selectedTemplateId === 'wrightFlight') {
+                                            next.registrationKey = 'wrightFlight';
+                                        } else if (selectedTemplateId === 'droneCompetition') {
+                                            next.registrationKey = 'droneCompetition';
+                                        } else {
+                                            if (!next.registrationKey || next.registrationKey === 'none' || next.registrationKey === 'wrightFlight' || next.registrationKey === 'droneCompetition') {
+                                                next.registrationKey = slugifyToKey(currentForm.title) || `event_${Date.now()}`;
+                                            }
+                                        }
+                                        return next;
+                                    });
+                                }}
+                            >
+                                <option value="none">No Registration Form (External / None)</option>
+                                <optgroup label="Pre-built Templates">
+                                    <option value="wrightFlight">Wright Flight (Team + Payment QR)</option>
+                                    <option value="droneCompetition">Drone Competition (Team + Payment)</option>
+                                    <option value="standard">Standard Event / Workshop (Individual)</option>
+                                </optgroup>
+                                {availableCustomTemplates.length > 0 && (
+                                    <optgroup label="Custom Form Templates">
+                                        {availableCustomTemplates.map((t) => (
+                                            <option key={t.id} value={t.id}>
+                                                {t.name} ({t.fields?.length || 0} fields)
+                                            </option>
+                                        ))}
+                                    </optgroup>
+                                )}
+                            </select>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '6px' }}>
+                                <small style={{ color: '#60a5fa', fontSize: '0.8rem' }}>
+                                    {selectedTemplateInfo
+                                        ? `✓ Using ${selectedTemplateInfo.name} (${selectedTemplateInfo.fields?.length || 0} customizable fields)`
+                                        : 'Select a template or leave blank for no registration form.'}
+                                </small>
+                                {onNavigateToTemplates && (
+                                    <button
+                                        type="button"
+                                        onClick={onNavigateToTemplates}
+                                        style={{
+                                            background: 'none',
+                                            border: 'none',
+                                            color: '#93c5fd',
+                                            cursor: 'pointer',
+                                            fontSize: '0.78rem',
+                                            textDecoration: 'underline',
+                                            padding: 0
+                                        }}
+                                    >
+                                        + Design new template in Templates tab
+                                    </button>
+                                )}
+                            </div>
+                        </label>
+                    </div>
+
                     <div className="admin-dashboard-modal-row">
                         <label className="admin-dashboard-modal-field">
-                            <span>Registration Key</span>
+                            <span>Registration Key / URL</span>
                             <input
                                 type="text"
                                 value={form.registrationKey && form.registrationKey !== 'none' ? form.registrationKey : ''}
                                 onChange={(changeEvent) => handleKeyChange(changeEvent.target.value)}
                                 placeholder="auto-filled from title, e.g. aeroModellingWorkshop2026"
+                                disabled={form.registrationTemplate === 'none'}
                             />
                             <small style={{ display: 'block', marginTop: '4px', color: 'rgba(255,255,255,0.55)', fontSize: '0.78rem' }}>
-                                Leave blank for no live registration form. This becomes the registration link
-                                (/register/{form.registrationKey || '...'}) and its own Firestore collection —
-                                no code changes needed per event.
+                                Public URL: /register/{form.registrationKey && form.registrationKey !== 'none' ? form.registrationKey : '...'}
                             </small>
                         </label>
 
