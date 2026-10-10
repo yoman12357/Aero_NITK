@@ -43,8 +43,8 @@ import linkedInLogo from '../images/linkedIn_logo.png';
 
 const staticTeamHeads = [
   { name: 'VARSHITH.J', role: 'Convener', image: varshith_j, linkedIn: 'https://www.linkedin.com/in/varshith-j-54579628a/?isSelfProfile=false' },
-  { name: 'NANDEESH TRIVEDI', role: 'Captain', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308/?isSelfProfile=false' },
   { name: 'VEDANT SABNIS', role: 'Joint Convener', image: Vedant_Sabnis, linkedIn: 'http://www.linkedin.com/in/vedant-sabnis-6603b9280' },
+  { name: 'NANDEESH TRIVEDI', role: 'Captain', image: Nandeesh_Urmesh_Trivedi, linkedIn: 'https://www.linkedin.com/in/nandeesh-trivedi-8b7a39308/?isSelfProfile=false' },
   { name: 'R.ADITHYA', role: 'Vice Captain', image: R_Adithya, linkedIn: 'https://www.linkedin.com/in/adithyar976/' },
   { name: 'TIRTH PATEL', role: 'Chairperson', image: tirth_vishalkumar_patel, linkedIn: 'https://www.linkedin.com/in/tirth-patel-550715321/' },
   { name: 'NITESH.P', role: 'Operations Lead', image: nitesh_p, linkedIn: 'https://www.linkedin.com/in/nitesh-p-ab4108292/?isSelfProfile=false' },
@@ -167,6 +167,22 @@ const Team = () => {
     </div>
   );
 
+  // Separate Team Leadership positions
+  const conveners = allHeads.filter(m => {
+    const r = (m.role || '').toLowerCase();
+    return r.includes('conven');
+  });
+
+  const captains = allHeads.filter(m => {
+    const r = (m.role || '').toLowerCase();
+    return r.includes('captain');
+  });
+
+  const otherHeads = allHeads.filter(m => {
+    const r = (m.role || '').toLowerCase();
+    return !r.includes('conven') && !r.includes('captain');
+  });
+
   const { leads, members } = getFilteredData(activeSubsystem);
 
   return (
@@ -180,10 +196,29 @@ const Team = () => {
 
         <section className="section-group">
           <h2 className="section-label">TEAM HEADS</h2>
-          <div className="row heads-row">
-            {/* Map over the newly merged allHeads array */}
-            {allHeads.map((m, i) => <MemberCard key={`head-${i}`} m={m} />)}
+          
+          {/* Top Tier: Convener and Joint Convener */}
+          <div className="row top-tier-row">
+            {conveners.map((m, i) => <MemberCard key={`convener-${i}`} m={m} />)}
           </div>
+
+          {/* Second Tier: Captain and Vice Captain */}
+          <div className="row top-tier-row">
+            {captains.map((m, i) => <MemberCard key={`captain-${i}`} m={m} />)}
+          </div>
+
+          {/* Boundary Divider Line between Core Leadership and other heads */}
+          <div className="figma-divider"></div>
+
+          {/* Third Tier: Other Heads (Chairperson, Operations, Outreach, Treasurer, etc.) */}
+          {otherHeads.length > 0 && (
+            <div className="row heads-row">
+              {otherHeads.map((m, i) => <MemberCard key={`head-${i}`} m={m} />)}
+            </div>
+          )}
+
+          <div className="figma-divider"></div>
+
           <h3 className="subsection-label">STUDENT MENTORS</h3>
           <div className="row mentors-row">
             {/* Map over the newly merged allMentors array */}
