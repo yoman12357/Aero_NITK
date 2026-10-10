@@ -7,6 +7,7 @@ import Footer from './footer.jsx';
 import {
     getCustomRegistration
 } from '../data/customRegistrationRoutes.js';
+import { client as sanityClient, EVENTS_QUERY } from '../lib/sanity.js';
 import './RegistrationsPage.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
@@ -30,15 +31,18 @@ function normalizeEvent(event) {
     const eventCtaLink = (event.ctaLink || '').trim();
 
     const isWrightFlight =
+        event.registrationTemplate === 'wrightFlight' ||
         eventKey === 'wrightflight' ||
         eventTitle === 'wrightflight' ||
         eventCtaLink === '/wright_flight_registration';
 
     const customRegistration =
-        getCustomRegistration(event.registrationKey) ||
-        (eventTitle === 'dronecompetition' || eventTitle === 'dronecompetetion'
+        event.registrationTemplate === 'droneCompetition'
             ? getCustomRegistration('droneCompetition')
-            : null);
+            : getCustomRegistration(event.registrationKey) ||
+              (eventTitle === 'dronecompetition' || eventTitle === 'dronecompetetion'
+                  ? getCustomRegistration('droneCompetition')
+                  : null);
 
     // Use the status saved by the admin dashboard.
     const meta = STATUS_META[event.status];
@@ -150,15 +154,23 @@ const RegistrationsPage = () => {
 
         const loadEvents = async () => {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/events`);
-                const data = await response.json();
+                let eventsData = null;
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/events`);
+                    const data = await response.json();
+                    if (data.success && Array.isArray(data.events)) {
+                        eventsData = data.events;
+                    }
+                } catch {
+                    // Backend unavailable
+                }
 
-                if (!data.success) {
-                    throw new Error(data.error || 'Failed to fetch events');
+                if (!eventsData) {
+                    eventsData = await sanityClient.fetch(EVENTS_QUERY);
                 }
 
                 if (isMounted) {
-                    setRawEvents(data.events || []);
+                    setRawEvents(eventsData || []);
                     setError(null);
                 }
             } catch (err) {

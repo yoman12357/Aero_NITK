@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, deleteDoc, increment, getDocs, query, where, orderBy, limit as fsLimit, getCountFromServer, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp, doc, setDoc, deleteDoc, increment, getDocs, getDoc, query, where, orderBy, limit as fsLimit, getCountFromServer, onSnapshot } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 // import { GoogleAuthProvider } from "firebase/auth";
 
@@ -271,3 +271,94 @@ export const checkDuplicateApplication = (args) => checkDuplicateInCollection('a
 
 // Returns current number of recruitment applications (efficient — no document download)
 export const getApplicationCount = () => getCollectionCount('applicants');
+
+// ---------------------------------------------------------------------------
+// Registration Form Templates Management
+// ---------------------------------------------------------------------------
+const TEMPLATES_COLLECTION = 'registration_templates';
+const EVENT_TEMPLATES_COLLECTION = 'event_template_mappings';
+
+export const getRegistrationTemplates = async () => {
+    try {
+        const snap = await getDocs(collection(db, TEMPLATES_COLLECTION));
+        return snap.docs.map((d) => ({
+            id: d.id,
+            ...d.data(),
+        }));
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Error fetching registration templates from Firestore:', error);
+        }
+        return [];
+    }
+};
+
+export const saveRegistrationTemplate = async (template) => {
+    try {
+        const templateId = template.id || `custom_${Date.now()}`;
+        const templateRef = doc(db, TEMPLATES_COLLECTION, templateId);
+        const dataToSave = {
+            ...template,
+            id: templateId,
+            isBuiltin: false,
+            updatedAt: serverTimestamp(),
+            createdAt: template.createdAt || serverTimestamp()
+        };
+        await setDoc(templateRef, dataToSave, { merge: true });
+        return { success: true, id: templateId };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error('Error saving template to Firestore:', error);
+        }
+        return { success: false, error };
+    }
+};
+
+export const deleteRegistrationTemplate = async (templateId) => {
+    try {
+        const templateRef = doc(db, TEMPLATES_COLLECTION, templateId);
+        await deleteDoc(templateRef);
+        return { success: true };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error(`Error deleting template ${templateId}:`, error);
+        }
+        return { success: false, error };
+    }
+};
+
+export const getEventTemplateMapping = async (registrationKey) => {
+    if (!registrationKey) return null;
+    try {
+        const mappingRef = doc(db, EVENT_TEMPLATES_COLLECTION, registrationKey);
+        const snap = await getDoc(mappingRef);
+        if (snap.exists()) {
+            return snap.data();
+        }
+        return null;
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error(`Error getting template mapping for ${registrationKey}:`, error);
+        }
+        return null;
+    }
+};
+
+export const setEventTemplateMapping = async (registrationKey, mappingData) => {
+    if (!registrationKey) return { success: false };
+    try {
+        const mappingRef = doc(db, EVENT_TEMPLATES_COLLECTION, registrationKey);
+        await setDoc(mappingRef, {
+            ...mappingData,
+            registrationKey,
+            updatedAt: serverTimestamp()
+        }, { merge: true });
+        return { success: true };
+    } catch (error) {
+        if (import.meta.env.MODE === 'development') {
+            console.error(`Error saving template mapping for ${registrationKey}:`, error);
+        }
+        return { success: false, error };
+    }
+};
+
