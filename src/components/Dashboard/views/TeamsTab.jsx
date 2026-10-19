@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './TeamsTab.css';
 import { client, urlFor } from '../../../client';
 import { getAuth } from 'firebase/auth';
@@ -23,6 +23,8 @@ function TeamsTab() {
     });
 
     const auth = getAuth();
+
+    const formRef = useRef(null);
 
     const BACKEND_URL =
         import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
@@ -155,9 +157,9 @@ function TeamsTab() {
         setSelectedFile(null);
 
         // Scroll to form
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+        formRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
         });
     };
 
@@ -220,6 +222,12 @@ function TeamsTab() {
             else {
                 const memberId =
                     editingMember._id || editingMember.id;
+
+                if (!memberId) {
+                    throw new Error('Member ID is missing — cannot update.');
+                }
+
+                console.log('Updating member:', memberId);
 
                 response = await fetch(`${API_URL}/${memberId}`, {
                     method: 'PUT',
@@ -349,7 +357,7 @@ function TeamsTab() {
                     FORM
                 ========================= */}
 
-                <div className="teams-form-card">
+                <div className="teams-form-card" ref={formRef}>
 
                     <h3>
                         {editingMember
